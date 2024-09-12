@@ -1,16 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { Link } from "expo-router";
+import { ThemedText } from "../../components/ThemedText";
+import { Button, Modal, Portal, Searchbar } from "react-native-paper";
 
 type HomePageProps = {};
 
 const HomePage = ({}: HomePageProps) => {
+  const [searchQuery, setSearchQuery] = React.useState("");
   return (
     <View className="p-0">
-      <Text>HomePage</Text>
-      <Link className="text-[#5d6aff]" href="(tabs)/info">
-        go info
-      </Link>
+      <ThemedText>HomePage</ThemedText>
     </View>
   );
 };

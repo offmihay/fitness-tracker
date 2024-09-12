@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "fitness-tracker",
+    "name": "friends-tracker",
     "scheme": "your-app-scheme",
-    "slug": "fitness-tracker",
+    "slug": "friends-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
