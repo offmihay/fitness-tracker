@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "friends-tracker",
-    "scheme": "your-app-scheme",
-    "slug": "friends-tracker",
+    "name": "fitness-tracker",
+    "scheme": "fitness-tracker",
+    "slug": "fitness-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.offmihay.fitnesstracker"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,6 +26,14 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": ["expo-router"]
+    "plugins": ["expo-router"],
+    "extra": {
+      "eas": {
+        "projectId": "cb003851-fdf1-42d5-85a8-1b8129f1d36e"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }

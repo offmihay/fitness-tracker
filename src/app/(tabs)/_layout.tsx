@@ -2,6 +2,7 @@ import {
   AntDesign,
   Feather,
   FontAwesome5,
+  MaterialIcons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
@@ -9,31 +10,22 @@ import React from "react";
 
 export default function TabLayout() {
   return (
-    <Tabs>
+    <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <SimpleLineIcons name="location-pin" size={24} color={color} />
+            <AntDesign name="home" size={24} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="chats"
+        name="workouts"
         options={{
-          title: "Chats",
+          title: "Workouts",
           tabBarIcon: ({ color }) => (
-            <AntDesign name="message1" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="friends"
-        options={{
-          title: "Friends",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="user-friends" size={24} color={color} />
+            <MaterialIcons name="sports-tennis" size={24} color={color} />
           ),
         }}
       />

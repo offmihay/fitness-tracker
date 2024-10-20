@@ -1,16 +1,17 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { ThemedText } from "../../components/ThemedText";
-import { Button, Modal, Portal, Searchbar } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Button } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type HomePageProps = {};
 
 const HomePage = ({}: HomePageProps) => {
-  const [searchQuery, setSearchQuery] = React.useState("");
   return (
-    <View className="p-0">
-      <ThemedText>HomePage</ThemedText>
-    </View>
+    <SafeAreaView>
+      <Button mode="contained" onPress={() => alert("asd")}>
+        click me
+      </Button>
+    </SafeAreaView>
   );
 };
 

@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { ThemedText } from "../../components/ThemedText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type settingsProps = {};
 
 const settings = ({}: settingsProps) => {
   return (
-    <View>
-      <ThemedText>settings</ThemedText>
-    </View>
+    <SafeAreaView>
+      <ThemedText>settingss</ThemedText>
+    </SafeAreaView>
   );
 };
 
