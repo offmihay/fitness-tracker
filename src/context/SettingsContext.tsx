@@ -1,6 +1,7 @@
 import { Appearance, ColorSchemeName } from "react-native";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "@tanstack/react-query";
 
 type Settings = {
   theme: ColorSchemeName;
@@ -28,20 +29,20 @@ type Props = {
 export const SettingsProvider = ({ children }: Props) => {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
 
+  const { data: settingsJson } = useQuery({
+    queryKey: ["settings"],
+    queryFn: () => AsyncStorage.getItem("settings"),
+  });
+
   useEffect(() => {
-    (async () => {
-      try {
-        const settingsJson = await AsyncStorage.getItem("settings");
-        const storedSettings: Settings = settingsJson ? JSON.parse(settingsJson) : null;
-        if (storedSettings) {
-          setSettings(storedSettings);
-          Appearance.setColorScheme(storedSettings.theme);
-        }
-      } catch (e) {
-        console.error("Failed to load settings from storage", e);
+    if (settingsJson) {
+      const storedSettings: Settings = settingsJson ? JSON.parse(settingsJson) : null;
+      if (storedSettings) {
+        setSettings(storedSettings);
+        Appearance.setColorScheme(storedSettings.theme);
       }
-    })();
-  }, []);
+    }
+  }, [settingsJson]);
 
   const updateSettings = async (newSettings: Partial<Settings>) => {
     try {

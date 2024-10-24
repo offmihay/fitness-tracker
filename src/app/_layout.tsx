@@ -5,6 +5,9 @@ import { PaperProvider } from "react-native-paper";
 import { CombinedDarkTheme, CombinedLightTheme } from "./constants/theme";
 import { SettingsProvider, useSettings } from "../context/SettingsContext";
 import { useColorScheme } from "react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   const { settings } = useSettings();
@@ -27,9 +30,11 @@ const App = () => {
 
 const RootLayout = () => {
   return (
-    <SettingsProvider>
-      <App />
-    </SettingsProvider>
+    <QueryClientProvider client={queryClient}>
+      <SettingsProvider>
+        <App />
+      </SettingsProvider>
+    </QueryClientProvider>
   );
 };
 
