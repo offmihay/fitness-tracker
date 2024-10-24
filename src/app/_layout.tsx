@@ -1,19 +1,21 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { ThemeProvider } from "@react-navigation/native";
 import "../styles/global.css";
 import { Stack } from "expo-router";
-import { useColorScheme } from "../hooks/useColorScheme";
 import { PaperProvider } from "react-native-paper";
+import { CombinedDarkTheme, CombinedLightTheme } from "./constants/theme";
+import { SettingsProvider, useSettings } from "../context/SettingsContext";
+import { useColorScheme } from "react-native";
 
-export default function RootLayout() {
+const App = () => {
+  const { settings } = useSettings();
   const colorScheme = useColorScheme();
+  const currentColorScheme = settings.theme || colorScheme;
+
+  const themeObj = currentColorScheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
 
   return (
-    <PaperProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <PaperProvider theme={themeObj}>
+      <ThemeProvider value={themeObj}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
@@ -21,4 +23,14 @@ export default function RootLayout() {
       </ThemeProvider>
     </PaperProvider>
   );
-}
+};
+
+const RootLayout = () => {
+  return (
+    <SettingsProvider>
+      <App />
+    </SettingsProvider>
+  );
+};
+
+export default RootLayout;

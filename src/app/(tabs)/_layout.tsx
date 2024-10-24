@@ -1,16 +1,14 @@
-import {
-  AntDesign,
-  Feather,
-  FontAwesome5,
-  MaterialIcons,
-  SimpleLineIcons,
-} from "@expo/vector-icons";
+import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs
+      screenOptions={{
+        headerShown: true,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{

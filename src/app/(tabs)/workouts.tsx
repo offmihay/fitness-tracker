@@ -1,16 +1,22 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Appearance, Button, StyleSheet, Text, useColorScheme, View } from "react-native";
 import React from "react";
+import { useSettings } from "../../context/SettingsContext";
 
-type workoutsProps = {};
+type Props = {};
 
-const workouts = ({}: workoutsProps) => {
+const Workouts = ({}: Props) => {
+  const { settings, updateSettings } = useSettings();
+
   return (
     <View>
       <Text>workouts</Text>
+      <Button title="Dark" onPress={() => updateSettings({ theme: "dark" })} />
+      <Button title="Light" onPress={() => updateSettings({ theme: "light" })} />
+      <Button title="System" onPress={() => updateSettings({ theme: null })} />
     </View>
   );
 };
 
-export default workouts;
+export default Workouts;
 
 const styles = StyleSheet.create({});
