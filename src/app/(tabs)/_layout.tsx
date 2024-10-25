@@ -1,8 +1,11 @@
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
+  const { t } = useTranslation();
+
   return (
     <Tabs
       screenOptions={{
@@ -12,28 +15,22 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => (
-            <AntDesign name="home" size={24} color={color} />
-          ),
+          title: t("home.title"),
+          tabBarIcon: ({ color }) => <AntDesign name="home" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="workouts"
         options={{
-          title: "Workouts",
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="sports-tennis" size={24} color={color} />
-          ),
+          title: t("workouts.title"),
+          tabBarIcon: ({ color }) => <MaterialIcons name="sports-tennis" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: "Settings",
-          tabBarIcon: ({ color }) => (
-            <Feather name="settings" size={24} color={color} />
-          ),
+          title: t("settings.title"),
+          tabBarIcon: ({ color }) => <Feather name="settings" size={24} color={color} />,
         }}
       />
     </Tabs>

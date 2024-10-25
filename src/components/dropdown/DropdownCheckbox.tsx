@@ -22,9 +22,9 @@ type Props = {
 
 const DropdownCheckbox = ({ children, items }: Props) => {
   return (
-    <DropdownMenuRoot>
+    <DropdownMenuRoot dir="ltr">
       <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent defaultChecked>
         {items.map((item) => (
           // @ts-ignore
           <DropdownMenuCheckboxItem

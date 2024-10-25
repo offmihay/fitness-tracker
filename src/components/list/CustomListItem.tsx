@@ -3,18 +3,28 @@ import React from "react";
 import { Divider, List } from "react-native-paper";
 import { useCustomTheme } from "../../hooks/useCustomTheme";
 
-type CustomListItemProps = {
+export type CustomListItemProps = {
   isLast?: boolean;
   nodeContent?: React.ReactNode;
   noRightChevron?: boolean;
   icon: React.ElementType;
   iconName: string;
+  chevron?:
+    | "down"
+    | "up"
+    | "right"
+    | "left"
+    | "double-down"
+    | "double-up"
+    | "double-right"
+    | "double-left";
 } & React.ComponentProps<typeof List.Item>;
 
 const CustomListItem = ({
   isLast = false,
   nodeContent,
   noRightChevron,
+  chevron = "right",
   icon: Icon,
   iconName,
   ...rest
@@ -25,7 +35,6 @@ const CustomListItem = ({
     <View className="relative">
       <List.Item
         className="py-1"
-        description="asd"
         titleStyle={[{ color: theme.colors.text }]}
         right={(props) => (
           <View style={styles.listView}>
@@ -33,7 +42,7 @@ const CustomListItem = ({
             {!noRightChevron && (
               <List.Icon
                 {...props}
-                icon="chevron-right"
+                icon={`chevron-${chevron}`}
                 color={theme.colors.textSurface}
                 style={styles.pressIcon}
               />

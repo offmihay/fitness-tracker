@@ -42,7 +42,8 @@
         {
           "iosUrlScheme": "com.googleusercontent.apps.1017780084148-f9qpidfc4si6f18uum2jqbpn5ne4hkk4"
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "extra": {
       "eas": {

@@ -1,0 +1,32 @@
+{
+  "settings": {
+    "title": "Settings",
+
+    "personal-info": "Personal Info",
+    "customize-theme": "Choose Theme",
+    "change-language": "Change Language",
+    "enable-notifications": "Notifications",
+
+    "system": "System",
+    "dark": "Dark",
+    "light": "Light",
+
+    "en": "English",
+    "ua": "Ukrainian",
+    "ru": "Russian"
+  },
+  "home": {
+    "title": "Home",
+    "welcome": "Welcome to your dashboard!",
+    "today": "Today's Workouts",
+    "upcoming": "Upcoming Workouts",
+    "completed": "Completed Workouts"
+  },
+  "workouts": {
+    "title": "Workouts",
+    "myWorkouts": "My Workouts",
+    "createWorkout": "Create New Workout",
+    "workoutPlans": "Workout Plans",
+    "favorites": "Favorite Workouts"
+  }
+}

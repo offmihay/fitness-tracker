@@ -2,10 +2,11 @@ import { Appearance, ColorSchemeName } from "react-native";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
+import i18n from "i18next";
 
 type Settings = {
   theme: ColorSchemeName;
-  language: "en" | "es";
+  language: "en" | "ua" | "ru" | null;
   notificationsEnabled: boolean;
 };
 
@@ -28,7 +29,6 @@ type Props = {
 
 export const SettingsProvider = ({ children }: Props) => {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
-
   const { data: settingsJson } = useQuery({
     queryKey: ["settings"],
     queryFn: () => AsyncStorage.getItem("settings"),
@@ -40,6 +40,7 @@ export const SettingsProvider = ({ children }: Props) => {
       if (storedSettings) {
         setSettings(storedSettings);
         Appearance.setColorScheme(storedSettings.theme);
+        i18n.changeLanguage(storedSettings.language || "en");
       }
     }
   }, [settingsJson]);
@@ -48,10 +49,18 @@ export const SettingsProvider = ({ children }: Props) => {
     try {
       const storeSettings = { ...settings };
 
-      const { theme } = newSettings;
+      const { theme, language, notificationsEnabled } = newSettings;
       if (theme || theme === null) {
         Appearance.setColorScheme(theme);
         storeSettings.theme = theme;
+      }
+      if (language) {
+        storeSettings.language = language;
+        i18n.changeLanguage(language);
+      }
+
+      if (typeof notificationsEnabled !== "undefined") {
+        storeSettings.notificationsEnabled = notificationsEnabled;
       }
 
       setSettings(storeSettings);

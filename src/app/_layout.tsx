@@ -1,8 +1,10 @@
+import "intl-pluralrules";
+import "../i18n/config";
 import { ThemeProvider } from "@react-navigation/native";
 import "../styles/global.css";
 import { Stack } from "expo-router";
 import { PaperProvider } from "react-native-paper";
-import { CombinedDarkTheme, CombinedLightTheme } from "./constants/theme";
+import { CombinedDarkTheme, CombinedLightTheme } from "./theme/theme";
 import { SettingsProvider, useSettings } from "../context/SettingsContext";
 import { useColorScheme } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
