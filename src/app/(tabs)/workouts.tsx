@@ -1,6 +1,6 @@
 import { Appearance, Button, StyleSheet, Text, useColorScheme, View } from "react-native";
 import React from "react";
-import { useSettings } from "../../context/SettingsContext";
+import { useSettings } from "../../hooks/SettingsContext";
 
 type Props = {};
 

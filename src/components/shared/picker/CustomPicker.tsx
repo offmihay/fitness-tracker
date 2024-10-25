@@ -1,6 +1,6 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
-import { useCustomTheme } from "../../hooks/useCustomTheme";
+import { useCustomTheme } from "../../../hooks/useCustomTheme";
 
 type CustomPickerProps = {
   children: React.ReactNode;

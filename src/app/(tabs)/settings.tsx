@@ -1,10 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import CustomListItem from "../../components/list/CustomListItem";
-import CustomListSection from "../../components/list/CustomListSection";
-import DropdownCheckbox, { DropdownItem } from "../../components/dropdown/DropdownCheckbox";
+
+import DropdownCheckbox, { DropdownItem } from "../../components/shared/dropdown/DropdownCheckbox";
 import { useTranslation } from "react-i18next";
-import { getDropdownItems, getSettingsList } from "../../app-tabs/settings/SettingsHelper";
+import { getDropdownItems, getSettingsList } from "../../components/settings/SettingsHelper";
+import CustomListItem from "../../components/shared/list/CustomListItem";
+import CustomListSection from "../../components/shared/list/CustomListSection";
 
 type Props = {};
 

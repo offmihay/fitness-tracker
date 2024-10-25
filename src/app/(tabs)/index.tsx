@@ -10,9 +10,10 @@ import {
   statusCodes,
   User,
 } from "@react-native-google-signin/google-signin";
-import CustomPicker from "../../components/picker/CustomPicker";
-import CustomPickerItem from "../../components/picker/CustomPickerItem";
+
 import { useCustomTheme } from "../../hooks/useCustomTheme";
+import CustomPicker from "../../components/shared/picker/CustomPicker";
+import CustomPickerItem from "../../components/shared/picker/CustomPickerItem";
 
 type HomePageProps = {};
 

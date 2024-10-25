@@ -1,8 +1,9 @@
 import { AntDesign, Entypo, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import { useSettings } from "../../context/SettingsContext";
-import { CustomListItemProps } from "../../components/list/CustomListItem";
-import CustomSwitch from "../../components/switch/Switch";
+import { useSettings } from "../../hooks/SettingsContext";
+
+import CustomSwitch from "../shared/switch/Switch";
+import { CustomListItemProps } from "../shared/list/CustomListItem";
 
 export const getSettingsList = () => {
   const { settings, updateSettings } = useSettings();

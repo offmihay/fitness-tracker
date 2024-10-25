@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
 import { Divider, List } from "react-native-paper";
-import { useCustomTheme } from "../../hooks/useCustomTheme";
+import { useCustomTheme } from "../../../hooks/useCustomTheme";
 
 export type CustomListItemProps = {
   isLast?: boolean;
@@ -9,15 +9,7 @@ export type CustomListItemProps = {
   noRightChevron?: boolean;
   icon: React.ElementType;
   iconName: string;
-  chevron?:
-    | "down"
-    | "up"
-    | "right"
-    | "left"
-    | "double-down"
-    | "double-up"
-    | "double-right"
-    | "double-left";
+  chevron?: "down" | "up" | "right" | "left";
 } & React.ComponentProps<typeof List.Item>;
 
 const CustomListItem = ({
