@@ -7,11 +7,7 @@ export default function TabLayout() {
   const { t } = useTranslation();
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: true,
-      }}
-    >
+    <Tabs>
       <Tabs.Screen
         name="index"
         options={{
@@ -29,6 +25,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings"
         options={{
+          headerShown: false,
           title: t("settings.title"),
           tabBarIcon: ({ color }) => <Feather name="settings" size={24} color={color} />,
         }}

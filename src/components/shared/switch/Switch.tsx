@@ -4,10 +4,11 @@ import { Switch } from "react-native-paper";
 
 type SwitchProps = {
   toggleSwitch: (isOn: boolean) => void;
+  defaultValue: boolean;
 };
 
-const CustomSwitch = ({ toggleSwitch }: SwitchProps) => {
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+const CustomSwitch = ({ toggleSwitch, defaultValue = false }: SwitchProps) => {
+  const [isSwitchOn, setIsSwitchOn] = React.useState(defaultValue);
 
   const onToggleSwitch = () => {
     toggleSwitch(!isSwitchOn);

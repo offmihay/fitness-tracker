@@ -5,20 +5,22 @@ import { useCustomTheme } from "../../../hooks/useCustomTheme";
 
 export type CustomListItemProps = {
   isLast?: boolean;
-  nodeContent?: React.ReactNode;
+  nodeContentRight?: React.ReactNode;
+  nodeContentLeft?: React.ReactNode;
   noRightChevron?: boolean;
-  icon: React.ElementType;
-  iconName: string;
+  icon?: React.ElementType;
+  iconName?: string;
   chevron?: "down" | "up" | "right" | "left";
 } & React.ComponentProps<typeof List.Item>;
 
 const CustomListItem = ({
   isLast = false,
-  nodeContent,
+  nodeContentRight,
+  nodeContentLeft,
   noRightChevron,
   chevron = "right",
   icon: Icon,
-  iconName,
+  iconName = "home",
   ...rest
 }: CustomListItemProps) => {
   const theme = useCustomTheme();
@@ -26,11 +28,18 @@ const CustomListItem = ({
   return (
     <View className="relative">
       <List.Item
-        className="py-1"
+        // className="py-1"
+        style={{
+          paddingVertical: 4,
+          minHeight: 55,
+          display: "flex",
+          justifyContent: "center",
+          paddingHorizontal: 0,
+        }}
         titleStyle={[{ color: theme.colors.text }]}
         right={(props) => (
           <View style={styles.listView}>
-            {nodeContent}
+            {nodeContentRight}
             {!noRightChevron && (
               <List.Icon
                 {...props}
@@ -41,7 +50,14 @@ const CustomListItem = ({
             )}
           </View>
         )}
-        left={(props) => <Icon name={iconName} size={24} color={props.color} style={props.style} />}
+        left={(props) => (
+          <View>
+            {nodeContentLeft}
+            {Icon ? (
+              <Icon name={iconName} size={24} color={props.color} style={props.style} />
+            ) : null}
+          </View>
+        )}
         {...rest}
       />
       {!isLast && (
@@ -71,10 +87,12 @@ const styles = StyleSheet.create({
 
   pressIcon: {
     position: "static",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   listView: {
-    // backgroundColor: "black",
     left: 0,
     right: 0,
     width: 100,

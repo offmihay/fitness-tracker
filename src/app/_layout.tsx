@@ -5,9 +5,11 @@ import "../styles/global.css";
 import { Stack } from "expo-router";
 import { PaperProvider } from "react-native-paper";
 import { CombinedDarkTheme, CombinedLightTheme } from "../theme/theme";
-import { SettingsProvider, useSettings } from "../hooks/SettingsContext";
+import { SettingsProvider } from "../hooks/SettingsContext";
 import { useColorScheme } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useSettings } from "../hooks/useSettings";
+import { AuthProvider } from "../hooks/AuthContext";
 
 const queryClient = new QueryClient();
 
@@ -21,8 +23,8 @@ const App = () => {
   return (
     <PaperProvider theme={themeObj}>
       <ThemeProvider value={themeObj}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemeProvider>
@@ -33,9 +35,11 @@ const App = () => {
 const RootLayout = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <SettingsProvider>
-        <App />
-      </SettingsProvider>
+      <AuthProvider>
+        <SettingsProvider>
+          <App />
+        </SettingsProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 };

@@ -1,11 +1,14 @@
-import { StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import React from "react";
 
-import DropdownCheckbox, { DropdownItem } from "../../components/shared/dropdown/DropdownCheckbox";
+import DropdownCheckbox, {
+  DropdownItem,
+} from "../../../components/shared/dropdown/DropdownCheckbox";
 import { useTranslation } from "react-i18next";
-import { getDropdownItems, getSettingsList } from "../../components/settings/SettingsHelper";
-import CustomListItem from "../../components/shared/list/CustomListItem";
-import CustomListSection from "../../components/shared/list/CustomListSection";
+import { getDropdownItems, getSettingsList } from "../../../components/settings/SettingsHelper";
+import CustomListItem from "../../../components/shared/list/CustomListItem";
+import CustomListSection from "../../../components/shared/list/CustomListSection";
+import { Link } from "expo-router";
 
 type Props = {};
 

@@ -1,19 +1,32 @@
 {
   "settings": {
     "title": "Settings",
+    "headerBackTitle": "Settings",
 
-    "personal-info": "Personal Info",
-    "customize-theme": "Choose Theme",
-    "change-language": "Change Language",
-    "enable-notifications": "Notifications",
+    "personal-info": {
+      "title": "Personal Info",
 
-    "system": "System",
-    "dark": "Dark",
-    "light": "Light",
+      "name": "Name",
+      "email": "Email",
+      "surname": "Surname",
+      "photo": "Photo"
+    },
+    "theme": {
+      "title": "Choose Theme",
 
-    "en": "English",
-    "ua": "Ukrainian",
-    "ru": "Russian"
+      "system": "System",
+      "dark": "Dark",
+      "light": "Light"
+    },
+    "language": {
+      "title": "Change Language",
+      "en": "English",
+      "ua": "Ukrainian",
+      "ru": "Russian"
+    },
+    "notifications": {
+      "title": "Notifications"
+    }
   },
   "home": {
     "title": "Home",

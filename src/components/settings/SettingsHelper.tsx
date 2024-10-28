@@ -1,44 +1,54 @@
 import { AntDesign, Entypo, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import { useSettings } from "../../hooks/SettingsContext";
 
 import CustomSwitch from "../shared/switch/Switch";
 import { CustomListItemProps } from "../shared/list/CustomListItem";
+import { useRouter } from "expo-router";
+import { useSettings } from "../../hooks/useSettings";
 
 export const getSettingsList = () => {
   const { settings, updateSettings } = useSettings();
   const { t } = useTranslation();
+  const router = useRouter();
 
   const settingsList: CustomListItemProps[] = [
     {
       key: "personal-info",
-      title: t("settings.personal-info"),
+      title: t("settings.personal-info.title"),
       icon: AntDesign,
       iconName: "user",
+      onPress: () => router.push("/settings/personal-info"),
     },
     {
       key: "customize-theme",
-      title: t("settings.customize-theme"),
+      title: t("settings.theme.title"),
       icon: MaterialCommunityIcons,
       iconName: "theme-light-dark",
-      description: t(`settings.${settings.theme ? t(settings.theme as string) : t("system")}`),
+      description: t(
+        `settings.theme.${settings.theme ? t(settings.theme as string) : t("system")}`
+      ),
       chevron: "down",
+      onPress: () => void 0,
     },
     {
       key: "change-language",
-      title: t("settings.change-language"),
+      title: t("settings.language.title"),
       icon: Entypo,
       iconName: "language",
-      description: t(`settings.${settings.language as string}`),
+      description: t(`settings.language.${settings.language as string}`),
       chevron: "down",
+      onPress: () => void 0,
     },
     {
       key: "enable-notifications",
-      title: t("settings.enable-notifications"),
+      title: t("settings.notifications.title"),
       icon: MaterialIcons,
       iconName: "notifications-active",
-      nodeContent: (
-        <CustomSwitch toggleSwitch={(isOn) => updateSettings({ notificationsEnabled: isOn })} />
+      nodeContentRight: (
+        <CustomSwitch
+          toggleSwitch={(isOn) => updateSettings({ notificationsEnabled: isOn })}
+          defaultValue={settings.notificationsEnabled}
+        />
       ),
       noRightChevron: true,
     },
@@ -55,19 +65,19 @@ export const getDropdownItems = () => {
     "customize-theme": [
       {
         key: "system",
-        title: t("settings.system"),
+        title: t("settings.theme.system"),
         isSelected: !settings.theme,
         onPress: () => updateSettings({ theme: null }),
       },
       {
         key: "dark",
-        title: t("settings.dark"),
+        title: t("settings.theme.dark"),
         isSelected: settings.theme === "dark",
         onPress: () => updateSettings({ theme: "dark" }),
       },
       {
         key: "light",
-        title: t("settings.light"),
+        title: t("settings.theme.light"),
         isSelected: settings.theme === "light",
         onPress: () => updateSettings({ theme: "light" }),
       },
@@ -75,19 +85,19 @@ export const getDropdownItems = () => {
     "change-language": [
       {
         key: "en",
-        title: t("settings.en"),
+        title: t("settings.language.en"),
         isSelected: settings.language === "en",
         onPress: () => updateSettings({ language: "en" }),
       },
       {
         key: "ua",
-        title: t("settings.ua"),
+        title: t("settings.language.ua"),
         isSelected: settings.language === "ua",
         onPress: () => updateSettings({ language: "ua" }),
       },
       {
         key: "ru",
-        title: t("settings.ru"),
+        title: t("settings.language.ru"),
         isSelected: settings.language === "ru",
         onPress: () => updateSettings({ language: "ru" }),
       },

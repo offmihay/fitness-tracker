@@ -1,10 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "@tanstack/react-query";
 import { createContext, useEffect, useState } from "react";
 
+type User = {
+  id: string;
+  email: string;
+  username: string | null;
+  firstName: string | null;
+  secondName: string | null;
+  photo: string | null;
+};
+
 type UserInfo = {
-  username: string;
-  token: string;
-  role: string;
+  token: string | null;
+  user: User;
 };
 
 type AuthContextType = {
@@ -22,17 +31,17 @@ type AuthProviderProps = {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
+  const { data: userInfoJson } = useQuery({
+    queryKey: ["user_info"],
+    queryFn: () => AsyncStorage.getItem("user_info"),
+  });
+
   useEffect(() => {
-    const loadUserInfo = async () => {
-      try {
-        const storedUserInfo = await AsyncStorage.getItem("user_info");
-        storedUserInfo && setUserInfo(JSON.parse(storedUserInfo));
-      } catch (e) {
-        console.log("Failed to load user_info from storage");
-      }
-    };
-    loadUserInfo();
-  }, []);
+    if (userInfoJson) {
+      const storedUserInfo: UserInfo = userInfoJson ? JSON.parse(userInfoJson) : null;
+      setUserInfo(storedUserInfo);
+    }
+  }, [userInfoJson]);
 
   const logIn = async (newInfo: UserInfo) => {
     setUserInfo(newInfo);
@@ -53,8 +62,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userInfo, logIn, logOut }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ userInfo, logIn, logOut }}>{children}</AuthContext.Provider>
   );
 };

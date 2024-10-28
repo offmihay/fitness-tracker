@@ -14,6 +14,7 @@ import {
 import { useCustomTheme } from "../../hooks/useCustomTheme";
 import CustomPicker from "../../components/shared/picker/CustomPicker";
 import CustomPickerItem from "../../components/shared/picker/CustomPickerItem";
+import { useAuth } from "../../hooks/useAuth";
 
 type HomePageProps = {};
 
@@ -23,13 +24,26 @@ GoogleSignin.configure({
 
 const HomePage = ({}: HomePageProps) => {
   const [user, setUser] = useState<User>();
+  const { logIn } = useAuth();
 
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
       if (isSuccessResponse(response)) {
-        setUser(response.data);
+        const data = response.data;
+        setUser(data);
+        logIn({
+          token: data.idToken,
+          user: {
+            id: data.user.id,
+            email: data.user.email,
+            firstName: data.user.givenName,
+            secondName: data.user.familyName,
+            photo: data.user.photo,
+            username: data.user.email,
+          },
+        });
       } else {
         // sign in was cancelled by user
       }
@@ -61,16 +75,7 @@ const HomePage = ({}: HomePageProps) => {
         color={GoogleSigninButton.Color.Dark}
         onPress={signIn}
       />
-      {user && (
-        <>
-          <Text style={{ color: "white" }}>{user.user.name}</Text>
-          <Text style={{ color: "white" }}>{user.user.email}</Text>
-          <Text style={{ color: "white" }}>{user.user.id}</Text>
-          {user.user.photo && (
-            <Image style={{ width: 200, height: 200 }} source={{ uri: user.user.photo }} />
-          )}
-        </>
-      )}
+
       <CustomPicker
         mode="dropdown"
         selectedValue={selectedLanguage}

@@ -1,13 +1,14 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import { List, useTheme } from "react-native-paper";
+import { List } from "react-native-paper";
+import { useCustomTheme } from "../../../hooks/useCustomTheme";
 
 type CustomListProps = {
   children: React.ReactNode;
 } & React.ComponentProps<typeof List.Section>;
 
 const CustomListSection = ({ children, ...rest }: CustomListProps) => {
-  const theme = useTheme();
+  const theme = useCustomTheme();
   return (
     <View style={styles.sectionWrapper}>
       <List.Section

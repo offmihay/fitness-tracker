@@ -8,16 +8,14 @@ const lightTheme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: "rgb(0, 122, 255)", // first color
-    accent: "#67C6E3", // sec color
+    primary: "#0082FF", // first color
+    accent: "#7968F2", // sec color
     background: "#ECEDEE",
     surface: "#fff", // views
     text: "#000000",
     textSurface: "rgba(191, 191, 191, 0.9)",
-    icon: "rgb(0, 122, 255)", // icon for react-navigation/native
-    onSurfaceVariant: "rgb(0, 122, 255)", // icon for react-native-paper
-    tabIconDefault: "#687076",
-    tabIconSelected: "#0a7ea4",
+    icon: "#0082FF", // icon for react-navigation/native
+    onSurfaceVariant: "#0082FF", // icon for react-native-paper
   },
 };
 
@@ -25,16 +23,14 @@ const darkTheme = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
-    primary: "rgb(10, 112, 255)", // first color
-    accent: "#DFF5FF", // sec color
+    primary: "#0171FF", // first color
+    accent: "#8A6DFC", // sec color
     background: "black",
     surface: "#151718", // views
     text: "#ffffff",
     textSurface: "rgba(191, 191, 191, 0.4)",
-    icon: "rgb(10, 112, 255)", // icon for react-navigation/native
-    onSurfaceVariant: "rgb(10, 112, 255)", // icon for react-native-paper
-    tabIconDefault: "#9BA1A6",
-    tabIconSelected: "#fff",
+    icon: "#0171FF", // icon for react-navigation/native
+    onSurfaceVariant: "#0171FF", // icon for react-native-paper
   },
 };
 
