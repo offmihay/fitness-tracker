@@ -41,5 +41,12 @@
     "createWorkout": "Создать новую тренировку",
     "workoutPlans": "Планы тренировок",
     "favorites": "Избранные тренировки"
+  },
+
+  "signin": {
+    "continue": "Continue",
+    "continueGoogle": "Continue with Google",
+    "continueApple": "Continue with Apple",
+    "continueEmail": "Sign in/Sign up using Email"
   }
 }

@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
 import i18n from "i18next";
+import { getLocales } from "expo-localization";
 
 type Settings = {
   theme: ColorSchemeName;
@@ -40,7 +41,8 @@ export const SettingsProvider = ({ children }: Props) => {
       if (storedSettings) {
         setSettings(storedSettings);
         Appearance.setColorScheme(storedSettings.theme);
-        i18n.changeLanguage(storedSettings.language || "en");
+        const globalLng = getLocales()[0].languageCode;
+        i18n.changeLanguage(storedSettings.language || globalLng || "en");
       }
     }
   }, [settingsJson]);

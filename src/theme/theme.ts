@@ -12,8 +12,9 @@ const lightTheme = {
     accent: "#7968F2", // sec color
     background: "#ECEDEE",
     surface: "#fff", // views
+    surfaceLight: "#fff",
     text: "#000000",
-    textSurface: "rgba(191, 191, 191, 0.9)",
+    textSurface: "rgba(181, 181, 181, 1)",
     icon: "#0082FF", // icon for react-navigation/native
     onSurfaceVariant: "#0082FF", // icon for react-native-paper
   },
@@ -27,6 +28,7 @@ const darkTheme = {
     accent: "#8A6DFC", // sec color
     background: "black",
     surface: "#151718", // views
+    surfaceLight: "#1c1c1e",
     text: "#ffffff",
     textSurface: "rgba(191, 191, 191, 0.4)",
     icon: "#0171FF", // icon for react-navigation/native

@@ -4,16 +4,17 @@ import { useCustomTheme } from "../../../hooks/useCustomTheme";
 
 type Props = TextProps & {
   type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
+  color?: string;
 };
 
-const CustomText = ({ children, type = "default", style }: Props) => {
+const CustomText = ({ children, color, type = "default", style }: Props) => {
   const theme = useCustomTheme();
-  const color = theme.colors.text;
+  const colorText = color ? color : theme.colors.text;
 
   return (
     <Text
       style={[
-        { color },
+        { color: colorText },
         type === "default" ? styles.default : undefined,
         type === "title" ? styles.title : undefined,
         type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
