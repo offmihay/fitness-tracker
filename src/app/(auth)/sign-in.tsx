@@ -27,30 +27,6 @@ const SignIn = () => {
   const googleOAuth = useOAuth({ strategy: "oauth_google" });
   const appleOAuth = useOAuth({ strategy: "oauth_apple" });
 
-  // const onSignInPress = useCallback(async () => {
-  //   if (!isLoaded) {
-  //     return;
-  //   }
-
-  //   try {
-  //     const signInAttempt = await signIn.create({
-  //       identifier: emailAddress,
-  //       password,
-  //     });
-
-  //     if (signInAttempt.status === "complete") {
-  //       await setActive({ session: signInAttempt.createdSessionId });
-  //       router.replace("/");
-  //     } else {
-  //       // See https://clerk.com/docs/custom-flows/error-handling
-  //       // for more info on error handling
-  //       console.log(JSON.stringify(signInAttempt, null, 2));
-  //     }
-  //   } catch (err: any) {
-  //     console.log(JSON.stringify(err, null, 2));
-  //   }
-  // }, [isLoaded, emailAddress, password]);
-
   const googleSignIn = async () => {
     const oAuthFlow = await googleOAuth.startOAuthFlow();
     if (oAuthFlow.authSessionResult?.type === "success") {
@@ -119,6 +95,11 @@ const SignIn = () => {
                 {t("signin.continueEmail")}
               </CustomText>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.navigate("/sign-up")}>
+              <CustomText color="white" type="link" style={{ textAlign: "center" }}>
+                {t("signin.signup")}
+              </CustomText>
+            </TouchableOpacity>
           </View>
         </View>
       </SafeAreaView>
@@ -141,7 +122,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 20,
     paddingTop: 30,
-    paddingBottom: 60,
+    paddingBottom: 50,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
   },

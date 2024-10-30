@@ -19,7 +19,7 @@ const CustomText = ({ children, color, type = "default", style }: Props) => {
         type === "title" ? styles.title : undefined,
         type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
         type === "subtitle" ? styles.subtitle : undefined,
-        type === "link" ? { ...styles.link, color: theme.colors.primary } : undefined,
+        type === "link" ? { ...styles.link } : undefined,
         style,
       ]}
     >
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   link: {
     lineHeight: 30,
     fontSize: 16,
+    textDecorationLine: "underline",
   },
 });
 

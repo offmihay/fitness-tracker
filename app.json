@@ -44,10 +44,7 @@
         }
       ],
       "expo-localization",
-      "expo-font",
-      {
-        "fonts": ["assets/fonts/RubikWetPaint-Regular.ttf"]
-      }
+      "expo-font"
     ],
     "extra": {
       "eas": {

@@ -13,17 +13,25 @@ import { useCustomTheme } from "../../../hooks/useCustomTheme";
 
 type Props = {
   style?: StyleProp<TextStyle>;
+  themeStyle?: "dark" | "light";
   useClearButton?: boolean;
   value: string | undefined;
   onChangeText?: ((text: string) => void) | undefined;
 } & React.ComponentProps<typeof TextInput>;
 
-const ClearableTextInput = ({ style, useClearButton, value, onChangeText, ...rest }: Props) => {
+const ClearableTextInput = ({
+  style,
+  useClearButton,
+  value,
+  onChangeText,
+  themeStyle,
+  ...rest
+}: Props) => {
   const clearText = () => {
     onChangeText && onChangeText("");
   };
 
-  const theme = useCustomTheme();
+  const theme = themeStyle ? useCustomTheme(themeStyle) : useCustomTheme();
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.surfaceLight }]}>
@@ -31,6 +39,7 @@ const ClearableTextInput = ({ style, useClearButton, value, onChangeText, ...res
         style={[style, styles.input, { color: theme.colors.text }]}
         value={value}
         onChangeText={onChangeText}
+        placeholderTextColor={theme.colors.textSurface}
         {...rest}
       />
       {value && value.length > 0 && useClearButton && (

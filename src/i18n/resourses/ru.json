@@ -44,9 +44,17 @@
   },
 
   "signin": {
-    "continue": "Continue",
     "continueGoogle": "Continue with Google",
     "continueApple": "Continue with Apple",
-    "continueEmail": "Sign in/Sign up using Email"
+    "continueEmail": "Sign in using Email",
+
+    "signup": "Do not have an account? Sign Up",
+
+    "modal": {
+      "titleEmail": "Type your email:",
+      "titlePassword": "Type your password:",
+      "continue": "Continue",
+      "signin": "Sign In"
+    }
   }
 }

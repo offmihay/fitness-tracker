@@ -12,7 +12,7 @@ const lightTheme = {
     accent: "#7968F2", // sec color
     background: "#ECEDEE",
     surface: "#fff", // views
-    surfaceLight: "#fff",
+    surfaceLight: "#1c1c1e",
     text: "#000000",
     textSurface: "rgba(181, 181, 181, 1)",
     icon: "#0082FF", // icon for react-navigation/native
