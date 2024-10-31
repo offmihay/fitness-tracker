@@ -17,13 +17,8 @@ import { useState } from "react";
 
 const SignIn = () => {
   const { t } = useTranslation();
-  const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
-  // const [emailAddress, setEmailAddress] = useState("");
-  // const [password, setPassword] = useState("");
-
-  const theme = useCustomTheme();
   const googleOAuth = useOAuth({ strategy: "oauth_google" });
   const appleOAuth = useOAuth({ strategy: "oauth_apple" });
 
@@ -49,22 +44,6 @@ const SignIn = () => {
     <Image source={require("../../../assets/imgs/signin-background2.jpg")}>
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.wrapper}>
-        {/* <TextInput
-          style={{ color: theme.colors.text }}
-          autoCapitalize="none"
-          value={emailAddress}
-          placeholder="Email..."
-          onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-        />
-        <TextInput
-          style={{ color: theme.colors.text }}
-          value={password}
-          placeholder="Password..."
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-        />
-        <Button title="Sign In" onPress={onSignInPress} /> */}
-
         <View style={styles.content}>
           <View style={styles.buttonList}>
             <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={googleSignIn}>

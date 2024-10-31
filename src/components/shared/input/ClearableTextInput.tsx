@@ -44,7 +44,7 @@ const ClearableTextInput = ({
       />
       {value && value.length > 0 && useClearButton && (
         <TouchableOpacity onPress={clearText} style={styles.clearButton}>
-          <AntDesign name="closecircle" color={theme.colors.textSurface} size={14} />
+          <AntDesign name="closecircle" color={theme.colors.textSurface} size={16} />
         </TouchableOpacity>
       )}
     </View>
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     width: 50,
     justifyContent: "center",
     alignItems: "center",
+    right: 6,
   },
   buttonText: {
     fontSize: 16,

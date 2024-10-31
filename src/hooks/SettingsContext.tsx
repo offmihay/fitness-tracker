@@ -36,13 +36,15 @@ export const SettingsProvider = ({ children }: Props) => {
   });
 
   useEffect(() => {
+    const globalLng = getLocales()[0].languageCode;
+    i18n.changeLanguage(globalLng || "en");
     if (settingsJson) {
       const storedSettings: Settings = settingsJson ? JSON.parse(settingsJson) : null;
       if (storedSettings) {
         setSettings(storedSettings);
         Appearance.setColorScheme(storedSettings.theme);
-        const globalLng = getLocales()[0].languageCode;
-        i18n.changeLanguage(storedSettings.language || globalLng || "en");
+        i18n.changeLanguage(storedSettings.language || "en");
+        // i18n.changeLanguage("en");
       }
     }
   }, [settingsJson]);

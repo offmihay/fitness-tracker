@@ -44,17 +44,43 @@
   },
 
   "signin": {
-    "continueGoogle": "Continue with Google",
-    "continueApple": "Continue with Apple",
-    "continueEmail": "Sign in using Email",
-
-    "signup": "Do not have an account? Sign Up",
+    "continueGoogle": "Продолжить с Google",
+    "continueApple": "Продолжить с Apple",
+    "continueEmail": "Войти с помощью электронной почты",
+    "signup": "Нет аккаунта? Зарегистрируйтесь",
 
     "modal": {
-      "titleEmail": "Type your email:",
-      "titlePassword": "Type your password:",
-      "continue": "Continue",
-      "signin": "Sign In"
+      "title": "С возвращением!",
+      "forgotPassword": "Забыли пароль?",
+      "continue": "Продолжить",
+      "signin": "Войти"
     }
+  },
+
+  "signup": {
+    "titleEmail": "Начнем с вашего адреса электронной почты",
+    "titlePassword": "Создайте надежный пароль",
+    "titleVerifyCode": "Мы отправили 6-значный код на вашу электронную почту. Пожалуйста, введите его ниже",
+    "complete": "Завершить регистрацию",
+    "notReceiveCode": "Не получили код?",
+    "tryAgainIn": "Попробуйте снова через",
+    "requestNewCode": "Запросить новый код"
+  },
+
+  "errors": {
+    "email_address must be a valid email address.": "Электронный адрес недействителен",
+    "That email address is taken. Please try another.": "Этот адрес электронной почты занят. Пожалуйста, попробуйте другой.",
+    "Passwords not matching.": "Пароли не совпадают",
+    "Passwords must be 8 characters or more.": "Пароль должен содержать 8 символов или более",
+    "Password has been found in an online data breach. For account safety, please use a different password.": "Пароль был найден в утечке данных. Для безопасности аккаунта, пожалуйста, используйте другой пароль.",
+    "Incorrect code": "Неверный код",
+    "Too many failed attempts. You have to try again with the same or another method.": "Слишком много неудачных попыток. Вам нужно попробовать снова с тем же или другим методом.",
+    "Enter email address.": "Введите адрес электронной почты",
+    "Enter code.": "Введите код",
+    "Enter password.": "Введите пароль",
+    "Unable to resend new code": "Не удается отправить новый код",
+    "Identifier is invalid.": "Электронный адрес недействителен",
+    "Password is incorrect. Try again, or use another method.": "Пароль неверен. Попробуйте снова или используйте другой метод.",
+    "Couldn't find your account.": "Не удалось найти ваш аккаунт."
   }
 }

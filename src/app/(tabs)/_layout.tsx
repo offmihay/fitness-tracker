@@ -1,10 +1,16 @@
+import { useAuth } from "@clerk/clerk-expo";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
   const { t } = useTranslation();
+  const { isSignedIn } = useAuth();
+
+  if (!isSignedIn) {
+    return <Redirect href={"/sign-in"} />;
+  }
 
   return (
     <Tabs>

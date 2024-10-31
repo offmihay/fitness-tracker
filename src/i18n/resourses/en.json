@@ -50,10 +50,37 @@
     "signup": "Do not have an account? Sign Up",
 
     "modal": {
-      "titleEmail": "Type your email:",
-      "titlePassword": "Type your password:",
+      "title": "Welcome back!",
+      "forgotPassword": "Forgot Password?",
       "continue": "Continue",
       "signin": "Sign In"
     }
+  },
+
+  "signup": {
+    "titleEmail": "Let's start with your email",
+    "titlePassword": "Create a strong password",
+    "titleVerifyCode": "We've sent a 6-digit code to your email. Please enter it below",
+    "complete": "Complete Registration",
+    "notReceiveCode": "Didn't receive the code?",
+    "tryAgainIn": "Try again in",
+    "requestNewCode": "Request new code"
+  },
+
+  "errors": {
+    "email_address must be a valid email address.": "Email address is not valid",
+    "That email address is taken. Please try another.": "That email address is taken. Please try another.",
+    "Passwords not matching.": "Passwords not matching",
+    "Passwords must be 8 characters or more.": "Password must be 8 characters or more",
+    "Password has been found in an online data breach. For account safety, please use a different password.": "Password has been found in an online data breach. For account safety, please use a different password.",
+    "Incorrect code": "Incorrect code",
+    "Too many failed attempts. You have to try again with the same or another method.": "Too many failed attempts. You have to try again with the same or another method.",
+    "Enter email address.": "Enter email address",
+    "Enter code.": "Enter code",
+    "Enter password.": "Enter password",
+    "Unable to resend new code": "Unable to resend new code",
+    "Identifier is invalid.": "Email address is not valid",
+    "Password is incorrect. Try again, or use another method.": "Password is incorrect. Try again, or use another method.",
+    "Couldn't find your account.": "Couldn't find your account."
   }
 }

@@ -10,7 +10,6 @@ export default function AuthRoutesLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="sign-in" />
       <Stack.Screen
         name="sign-in-modal"
         options={{

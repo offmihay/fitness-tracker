@@ -8,7 +8,6 @@ const AuthGuard = () => {
   const { isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => {
-    console.log("isSignedIn: ", isSignedIn);
     if (isLoaded && !isSignedIn) {
       navigate("/sign-in");
     }
