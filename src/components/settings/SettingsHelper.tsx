@@ -35,7 +35,7 @@ export const getSettingsList = () => {
       title: t("settings.language.title"),
       icon: Entypo,
       iconName: "language",
-      description: t(`settings.language.${settings.language as string}`),
+      description: t(`settings.language.${settings.language || "system"}`),
       chevron: "down",
       onPress: () => void 0,
     },
@@ -91,15 +91,21 @@ export const getDropdownItems = () => {
       },
       {
         key: "ua",
-        title: t("settings.language.ua"),
-        isSelected: settings.language === "ua",
-        onPress: () => updateSettings({ language: "ua" }),
+        title: t("settings.language.uk"),
+        isSelected: settings.language === "uk",
+        onPress: () => updateSettings({ language: "uk" }),
       },
       {
         key: "ru",
         title: t("settings.language.ru"),
         isSelected: settings.language === "ru",
         onPress: () => updateSettings({ language: "ru" }),
+      },
+      {
+        key: "system",
+        title: t("settings.language.system"),
+        isSelected: !settings.language,
+        onPress: () => updateSettings({ language: null }),
       },
     ],
   };

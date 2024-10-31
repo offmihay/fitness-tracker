@@ -7,39 +7,41 @@ import { t } from "i18next";
 import { FontAwesome6 } from "@expo/vector-icons";
 import ClearableTextInput from "../../../components/shared/input/ClearableTextInput";
 import CustomText from "../../../components/shared/text/CustomText";
+import { useMutation } from "@tanstack/react-query";
 
 export default function SignUpEmailScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = useState("");
-
   const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
     setErrors([]);
   }, [emailAddress]);
 
-  const onCheckUpEmail = async () => {
-    if (!isLoaded) {
-      return;
-    }
-    try {
-      await signUp.create({
-        emailAddress,
-      });
-
+  const signUpMutation = useMutation({
+    mutationFn: (emailAddress: string) =>
+      isLoaded
+        ? signUp.create({
+            emailAddress,
+          })
+        : Promise.resolve(undefined),
+    onSuccess: () => {
       router.navigate({
         pathname: "/sign-up/password",
         params: { email: emailAddress },
       });
-    } catch (err: any) {
-      const error = JSON.parse(JSON.stringify(err));
-      if (error.clerkError) {
-        setErrors(error.errors.map((err: any) => err.longMessage));
+    },
+    onError: (err: any) => {
+      console.log(err.errors);
+      if (err.clerkError) {
+        setErrors(err.errors.map((err: any) => err.longMessage || err.message));
       }
-    }
-  };
+    },
+  });
+
+  const onCheckUpEmail = () => signUpMutation.mutate(emailAddress);
 
   return (
     <View style={styles.wrapper}>
@@ -70,7 +72,8 @@ export default function SignUpEmailScreen() {
             <TouchableOpacity
               style={styles.button}
               activeOpacity={0.85}
-              onPress={() => onCheckUpEmail()}
+              onPress={onCheckUpEmail}
+              disabled={signUpMutation.isPending}
             >
               <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
                 {t("signin.modal.continue")}

@@ -21,8 +21,9 @@
     "language": {
       "title": "Change Language",
       "en": "English",
-      "ua": "Ukrainian",
-      "ru": "Russian"
+      "uk": "Ukrainian",
+      "ru": "Russian",
+      "system": "System"
     },
     "notifications": {
       "title": "Notifications"

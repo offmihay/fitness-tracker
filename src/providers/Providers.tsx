@@ -38,6 +38,7 @@ const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) =
   }
 
   const theme = currentTheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
+
   return (
     <PaperProvider theme={theme}>
       <ThemeProvider value={theme}>{children}</ThemeProvider>

@@ -7,7 +7,7 @@ import { getLocales } from "expo-localization";
 
 type Settings = {
   theme: ColorSchemeName;
-  language: "en" | "ua" | "ru" | null;
+  language: string | null;
   notificationsEnabled: boolean;
 };
 
@@ -18,7 +18,7 @@ type SettingsContextType = {
 
 const defaultSettings: Settings = {
   theme: null,
-  language: "en",
+  language: null,
   notificationsEnabled: true,
 };
 
@@ -35,17 +35,23 @@ export const SettingsProvider = ({ children }: Props) => {
     queryFn: () => AsyncStorage.getItem("settings"),
   });
 
+  const calcLangCode = () => {
+    const localesLangCode = getLocales()[0].languageCode!;
+    return ["en", "uk", "ru"].includes(localesLangCode) ? localesLangCode : "en";
+  };
+
   useEffect(() => {
-    const globalLng = getLocales()[0].languageCode;
-    i18n.changeLanguage(globalLng || "en");
     if (settingsJson) {
       const storedSettings: Settings = settingsJson ? JSON.parse(settingsJson) : null;
       if (storedSettings) {
         setSettings(storedSettings);
         Appearance.setColorScheme(storedSettings.theme);
-        i18n.changeLanguage(storedSettings.language || "en");
-        // i18n.changeLanguage("en");
+        if (storedSettings.language) {
+          i18n.changeLanguage(storedSettings.language);
+        }
       }
+    } else {
+      i18n.changeLanguage(calcLangCode());
     }
   }, [settingsJson]);
 
@@ -58,9 +64,10 @@ export const SettingsProvider = ({ children }: Props) => {
         Appearance.setColorScheme(theme);
         storeSettings.theme = theme;
       }
-      if (language) {
+
+      if (language || language === null) {
         storeSettings.language = language;
-        i18n.changeLanguage(language);
+        i18n.changeLanguage(language || calcLangCode());
       }
 
       if (typeof notificationsEnabled !== "undefined") {
