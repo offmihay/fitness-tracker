@@ -41,7 +41,7 @@ const SignIn = () => {
   };
 
   return (
-    <Image source={require("../../../assets/imgs/signin-background2.jpg")}>
+    <Image source={require("../../../assets/imgs/signin-background.jpg")}>
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.wrapper}>
         <View style={styles.content}>

@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -8,6 +8,10 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import ClearableTextInput from "../../../components/shared/input/ClearableTextInput";
 import CustomText from "../../../components/shared/text/CustomText";
 import { useMutation } from "@tanstack/react-query";
+import DismissKeyboardView from "../../../components/shared/input/DissmissKeyboardView";
+import { Image } from "expo-image";
+import LottieView from "lottie-react-native";
+import LoaderSVG from "@/src/svg-comps/Loader";
 
 export default function SignUpEmailScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -44,7 +48,7 @@ export default function SignUpEmailScreen() {
   const onCheckUpEmail = () => signUpMutation.mutate(emailAddress);
 
   return (
-    <View style={styles.wrapper}>
+    <DismissKeyboardView style={styles.wrapper}>
       <TouchableOpacity style={styles.backBtn} onPress={router.back}>
         <FontAwesome6 name="arrow-left-long" size={24} color="white" />
       </TouchableOpacity>
@@ -79,6 +83,8 @@ export default function SignUpEmailScreen() {
                 {t("signin.modal.continue")}
               </CustomText>
             </TouchableOpacity>
+            w{/* <LoaderSVG /> */}
+            {/* <LottieView source={require("../../../../assets/svg/loader.svg")} autoPlay loop /> */}
           </View>
           <Text
             style={{
@@ -91,7 +97,7 @@ export default function SignUpEmailScreen() {
           </Text>
         </View>
       </View>
-    </View>
+    </DismissKeyboardView>
   );
 }
 
