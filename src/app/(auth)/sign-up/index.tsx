@@ -9,9 +9,7 @@ import ClearableTextInput from "../../../components/shared/input/ClearableTextIn
 import CustomText from "../../../components/shared/text/CustomText";
 import { useMutation } from "@tanstack/react-query";
 import DismissKeyboardView from "../../../components/shared/input/DissmissKeyboardView";
-import { Image } from "expo-image";
-import LottieView from "lottie-react-native";
-import LoaderSVG from "@/src/svg-comps/Loader";
+import Loader from "@/src/components/shared/loader/Loader";
 
 export default function SignUpEmailScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -38,7 +36,6 @@ export default function SignUpEmailScreen() {
       });
     },
     onError: (err: any) => {
-      console.log(err.errors);
       if (err.clerkError) {
         setErrors(err.errors.map((err: any) => err.longMessage || err.message));
       }
@@ -79,12 +76,17 @@ export default function SignUpEmailScreen() {
               onPress={onCheckUpEmail}
               disabled={signUpMutation.isPending}
             >
-              <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
-                {t("signin.modal.continue")}
-              </CustomText>
+              {!signUpMutation.isPending && (
+                <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
+                  {t("signin.modal.continue")}
+                </CustomText>
+              )}
+              {signUpMutation.isPending && (
+                <View className="absolute w-full left-0 right-0">
+                  <Loader />
+                </View>
+              )}
             </TouchableOpacity>
-            w{/* <LoaderSVG /> */}
-            {/* <LottieView source={require("../../../../assets/svg/loader.svg")} autoPlay loop /> */}
           </View>
           <Text
             style={{

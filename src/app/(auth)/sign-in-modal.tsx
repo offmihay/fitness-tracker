@@ -17,12 +17,18 @@ import { useTranslation } from "react-i18next";
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { useCustomTheme } from "../../hooks/useCustomTheme";
+import { useMutation } from "@tanstack/react-query";
+import Loader from "@/src/components/shared/loader/Loader";
 
 type Props = {};
 
+type signIn = {
+  emailAddress: string;
+  password: string;
+};
+
 const SignInModal = ({}: Props) => {
   const { t } = useTranslation();
-  const theme = useCustomTheme();
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -32,30 +38,35 @@ const SignInModal = ({}: Props) => {
 
   const [errors, setErrors] = useState<string[]>([]);
 
-  const onSignInPress = useCallback(async () => {
-    if (!isLoaded) {
-      return;
-    }
+  const signInMutation = useMutation({
+    mutationFn: async ({ emailAddress, password }: signIn) => {
+      if (isLoaded) {
+        const signInAttempt = await signIn.create({
+          identifier: emailAddress,
+          password,
+        });
 
-    try {
-      const signInAttempt = await signIn.create({
-        identifier: emailAddress,
-        password,
-      });
-
-      if (signInAttempt.status === "complete") {
-        await setActive({ session: signInAttempt.createdSessionId });
-        router.replace("/");
+        if (signInAttempt.status === "complete") {
+          await setActive({ session: signInAttempt.createdSessionId });
+          router.replace("/");
+        }
       } else {
-        console.log(JSON.stringify(signInAttempt, null, 2));
+        return Promise.resolve(undefined);
       }
-    } catch (err: any) {
-      const error = JSON.parse(JSON.stringify(err));
-      if (error.clerkError) {
-        setErrors(error.errors.map((err: any) => err.longMessage));
+    },
+    onSuccess: () => {
+      router.push({
+        pathname: "/",
+      });
+    },
+    onError: (err: any) => {
+      if (err.clerkError) {
+        setErrors(err.errors.map((err: any) => err.longMessage || err.message));
       }
-    }
-  }, [isLoaded, emailAddress, password]);
+    },
+  });
+
+  const onSignInPress = () => signInMutation.mutate({ emailAddress, password });
 
   return (
     <View style={styles.wrapper}>
@@ -98,9 +109,16 @@ const SignInModal = ({}: Props) => {
             activeOpacity={0.85}
             onPress={() => onSignInPress()}
           >
-            <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
-              {t("signin.modal.signin")}
-            </CustomText>
+            {!signInMutation.isPending && (
+              <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
+                {t("signin.modal.signin")}
+              </CustomText>
+            )}
+            {signInMutation.isPending && (
+              <View className="absolute w-full left-0 right-0">
+                <Loader />
+              </View>
+            )}
           </TouchableOpacity>
         </View>
         <Text

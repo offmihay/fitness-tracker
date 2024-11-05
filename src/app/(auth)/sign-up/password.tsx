@@ -7,8 +7,15 @@ import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 import { t } from "i18next";
 import PasswordInput from "../../../components/shared/input/PasswordInput";
 import CustomText from "../../../components/shared/text/CustomText";
+import { useMutation } from "@tanstack/react-query";
+import Loader from "@/src/components/shared/loader/Loader";
 
 type Props = {};
+
+type signUp = {
+  emailAddress: string;
+  password: string;
+};
 
 const SignUpPasswordScreen = ({}: Props) => {
   const { email } = useLocalSearchParams();
@@ -24,35 +31,37 @@ const SignUpPasswordScreen = ({}: Props) => {
     errors.length !== 0 && setErrors([]);
   }, [password, passwordConfirm]);
 
-  const onSignUpPress = async () => {
-    if (password === passwordConfirm) {
-      if (!isLoaded) {
-        return;
-      }
-      try {
-        await signUp.create({
-          emailAddress: email as string,
+  const signUpMutation = useMutation({
+    mutationFn: async ({ emailAddress, password }: signUp) => {
+      if (isLoaded) {
+        const signUpResponse = await signUp.create({
+          emailAddress,
           password,
         });
-
-        await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-
-        router.navigate({
-          pathname: "/sign-up/verifycode",
-        });
-        // setPendingVerification(true);
-      } catch (err: any) {
-        const error = JSON.parse(JSON.stringify(err));
-        if (error.clerkError) {
-          setErrors(error.errors.map((err: any) => err.longMessage));
-        }
+        return (
+          signUpResponse &&
+          (await signUp.prepareEmailAddressVerification({ strategy: "email_code" }))
+        );
+      } else {
+        return Promise.resolve(undefined);
       }
-    } else {
-      setErrors(["Passwords not matching."]);
-    }
-  };
+    },
+    onSuccess: () => {
+      router.navigate({
+        pathname: "/sign-up/verifycode",
+      });
+    },
+    onError: (err: any) => {
+      if (err.clerkError) {
+        setErrors(err.errors.map((err: any) => err.longMessage || err.message));
+      }
+    },
+  });
 
-  const [elementHeight, setElementHeight] = useState(0);
+  const onContinuePress = () =>
+    password === passwordConfirm
+      ? signUpMutation.mutate({ emailAddress: email as string, password })
+      : setErrors(["Passwords not matching."]);
 
   return (
     <View style={styles.wrapper}>
@@ -85,12 +94,20 @@ const SignUpPasswordScreen = ({}: Props) => {
             ></PasswordInput>
             <TouchableOpacity
               style={styles.button}
+              disabled={signUpMutation.isPending}
               activeOpacity={0.85}
-              onPress={() => onSignUpPress()}
+              onPress={() => onContinuePress()}
             >
-              <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
-                {t("signin.modal.continue")}
-              </CustomText>
+              {!signUpMutation.isPending && (
+                <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
+                  {t("signin.modal.continue")}
+                </CustomText>
+              )}
+              {signUpMutation.isPending && (
+                <View className="absolute w-full left-0 right-0">
+                  <Loader />
+                </View>
+              )}
             </TouchableOpacity>
           </View>
           <Text

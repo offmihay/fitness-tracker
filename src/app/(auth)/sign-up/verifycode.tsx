@@ -7,6 +7,8 @@ import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 import { t } from "i18next";
 import ClearableTextInput from "../../../components/shared/input/ClearableTextInput";
 import CustomText from "../../../components/shared/text/CustomText";
+import { useMutation } from "@tanstack/react-query";
+import Loader from "@/src/components/shared/loader/Loader";
 
 type Props = {};
 
@@ -48,43 +50,43 @@ const SignUpPasseordScreen = ({}: Props) => {
     };
   }, [secondsLeft]);
 
-  const handleResendCode = async () => {
-    if (!isLoaded) {
-      return;
-    }
-
-    try {
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+  const resendCodeMutation = useMutation({
+    mutationFn: () =>
+      isLoaded
+        ? signUp.prepareEmailAddressVerification({ strategy: "email_code" })
+        : Promise.resolve(undefined),
+    onSuccess: () => {
       setSecondsLeft(30);
-    } catch (err) {
+    },
+    onError: () => {
       setSecondsLeft(null);
       setErrors(["Unable to resend new code"]);
-    }
-  };
+    },
+  });
 
-  const onPressVerify = async () => {
-    if (!isLoaded) {
-      return;
-    }
+  const handleResendCode = () => resendCodeMutation.mutate();
 
-    try {
-      const completeSignUp = await signUp.attemptEmailAddressVerification({
-        code,
-      });
-
-      if (completeSignUp.status === "complete") {
-        await setActive({ session: completeSignUp.createdSessionId });
-        router.replace("/");
-      } else {
-        console.error(JSON.stringify(completeSignUp, null, 2));
+  const signUpMutation = useMutation({
+    mutationFn: async (code: string) => {
+      if (!isLoaded) {
+        return Promise.resolve(undefined);
       }
-    } catch (err: any) {
-      const error = JSON.parse(JSON.stringify(err));
-      if (error.clerkError) {
-        setErrors(error.errors.map((err: any) => err.longMessage));
+      await signUp.attemptEmailAddressVerification({ code });
+      if (signUp.status === "complete") {
+        await setActive({ session: signUp.createdSessionId });
       }
-    }
-  };
+    },
+    onSuccess: () => {
+      router.replace("/");
+    },
+    onError: (err: any) => {
+      if (err.clerkError) {
+        setErrors(err.errors.map((err: any) => err.longMessage || err.message));
+      }
+    },
+  });
+
+  const onPressVerify = () => signUpMutation.mutate(code);
 
   return (
     <View style={styles.wrapper}>
@@ -120,19 +122,31 @@ const SignUpPasseordScreen = ({}: Props) => {
                 }}
               >
                 {`${t("signup.notReceiveCode")} `}
-                <CustomText type="link" style={{ fontSize: 14 }}>
+                <CustomText style={{ fontSize: 14 }}>
                   {`${t("signup.tryAgainIn")}: ${secondsLeft}`}
                 </CustomText>
               </Text>
             )}
-            <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={onPressVerify}>
-              <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
-                {t("signup.complete")}
-              </CustomText>
+            <TouchableOpacity
+              style={styles.button}
+              activeOpacity={0.85}
+              onPress={onPressVerify}
+              disabled={signUpMutation.isPending}
+            >
+              {!signUpMutation.isPending && (
+                <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
+                  {t("signup.complete")}
+                </CustomText>
+              )}
+              {signUpMutation.isPending && (
+                <View className="absolute w-full left-0 right-0">
+                  <Loader />
+                </View>
+              )}
             </TouchableOpacity>
           </View>
           {secondsLeft === 0 && secondsLeft !== null && (
-            <TouchableOpacity onPress={handleResendCode}>
+            <TouchableOpacity onPress={handleResendCode} disabled={resendCodeMutation.isPending}>
               <CustomText
                 color="white"
                 style={{
@@ -143,6 +157,9 @@ const SignUpPasseordScreen = ({}: Props) => {
                 }}
               >
                 {t("signup.requestNewCode")}
+                {resendCodeMutation.isPending && (
+                  <Loader style={{ margin: 0, width: 25, height: 15 }} />
+                )}
               </CustomText>
             </TouchableOpacity>
           )}

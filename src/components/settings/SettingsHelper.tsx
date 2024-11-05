@@ -84,6 +84,12 @@ export const getDropdownItems = () => {
     ],
     "change-language": [
       {
+        key: "system",
+        title: t("settings.language.system"),
+        isSelected: !settings.language,
+        onPress: () => updateSettings({ language: null }),
+      },
+      {
         key: "en",
         title: t("settings.language.en"),
         isSelected: settings.language === "en",
@@ -100,12 +106,6 @@ export const getDropdownItems = () => {
         title: t("settings.language.ru"),
         isSelected: settings.language === "ru",
         onPress: () => updateSettings({ language: "ru" }),
-      },
-      {
-        key: "system",
-        title: t("settings.language.system"),
-        isSelected: !settings.language,
-        onPress: () => updateSettings({ language: null }),
       },
     ],
   };
