@@ -1,10 +1,10 @@
-import { StyleProp, ViewStyle } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 import React from "react";
 import LottieView from "lottie-react-native";
 
 type Props = {
   style?: StyleProp<ViewStyle>;
-};
+} & React.ComponentProps<typeof View>;
 
 const Loader = ({ style, ...rest }: Props) => {
   return (

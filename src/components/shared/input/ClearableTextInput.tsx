@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { Children, useEffect, useRef, useState } from "react";
 import {
   View,
   TextInput,
@@ -8,43 +8,82 @@ import {
   StyleSheet,
   StyleProp,
   TextStyle,
+  Keyboard,
+  NativeSyntheticEvent,
+  TextInputEndEditingEventData,
+  ViewStyle,
 } from "react-native";
 import { useCustomTheme } from "../../../hooks/useCustomTheme";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 type Props = {
   style?: StyleProp<TextStyle>;
+  styleWrapper?: StyleProp<ViewStyle>;
+  disabled?: boolean;
   themeStyle?: "dark" | "light";
   useClearButton?: boolean;
-  value: string | undefined;
+  value?: string | undefined;
   onChangeText?: ((text: string) => void) | undefined;
+  onEndEditing?: () => void;
 } & React.ComponentProps<typeof TextInput>;
 
 const ClearableTextInput = ({
+  children,
   style,
+  disabled,
   useClearButton,
   value,
   onChangeText,
   themeStyle,
+  editable = true,
+  onEndEditing,
+  styleWrapper,
   ...rest
 }: Props) => {
+  const theme = themeStyle ? useCustomTheme(themeStyle) : useCustomTheme();
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
   const clearText = () => {
     onChangeText && onChangeText("");
+    setKeyboardVisible;
   };
 
-  const theme = themeStyle ? useCustomTheme(themeStyle) : useCustomTheme();
+  const handleEndEditing = () => {
+    setKeyboardVisible(false);
+    onEndEditing && onEndEditing();
+  };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.surfaceLight }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.surfaceLight,
+          // borderColor: disabled ? theme.colors.border : "transparent",
+        },
+        styleWrapper,
+      ]}
+    >
       <TextInput
-        style={[style, styles.input, { color: theme.colors.text }]}
+        style={[style, styles.input, { color: theme.colors.text, opacity: 1 }]}
         value={value}
         onChangeText={onChangeText}
         placeholderTextColor={theme.colors.textSurface}
+        editable={!disabled}
+        onFocus={() => setKeyboardVisible(true)}
+        onEndEditing={handleEndEditing}
         {...rest}
-      />
-      {value && value.length > 0 && useClearButton && (
+      >
+        {children}
+      </TextInput>
+      {value && value.length > 0 && useClearButton && keyboardVisible && (
         <TouchableOpacity onPress={clearText} style={styles.clearButton}>
-          <AntDesign name="closecircle" color={theme.colors.textSurface} size={16} />
+          <AntDesign
+            name="closecircle"
+            color={theme.colors.textSurface}
+            style={{ opacity: theme.dark ? 1 : 0.5 }}
+            size={14}
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -56,7 +95,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 10,
-    minHeight: 50,
+    minHeight: 45,
+    borderWidth: 1,
+    width: "100%",
   },
   input: {
     flex: 1,
@@ -65,11 +106,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   clearButton: {
-    height: 50,
-    width: 50,
+    height: 40,
+    width: 45,
     justifyContent: "center",
     alignItems: "center",
-    right: 6,
+    right: 3,
   },
   buttonText: {
     fontSize: 16,

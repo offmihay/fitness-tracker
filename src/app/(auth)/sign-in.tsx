@@ -14,6 +14,7 @@ import CustomText from "../../components/shared/text/CustomText";
 import { Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 
 const SignIn = () => {
   const { t } = useTranslation();
@@ -22,23 +23,38 @@ const SignIn = () => {
   const googleOAuth = useOAuth({ strategy: "oauth_google" });
   const appleOAuth = useOAuth({ strategy: "oauth_apple" });
 
-  const googleSignIn = async () => {
-    const oAuthFlow = await googleOAuth.startOAuthFlow();
-    if (oAuthFlow.authSessionResult?.type === "success") {
-      if (oAuthFlow.setActive) {
-        await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId });
-      }
-    }
-  };
+  const googleSignInMutation = useMutation({
+    mutationFn: async () => {
+      const oAuthFlow = await googleOAuth.startOAuthFlow();
+      oAuthFlow.setActive &&
+        oAuthFlow.authSessionResult?.type === "success" &&
+        (await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId }));
+    },
+    onSuccess: () => {
+      router.navigate({
+        pathname: "/",
+      });
+    },
+    onError: (err: any) => {},
+  });
 
-  const appleSignIn = async () => {
-    const oAuthFlow = await appleOAuth.startOAuthFlow();
-    if (oAuthFlow.authSessionResult?.type === "success") {
-      if (oAuthFlow.setActive) {
-        await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId });
-      }
-    }
-  };
+  const appleSignInMutation = useMutation({
+    mutationFn: async () => {
+      const oAuthFlow = await appleOAuth.startOAuthFlow();
+      oAuthFlow.setActive &&
+        oAuthFlow.authSessionResult?.type === "success" &&
+        (await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId }));
+    },
+    onSuccess: () => {
+      router.navigate({
+        pathname: "/",
+      });
+    },
+    onError: (err: any) => {},
+  });
+
+  const googleSignIn = () => googleSignInMutation.mutate();
+  const appleSignIn = () => appleSignInMutation.mutate();
 
   return (
     <Image source={require("../../../assets/imgs/signin-background.jpg")}>
@@ -79,6 +95,11 @@ const SignIn = () => {
                 {t("signin.signup")}
               </CustomText>
             </TouchableOpacity>
+            {/* {googleSignInMutation.isPending && (
+              <CustomText color="white" type="title" style={{ textAlign: "center" }}>
+                Pending............
+              </CustomText>
+            )} */}
           </View>
         </View>
       </SafeAreaView>

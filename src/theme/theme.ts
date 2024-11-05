@@ -8,11 +8,12 @@ const lightTheme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: "#0082FF", // first color
-    accent: "#7968F2", // sec color
+    primary: "rgba(0, 130, 255, 1)", // first color
+    accent: "rgba(0, 130, 255, 0.7)", // sec color
     background: "#ECEDEE",
     surface: "#fff", // views
-    surfaceLight: "#1c1c1e",
+    surfaceLight: "white",
+    surfaceDisabled: "#E8EBEF",
     text: "#000000",
     textSurface: "rgba(181, 181, 181, 1)",
     icon: "#0082FF", // icon for react-navigation/native
@@ -24,11 +25,12 @@ const darkTheme = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
-    primary: "#0171FF", // first color
-    accent: "#8A6DFC", // sec color
+    primary: "rgba(1, 113, 255, 1)", // first color
+    accent: "rgba(1, 113, 255, 0.7)", // sec color
     background: "black",
     surface: "#151718", // views
     surfaceLight: "#1c1c1e",
+    surfaceDisabled: "#171717",
     text: "#ffffff",
     textSurface: "rgba(191, 191, 191, 0.4)",
     icon: "#0171FF", // icon for react-navigation/native

@@ -8,7 +8,7 @@
 
       "name": "Name",
       "email": "Email",
-      "surname": "Surname",
+      "birthday": "Birthday",
       "photo": "Photo"
     },
     "theme": {

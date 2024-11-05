@@ -39,9 +39,9 @@
     "plugins": [
       "expo-router",
       [
-        "@react-native-google-signin/google-signin",
+        "expo-image-picker",
         {
-          "iosUrlScheme": "com.googleusercontent.apps.1017780084148-f9qpidfc4si6f18uum2jqbpn5ne4hkk4"
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
       "expo-localization",
