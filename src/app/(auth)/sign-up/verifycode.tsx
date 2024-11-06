@@ -1,105 +1,92 @@
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useSignUp } from "@clerk/clerk-expo";
-import { useCustomTheme } from "../../../hooks/useCustomTheme";
-import { Link, useRouter } from "expo-router";
-import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { useRouter } from "expo-router";
 import { t } from "i18next";
 import ClearableTextInput from "../../../components/shared/input/ClearableTextInput";
 import CustomText from "../../../components/shared/text/CustomText";
-import { useMutation } from "@tanstack/react-query";
 import Loader from "@/src/components/shared/loader/Loader";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
-import TouchablePrimary from "@/src/components/shared/touchable/TouchablePrimary";
+import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import useCountdown from "@/src/hooks/useCountdown";
+import {
+  useResendVerificationCodeMutation,
+  useVerifyEmailCodeMutation,
+} from "../../../hooks/useSignUpMutation";
+import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
 
-type Props = {};
-
-const SignUpPasseordScreen = ({}: Props) => {
+const SignUpVerifyCodeScreen = () => {
   const router = useRouter();
-
-  const { isLoaded, signUp, setActive } = useSignUp();
   const [code, setCode] = useState("");
-
   const [errors, setErrors] = useState<string[]>([]);
-
   const { secondsLeft, setSecondsLeft } = useCountdown(30);
 
-  const resendCodeMutation = useMutation({
-    mutationFn: () =>
-      isLoaded
-        ? signUp.prepareEmailAddressVerification({ strategy: "email_code" })
-        : Promise.resolve(undefined),
-    onSuccess: () => {
-      setSecondsLeft(30);
-    },
-    onError: () => {
-      setSecondsLeft(null);
-      setErrors(["Unable to resend new code"]);
-    },
-  });
+  const resendCodeMutation = useResendVerificationCodeMutation();
+  const verifyCodeMutation = useVerifyEmailCodeMutation();
 
-  const handleResendCode = () => resendCodeMutation.mutate();
+  const handleResendCode = () => {
+    resendCodeMutation.mutate(undefined, {
+      onSuccess: () => {
+        setSecondsLeft(30);
+        setErrors([]);
+      },
+      onError: () => {
+        setSecondsLeft(null);
+        setErrors(["Unable to resend new code"]);
+      },
+    });
+  };
 
-  const signUpMutation = useMutation({
-    mutationFn: async (code: string) => {
-      if (!isLoaded) {
-        return Promise.resolve(undefined);
-      }
-      await signUp.attemptEmailAddressVerification({ code });
-      if (signUp.status === "complete") {
-        await setActive({ session: signUp.createdSessionId });
-      }
-    },
-    onSuccess: () => {
-      router.replace("/");
-    },
-    onError: (err: any) => {
-      if (err.clerkError) {
-        setErrors(err.errors.map((err: any) => err.longMessage || err.message));
-      }
-    },
-  });
-
-  const onPressVerify = () => signUpMutation.mutate(code);
+  const onPressVerify = () => {
+    verifyCodeMutation.mutate(code, {
+      onSuccess: () => {
+        router.replace("/");
+      },
+      onError: (err: any) => {
+        if (err.clerkError) {
+          setErrors(err.errors.map((err: any) => err.longMessage || err.message));
+        }
+      },
+    });
+  };
 
   return (
-    <View style={styles.wrapper}>
+    <DismissKeyboardView style={styles.wrapper}>
       <TouchableBack />
 
-      <View className="mt-[150]">
+      <View className="mt-[130]">
         <CustomText type="subtitle" center color="white">
           {t("signup.titleVerifyCode")}
         </CustomText>
-        <View className="mt-12">
+        <View className="mt-14">
           <View className="relative">
             <ClearableTextInput
               value={code}
-              placeholder="Code..."
+              label={t("signup.code")}
               onChangeText={setCode}
               themeStyle="dark"
               keyboardType="number-pad"
             />
             {secondsLeft !== null && (
-              <CustomText className="pl-1 pt-3" color="white" type="predefault">
+              <CustomText className="pl-2 pt-3" color="white" type="predefault">
                 {`${t("signup.notReceiveCode")} `}
                 {`${t("signup.tryAgainIn")}: ${secondsLeft}`}
               </CustomText>
             )}
-            <TouchablePrimary
+            <TouchableBtn
               activeOpacity={0.85}
               onPress={onPressVerify}
-              loading={signUpMutation.isPending}
-              className="absolute bottom-[-150]"
+              loading={verifyCodeMutation.isPending}
+              className="absolute bottom-[-135]"
+              style={{ bottom: -135 }}
             >
               <CustomText color="white" type="defaultSemiBold">
                 {t("signup.complete")}
               </CustomText>
-            </TouchablePrimary>
+            </TouchableBtn>
           </View>
           {secondsLeft === 0 && secondsLeft !== null && (
             <TouchableOpacity onPress={handleResendCode} disabled={resendCodeMutation.isPending}>
-              <CustomText color="#0082FF" type="predefault" className="pl-1">
+              <CustomText color="#0082FF" type="predefault" className="pl-2 pt-1">
                 {t("signup.requestNewCode")}
                 {resendCodeMutation.isPending && (
                   <Loader style={{ margin: 0, width: 25, height: 15 }} />
@@ -108,17 +95,18 @@ const SignUpPasseordScreen = ({}: Props) => {
             </TouchableOpacity>
           )}
 
-          <CustomText color="red" className="ml-2 mt-2">
+          <CustomText color="red" className="ml-2 mt-2 max-h-[50]" type="predefault">
             {errors.map((err) => t(`errors.${err}`))}
           </CustomText>
         </View>
       </View>
-    </View>
+    </DismissKeyboardView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
+    height: "100%",
     flex: 1,
     paddingHorizontal: 10,
     paddingVertical: 20,
@@ -127,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpPasseordScreen;
+export default SignUpVerifyCodeScreen;

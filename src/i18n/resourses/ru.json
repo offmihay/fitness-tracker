@@ -50,16 +50,25 @@
     "continueEmail": "Войти с помощью электронной почты",
     "signup": "Нет аккаунта? Зарегистрируйтесь",
 
+    "email": "Электронная почта",
+    "password": "Пароль",
+
     "modal": {
       "title": "С возвращением!",
       "forgotPassword": "Забыли пароль?",
-      "continue": "Продолжить",
-      "signin": "Войти"
+      "signin": "Войти",
+      "code": "Код"
     }
   },
 
   "signup": {
-    "titleEmail": "Начнем с вашего адреса электронной почты",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "confirmPassword": "Подтвердите пароль",
+
+    "continue": "Продолжить",
+    "titleEmail": "Давайте начнем с вашей электронной почты",
+    "alreadyHaveAccount": "Уже есть аккаунт?",
     "titlePassword": "Создайте надежный пароль",
     "titleVerifyCode": "Мы отправили 6-значный код на вашу электронную почту. Пожалуйста, введите его ниже",
     "complete": "Завершить регистрацию",
@@ -73,7 +82,7 @@
     "That email address is taken. Please try another.": "Этот адрес электронной почты занят. Пожалуйста, попробуйте другой.",
     "Passwords not matching.": "Пароли не совпадают",
     "Passwords must be 8 characters or more.": "Пароль должен содержать 8 символов или более",
-    "Password has been found in an online data breach. For account safety, please use a different password.": "Пароль был найден в утечке данных. Для безопасности аккаунта, пожалуйста, используйте другой пароль.",
+    "Password has been found in an online data breach. For account safety, please use a different password.": "Пароль был найден в утечке данных. Пожалуйста, используйте другой пароль.",
     "Incorrect code": "Неверный код",
     "Too many failed attempts. You have to try again with the same or another method.": "Слишком много неудачных попыток. Вам нужно попробовать снова с тем же или другим методом.",
     "Enter email address.": "Введите адрес электронной почты",

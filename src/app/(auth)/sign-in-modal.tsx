@@ -1,78 +1,52 @@
-import {
-  KeyboardAvoidingView,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Platform,
-} from "react-native";
-import React, { useCallback, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
 import ClearableTextInput from "../../components/shared/input/ClearableTextInput";
 import PasswordInput from "../../components/shared/input/PasswordInput";
 import CustomText from "../../components/shared/text/CustomText";
-
 import { useTranslation } from "react-i18next";
-import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
-import { useCustomTheme } from "../../hooks/useCustomTheme";
-import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 import Loader from "@/src/components/shared/loader/Loader";
-import TouchablePrimary from "@/src/components/shared/touchable/TouchablePrimary";
+import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import { useSignInMutation } from "@/src/hooks/useSignInMutation";
+import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
 
 type Props = {};
 
-type signIn = {
-  emailAddress: string;
-  password: string;
-};
-
 const SignInModal = ({}: Props) => {
+  const [errors, setErrors] = useState<string[]>([]);
   const { t } = useTranslation();
+  const router = useRouter();
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signIn, setActive, isLoaded } = useSignIn();
-  const router = useRouter();
+  const { signInMutation } = useSignInMutation();
 
-  const [errors, setErrors] = useState<string[]>([]);
+  useEffect(() => {
+    setErrors([]);
+  }, [emailAddress, password]);
 
-  const signInMutation = useMutation({
-    mutationFn: async ({ emailAddress, password }: signIn) => {
-      if (isLoaded) {
-        const signInAttempt = await signIn.create({
-          identifier: emailAddress,
-          password,
-        });
-
-        if (signInAttempt.status === "complete") {
-          await setActive({ session: signInAttempt.createdSessionId });
-          router.replace("/");
-        }
-      } else {
-        return Promise.resolve(undefined);
+  const onSignInPress = () =>
+    signInMutation.mutate(
+      { emailAddress, password },
+      {
+        onSuccess: () => {
+          router.push({
+            pathname: "/",
+          });
+        },
+        onError: (error: any) => {
+          if (error.clerkError) {
+            setErrors(error.errors.map((err: any) => err.longMessage || err.message));
+          }
+        },
       }
-    },
-    onSuccess: () => {
-      router.push({
-        pathname: "/",
-      });
-    },
-    onError: (error: any) => {
-      if (error.clerkError) {
-        setErrors(error.errors.map((err: any) => err.longMessage || err.message));
-      }
-    },
-  });
-
-  const onSignInPress = () => signInMutation.mutate({ emailAddress, password });
+    );
 
   return (
-    <View style={styles.wrapper}>
+    <DismissKeyboardView style={styles.wrapper}>
       <View style={[styles.contentWrapper]}>
-        <CustomText type="subtitle" style={{ textAlign: "center", marginBottom: 40 }} color="white">
+        <CustomText type="subtitle" style={{ textAlign: "center", marginBottom: 55 }} color="white">
           {t("signin.modal.title")}
         </CustomText>
         <View className="w-full relative">
@@ -81,7 +55,7 @@ const SignInModal = ({}: Props) => {
               value={emailAddress}
               onChangeText={setEmailAddress}
               onSubmitEditing={() => void 0}
-              placeholder="Email"
+              label={t("signin.email")}
               keyboardType="email-address"
               useClearButton
               themeStyle="dark"
@@ -89,39 +63,33 @@ const SignInModal = ({}: Props) => {
             <PasswordInput
               value={password}
               onChangeText={setPassword}
-              placeholder="Password"
+              label={t("signin.password")}
               themeStyle="dark"
             ></PasswordInput>
           </View>
 
-          <TouchableOpacity onPress={void 0} className="pl-2 pt-3">
+          <TouchableOpacity onPress={void 0} className="pl-2 pt-4">
             <CustomText color="#0082FF" type="predefault">
               {t("signin.modal.forgotPassword")}
-              <Loader style={{ margin: 0, width: 25, height: 15 }} />
+              {/* <Loader style={{ margin: 0, width: 25, height: 15 }} /> */}
             </CustomText>
           </TouchableOpacity>
-          <TouchablePrimary
+          <TouchableBtn
             activeOpacity={0.85}
             onPress={onSignInPress}
-            className="absolute bottom-[-130]"
+            className="absolute bottom-[-135]"
             loading={signInMutation.isPending}
           >
             <CustomText type="defaultSemiBold" color="white">
               {t("signin.modal.signin")}
             </CustomText>
-          </TouchablePrimary>
+          </TouchableBtn>
         </View>
-        <Text
-          style={{
-            color: "red",
-            paddingLeft: 4,
-            paddingTop: 10,
-          }}
-        >
+        <CustomText color="red" className="pl-2 pt-2 max-h-[50]" type="predefault">
           {errors.map((err) => t(`errors.${err}`))}
-        </Text>
+        </CustomText>
       </View>
-    </View>
+    </DismissKeyboardView>
   );
 };
 
@@ -130,7 +98,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     paddingVertical: 20,
-    backgroundColor: "#141414",
+    height: "100%",
   },
   contentWrapper: {
     flex: 1,

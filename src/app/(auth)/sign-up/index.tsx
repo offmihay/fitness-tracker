@@ -1,50 +1,41 @@
-import { View, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from "react-native";
-import { useSignUp } from "@clerk/clerk-expo";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { t } from "i18next";
 
-import { FontAwesome6 } from "@expo/vector-icons";
 import ClearableTextInput from "../../../components/shared/input/ClearableTextInput";
 import CustomText from "../../../components/shared/text/CustomText";
-import { useMutation } from "@tanstack/react-query";
 import DismissKeyboardView from "../../../components/shared/input/DissmissKeyboardView";
-import Loader from "@/src/components/shared/loader/Loader";
-import TouchablePrimary from "@/src/components/shared/touchable/TouchablePrimary";
+import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
+import { useSignUpMutation } from "../../../hooks/useSignUpMutation";
 
 export default function SignUpEmailScreen() {
-  const { isLoaded, signUp } = useSignUp();
+  const [errors, setErrors] = useState<string[]>([]);
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = useState("");
-  const [errors, setErrors] = useState<string[]>([]);
+  const signUpMutation = useSignUpMutation();
 
   useEffect(() => {
     setErrors([]);
   }, [emailAddress]);
 
-  const signUpMutation = useMutation({
-    mutationFn: (emailAddress: string) =>
-      isLoaded
-        ? signUp.create({
-            emailAddress,
-          })
-        : Promise.resolve(undefined),
-    onSuccess: () => {
-      router.navigate({
-        pathname: "/sign-up/password",
-        params: { email: emailAddress },
-      });
-    },
-    onError: (err: any) => {
-      if (err.clerkError) {
-        setErrors(err.errors.map((err: any) => err.longMessage || err.message));
-      }
-    },
-  });
-
-  const onCheckUpEmail = () => signUpMutation.mutate(emailAddress);
+  const onCheckUpEmail = () => {
+    signUpMutation.mutate(emailAddress, {
+      onSuccess: () => {
+        router.navigate({
+          pathname: "/sign-up/password",
+          params: { email: emailAddress },
+        });
+      },
+      onError: (err: any) => {
+        if (err.clerkError) {
+          setErrors(err.errors.map((err: any) => err.longMessage || err.message));
+        }
+      },
+    });
+  };
 
   return (
     <DismissKeyboardView style={styles.wrapper}>
@@ -54,28 +45,34 @@ export default function SignUpEmailScreen() {
           {t("signup.titleEmail")}
         </CustomText>
         <View className="w-full">
-          <View className="flex flex-column gap-3 w-full relative">
+          <View className="flex flex-column w-full relative">
             <ClearableTextInput
               value={emailAddress}
               onChangeText={setEmailAddress}
               onSubmitEditing={() => void 0}
-              placeholder="Email"
+              label={t("signup.email")}
               keyboardType="email-address"
               useClearButton
               style={{ color: "white" }}
               themeStyle="dark"
             />
-            <TouchablePrimary
-              className="absolute bottom-[-150]"
+            <TouchableOpacity onPress={void 0} className="pl-2 pt-3">
+              <CustomText color="#0082FF" type="predefault">
+                {t("signup.alreadyHaveAccount")}
+                {/* <Loader style={{ margin: 0, width: 25, height: 15 }} /> */}
+              </CustomText>
+            </TouchableOpacity>
+            <TouchableBtn
+              className="absolute bottom-[-115]"
               onPress={onCheckUpEmail}
               loading={signUpMutation.isPending}
             >
               <CustomText type="defaultSemiBold" color="white">
-                {t("signin.modal.continue")}
+                {t("signup.continue")}
               </CustomText>
-            </TouchablePrimary>
+            </TouchableBtn>
           </View>
-          <CustomText color="red" className="ml-2 mt-1">
+          <CustomText color="red" className="ml-2 mt-2 max-h-[50]" type="predefault">
             {errors.map((err) => t(`errors.${err}`))}
           </CustomText>
         </View>
@@ -89,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     paddingVertical: 20,
-    backgroundColor: "#141414",
+
     position: "relative",
   },
   contentWrapper: {

@@ -1,72 +1,51 @@
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useSignUp } from "@clerk/clerk-expo";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useCustomTheme } from "../../../hooks/useCustomTheme";
-import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 import { t } from "i18next";
 import PasswordInput from "../../../components/shared/input/PasswordInput";
 import CustomText from "../../../components/shared/text/CustomText";
-import { useMutation } from "@tanstack/react-query";
-import Loader from "@/src/components/shared/loader/Loader";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
-import TouchablePrimary from "@/src/components/shared/touchable/TouchablePrimary";
+import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import { useSignUpPasswordMutation } from "../../../hooks/useSignUpMutation";
+import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
 
-type Props = {};
-
-type signUp = {
-  emailAddress: string;
-  password: string;
-};
-
-const SignUpPasswordScreen = ({}: Props) => {
+const SignUpPasswordScreen = () => {
   const { email } = useLocalSearchParams();
   const router = useRouter();
 
-  const { isLoaded, signUp, setActive } = useSignUp();
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-
   const [errors, setErrors] = useState<string[]>([]);
 
-  useEffect(() => {
-    errors.length !== 0 && setErrors([]);
-  }, [password, passwordConfirm]);
+  const signUpPasswordMutation = useSignUpPasswordMutation();
+  // useEffect(() => {
+  //   errors.length !== 0 && setErrors([]);
+  // }, [password, passwordConfirm]);
 
-  const signUpMutation = useMutation({
-    mutationFn: async ({ emailAddress, password }: signUp) => {
-      if (isLoaded) {
-        const signUpResponse = await signUp.create({
-          emailAddress,
-          password,
-        });
-        return (
-          signUpResponse &&
-          (await signUp.prepareEmailAddressVerification({ strategy: "email_code" }))
-        );
-      } else {
-        return Promise.resolve(undefined);
-      }
-    },
-    onSuccess: () => {
-      router.navigate({
-        pathname: "/sign-up/verifycode",
-      });
-    },
-    onError: (err: any) => {
-      if (err.clerkError) {
-        setErrors(err.errors.map((err: any) => err.longMessage || err.message));
-      }
-    },
-  });
-
-  const onContinuePress = () =>
-    password === passwordConfirm
-      ? signUpMutation.mutate({ emailAddress: email as string, password })
-      : setErrors(["Passwords not matching."]);
+  const onContinuePress = () => {
+    if (password === passwordConfirm) {
+      signUpPasswordMutation.mutate(
+        { emailAddress: email as string, password },
+        {
+          onSuccess: () => {
+            router.navigate({
+              pathname: "/sign-up/verifycode",
+            });
+          },
+          onError: (err: any) => {
+            if (err.clerkError) {
+              setErrors(err.errors.map((err: any) => err.longMessage || err.message));
+            }
+          },
+        }
+      );
+    } else {
+      setErrors(["Passwords not matching."]);
+    }
+  };
 
   return (
-    <View style={styles.wrapper}>
+    <DismissKeyboardView style={styles.wrapper}>
       <TouchableBack />
       <View style={[styles.contentWrapper]}>
         <CustomText type="subtitle" center color="white">
@@ -77,38 +56,39 @@ const SignUpPasswordScreen = ({}: Props) => {
             <PasswordInput
               value={password}
               onChangeText={setPassword}
-              placeholder="Password"
+              label={t("signup.password")}
               themeStyle="dark"
-            ></PasswordInput>
+            />
             <PasswordInput
               value={passwordConfirm}
               onChangeText={setPasswordConfirm}
-              placeholder="Confirm Password"
+              label={t("signup.confirmPassword")}
               themeStyle="dark"
-            ></PasswordInput>
-            <TouchablePrimary
+            />
+            <TouchableBtn
               activeOpacity={0.85}
               onPress={onContinuePress}
-              loading={signUpMutation.isPending}
-              className="absolute bottom-[-150]"
+              loading={signUpPasswordMutation.isPending}
+              className="absolute bottom-[-115]"
             >
               <CustomText color="white" type="defaultSemiBold">
-                {t("signin.modal.continue")}
+                {t("signup.continue")}
               </CustomText>
-            </TouchablePrimary>
+            </TouchableBtn>
           </View>
 
-          <CustomText color="red" className="ml-2 mt-2">
+          <CustomText color="red" className="ml-2 mt-2 max-h-[50]" type="predefault">
             {errors.map((err) => t(`errors.${err}`))}
           </CustomText>
         </View>
       </View>
-    </View>
+    </DismissKeyboardView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
+    height: "100%",
     flex: 1,
     paddingHorizontal: 10,
     paddingVertical: 20,
@@ -117,8 +97,8 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-    marginTop: 100,
-    gap: 40,
+    marginTop: 90,
+    gap: 50,
     paddingHorizontal: 10,
     paddingTop: 10,
     borderRadius: 40,

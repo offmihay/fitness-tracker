@@ -1,13 +1,6 @@
 import { useOAuth, useSignIn } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  Pressable,
-  TouchableOpacity,
-  StatusBar,
-} from "react-native";
+import { View, SafeAreaView, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
 import { Image, ImageBackground } from "expo-image";
 import { useCustomTheme } from "../../hooks/useCustomTheme";
 import CustomText from "../../components/shared/text/CustomText";
@@ -15,6 +8,7 @@ import { Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 
 const SignIn = () => {
   const { t } = useTranslation();
@@ -61,8 +55,8 @@ const SignIn = () => {
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.wrapper}>
         <View style={styles.content}>
-          <View style={styles.buttonList}>
-            <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={googleSignIn}>
+          <View className="flex flex-col gap-3">
+            <TouchableBtn activeOpacity={0.85} onPress={googleSignIn} type="white">
               <Image
                 source={require("../../../assets/imgs/google_icon.png")}
                 style={{ width: 20, height: 20 }}
@@ -70,8 +64,8 @@ const SignIn = () => {
               <CustomText color="black" type="defaultSemiBold">
                 {t("signin.continueGoogle")}
               </CustomText>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={appleSignIn}>
+            </TouchableBtn>
+            <TouchableBtn activeOpacity={0.85} onPress={appleSignIn} type="white">
               <Image
                 source={require("../../../assets/imgs/apple_icon.png")}
                 style={{ width: 26, height: 26, bottom: 2 }}
@@ -79,9 +73,9 @@ const SignIn = () => {
               <CustomText color="black" type="defaultSemiBold">
                 {t("signin.continueApple")}
               </CustomText>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: "#333334" }]}
+            </TouchableBtn>
+            <TouchableBtn
+              type="grey"
               activeOpacity={0.85}
               onPress={() => router.navigate("/sign-in-modal")}
             >
@@ -89,7 +83,7 @@ const SignIn = () => {
               <CustomText color="white" type="defaultSemiBold">
                 {t("signin.continueEmail")}
               </CustomText>
-            </TouchableOpacity>
+            </TouchableBtn>
             <TouchableOpacity onPress={() => router.navigate("/sign-up")}>
               <CustomText color="white" type="link" style={{ textAlign: "center" }}>
                 {t("signin.signup")}
@@ -120,23 +114,5 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-  },
-
-  buttonList: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-  },
-
-  button: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "white",
-    borderRadius: 10,
-    display: "flex",
-    flexDirection: "row",
-    gap: 8,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

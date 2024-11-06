@@ -51,16 +51,25 @@
     "continueEmail": "Увійти за допомогою ел. пошти",
     "signup": "Немає акаунта? Зареєструйтеся",
 
+    "email": "Електронна пошта",
+    "password": "Пароль",
+
     "modal": {
       "title": "З поверненням!",
       "forgotPassword": "Забули пароль?",
-      "continue": "Продовжити",
       "signin": "Увійти"
     }
   },
 
   "signup": {
-    "titleEmail": "Почнемо з вашої електронної пошти",
+    "email": "Електронна пошта",
+    "password": "Пароль",
+    "confirmPassword": "Підтвердіть пароль",
+    "code": "Код",
+
+    "continue": "Продовжити",
+    "titleEmail": "Почнімо з вашої електронної пошти",
+    "alreadyHaveAccount": "Вже маєте обліковий запис?",
     "titlePassword": "Створіть надійний пароль",
     "titleVerifyCode": "Ми надіслали 6-значний код на вашу електронну пошту. Будь ласка, введіть його нижче",
     "complete": "Завершити реєстрацію",
@@ -74,9 +83,9 @@
     "That email address is taken. Please try another.": "Ця електронна адреса вже зайнята. Будь ласка, спробуйте іншу.",
     "Passwords not matching.": "Паролі не співпадають",
     "Passwords must be 8 characters or more.": "Пароль має містити 8 символів або більше",
-    "Password has been found in an online data breach. For account safety, please use a different password.": "Пароль був виявлений в онлайн-витоку. Для безпеки акаунту будь ласка, використовуйте інший пароль.",
+    "Password has been found in an online data breach. For account safety, please use a different password.": "Пароль був виявлений в онлайн-витоку. Будь ласка, використовуйте інший пароль.",
     "Incorrect code": "Невірний код",
-    "Too many failed attempts. You have to try again with the same or another method.": "Забагато невдалих спроб. Вам потрібно спробувати ще раз з тим же або іншим методом.",
+    "Too many failed attempts. You have to try again with the same or another method.": "Забагато невдалих спроб. Спробуйте увійти іншим методом.",
     "Enter email address.": "Введіть адресу електронної пошти",
     "Enter code.": "Введіть код",
     "Enter password.": "Введіть пароль",

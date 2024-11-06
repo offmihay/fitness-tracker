@@ -20,6 +20,7 @@ type Props = {
   value?: string | undefined;
   onChangeText?: ((text: string) => void) | undefined;
   onEndEditing?: () => void;
+  label?: string;
 } & React.ComponentProps<typeof TextInput>;
 
 const ClearableTextInput = ({
@@ -33,6 +34,7 @@ const ClearableTextInput = ({
   editable = true,
   onEndEditing,
   styleWrapper,
+  label,
   ...rest
 }: Props) => {
   const theme = themeStyle ? useCustomTheme(themeStyle) : useCustomTheme();
@@ -51,6 +53,7 @@ const ClearableTextInput = ({
   return (
     <CustomTextInput
       value={value}
+      label={label}
       onChangeText={onChangeText}
       disabled={disabled}
       placeholderTextColor={theme.colors.textSurface}

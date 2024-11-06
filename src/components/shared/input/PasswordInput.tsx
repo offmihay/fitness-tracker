@@ -6,12 +6,13 @@ import CustomTextInput from "./CustomTextInput";
 
 type Props = {
   style?: StyleProp<TextStyle>;
+  label?: string;
   themeStyle?: "dark" | "light";
   value: string | undefined;
   onChangeText?: ((text: string) => void) | undefined;
 } & React.ComponentProps<typeof TextInput>;
 
-const PasswordInput = ({ style, value, onChangeText, themeStyle, ...rest }: Props) => {
+const PasswordInput = ({ style, value, onChangeText, themeStyle, label, ...rest }: Props) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = (isPasswordVisible: boolean) => {
@@ -24,6 +25,7 @@ const PasswordInput = ({ style, value, onChangeText, themeStyle, ...rest }: Prop
     <>
       <CustomTextInput
         value={value}
+        label={label}
         onChangeText={onChangeText}
         secureTextEntry={!isPasswordVisible}
         returnKeyType="done"

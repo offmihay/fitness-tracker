@@ -1,5 +1,5 @@
 import { StyleSheet, View, Image, Pressable, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomText from "../../../components/shared/text/CustomText";
 import { useUser } from "@clerk/clerk-expo";
 import ClearableTextInput from "@/src/components/shared/input/ClearableTextInput";
@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import Loader from "@/src/components/shared/loader/Loader";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
+import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 
 type PersonalInfoProps = {};
 
@@ -121,7 +122,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   };
 
   return (
-    <DismissKeyboardView>
+    <DismissKeyboardView className="h-full">
       <View className="m-4">
         <View className="flex items-center mt-4">
           <Pressable className="flex items-center" onPress={pickImage}>
@@ -155,20 +156,18 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           </Pressable>
         </View>
 
-        <View className="flex gap-2 mt-6">
-          <CustomTextInput disabled value={user?.primaryEmailAddress?.emailAddress} />
+        <View className="flex gap-4 mt-6">
+          {/* <CustomTextInput disabled value={user?.primaryEmailAddress?.emailAddress} /> */}
           <Controller
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <ClearableTextInput
                 autoComplete="given-name"
-                placeholder={t("settings.personal-info.firstName")}
+                label={t("settings.personal-info.firstName")}
                 onChangeText={onChange}
                 value={value}
                 useClearButton
-                onEndEditing={handleSubmit(onSubmit)}
-                disabled
               />
             )}
             name="firstName"
@@ -179,11 +178,10 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             render={({ field: { onChange, value } }) => (
               <ClearableTextInput
                 autoComplete="family-name"
-                placeholder={t("settings.personal-info.lastName")}
+                label={t("settings.personal-info.lastName")}
                 onChangeText={onChange}
                 value={value}
                 useClearButton
-                onEndEditing={handleSubmit(onSubmit)}
               />
             )}
             name="lastName"
@@ -195,7 +193,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
               <View>
                 <Pressable onPress={showDatePicker}>
                   <ClearableTextInput
-                    placeholder={t("settings.personal-info.birthday")}
+                    label={t("settings.personal-info.birthday")}
                     disabled
                     onPressIn={showDatePicker}
                     value={value ? new Date(value).toLocaleDateString() : ""}
@@ -213,6 +211,13 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             name="birthday"
           />
         </View>
+        <TouchableBtn
+          onPress={handleSubmit(onSubmit)}
+          className="mt-12"
+          loading={formDataMutation.isPending}
+        >
+          <CustomText type="defaultSemiBold">Save Changes</CustomText>
+        </TouchableBtn>
       </View>
     </DismissKeyboardView>
   );

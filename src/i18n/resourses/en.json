@@ -51,16 +51,25 @@
     "continueEmail": "Sign in using Email",
     "signup": "Do not have an account? Sign Up",
 
+    "email": "Email",
+    "password": "Password",
+
     "modal": {
       "title": "Welcome back!",
       "forgotPassword": "Forgot Password?",
-      "continue": "Continue",
       "signin": "Sign In"
     }
   },
 
   "signup": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "code": "Code",
+
+    "continue": "Continue",
     "titleEmail": "Let's start with your email",
+    "alreadyHaveAccount": "Already have an account?",
     "titlePassword": "Create a strong password",
     "titleVerifyCode": "We've sent a 6-digit code to your email. Please enter it below",
     "complete": "Complete Registration",
