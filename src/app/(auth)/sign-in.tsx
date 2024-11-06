@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
-import { Image } from "expo-image";
+import { Image, ImageBackground } from "expo-image";
 import { useCustomTheme } from "../../hooks/useCustomTheme";
 import CustomText from "../../components/shared/text/CustomText";
 import { Entypo } from "@expo/vector-icons";
@@ -57,7 +57,7 @@ const SignIn = () => {
   const appleSignIn = () => appleSignInMutation.mutate();
 
   return (
-    <Image source={require("../../../assets/imgs/signin-background.jpg")}>
+    <ImageBackground source={require("../../../assets/imgs/signin-background2.jpg")}>
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.wrapper}>
         <View style={styles.content}>
@@ -95,15 +95,10 @@ const SignIn = () => {
                 {t("signin.signup")}
               </CustomText>
             </TouchableOpacity>
-            {/* {googleSignInMutation.isPending && (
-              <CustomText color="white" type="title" style={{ textAlign: "center" }}>
-                Pending............
-              </CustomText>
-            )} */}
           </View>
         </View>
       </SafeAreaView>
-    </Image>
+    </ImageBackground>
   );
 };
 

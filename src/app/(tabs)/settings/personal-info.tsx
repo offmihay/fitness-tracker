@@ -1,15 +1,4 @@
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  Button,
-  Pressable,
-  TouchableOpacity,
-  Modal,
-} from "react-native";
+import { StyleSheet, View, Image, Pressable, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import CustomText from "../../../components/shared/text/CustomText";
 import { useUser } from "@clerk/clerk-expo";
@@ -23,6 +12,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useMutation } from "@tanstack/react-query";
 import Loader from "@/src/components/shared/loader/Loader";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 
 type PersonalInfoProps = {};
 
@@ -52,15 +42,17 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   } = useForm({
     defaultValues: {
       firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
       birthday: (user?.unsafeMetadata?.birthday as string) || "",
     },
   });
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      selectionLimit: 1,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4, 4],
       quality: 1,
       base64: true,
     });
@@ -163,26 +155,20 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           </Pressable>
         </View>
 
-        <View className="my-6">
-          <CustomText>Email: {user?.primaryEmailAddress?.emailAddress}</CustomText>
-        </View>
-
-        <View className="flex gap-2">
-          <CustomText style={{ textAlign: "center", marginBottom: 10 }}>
-            Your personal information:
-          </CustomText>
-
+        <View className="flex gap-2 mt-6">
+          <CustomTextInput disabled value={user?.primaryEmailAddress?.emailAddress} />
           <Controller
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <ClearableTextInput
                 autoComplete="given-name"
-                placeholder={t("settings.personal-info.name")}
+                placeholder={t("settings.personal-info.firstName")}
                 onChangeText={onChange}
                 value={value}
                 useClearButton
                 onEndEditing={handleSubmit(onSubmit)}
+                disabled
               />
             )}
             name="firstName"
@@ -191,14 +177,31 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
+              <ClearableTextInput
+                autoComplete="family-name"
+                placeholder={t("settings.personal-info.lastName")}
+                onChangeText={onChange}
+                value={value}
+                useClearButton
+                onEndEditing={handleSubmit(onSubmit)}
+              />
+            )}
+            name="lastName"
+          />
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
               <View>
-                <ClearableTextInput
-                  placeholder={t("settings.personal-info.birthday")}
-                  disabled
-                  onPressIn={showDatePicker}
-                  value={value ? new Date(value).toLocaleDateString() : ""}
-                  useClearButton
-                />
+                <Pressable onPress={showDatePicker}>
+                  <ClearableTextInput
+                    placeholder={t("settings.personal-info.birthday")}
+                    disabled
+                    onPressIn={showDatePicker}
+                    value={value ? new Date(value).toLocaleDateString() : ""}
+                    useClearButton
+                  />
+                </Pressable>
                 <DateTimePickerModal
                   isVisible={isDatePickerVisible}
                   mode="date"

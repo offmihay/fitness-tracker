@@ -6,7 +6,8 @@
     "personal-info": {
       "title": "Особиста інформація",
 
-      "name": "Ім'я",
+      "firstName": "Ім'я",
+      "lastName": "Прізвище",
       "birthday": "День народження",
       "email": "Електронна пошта",
       "photo": "Фото"

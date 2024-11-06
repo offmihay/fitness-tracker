@@ -9,6 +9,9 @@ import ClearableTextInput from "../../../components/shared/input/ClearableTextIn
 import CustomText from "../../../components/shared/text/CustomText";
 import { useMutation } from "@tanstack/react-query";
 import Loader from "@/src/components/shared/loader/Loader";
+import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
+import TouchablePrimary from "@/src/components/shared/touchable/TouchablePrimary";
+import useCountdown from "@/src/hooks/useCountdown";
 
 type Props = {};
 
@@ -20,35 +23,7 @@ const SignUpPasseordScreen = ({}: Props) => {
 
   const [errors, setErrors] = useState<string[]>([]);
 
-  const [secondsLeft, setSecondsLeft] = useState<number | null>(30);
-
-  useEffect(() => {
-    let intervalId: any;
-
-    const resendTimer = () => {
-      intervalId = setInterval(() => {
-        setSecondsLeft((prev) => {
-          if (prev !== null) {
-            if (prev !== null && prev <= 1) {
-              clearInterval(intervalId);
-              return 0;
-            }
-            return prev - 1;
-          } else {
-            return null;
-          }
-        });
-      }, 1000);
-    };
-
-    if (secondsLeft !== null && secondsLeft > 0) {
-      resendTimer();
-    }
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [secondsLeft]);
+  const { secondsLeft, setSecondsLeft } = useCountdown(30);
 
   const resendCodeMutation = useMutation({
     mutationFn: () =>
@@ -90,72 +65,41 @@ const SignUpPasseordScreen = ({}: Props) => {
 
   return (
     <View style={styles.wrapper}>
-      <Pressable style={styles.backBtn} onPress={router.back}>
-        <FontAwesome6 name="arrow-left-long" size={24} color="white" />
-      </Pressable>
+      <TouchableBack />
 
-      <View style={styles.verificationWrapper}>
-        <CustomText
-          type="subtitle"
-          style={{ textAlign: "center", fontFamily: "PlayBold", marginBottom: 50 }}
-          color="white"
-        >
+      <View className="mt-[150]">
+        <CustomText type="subtitle" center color="white">
           {t("signup.titleVerifyCode")}
         </CustomText>
-        <View>
+        <View className="mt-12">
           <View className="relative">
             <ClearableTextInput
               value={code}
               placeholder="Code..."
               onChangeText={setCode}
-              style={{ fontFamily: "PlayRegular" }}
               themeStyle="dark"
               keyboardType="number-pad"
             />
             {secondsLeft !== null && (
-              <Text
-                style={{
-                  color: "white",
-                  paddingLeft: 4,
-                  paddingTop: 14,
-                  fontFamily: "PlayRegular",
-                }}
-              >
+              <CustomText className="pl-1 pt-3" color="white" type="predefault">
                 {`${t("signup.notReceiveCode")} `}
-                <CustomText style={{ fontSize: 14 }}>
-                  {`${t("signup.tryAgainIn")}: ${secondsLeft}`}
-                </CustomText>
-              </Text>
+                {`${t("signup.tryAgainIn")}: ${secondsLeft}`}
+              </CustomText>
             )}
-            <TouchableOpacity
-              style={styles.button}
+            <TouchablePrimary
               activeOpacity={0.85}
               onPress={onPressVerify}
-              disabled={signUpMutation.isPending}
+              loading={signUpMutation.isPending}
+              className="absolute bottom-[-150]"
             >
-              {!signUpMutation.isPending && (
-                <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
-                  {t("signup.complete")}
-                </CustomText>
-              )}
-              {signUpMutation.isPending && (
-                <View className="absolute w-full left-0 right-0">
-                  <Loader />
-                </View>
-              )}
-            </TouchableOpacity>
+              <CustomText color="white" type="defaultSemiBold">
+                {t("signup.complete")}
+              </CustomText>
+            </TouchablePrimary>
           </View>
           {secondsLeft === 0 && secondsLeft !== null && (
             <TouchableOpacity onPress={handleResendCode} disabled={resendCodeMutation.isPending}>
-              <CustomText
-                color="white"
-                style={{
-                  fontSize: 14,
-                  paddingLeft: 4,
-                  fontFamily: "PlayRegular",
-                  color: "#0082FF",
-                }}
-              >
+              <CustomText color="#0082FF" type="predefault" className="pl-1">
                 {t("signup.requestNewCode")}
                 {resendCodeMutation.isPending && (
                   <Loader style={{ margin: 0, width: 25, height: 15 }} />
@@ -163,15 +107,10 @@ const SignUpPasseordScreen = ({}: Props) => {
               </CustomText>
             </TouchableOpacity>
           )}
-          <Text
-            style={{
-              color: "red",
-              paddingLeft: 4,
-              paddingTop: 10,
-            }}
-          >
+
+          <CustomText color="red" className="ml-2 mt-2">
             {errors.map((err) => t(`errors.${err}`))}
-          </Text>
+          </CustomText>
         </View>
       </View>
     </View>
@@ -185,30 +124,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     backgroundColor: "#141414",
     position: "relative",
-  },
-  verificationWrapper: {
-    marginTop: 150,
-  },
-
-  button: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "#7968F2",
-    borderRadius: 10,
-    display: "flex",
-    flexDirection: "row",
-    gap: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    bottom: -140,
-  },
-
-  backBtn: {
-    position: "absolute",
-    top: 80,
-    left: 20,
-    zIndex: 10,
   },
 });
 

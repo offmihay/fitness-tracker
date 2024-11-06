@@ -9,6 +9,8 @@ import PasswordInput from "../../../components/shared/input/PasswordInput";
 import CustomText from "../../../components/shared/text/CustomText";
 import { useMutation } from "@tanstack/react-query";
 import Loader from "@/src/components/shared/loader/Loader";
+import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
+import TouchablePrimary from "@/src/components/shared/touchable/TouchablePrimary";
 
 type Props = {};
 
@@ -65,15 +67,9 @@ const SignUpPasswordScreen = ({}: Props) => {
 
   return (
     <View style={styles.wrapper}>
-      <Pressable style={styles.backBtn} onPress={router.back}>
-        <FontAwesome6 name="arrow-left-long" size={24} color="white" />
-      </Pressable>
+      <TouchableBack />
       <View style={[styles.contentWrapper]}>
-        <CustomText
-          type="subtitle"
-          style={{ textAlign: "center", fontFamily: "PlayBold" }}
-          color="white"
-        >
+        <CustomText type="subtitle" center color="white">
           {t("signup.titlePassword")}
         </CustomText>
         <View className="w-full">
@@ -82,43 +78,29 @@ const SignUpPasswordScreen = ({}: Props) => {
               value={password}
               onChangeText={setPassword}
               placeholder="Password"
-              style={{ fontFamily: "PlayRegular" }}
               themeStyle="dark"
             ></PasswordInput>
             <PasswordInput
               value={passwordConfirm}
               onChangeText={setPasswordConfirm}
               placeholder="Confirm Password"
-              style={{ fontFamily: "PlayRegular" }}
               themeStyle="dark"
             ></PasswordInput>
-            <TouchableOpacity
-              style={styles.button}
-              disabled={signUpMutation.isPending}
+            <TouchablePrimary
               activeOpacity={0.85}
-              onPress={() => onContinuePress()}
+              onPress={onContinuePress}
+              loading={signUpMutation.isPending}
+              className="absolute bottom-[-150]"
             >
-              {!signUpMutation.isPending && (
-                <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
-                  {t("signin.modal.continue")}
-                </CustomText>
-              )}
-              {signUpMutation.isPending && (
-                <View className="absolute w-full left-0 right-0">
-                  <Loader />
-                </View>
-              )}
-            </TouchableOpacity>
+              <CustomText color="white" type="defaultSemiBold">
+                {t("signin.modal.continue")}
+              </CustomText>
+            </TouchablePrimary>
           </View>
-          <Text
-            style={{
-              color: "red",
-              paddingLeft: 4,
-              paddingTop: 10,
-            }}
-          >
+
+          <CustomText color="red" className="ml-2 mt-2">
             {errors.map((err) => t(`errors.${err}`))}
-          </Text>
+          </CustomText>
         </View>
       </View>
     </View>
@@ -141,26 +123,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     borderRadius: 40,
     alignItems: "center",
-  },
-  button: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "#7968F2",
-    borderRadius: 10,
-    display: "flex",
-    flexDirection: "row",
-    gap: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    bottom: -130,
-  },
-
-  backBtn: {
-    position: "absolute",
-    top: 80,
-    left: 20,
-    zIndex: 10,
   },
 });
 

@@ -6,7 +6,8 @@
     "personal-info": {
       "title": "Personal Info",
 
-      "name": "Name",
+      "firstName": "First Name",
+      "lastName": "Last Name",
       "email": "Email",
       "birthday": "Birthday",
       "photo": "Photo"
@@ -75,7 +76,7 @@
     "Passwords must be 8 characters or more.": "Password must be 8 characters or more",
     "Password has been found in an online data breach. For account safety, please use a different password.": "Password has been found in an online data breach. For account safety, please use a different password.",
     "Incorrect code": "Incorrect code",
-    "Too many failed attempts. You have to try again with the same or another method.": "Too many failed attempts. You have to try again with the same or another method.",
+    "Too many failed attempts. You have to try again with the same or another method.": "Too many failed attempts. We are unable to resend the code to you. You have to try again with the same or another method.",
     "Enter email address.": "Enter email address",
     "Enter code.": "Enter code",
     "Enter password.": "Enter password",

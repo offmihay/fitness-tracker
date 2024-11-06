@@ -19,6 +19,7 @@ import { Link, useRouter } from "expo-router";
 import { useCustomTheme } from "../../hooks/useCustomTheme";
 import { useMutation } from "@tanstack/react-query";
 import Loader from "@/src/components/shared/loader/Loader";
+import TouchablePrimary from "@/src/components/shared/touchable/TouchablePrimary";
 
 type Props = {};
 
@@ -59,9 +60,9 @@ const SignInModal = ({}: Props) => {
         pathname: "/",
       });
     },
-    onError: (err: any) => {
-      if (err.clerkError) {
-        setErrors(err.errors.map((err: any) => err.longMessage || err.message));
+    onError: (error: any) => {
+      if (error.clerkError) {
+        setErrors(error.errors.map((err: any) => err.longMessage || err.message));
       }
     },
   });
@@ -71,11 +72,7 @@ const SignInModal = ({}: Props) => {
   return (
     <View style={styles.wrapper}>
       <View style={[styles.contentWrapper]}>
-        <CustomText
-          type="subtitle"
-          style={{ textAlign: "center", fontFamily: "PlayBold", marginBottom: 40 }}
-          color="white"
-        >
+        <CustomText type="subtitle" style={{ textAlign: "center", marginBottom: 40 }} color="white">
           {t("signin.modal.title")}
         </CustomText>
         <View className="w-full relative">
@@ -87,39 +84,32 @@ const SignInModal = ({}: Props) => {
               placeholder="Email"
               keyboardType="email-address"
               useClearButton
-              style={{ fontFamily: "PlayRegular", color: "white" }}
               themeStyle="dark"
             />
             <PasswordInput
               value={password}
               onChangeText={setPassword}
               placeholder="Password"
-              style={{ fontFamily: "PlayRegular" }}
               themeStyle="dark"
             ></PasswordInput>
           </View>
-          <Link
-            style={{ color: "#0082FF", fontFamily: "PlayRegular", paddingLeft: 4, paddingTop: 12 }}
-            href={"/"}
-          >
-            {t("signin.modal.forgotPassword")}
-          </Link>
-          <TouchableOpacity
-            style={styles.button}
-            activeOpacity={0.85}
-            onPress={() => onSignInPress()}
-          >
-            {!signInMutation.isPending && (
-              <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
-                {t("signin.modal.signin")}
-              </CustomText>
-            )}
-            {signInMutation.isPending && (
-              <View className="absolute w-full left-0 right-0">
-                <Loader />
-              </View>
-            )}
+
+          <TouchableOpacity onPress={void 0} className="pl-2 pt-3">
+            <CustomText color="#0082FF" type="predefault">
+              {t("signin.modal.forgotPassword")}
+              <Loader style={{ margin: 0, width: 25, height: 15 }} />
+            </CustomText>
           </TouchableOpacity>
+          <TouchablePrimary
+            activeOpacity={0.85}
+            onPress={onSignInPress}
+            className="absolute bottom-[-130]"
+            loading={signInMutation.isPending}
+          >
+            <CustomText type="defaultSemiBold" color="white">
+              {t("signin.modal.signin")}
+            </CustomText>
+          </TouchablePrimary>
         </View>
         <Text
           style={{

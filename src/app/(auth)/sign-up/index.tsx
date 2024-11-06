@@ -10,9 +10,11 @@ import CustomText from "../../../components/shared/text/CustomText";
 import { useMutation } from "@tanstack/react-query";
 import DismissKeyboardView from "../../../components/shared/input/DissmissKeyboardView";
 import Loader from "@/src/components/shared/loader/Loader";
+import TouchablePrimary from "@/src/components/shared/touchable/TouchablePrimary";
+import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
 
 export default function SignUpEmailScreen() {
-  const { isLoaded, signUp, setActive } = useSignUp();
+  const { isLoaded, signUp } = useSignUp();
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = useState("");
@@ -46,16 +48,9 @@ export default function SignUpEmailScreen() {
 
   return (
     <DismissKeyboardView style={styles.wrapper}>
-      <TouchableOpacity style={styles.backBtn} onPress={router.back}>
-        <FontAwesome6 name="arrow-left-long" size={24} color="white" />
-      </TouchableOpacity>
-
+      <TouchableBack />
       <View style={[styles.contentWrapper]}>
-        <CustomText
-          type="subtitle"
-          style={{ textAlign: "center", fontFamily: "PlayBold" }}
-          color="white"
-        >
+        <CustomText type="subtitle" color="white" center>
           {t("signup.titleEmail")}
         </CustomText>
         <View className="w-full">
@@ -67,36 +62,22 @@ export default function SignUpEmailScreen() {
               placeholder="Email"
               keyboardType="email-address"
               useClearButton
-              style={{ fontFamily: "PlayRegular", color: "white" }}
+              style={{ color: "white" }}
               themeStyle="dark"
             />
-            <TouchableOpacity
-              style={styles.button}
-              activeOpacity={0.85}
+            <TouchablePrimary
+              className="absolute bottom-[-150]"
               onPress={onCheckUpEmail}
-              disabled={signUpMutation.isPending}
+              loading={signUpMutation.isPending}
             >
-              {!signUpMutation.isPending && (
-                <CustomText color="white" style={{ fontFamily: "PlayBold" }}>
-                  {t("signin.modal.continue")}
-                </CustomText>
-              )}
-              {signUpMutation.isPending && (
-                <View className="absolute w-full left-0 right-0">
-                  <Loader />
-                </View>
-              )}
-            </TouchableOpacity>
+              <CustomText type="defaultSemiBold" color="white">
+                {t("signin.modal.continue")}
+              </CustomText>
+            </TouchablePrimary>
           </View>
-          <Text
-            style={{
-              color: "red",
-              paddingLeft: 4,
-              paddingTop: 10,
-            }}
-          >
+          <CustomText color="red" className="ml-2 mt-1">
             {errors.map((err) => t(`errors.${err}`))}
-          </Text>
+          </CustomText>
         </View>
       </View>
     </DismissKeyboardView>
@@ -119,25 +100,5 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     borderRadius: 40,
     alignItems: "center",
-  },
-  button: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "#7968F2",
-    borderRadius: 10,
-    display: "flex",
-    flexDirection: "row",
-    gap: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    bottom: -120,
-  },
-
-  backBtn: {
-    position: "absolute",
-    top: 80,
-    left: 20,
-    zIndex: 10,
   },
 });

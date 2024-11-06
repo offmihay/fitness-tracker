@@ -6,7 +6,8 @@
     "personal-info": {
       "title": "Личная информация",
 
-      "name": "Имя",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
       "birthday": "День рождения",
       "email": "Электронная почта",
       "photo": "Фото"
