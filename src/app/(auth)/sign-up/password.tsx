@@ -6,10 +6,12 @@ import PasswordInput from "../../../components/shared/input/PasswordInput";
 import CustomText from "../../../components/shared/text/CustomText";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
-import { useSignUpPasswordMutation } from "../../../hooks/useSignUpMutation";
+import { useSignUpPasswordMutation } from "../../../hooks/mutations/useSignUpMutation";
 import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 const SignUpPasswordScreen = () => {
+  const theme = useCustomTheme("dark");
   const { email } = useLocalSearchParams();
   const router = useRouter();
 
@@ -45,10 +47,10 @@ const SignUpPasswordScreen = () => {
   };
 
   return (
-    <DismissKeyboardView style={styles.wrapper}>
-      <TouchableBack />
+    <DismissKeyboardView style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
+      <TouchableBack themeStyle={theme.dark ? "dark" : "light"} />
       <View style={[styles.contentWrapper]}>
-        <CustomText type="subtitle" center color="white">
+        <CustomText type="subtitle" center color={theme.colors.text}>
           {t("signup.titlePassword")}
         </CustomText>
         <View className="w-full">
@@ -57,27 +59,24 @@ const SignUpPasswordScreen = () => {
               value={password}
               onChangeText={setPassword}
               label={t("signup.password")}
-              themeStyle="dark"
+              themeStyle={theme.dark ? "dark" : "light"}
             />
             <PasswordInput
               value={passwordConfirm}
               onChangeText={setPasswordConfirm}
               label={t("signup.confirmPassword")}
-              themeStyle="dark"
+              themeStyle={theme.dark ? "dark" : "light"}
             />
             <TouchableBtn
               activeOpacity={0.85}
               onPress={onContinuePress}
               loading={signUpPasswordMutation.isPending}
               className="absolute bottom-[-115]"
-            >
-              <CustomText color="white" type="defaultSemiBold">
-                {t("signup.continue")}
-              </CustomText>
-            </TouchableBtn>
+              title={t("signup.continue")}
+            />
           </View>
 
-          <CustomText color="red" className="ml-2 mt-2 max-h-[50]" type="predefault">
+          <CustomText color={theme.colors.error} className="ml-2 mt-2 max-h-[50]" type="predefault">
             {errors.map((err) => t(`errors.${err}`))}
           </CustomText>
         </View>

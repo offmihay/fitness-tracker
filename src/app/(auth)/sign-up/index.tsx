@@ -8,9 +8,11 @@ import CustomText from "../../../components/shared/text/CustomText";
 import DismissKeyboardView from "../../../components/shared/input/DissmissKeyboardView";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
-import { useSignUpMutation } from "../../../hooks/useSignUpMutation";
+import { useSignUpMutation } from "../../../hooks/mutations/useSignUpMutation";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 export default function SignUpEmailScreen() {
+  const theme = useCustomTheme("dark");
   const [errors, setErrors] = useState<string[]>([]);
   const router = useRouter();
 
@@ -38,10 +40,10 @@ export default function SignUpEmailScreen() {
   };
 
   return (
-    <DismissKeyboardView style={styles.wrapper}>
-      <TouchableBack />
+    <DismissKeyboardView style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
+      <TouchableBack themeStyle={theme.dark ? "dark" : "light"} />
       <View style={[styles.contentWrapper]}>
-        <CustomText type="subtitle" color="white" center>
+        <CustomText type="subtitle" color={theme.colors.text} center>
           {t("signup.titleEmail")}
         </CustomText>
         <View className="w-full">
@@ -54,7 +56,7 @@ export default function SignUpEmailScreen() {
               keyboardType="email-address"
               useClearButton
               style={{ color: "white" }}
-              themeStyle="dark"
+              themeStyle={theme.dark ? "dark" : "light"}
             />
             <TouchableOpacity onPress={void 0} className="pl-2 pt-3">
               <CustomText color="#0082FF" type="predefault">
@@ -66,13 +68,10 @@ export default function SignUpEmailScreen() {
               className="absolute bottom-[-115]"
               onPress={onCheckUpEmail}
               loading={signUpMutation.isPending}
-            >
-              <CustomText type="defaultSemiBold" color="white">
-                {t("signup.continue")}
-              </CustomText>
-            </TouchableBtn>
+              title={t("signup.continue")}
+            />
           </View>
-          <CustomText color="red" className="ml-2 mt-2 max-h-[50]" type="predefault">
+          <CustomText color={theme.colors.error} className="ml-2 mt-2 max-h-[50]" type="predefault">
             {errors.map((err) => t(`errors.${err}`))}
           </CustomText>
         </View>

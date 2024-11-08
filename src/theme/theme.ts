@@ -29,6 +29,7 @@ const lightTheme = {
     warning: "#F57C00",
     info: "#1976D2",
     divider: "rgba(0, 0, 0, 0.12)",
+    deep: "white",
   },
 };
 
@@ -52,11 +53,12 @@ const darkTheme = {
     textSurface: "rgba(255, 255, 255, 0.7)",
     icon: "#0171FF",
     onSurfaceVariant: "#0171FF",
-    error: "#EF5350",
+    error: "red",
     success: "#4CAF50",
     warning: "#FFA726",
     info: "#42A5F5",
     divider: "rgba(255, 255, 255, 0.12)",
+    deep: "black",
   },
 };
 

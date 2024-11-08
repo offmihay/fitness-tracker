@@ -1,17 +1,44 @@
-import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextProps,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import React from "react";
 import Loader from "../loader/Loader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import CustomText from "../text/CustomText";
 
 type Props = {
+  disabled?: boolean;
   loading?: boolean;
-  children: React.ReactNode;
-  type?: "primary" | "secondary" | "warning" | "danger" | "white" | "grey";
+  type?: "primary" | "secondary" | "warning" | "danger" | "white" | "grey" | "lightgrey";
   style?: StyleProp<ViewStyle>;
+  styleText?: StyleProp<ViewStyle>;
+  nodeRight?: (color: string) => React.ReactNode;
+  nodeLeft?: (color: string) => React.ReactNode;
+  title?: string;
 } & React.ComponentProps<typeof TouchableOpacity>;
 
-const TouchableBtn = ({ style, loading, children, type = "primary", ...rest }: Props) => {
+const TouchableBtn = ({
+  style,
+  styleText,
+  loading,
+  disabled,
+  type = "primary",
+  nodeRight,
+  nodeLeft,
+  title,
+  ...rest
+}: Props) => {
   const theme = useCustomTheme();
+  const color = type === "white" ? "black" : "white";
+  const opacityColor =
+    disabled && theme.dark ? "grey" : disabled && !theme.dark ? "#929292" : color;
+
   return (
     <TouchableOpacity
       style={[
@@ -20,15 +47,22 @@ const TouchableBtn = ({ style, loading, children, type = "primary", ...rest }: P
         type === "secondary" && styles.secondaryButton,
         type === "warning" && styles.warningButton,
         type === "danger" && styles.dangerButton,
-        type === "grey" && styles.greyButton,
         type === "white" && styles.whiteButton,
+        (type === "grey" || (disabled && theme.dark)) && styles.greyButton,
+        (type === "lightgrey" || (disabled && !theme.dark)) && styles.lightgreyButton,
         style,
       ]}
       activeOpacity={0.85}
-      disabled={loading}
+      disabled={disabled || loading}
       {...rest}
     >
-      {!loading && children}
+      {!loading && nodeLeft && nodeLeft(opacityColor)}
+      {!loading && (
+        <CustomText type="defaultSemiBold" color={opacityColor}>
+          {title}
+        </CustomText>
+      )}
+      {!loading && nodeRight && nodeRight(opacityColor)}
       {loading && (
         <View style={styles.loaderWrapper}>
           <Loader />
@@ -81,10 +115,16 @@ const styles = StyleSheet.create({
 
   whiteButton: {
     backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "rgba(0, 0, 0, 0.09)",
   },
 
   greyButton: {
     backgroundColor: "#333334",
+  },
+
+  lightgreyButton: {
+    backgroundColor: "#dedede",
   },
 });
 

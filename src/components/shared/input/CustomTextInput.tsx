@@ -12,9 +12,11 @@ type Props = {
   onChangeText?: ((text: string) => void) | undefined;
   viewNode?: React.ReactNode;
   label?: string;
+  color?: string;
 } & React.ComponentProps<typeof TextInput>;
 
 const CustomTextInput = ({
+  color,
   style,
   disabled,
   value,
@@ -33,7 +35,7 @@ const CustomTextInput = ({
         styles.container,
         styleWrapper,
         {
-          backgroundColor: theme.colors.background,
+          backgroundColor: color || theme.colors.background,
           borderColor: theme.colors.divider,
           borderWidth: 1,
         },
@@ -55,8 +57,8 @@ const CustomTextInput = ({
         {...rest}
       />
       {label && (
-        <View style={[styles.labelView, { backgroundColor: theme.colors.background }]}>
-          <CustomText style={styles.labelText}>{label}</CustomText>
+        <View style={[styles.labelView, { backgroundColor: color || theme.colors.background }]}>
+          <CustomText style={[styles.labelText, { color: theme.colors.text }]}>{label}</CustomText>
         </View>
       )}
       {viewNode}

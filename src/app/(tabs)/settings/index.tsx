@@ -1,4 +1,4 @@
-import { Button, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 
 import DropdownCheckbox, {
@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 
 import CustomListItem from "../../../components/shared/list/CustomListItem";
 import CustomListSection from "../../../components/shared/list/CustomListSection";
-import { useAuth } from "@clerk/clerk-expo";
 import { getDropdownItems, getSettingsList } from "../../../components/settings/SettingsHelper";
 
 type Props = {};
@@ -17,8 +16,6 @@ const settings = ({}: Props) => {
   const { t } = useTranslation();
   const dropdowns = getDropdownItems();
   const settingsList = getSettingsList();
-
-  const { signOut } = useAuth();
 
   return (
     <View style={styles.wrapper}>
@@ -50,7 +47,6 @@ const settings = ({}: Props) => {
           }
         })}
       </CustomListSection>
-      <Button onPress={() => signOut()} title="sign out" />
     </View>
   );
 };

@@ -11,10 +11,12 @@ import useCountdown from "@/src/hooks/useCountdown";
 import {
   useResendVerificationCodeMutation,
   useVerifyEmailCodeMutation,
-} from "../../../hooks/useSignUpMutation";
+} from "../../../hooks/mutations/useSignUpMutation";
 import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 const SignUpVerifyCodeScreen = () => {
+  const theme = useCustomTheme("dark");
   const router = useRouter();
   const [code, setCode] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
@@ -50,11 +52,11 @@ const SignUpVerifyCodeScreen = () => {
   };
 
   return (
-    <DismissKeyboardView style={styles.wrapper}>
-      <TouchableBack />
+    <DismissKeyboardView style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
+      <TouchableBack themeStyle={theme.dark ? "dark" : "light"} />
 
       <View className="mt-[130]">
-        <CustomText type="subtitle" center color="white">
+        <CustomText type="subtitle" center color={theme.colors.text}>
           {t("signup.titleVerifyCode")}
         </CustomText>
         <View className="mt-14">
@@ -63,11 +65,11 @@ const SignUpVerifyCodeScreen = () => {
               value={code}
               label={t("signup.code")}
               onChangeText={setCode}
-              themeStyle="dark"
+              themeStyle={theme.dark ? "dark" : "light"}
               keyboardType="number-pad"
             />
             {secondsLeft !== null && (
-              <CustomText className="pl-2 pt-3" color="white" type="predefault">
+              <CustomText className="pl-2 pt-3" color={theme.colors.text} type="predefault">
                 {`${t("signup.notReceiveCode")} `}
                 {`${t("signup.tryAgainIn")}: ${secondsLeft}`}
               </CustomText>
@@ -77,12 +79,8 @@ const SignUpVerifyCodeScreen = () => {
               onPress={onPressVerify}
               loading={verifyCodeMutation.isPending}
               className="absolute bottom-[-135]"
-              style={{ bottom: -135 }}
-            >
-              <CustomText color="white" type="defaultSemiBold">
-                {t("signup.complete")}
-              </CustomText>
-            </TouchableBtn>
+              title={t("signup.complete")}
+            />
           </View>
           {secondsLeft === 0 && secondsLeft !== null && (
             <TouchableOpacity onPress={handleResendCode} disabled={resendCodeMutation.isPending}>
@@ -95,7 +93,7 @@ const SignUpVerifyCodeScreen = () => {
             </TouchableOpacity>
           )}
 
-          <CustomText color="red" className="ml-2 mt-2 max-h-[50]" type="predefault">
+          <CustomText color={theme.colors.error} className="ml-2 mt-2 max-h-[50]" type="predefault">
             {errors.map((err) => t(`errors.${err}`))}
           </CustomText>
         </View>
@@ -110,7 +108,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     paddingVertical: 20,
-    backgroundColor: "#141414",
     position: "relative",
   },
 });

@@ -1,19 +1,21 @@
-import { StyleSheet, View, Image, Pressable, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
-import CustomText from "../../../components/shared/text/CustomText";
-import { useUser } from "@clerk/clerk-expo";
+import { StyleSheet, View, Image, Pressable, TouchableOpacity, Keyboard } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import ClearableTextInput from "@/src/components/shared/input/ClearableTextInput";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useMutation } from "@tanstack/react-query";
-import Loader from "@/src/components/shared/loader/Loader";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import UserAvatar from "@/src/components/settings/UserAvatar";
+import DatePickerInput from "@/src/components/settings/DatePickerInput";
+import { pickImage } from "@/src/utils/imageUtils";
+import {
+  useSetProfileImageMutation,
+  useUpdateUserMutation,
+} from "@/src/hooks/mutations/useUserMutation";
+import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 
 type PersonalInfoProps = {};
 
@@ -28,18 +30,17 @@ type FormData = {
 };
 
 const PersonalInfo = ({}: PersonalInfoProps) => {
+  const { signOut } = useAuth();
   const { t } = useTranslation();
-  const theme = useCustomTheme();
   const { user } = useUser();
-  const [loading, setLoading] = useState(true);
-
   const [image, setImage] = useState<string | null>(user?.imageUrl || null);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [loadingImg, setLoadingImg] = useState(true);
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
+    reset,
   } = useForm({
     defaultValues: {
       firstName: user?.firstName || "",
@@ -48,45 +49,30 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
     },
   });
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      selectionLimit: 1,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-      base64: true,
-    });
-
-    if (!result.canceled && result.assets && result.assets[0].base64) {
-      const imgBase64 = `data:image/jpeg;base64,${result.assets[0].base64}`;
-      setImage(imgBase64);
-      setProfileImgMutation.mutate(imgBase64);
-    }
-  };
-
-  const setProfileImgMutation = useMutation({
-    mutationFn: (imgUrl: string): Promise<void> => {
-      if (!user) return Promise.resolve();
-      return user.setProfileImage({ file: imgUrl }).then(() => undefined);
-    },
-    onError: (err) => {
-      console.log("Error setting profile image:", JSON.stringify(err));
-    },
-  });
-
-  const formDataMutation = useMutation({
-    mutationFn: (data: FormData): Promise<void> => {
-      if (!user) return Promise.resolve();
-      return user.update(data).then(() => undefined);
-    },
-    onSuccess: () => {
+  const formDataMutation = useUpdateUserMutation({
+    onSuccess: (data, variables) => {
       console.log("Profile updated successfully.");
+      Keyboard.dismiss();
+      reset(variables, { keepIsSubmitted: false, keepIsValid: true });
     },
     onError: (err) => {
       console.log("Error updating profile:", JSON.stringify(err));
     },
   });
+
+  const setProfileImgMutation = useSetProfileImageMutation({
+    onError: (err) => {
+      console.log("Error setting profile image:", JSON.stringify(err));
+    },
+  });
+
+  const handleImagePick = useCallback(async () => {
+    const result = await pickImage();
+    if (result) {
+      setImage(result);
+      setProfileImgMutation.mutate(result);
+    }
+  }, [setProfileImgMutation]);
 
   const onSubmit = (data: FormData) => {
     const permittedKeys = [
@@ -112,48 +98,28 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
     formDataMutation.mutate(formData);
   };
 
-  const showDatePicker = () => setDatePickerVisibility(true);
-  const hideDatePicker = () => setDatePickerVisibility(false);
-
-  const handleConfirm = (date: Date, onChange: (date: Date) => void) => {
-    onChange(date);
-    hideDatePicker();
-    handleSubmit(onSubmit)();
-  };
+  useEffect(() => {
+    if (user) {
+      reset({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        birthday: (user.unsafeMetadata?.birthday as string) || "",
+      });
+    }
+  }, [user, reset]);
 
   return (
     <DismissKeyboardView className="h-full">
-      <View className="m-4">
-        <View className="flex items-center mt-4">
-          <Pressable className="flex items-center" onPress={pickImage}>
-            <View
-              style={[styles.avatar, { backgroundColor: theme.colors.surfaceLight }]}
-              className="relative"
-            >
-              {!image && <Entypo name="camera" size={35} color={theme.colors.primary} />}
-              {image && (
-                <Image
-                  style={{
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "100%",
-                    opacity: setProfileImgMutation.isPending || loading ? 0.5 : 1,
-                  }}
-                  source={{ uri: image }}
-                  onLoadStart={() => setLoading(true)}
-                  onLoad={() => setLoading(false)}
-                />
-              )}
-              {(setProfileImgMutation.isPending || loading) && (
-                <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                  <Loader style={{ width: 70, height: 70 }} />
-                </View>
-              )}
-            </View>
-            <TouchableOpacity onPress={pickImage} className="mt-2">
-              <CustomText style={{ color: theme.colors.primary }}>Change avatar</CustomText>
-            </TouchableOpacity>
-          </Pressable>
+      <View className="m-4 h-full">
+        <View className="mx-auto">
+          <UserAvatar
+            image={image}
+            loading={loadingImg}
+            onPickImage={handleImagePick}
+            isPending={setProfileImgMutation.isPending}
+            onLoadStart={() => setLoadingImg(true)}
+            onLoad={() => setLoadingImg(false)}
+          />
         </View>
 
         <View className="flex gap-4 mt-6">
@@ -164,7 +130,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             render={({ field: { onChange, value } }) => (
               <ClearableTextInput
                 autoComplete="given-name"
-                label={t("settings.personal-info.firstName")}
+                label={t("settings.personalInfo.firstName")}
                 onChangeText={onChange}
                 value={value}
                 useClearButton
@@ -178,7 +144,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             render={({ field: { onChange, value } }) => (
               <ClearableTextInput
                 autoComplete="family-name"
-                label={t("settings.personal-info.lastName")}
+                label={t("settings.personalInfo.lastName")}
                 onChangeText={onChange}
                 value={value}
                 useClearButton
@@ -190,49 +156,28 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
-              <View>
-                <Pressable onPress={showDatePicker}>
-                  <ClearableTextInput
-                    label={t("settings.personal-info.birthday")}
-                    disabled
-                    onPressIn={showDatePicker}
-                    value={value ? new Date(value).toLocaleDateString() : ""}
-                    useClearButton
-                  />
-                </Pressable>
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="date"
-                  onConfirm={(date) => handleConfirm(date, onChange)}
-                  onCancel={hideDatePicker}
-                />
-              </View>
+              <DatePickerInput
+                label={t("settings.personalInfo.birthday")}
+                value={value}
+                onChange={onChange}
+              />
             )}
             name="birthday"
           />
         </View>
         <TouchableBtn
           onPress={handleSubmit(onSubmit)}
-          className="mt-12"
+          className="mt-6"
           loading={formDataMutation.isPending}
-        >
-          <CustomText type="defaultSemiBold">Save Changes</CustomText>
-        </TouchableBtn>
+          disabled={!isDirty}
+          nodeLeft={(color) => <FontAwesome6 name="save" size={24} color={color} />}
+          title={t("settings.personalInfo.saveChanges")}
+        />
       </View>
     </DismissKeyboardView>
   );
 };
 
-const styles = StyleSheet.create({
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-  },
-});
+const styles = StyleSheet.create({});
 
 export default PersonalInfo;

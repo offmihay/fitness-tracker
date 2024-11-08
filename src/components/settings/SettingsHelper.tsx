@@ -14,7 +14,7 @@ export const getSettingsList = () => {
   const settingsList: CustomListItemProps[] = [
     {
       key: "personal-info",
-      title: t("settings.personal-info.title"),
+      title: t("settings.personalInfo.title"),
       icon: AntDesign,
       iconName: "user",
       onPress: () => router.push("/settings/personal-info"),

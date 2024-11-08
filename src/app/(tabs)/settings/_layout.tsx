@@ -1,3 +1,4 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, Text } from "react-native";
@@ -15,8 +16,14 @@ export default function Layout() {
       <Stack.Screen
         name="personal-info"
         options={{
-          title: t("settings.personal-info.title"),
+          title: t("settings.personalInfo.title"),
           headerBackTitle: t("settings.headerBackTitle"),
+          headerBackTitleVisible: false,
+          headerRight: (props) => (
+            <TouchableOpacity>
+              <MaterialIcons name="logout" size={24} color={props.tintColor} />
+            </TouchableOpacity>
+          ),
         }}
       />
     </Stack>

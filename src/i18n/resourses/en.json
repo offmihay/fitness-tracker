@@ -3,14 +3,17 @@
     "title": "Settings",
     "headerBackTitle": "Settings",
 
-    "personal-info": {
+    "personalInfo": {
       "title": "Personal Info",
 
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
       "birthday": "Birthday",
-      "photo": "Photo"
+      "photo": "Photo",
+
+      "saveChanges": "Save Changes",
+      "signOut": "Sign Out"
     },
     "theme": {
       "title": "Choose Theme",

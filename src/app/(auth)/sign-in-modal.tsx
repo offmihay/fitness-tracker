@@ -7,8 +7,9 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import Loader from "@/src/components/shared/loader/Loader";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
-import { useSignInMutation } from "@/src/hooks/useSignInMutation";
+import { useSignInMutation } from "@/src/hooks/mutations/useSignInMutation";
 import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 type Props = {};
 
@@ -16,6 +17,7 @@ const SignInModal = ({}: Props) => {
   const [errors, setErrors] = useState<string[]>([]);
   const { t } = useTranslation();
   const router = useRouter();
+  const theme = useCustomTheme("dark");
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -44,9 +46,13 @@ const SignInModal = ({}: Props) => {
     );
 
   return (
-    <DismissKeyboardView style={styles.wrapper}>
+    <DismissKeyboardView style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
       <View style={[styles.contentWrapper]}>
-        <CustomText type="subtitle" style={{ textAlign: "center", marginBottom: 55 }} color="white">
+        <CustomText
+          type="subtitle"
+          style={{ textAlign: "center", marginBottom: 55 }}
+          color={theme.colors.text}
+        >
           {t("signin.modal.title")}
         </CustomText>
         <View className="w-full relative">
@@ -58,13 +64,13 @@ const SignInModal = ({}: Props) => {
               label={t("signin.email")}
               keyboardType="email-address"
               useClearButton
-              themeStyle="dark"
+              themeStyle={theme.dark ? "dark" : "light"}
             />
             <PasswordInput
               value={password}
               onChangeText={setPassword}
               label={t("signin.password")}
-              themeStyle="dark"
+              themeStyle={theme.dark ? "dark" : "light"}
             ></PasswordInput>
           </View>
 
@@ -79,13 +85,10 @@ const SignInModal = ({}: Props) => {
             onPress={onSignInPress}
             className="absolute bottom-[-135]"
             loading={signInMutation.isPending}
-          >
-            <CustomText type="defaultSemiBold" color="white">
-              {t("signin.modal.signin")}
-            </CustomText>
-          </TouchableBtn>
+            title={t("signin.modal.signin")}
+          />
         </View>
-        <CustomText color="red" className="pl-2 pt-2 max-h-[50]" type="predefault">
+        <CustomText color={theme.colors.error} className="pl-2 pt-2 max-h-[50]" type="predefault">
           {errors.map((err) => t(`errors.${err}`))}
         </CustomText>
       </View>
@@ -106,19 +109,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 10,
     borderRadius: 40,
-  },
-  button: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "#7968F2",
-    borderRadius: 10,
-    display: "flex",
-    flexDirection: "row",
-    gap: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    bottom: -130,
   },
 });
 

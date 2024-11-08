@@ -56,34 +56,38 @@ const SignIn = () => {
       <SafeAreaView style={styles.wrapper}>
         <View style={styles.content}>
           <View className="flex flex-col gap-3">
-            <TouchableBtn activeOpacity={0.85} onPress={googleSignIn} type="white">
-              <Image
-                source={require("../../../assets/imgs/google_icon.png")}
-                style={{ width: 20, height: 20 }}
-              />
-              <CustomText color="black" type="defaultSemiBold">
-                {t("signin.continueGoogle")}
-              </CustomText>
-            </TouchableBtn>
-            <TouchableBtn activeOpacity={0.85} onPress={appleSignIn} type="white">
-              <Image
-                source={require("../../../assets/imgs/apple_icon.png")}
-                style={{ width: 26, height: 26, bottom: 2 }}
-              />
-              <CustomText color="black" type="defaultSemiBold">
-                {t("signin.continueApple")}
-              </CustomText>
-            </TouchableBtn>
+            <TouchableBtn
+              activeOpacity={0.85}
+              onPress={googleSignIn}
+              type="white"
+              nodeLeft={() => (
+                <Image
+                  source={require("../../../assets/imgs/google_icon.png")}
+                  style={{ width: 20, height: 20 }}
+                />
+              )}
+              title={t("signin.continueGoogle")}
+            />
+            <TouchableBtn
+              activeOpacity={0.85}
+              onPress={appleSignIn}
+              type="white"
+              nodeLeft={() => (
+                <Image
+                  source={require("../../../assets/imgs/apple_icon.png")}
+                  style={{ width: 20, height: 20 }}
+                />
+              )}
+              title={t("signin.continueApple")}
+            />
             <TouchableBtn
               type="grey"
               activeOpacity={0.85}
               onPress={() => router.navigate("/sign-in-modal")}
-            >
-              <Entypo name="mail" size={24} color="white" />
-              <CustomText color="white" type="defaultSemiBold">
-                {t("signin.continueEmail")}
-              </CustomText>
-            </TouchableBtn>
+              nodeLeft={(color) => <Entypo name="mail" size={24} color={color} />}
+              title={t("signin.continueEmail")}
+            />
+
             <TouchableOpacity onPress={() => router.navigate("/sign-up")}>
               <CustomText color="white" type="link" style={{ textAlign: "center" }}>
                 {t("signin.signup")}
