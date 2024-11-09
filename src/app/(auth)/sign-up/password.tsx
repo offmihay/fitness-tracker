@@ -2,13 +2,13 @@ import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { t } from "i18next";
-import PasswordInput from "../../../components/shared/input/PasswordInput";
 import CustomText from "../../../components/shared/text/CustomText";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import { useSignUpPasswordMutation } from "../../../hooks/mutations/useSignUpMutation";
 import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 
 const SignUpPasswordScreen = () => {
   const theme = useCustomTheme("dark");
@@ -55,17 +55,19 @@ const SignUpPasswordScreen = () => {
         </CustomText>
         <View className="w-full">
           <View className="flex flex-column gap-5 w-full relative">
-            <PasswordInput
+            <CustomTextInput
               value={password}
               onChangeText={setPassword}
               label={t("signup.password")}
               themeStyle={theme.dark ? "dark" : "light"}
+              isPassword
             />
-            <PasswordInput
+            <CustomTextInput
               value={passwordConfirm}
               onChangeText={setPasswordConfirm}
               label={t("signup.confirmPassword")}
               themeStyle={theme.dark ? "dark" : "light"}
+              isPassword
             />
             <TouchableBtn
               activeOpacity={0.85}

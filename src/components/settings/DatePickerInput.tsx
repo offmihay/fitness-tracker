@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Pressable, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import ClearableTextInput from "../shared/input/ClearableTextInput";
+import CustomTextInput from "../shared/input/CustomTextInput";
 
 type DatePickerInputProps = {
   label: string;
@@ -23,7 +23,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({ label, value, onChang
   return (
     <View>
       <Pressable onPress={showDatePicker}>
-        <ClearableTextInput
+        <CustomTextInput
           label={label}
           disabled
           onPressIn={showDatePicker}
@@ -36,6 +36,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({ label, value, onChang
         mode="date"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        accessibilityLanguage="it-IT"
       />
     </View>
   );

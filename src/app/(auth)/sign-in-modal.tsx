@@ -1,15 +1,13 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
-import ClearableTextInput from "../../components/shared/input/ClearableTextInput";
-import PasswordInput from "../../components/shared/input/PasswordInput";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import CustomText from "../../components/shared/text/CustomText";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
-import Loader from "@/src/components/shared/loader/Loader";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import { useSignInMutation } from "@/src/hooks/mutations/useSignInMutation";
 import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 
 type Props = {};
 
@@ -57,7 +55,7 @@ const SignInModal = ({}: Props) => {
         </CustomText>
         <View className="w-full relative">
           <View className="flex gap-4">
-            <ClearableTextInput
+            <CustomTextInput
               value={emailAddress}
               onChangeText={setEmailAddress}
               onSubmitEditing={() => void 0}
@@ -66,12 +64,13 @@ const SignInModal = ({}: Props) => {
               useClearButton
               themeStyle={theme.dark ? "dark" : "light"}
             />
-            <PasswordInput
+            <CustomTextInput
               value={password}
               onChangeText={setPassword}
               label={t("signin.password")}
               themeStyle={theme.dark ? "dark" : "light"}
-            ></PasswordInput>
+              isPassword
+            ></CustomTextInput>
           </View>
 
           <TouchableOpacity onPress={void 0} className="pl-2 pt-4">

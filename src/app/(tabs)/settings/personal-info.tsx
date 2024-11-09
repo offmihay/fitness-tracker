@@ -1,12 +1,9 @@
-import { StyleSheet, View, Image, Pressable, TouchableOpacity, Keyboard } from "react-native";
+import { StyleSheet, View, Keyboard } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import { useAuth, useUser } from "@clerk/clerk-expo";
-import ClearableTextInput from "@/src/components/shared/input/ClearableTextInput";
+import { useUser } from "@clerk/clerk-expo";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
-import * as ImagePicker from "expo-image-picker";
-import { useMutation } from "@tanstack/react-query";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import UserAvatar from "@/src/components/settings/UserAvatar";
 import DatePickerInput from "@/src/components/settings/DatePickerInput";
@@ -15,7 +12,8 @@ import {
   useSetProfileImageMutation,
   useUpdateUserMutation,
 } from "@/src/hooks/mutations/useUserMutation";
-import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
+import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 
 type PersonalInfoProps = {};
 
@@ -30,7 +28,6 @@ type FormData = {
 };
 
 const PersonalInfo = ({}: PersonalInfoProps) => {
-  const { signOut } = useAuth();
   const { t } = useTranslation();
   const { user } = useUser();
   const [image, setImage] = useState<string | null>(user?.imageUrl || null);
@@ -47,6 +44,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
       lastName: user?.lastName || "",
       birthday: (user?.unsafeMetadata?.birthday as string) || "",
     },
+    mode: "onChange",
   });
 
   const formDataMutation = useUpdateUserMutation({
@@ -126,28 +124,39 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           {/* <CustomTextInput disabled value={user?.primaryEmailAddress?.emailAddress} /> */}
           <Controller
             control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <ClearableTextInput
+            rules={{
+              required: "First name is required",
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <CustomTextInput
+                onBlur={onBlur}
                 autoComplete="given-name"
                 label={t("settings.personalInfo.firstName")}
                 onChangeText={onChange}
                 value={value}
                 useClearButton
+                isError={!!errors.firstName}
+                returnKeyType="done"
               />
             )}
             name="firstName"
           />
           <Controller
             control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <ClearableTextInput
+            rules={{
+              required: "Last name is required",
+              maxLength: 10,
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <CustomTextInput
+                onBlur={onBlur}
                 autoComplete="family-name"
                 label={t("settings.personalInfo.lastName")}
                 onChangeText={onChange}
                 value={value}
+                isError={!!errors.lastName}
                 useClearButton
+                returnKeyType="done"
               />
             )}
             name="lastName"
@@ -169,7 +178,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           onPress={handleSubmit(onSubmit)}
           className="mt-6"
           loading={formDataMutation.isPending}
-          disabled={!isDirty}
+          disabled={!isDirty || Object.keys(errors).length !== 0}
           nodeLeft={(color) => <FontAwesome6 name="save" size={24} color={color} />}
           title={t("settings.personalInfo.saveChanges")}
         />

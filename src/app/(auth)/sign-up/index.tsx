@@ -3,13 +3,13 @@ import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { t } from "i18next";
 
-import ClearableTextInput from "../../../components/shared/input/ClearableTextInput";
 import CustomText from "../../../components/shared/text/CustomText";
 import DismissKeyboardView from "../../../components/shared/input/DissmissKeyboardView";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
 import { useSignUpMutation } from "../../../hooks/mutations/useSignUpMutation";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 
 export default function SignUpEmailScreen() {
   const theme = useCustomTheme("dark");
@@ -48,17 +48,23 @@ export default function SignUpEmailScreen() {
         </CustomText>
         <View className="w-full">
           <View className="flex flex-column w-full relative">
-            <ClearableTextInput
+            <CustomTextInput
               value={emailAddress}
               onChangeText={setEmailAddress}
-              onSubmitEditing={() => void 0}
               label={t("signup.email")}
               keyboardType="email-address"
               useClearButton
               style={{ color: "white" }}
               themeStyle={theme.dark ? "dark" : "light"}
             />
-            <TouchableOpacity onPress={void 0} className="pl-2 pt-3">
+            <TouchableOpacity
+              onPress={() =>
+                router.navigate({
+                  pathname: "/sign-in-modal",
+                })
+              }
+              className="pl-2 pt-3"
+            >
               <CustomText color="#0082FF" type="predefault">
                 {t("signup.alreadyHaveAccount")}
                 {/* <Loader style={{ margin: 0, width: 25, height: 15 }} /> */}

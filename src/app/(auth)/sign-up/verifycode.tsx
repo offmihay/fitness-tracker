@@ -2,7 +2,6 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { t } from "i18next";
-import ClearableTextInput from "../../../components/shared/input/ClearableTextInput";
 import CustomText from "../../../components/shared/text/CustomText";
 import Loader from "@/src/components/shared/loader/Loader";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
@@ -14,6 +13,7 @@ import {
 } from "../../../hooks/mutations/useSignUpMutation";
 import DismissKeyboardView from "@/src/components/shared/input/DissmissKeyboardView";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 
 const SignUpVerifyCodeScreen = () => {
   const theme = useCustomTheme("dark");
@@ -61,7 +61,7 @@ const SignUpVerifyCodeScreen = () => {
         </CustomText>
         <View className="mt-14">
           <View className="relative">
-            <ClearableTextInput
+            <CustomTextInput
               value={code}
               label={t("signup.code")}
               onChangeText={setCode}
