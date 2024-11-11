@@ -95,6 +95,30 @@
     "Unable to resend new code": "Unable to resend new code",
     "Identifier is invalid.": "Email address is not valid",
     "Password is incorrect. Try again, or use another method.": "Password is incorrect. Try again, or use another method.",
-    "Couldn't find your account.": "Couldn't find your account."
+    "Couldn't find your account.": "Couldn't find your account.",
+
+    "server_error": "Something went wrong. Please try again later.",
+    "form_identifier_not_found": "Couldn't find your account.",
+    "form_identifier_exists": "That email address is taken. Please try another.",
+    "form_password_incorrect": "Password is incorrect. Try again, or use another method.",
+    "form_password_pwned": "Password has been found in an online data breach. For account safety, please use a different password.",
+    "email_invalid": "Invalid email address",
+    "password_not_matching": "Passwords not matching",
+    "password_too_short": "Password must be 8 characters or more",
+    "password_too_long": "Password must not exceed 30 characters",
+    "email_too_long": "Email address must not exceed 30 characters",
+    "form_code_incorrect": "Incorrect code",
+    "verification_failed": "Too many failed attempts. You have to try again with the same or another method.",
+    "too_many_requests": "Too many requests. Please try again later.",
+    "strategy_for_user_invalid": "Invalid strategy for user"
+  },
+
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "delete": "Delete",
+    "edit": "Edit"
   }
 }

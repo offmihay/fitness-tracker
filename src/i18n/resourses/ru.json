@@ -1,25 +1,29 @@
 {
   "settings": {
     "title": "Настройки",
-    "headerBackTitle": "Назад",
+    "headerBackTitle": "Настройки",
 
     "personalInfo": {
       "title": "Личная информация",
 
       "firstName": "Имя",
       "lastName": "Фамилия",
-      "birthday": "День рождения",
       "email": "Электронная почта",
-      "photo": "Фото"
+      "birthday": "Дата рождения",
+      "photo": "Фото",
+
+      "saveChanges": "Сохранить изменения",
+      "signOut": "Выйти"
     },
     "theme": {
-      "title": "Выберите тему",
-      "system": "Система",
+      "title": "Выбрать тему",
+
+      "system": "Системная",
       "dark": "Темная",
       "light": "Светлая"
     },
     "language": {
-      "title": "Сменить язык",
+      "title": "Изменить язык",
       "en": "Английский",
       "uk": "Украинский",
       "ru": "Русский",
@@ -31,8 +35,8 @@
   },
   "home": {
     "title": "Главная",
-    "welcome": "Добро пожаловать в вашу панель управления!",
-    "today": "Тренировки сегодня",
+    "welcome": "Добро пожаловать в ваш личный кабинет!",
+    "today": "Тренировки на сегодня",
     "upcoming": "Предстоящие тренировки",
     "completed": "Завершенные тренировки"
   },
@@ -48,7 +52,7 @@
     "continueGoogle": "Продолжить с Google",
     "continueApple": "Продолжить с Apple",
     "continueEmail": "Войти с помощью электронной почты",
-    "signup": "Нет аккаунта? Зарегистрируйтесь",
+    "signup": "Нет аккаунта? Зарегистрироваться",
 
     "email": "Электронная почта",
     "password": "Пароль",
@@ -56,8 +60,7 @@
     "modal": {
       "title": "С возвращением!",
       "forgotPassword": "Забыли пароль?",
-      "signin": "Войти",
-      "code": "Код"
+      "signin": "Войти"
     }
   },
 
@@ -65,9 +68,10 @@
     "email": "Электронная почта",
     "password": "Пароль",
     "confirmPassword": "Подтвердите пароль",
+    "code": "Код",
 
     "continue": "Продолжить",
-    "titleEmail": "Давайте начнем с вашей электронной почты",
+    "titleEmail": "Начнем с вашей электронной почты",
     "alreadyHaveAccount": "Уже есть аккаунт?",
     "titlePassword": "Создайте надежный пароль",
     "titleVerifyCode": "Мы отправили 6-значный код на вашу электронную почту. Пожалуйста, введите его ниже",
@@ -78,19 +82,28 @@
   },
 
   "errors": {
-    "email_address must be a valid email address.": "Электронный адрес недействителен",
-    "That email address is taken. Please try another.": "Этот адрес электронной почты занят. Пожалуйста, попробуйте другой.",
+    "email_address must be a valid email address.": "Неверный формат адреса электронной почты",
+    "That email address is taken. Please try another.": "Этот адрес электронной почты уже занят. Пожалуйста, попробуйте другой.",
     "Passwords not matching.": "Пароли не совпадают",
-    "Passwords must be 8 characters or more.": "Пароль должен содержать 8 символов или более",
-    "Password has been found in an online data breach. For account safety, please use a different password.": "Пароль был найден в утечке данных. Пожалуйста, используйте другой пароль.",
+    "Passwords must be 8 characters or more.": "Пароль должен содержать не менее 8 символов",
+    "Password has been found in an online data breach. For account safety, please use a different password.": "Этот пароль был найден в онлайн-утечке данных. Пожалуйста, используйте другой пароль.",
     "Incorrect code": "Неверный код",
-    "Too many failed attempts. You have to try again with the same or another method.": "Слишком много неудачных попыток. Вам нужно попробовать снова с тем же или другим методом.",
+    "Too many failed attempts. You have to try again with the same or another method.": "Слишком много неудачных попыток. Невозможно повторно отправить код. Попробуйте снова тем же или другим способом.",
     "Enter email address.": "Введите адрес электронной почты",
     "Enter code.": "Введите код",
     "Enter password.": "Введите пароль",
-    "Unable to resend new code": "Не удается отправить новый код",
-    "Identifier is invalid.": "Электронный адрес недействителен",
-    "Password is incorrect. Try again, or use another method.": "Пароль неверен. Попробуйте снова или используйте другой метод.",
+    "Unable to resend new code": "Невозможно повторно отправить новый код",
+    "Identifier is invalid.": "Неверный формат адреса электронной почты",
+    "Password is incorrect. Try again, or use another method.": "Неверный пароль. Попробуйте снова или используйте другой метод.",
     "Couldn't find your account.": "Не удалось найти ваш аккаунт."
+  },
+
+  "common": {
+    "confirm": "Подтвердить",
+    "cancel": "Отменить",
+    "yes": "Да",
+    "no": "Нет",
+    "delete": "Удалить",
+    "edit": "Редактировать"
   }
 }

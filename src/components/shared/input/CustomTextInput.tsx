@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   View,
   TextInput,
@@ -20,14 +20,16 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { CombinedDarkTheme } from "@/src/theme/theme";
 
 type Props = {
   style?: StyleProp<TextStyle>;
   disabled?: boolean;
   styleWrapper?: StyleProp<ViewStyle>;
-  themeStyle?: "dark" | "light";
+  useTheme?: typeof CombinedDarkTheme;
   value?: string | undefined;
   onChangeText?: ((text: string) => void) | undefined;
+  onClear?: (isClear: boolean) => void;
   viewNode?: React.ReactNode;
   label?: string;
   color?: string;
@@ -45,7 +47,7 @@ const CustomTextInput = ({
   disabled,
   value,
   onChangeText,
-  themeStyle,
+  useTheme,
   styleWrapper,
   viewNode,
   label,
@@ -53,9 +55,10 @@ const CustomTextInput = ({
   onBlur,
   isError,
   useClearButton,
+  onClear,
   ...rest
 }: Props) => {
-  const theme = themeStyle ? useCustomTheme(themeStyle) : useCustomTheme();
+  const theme = useTheme || useCustomTheme();
   const [isFocusedState, setIsFocusedState] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -65,6 +68,7 @@ const CustomTextInput = ({
 
   const clearText = () => {
     onChangeText?.("");
+    onClear?.(true);
   };
 
   const isFocused = useSharedValue(false);
@@ -75,7 +79,9 @@ const CustomTextInput = ({
   });
 
   const animatedWrapperStyle = useAnimatedStyle(() => ({
-    borderColor: withTiming(isError ? theme.colors.error : theme.colors.border, { duration: 500 }),
+    borderColor: withTiming(isError ? theme.colors.error : theme.colors.borderInput, {
+      duration: 500,
+    }),
   }));
 
   const animatedLabelStyle = useAnimatedStyle(() => {
@@ -99,6 +105,7 @@ const CustomTextInput = ({
 
   const handleFocus = useCallback(
     (e: any) => {
+      hasValue.value && isPassword && clearText();
       setIsFocusedState(true);
       isFocused.value = true;
       onFocus?.(e);
@@ -119,6 +126,7 @@ const CustomTextInput = ({
     (text: string) => {
       hasValue.value = !!text;
       onChangeText?.(text);
+      !!text && onClear?.(false);
     },
     [onChangeText]
   );
@@ -127,83 +135,92 @@ const CustomTextInput = ({
     hasValue.value = !!value;
   }, [value]);
 
+  const inputRef = useRef<TextInput>(null);
+  const handleWrapperPress = () => {
+    inputRef.current?.focus();
+  };
+
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        styleWrapper,
-        {
-          backgroundColor: color || theme.colors.background,
-          borderWidth: 1,
-        },
-        animatedWrapperStyle,
-      ]}
-    >
-      <TextInput
-        clearTextOnFocus={isPassword}
-        secureTextEntry={isPassword && !isPasswordVisible}
-        editable={!disabled}
-        selectTextOnFocus={!disabled}
-        onPressIn={() => disabled && Keyboard.dismiss()}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+    <TouchableOpacity onPress={handleWrapperPress} activeOpacity={1} className="py-2">
+      <Animated.View
         style={[
-          styles.input,
+          styles.container,
+          styleWrapper,
           {
-            color: theme.colors.text,
+            backgroundColor: color || theme.colors.background,
+            borderWidth: 1,
           },
-          style,
+          animatedWrapperStyle,
         ]}
-        value={value}
-        onChangeText={handleChangeText}
-        placeholderTextColor={theme.colors.textTertiary}
-        {...rest}
-      />
-      {label && (
-        <View pointerEvents="none" style={StyleSheet.absoluteFill}>
-          <Animated.Text
-            style={[
-              styles.label,
-              { backgroundColor: color || theme.colors.background },
-              animatedLabelStyle,
-            ]}
-          >
-            {label}
-          </Animated.Text>
-        </View>
-      )}
-      {!isPassword && useClearButton && value && value.length > 0 && isFocusedState && (
-        <Animated.View style={styles.icon} entering={FadeIn} exiting={FadeOut} className="left-2">
-          <TouchableOpacity
-            onPress={clearText}
-            style={StyleSheet.absoluteFill}
-            className="justify-center items-center"
-          >
-            <AntDesign
-              name="closecircle"
-              color={theme.colors.textSurface}
-              style={{ opacity: theme.dark ? 1 : 0.5 }}
-              size={14}
-            />
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-      {isPassword && value && value.length > 0 && isFocusedState && (
-        <Animated.View style={styles.icon} className="left-2" entering={FadeIn} exiting={FadeOut}>
-          <TouchableOpacity
-            onPressIn={() => togglePasswordVisibility(true)}
-            onPressOut={() => togglePasswordVisibility(false)}
-            className="justify-center items-center"
-          >
-            <Ionicons
-              name={isPasswordVisible ? "eye" : "eye-off"}
-              color={theme.colors.textSurface}
-              size={18}
-            />
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-    </Animated.View>
+      >
+        <TextInput
+          ref={inputRef}
+          secureTextEntry={isPassword && !isPasswordVisible}
+          editable={!disabled}
+          selectTextOnFocus={!disabled}
+          onPressIn={() => disabled && Keyboard.dismiss()}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          style={[
+            styles.input,
+            {
+              color: theme.colors.text,
+            },
+            style,
+          ]}
+          value={value}
+          onChangeText={handleChangeText}
+          placeholderTextColor={theme.colors.textTertiary}
+          {...rest}
+        />
+        {label && (
+          <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+            <Animated.Text
+              style={[
+                styles.label,
+                { backgroundColor: color || theme.colors.background },
+                animatedLabelStyle,
+              ]}
+            >
+              {label}
+            </Animated.Text>
+          </View>
+        )}
+        {!isPassword && useClearButton && value && value.length > 0 && isFocusedState && (
+          <Animated.View style={styles.icon} entering={FadeIn} exiting={FadeOut} className="left-4">
+            <TouchableOpacity
+              onPress={clearText}
+              style={StyleSheet.absoluteFill}
+              className="justify-center items-center"
+            >
+              <AntDesign
+                name="closecircle"
+                color={theme.colors.textSurface}
+                style={{ opacity: theme.dark ? 1 : 0.5 }}
+                size={14}
+              />
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+        {isPassword && value && value.length > 0 && (
+          <Animated.View style={styles.icon} className="left-4" entering={FadeIn} exiting={FadeOut}>
+            <TouchableOpacity
+              onPressIn={() => togglePasswordVisibility(true)}
+              onPressOut={() => togglePasswordVisibility(false)}
+              style={StyleSheet.absoluteFill}
+              className="justify-center items-center"
+            >
+              <Ionicons
+                name={isPasswordVisible ? "eye" : "eye-off"}
+                color={theme.colors.textSurface}
+                style={{ opacity: theme.dark ? 1 : 0.5 }}
+                size={18}
+              />
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+      </Animated.View>
+    </TouchableOpacity>
   );
 };
 
@@ -228,7 +245,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: 40,
-    width: 60,
+    width: 80,
     justifyContent: "center",
     alignItems: "center",
   },

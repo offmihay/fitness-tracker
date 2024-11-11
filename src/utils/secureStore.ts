@@ -4,7 +4,6 @@ export const tokenCache = {
   async getToken(key: string) {
     try {
       const item = await SecureStore.getItemAsync(key);
-      console.log(item ? `${key} was used 🔐` : `No values under key: ${key}`);
       return item;
     } catch (error) {
       console.error("SecureStore get item error: ", error);

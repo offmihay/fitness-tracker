@@ -26,8 +26,19 @@ export const useUpdateUserMutation = (options?: UseMutationOptions<void, unknown
   const { user } = useUser();
   return useMutation({
     mutationFn: (data: FormData): Promise<void> => {
-      if (!user) return Promise.resolve();
-      return user.update(data).then(() => undefined);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (Math.random() < 0.5) {
+            reject(new Error("server_error"));
+          } else {
+            if (!user) {
+              resolve();
+              return;
+            }
+            user.update(data).then(() => resolve());
+          }
+        }, 2000);
+      });
     },
     ...options,
   });

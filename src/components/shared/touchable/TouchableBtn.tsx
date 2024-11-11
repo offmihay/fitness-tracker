@@ -7,76 +7,207 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "../loader/Loader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomText from "../text/CustomText";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { CombinedDarkTheme } from "@/src/theme/theme";
+import { FontAwesome } from "@expo/vector-icons";
 
 type Props = {
   disabled?: boolean;
   loading?: boolean;
-  type?: "primary" | "secondary" | "warning" | "danger" | "white" | "grey" | "lightgrey";
+  type?:
+    | "primary"
+    | "secondary"
+    | "warning"
+    | "danger"
+    | "error"
+    | "success"
+    | "white"
+    | "grey"
+    | "lightgrey";
   style?: StyleProp<ViewStyle>;
   styleText?: StyleProp<ViewStyle>;
   nodeRight?: (color: string) => React.ReactNode;
   nodeLeft?: (color: string) => React.ReactNode;
   title?: string;
+  useTheme?: typeof CombinedDarkTheme;
+  checkAnimation?: {
+    enabled?: boolean;
+    isSuccess?: boolean;
+    isError?: boolean;
+    useOnlySuccess?: boolean;
+    timeOut?: number;
+  };
 } & React.ComponentProps<typeof TouchableOpacity>;
 
 const TouchableBtn = ({
   style,
   styleText,
-  loading,
+  loading = false,
   disabled,
   type = "primary",
   nodeRight,
   nodeLeft,
   title,
+  useTheme,
+  checkAnimation = { enabled: false, timeOut: 2000 },
   ...rest
 }: Props) => {
-  const theme = useCustomTheme();
+  const theme = useTheme || useCustomTheme();
+
+  const [isCheckAnimated, setIsCheckAnimated] = useState(false);
+  const startCheckAnimation = () => {
+    setIsCheckAnimated(true);
+    setTimeout(() => {
+      setIsCheckAnimated(false);
+    }, checkAnimation?.timeOut);
+  };
+
+  const [loadingState, setLoadingState] = useState(false);
+
+  useEffect(() => {
+    if (checkAnimation.enabled) {
+      if (checkAnimation.isError && checkAnimation.useOnlySuccess) return;
+      setLoadingState(loading);
+      if (loadingState && !loading) {
+        startCheckAnimation();
+      }
+    }
+  }, [loading]);
+
   const color = type === "white" ? "black" : "white";
   const opacityColor =
-    disabled && theme.dark ? "grey" : disabled && !theme.dark ? "#929292" : color;
+    disabled && !isCheckAnimated && theme.dark
+      ? "grey"
+      : disabled && !isCheckAnimated && !theme.dark
+      ? "#929292"
+      : color;
+
+  const styleDisabledColor = theme.dark ? styles.greyButton : styles.lightgreyButton;
+  const styleEnabledColor =
+    type === "error" ||
+    (!checkAnimation.useOnlySuccess && checkAnimation.isError && isCheckAnimated)
+      ? styles.errorButton
+      : type === "success" || (checkAnimation?.isSuccess && isCheckAnimated)
+      ? styles.successButton
+      : type === "primary"
+      ? styles.primaryButton
+      : type === "secondary"
+      ? styles.secondaryButton
+      : type === "warning"
+      ? styles.warningButton
+      : type === "danger"
+      ? styles.dangerButton
+      : type === "white"
+      ? styles.whiteButton
+      : type === "grey"
+      ? styles.greyButton
+      : type === "lightgrey"
+      ? styles.lightgreyButton
+      : undefined;
+
+  const isDisabled = useSharedValue(disabled);
+
+  useEffect(() => {
+    isDisabled.value = disabled;
+  }, [disabled]);
+
+  const animatedWrapperStyle = useAnimatedStyle(() => ({
+    backgroundColor: withTiming(
+      isDisabled.value && !isCheckAnimated
+        ? (styleDisabledColor as { backgroundColor: string }).backgroundColor
+        : (styleEnabledColor as { backgroundColor: string }).backgroundColor,
+      {
+        duration: 300,
+      }
+    ),
+    borderColor: withTiming(
+      !isDisabled.value
+        ? (styleEnabledColor as { borderColor: string }).borderColor
+        : "transparent",
+      {
+        duration: 300,
+      }
+    ),
+  }));
 
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        type === "primary" && styles.primaryButton,
-        type === "secondary" && styles.secondaryButton,
-        type === "warning" && styles.warningButton,
-        type === "danger" && styles.dangerButton,
-        type === "white" && styles.whiteButton,
-        (type === "grey" || (disabled && theme.dark)) && styles.greyButton,
-        (type === "lightgrey" || (disabled && !theme.dark)) && styles.lightgreyButton,
-        style,
-      ]}
+      style={[styles.wrapper, style]}
       activeOpacity={0.85}
-      disabled={disabled || loading}
+      disabled={disabled || loading || isCheckAnimated}
       {...rest}
     >
-      {!loading && nodeLeft && nodeLeft(opacityColor)}
-      {!loading && (
-        <CustomText type="defaultSemiBold" color={opacityColor}>
-          {title}
-        </CustomText>
-      )}
-      {!loading && nodeRight && nodeRight(opacityColor)}
-      {loading && (
-        <View style={styles.loaderWrapper}>
-          <Loader />
-        </View>
-      )}
+      <Animated.View
+        style={[
+          styles.wrapper,
+          type === "primary" && styles.primaryButton,
+          type === "secondary" && styles.secondaryButton,
+          type === "warning" && styles.warningButton,
+          type === "danger" && styles.dangerButton,
+          type === "success" && styles.successButton,
+          type === "error" && styles.errorButton,
+          type === "white" && styles.whiteButton,
+          (type === "grey" || (disabled && theme.dark)) && styles.greyButton,
+          (type === "lightgrey" || (disabled && !theme.dark)) && styles.lightgreyButton,
+          animatedWrapperStyle,
+        ]}
+      >
+        {!isCheckAnimated && !loading && nodeLeft && nodeLeft(opacityColor)}
+        {!isCheckAnimated && !loading && (
+          <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(300)}>
+            <CustomText type="defaultSemiBold" color={opacityColor}>
+              {title}
+            </CustomText>
+          </Animated.View>
+        )}
+        {!isCheckAnimated && !loading && nodeRight && nodeRight(opacityColor)}
+        {!isCheckAnimated && loading && (
+          <Animated.View
+            style={styles.loaderWrapper}
+            // entering={FadeIn.duration(300)}
+            // exiting={FadeOut.duration(200)}
+          >
+            <Loader />
+          </Animated.View>
+        )}
+        {!loading && isCheckAnimated && (
+          <Animated.View
+            style={styles.loaderWrapper}
+            entering={FadeIn.duration(500)}
+            exiting={FadeOut.duration(150)}
+          >
+            {checkAnimation.isSuccess && (
+              <FontAwesome name="check" size={24} color={opacityColor} />
+            )}
+            {checkAnimation.isError && !checkAnimation.useOnlySuccess && (
+              <FontAwesome name="close" size={24} color={opacityColor} />
+            )}
+          </Animated.View>
+        )}
+      </Animated.View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
+    borderRadius: 10,
+  },
+
+  wrapper: {
+    borderRadius: 10,
     width: "100%",
     height: 50,
-    borderRadius: 10,
     display: "flex",
     flexDirection: "row",
     gap: 8,
@@ -89,6 +220,11 @@ const styles = StyleSheet.create({
     width: "100%",
     left: 0,
     right: 0,
+    bottom: 0,
+    top: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   primaryButton: {
@@ -109,8 +245,12 @@ const styles = StyleSheet.create({
     borderStyle: "dotted",
   },
 
+  errorButton: {
+    backgroundColor: "#ff003a",
+  },
+
   successButton: {
-    backgroundColor: "rgba(0, 130, 255, 1)",
+    backgroundColor: "#00dc71",
   },
 
   whiteButton: {

@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TextProps, View } from "react-native";
 import React from "react";
 import { useCustomTheme } from "../../../hooks/useCustomTheme";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 type Props = {
   type?: "predefault" | "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
@@ -13,7 +14,7 @@ const CustomText = ({ children, color, type = "default", center, style, ...rest 
   const colorText = color ? color : theme.colors.text;
 
   return (
-    <Text
+    <Animated.Text
       style={[
         { color: colorText },
         type === "predefault" ? styles.predefault : undefined,
@@ -28,7 +29,7 @@ const CustomText = ({ children, color, type = "default", center, style, ...rest 
       {...rest}
     >
       {children}
-    </Text>
+    </Animated.Text>
   );
 };
 

@@ -3,15 +3,16 @@ import React from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { CombinedDarkTheme } from "@/src/theme/theme";
 
 type Props = {
-  themeStyle?: "dark" | "light";
+  useTheme?: typeof CombinedDarkTheme;
 };
 
-const TouchableBack = ({ themeStyle }: Props) => {
+const TouchableBack = ({ useTheme }: Props) => {
   const router = useRouter();
 
-  const theme = themeStyle ? useCustomTheme(themeStyle) : useCustomTheme();
+  const theme = useTheme || useCustomTheme();
 
   return (
     <TouchableOpacity style={styles.backBtn} onPress={router.back}>

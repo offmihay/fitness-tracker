@@ -31,7 +31,7 @@ const lightTheme = {
     divider: "rgba(0, 0, 0, 0.12  )",
     deep: "white",
     border: "#d8d7d7",
-    borderInput: "#d8d7d7",
+    borderInput: "#b3b3b3",
   },
 };
 

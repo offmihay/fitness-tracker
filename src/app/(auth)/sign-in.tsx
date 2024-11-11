@@ -1,6 +1,13 @@
 import { useOAuth, useSignIn } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
-import { View, SafeAreaView, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar,
+  Appearance,
+} from "react-native";
 import { Image, ImageBackground } from "expo-image";
 import { useCustomTheme } from "../../hooks/useCustomTheme";
 import CustomText from "../../components/shared/text/CustomText";
