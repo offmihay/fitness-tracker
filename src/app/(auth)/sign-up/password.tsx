@@ -117,6 +117,7 @@ const SignUpPasswordScreen = () => {
                       isPassword
                       isError={!!formErrors.password}
                       onClear={onClear}
+                      textContentType="oneTimeCode"
                     />
                   )}
                   name="password"
@@ -145,6 +146,7 @@ const SignUpPasswordScreen = () => {
                       label={t("signup.confirmPassword")}
                       isPassword
                       isError={!!formErrors.passwordConfirm}
+                      textContentType="oneTimeCode"
                     />
                   )}
                   name="passwordConfirm"
@@ -188,7 +190,7 @@ const SignUpPasswordScreen = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     marginBottom: 100,
   },
   contentWrapper: {

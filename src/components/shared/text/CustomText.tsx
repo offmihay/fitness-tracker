@@ -6,7 +6,7 @@ import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 type Props = {
   type?: "predefault" | "default" | "title" | "subtitle" | "link";
   styling?: "link";
-  weight?: "normal" | "semibold" | "bold";
+  weight?: "normal" | "semibold" | "bold" | "bolder";
   color?: string;
   center?: boolean;
 } & React.ComponentProps<typeof Text>;
@@ -18,7 +18,7 @@ const CustomText = ({
   center,
   styling,
   style,
-  weight = "normal",
+  weight,
   ...rest
 }: Props) => {
   const theme = useCustomTheme();
@@ -38,6 +38,7 @@ const CustomText = ({
         weight === "normal" && styles.normal,
         weight === "semibold" && styles.semiBold,
         weight === "bold" && styles.bold,
+        weight === "bolder" && styles.bolder,
         style,
       ]}
       {...rest}
@@ -83,6 +84,9 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: "600",
+  },
+  bolder: {
+    fontWeight: "700",
   },
 });
 

@@ -88,7 +88,7 @@ const SignIn = () => {
               title={t("signin.continueApple")}
             />
             <TouchableBtn
-              type="grey"
+              type="darkgrey"
               activeOpacity={0.85}
               onPress={() => router.navigate("/sign-in-modal")}
               nodeLeft={(color) => <Entypo name="mail" size={24} color={color} />}

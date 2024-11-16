@@ -17,6 +17,7 @@ import { pickCameraImage } from "@/src/utils/pickCameraImage";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import { Octicons } from "@expo/vector-icons";
 
 type PersonalInfoProps = {};
 
@@ -273,9 +274,14 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
         )}
         name="birthday"
       />
-      <TouchableBtn onPress={() => signOut()}>
-        <CustomText weight="bold">{t("common.save")}</CustomText>
-      </TouchableBtn>
+      <TouchableBtn
+        onPress={() => signOut()}
+        title={t("settings.personalInfo.signOut")}
+        nodeLeft={(color) => <Octicons name="sign-out" size={20} color={color} />}
+        type="grey"
+        className="mt-6"
+      />
+
       <ChooseCameraModal
         ref={bottomSheetRef}
         onGallery={() => handleGalleryImagePick()}

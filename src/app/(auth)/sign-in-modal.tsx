@@ -159,8 +159,8 @@ const SignInModal = ({}: Props) => {
                       label={t("signin.password")}
                       isPassword
                       isError={!!formErrors.password}
-                      textContentType="password"
                       keyboardType="email-address"
+                      textContentType="oneTimeCode"
                     />
                   )}
                   name="password"

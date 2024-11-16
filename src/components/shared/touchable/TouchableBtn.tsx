@@ -33,6 +33,7 @@ type Props = {
     | "success"
     | "white"
     | "grey"
+    | "darkgrey"
     | "lightgrey";
   style?: StyleProp<ViewStyle>;
   styleText?: StyleProp<ViewStyle>;
@@ -92,7 +93,7 @@ const TouchableBtn = ({
       ? "#929292"
       : color;
 
-  const styleDisabledColor = theme.dark ? styles.greyButton : styles.lightgreyButton;
+  const styleDisabledColor = theme.dark ? styles.darkgreyButton : styles.lightgreyButton;
   const styleEnabledColor =
     type === "error" ||
     (!checkAnimation.useOnlySuccess && checkAnimation.isError && isCheckAnimated)
@@ -109,9 +110,9 @@ const TouchableBtn = ({
       ? styles.dangerButton
       : type === "white"
       ? styles.whiteButton
-      : type === "grey"
-      ? styles.greyButton
-      : type === "lightgrey"
+      : (type === "grey" && theme.dark) || type === "darkgrey"
+      ? styles.darkgreyButton
+      : (type === "grey" && !theme.dark) || type === "lightgrey"
       ? styles.lightgreyButton
       : undefined;
 
@@ -157,15 +158,17 @@ const TouchableBtn = ({
           type === "success" && styles.successButton,
           type === "error" && styles.errorButton,
           type === "white" && styles.whiteButton,
-          (type === "grey" || (disabled && theme.dark)) && styles.greyButton,
-          (type === "lightgrey" || (disabled && !theme.dark)) && styles.lightgreyButton,
+          (type === "grey" || type === "darkgrey" || (disabled && theme.dark)) &&
+            styles.darkgreyButton,
+          (type === "grey" || type === "lightgrey" || (disabled && !theme.dark)) &&
+            styles.lightgreyButton,
           animatedWrapperStyle,
         ]}
       >
         {!isCheckAnimated && !loading && nodeLeft && nodeLeft(opacityColor)}
         {!isCheckAnimated && !loading && (
           <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(300)}>
-            <CustomText type="defaultSemiBold" color={opacityColor}>
+            <CustomText weight="bold" color={opacityColor}>
               {title}
             </CustomText>
           </Animated.View>
@@ -259,7 +262,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0, 0, 0, 0.09)",
   },
 
-  greyButton: {
+  darkgreyButton: {
     backgroundColor: "#333334",
   },
 

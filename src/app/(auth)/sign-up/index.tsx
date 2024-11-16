@@ -174,7 +174,7 @@ export default function SignUpEmailScreen() {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     marginBottom: 100,
   },
   contentWrapper: {
