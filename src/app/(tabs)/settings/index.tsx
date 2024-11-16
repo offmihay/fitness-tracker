@@ -56,6 +56,6 @@ export default settings;
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    paddingTop: 20,
   },
 });

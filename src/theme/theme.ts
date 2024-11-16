@@ -32,6 +32,7 @@ const lightTheme = {
     deep: "white",
     border: "#d8d7d7",
     borderInput: "#b3b3b3",
+    link: "rgba(0, 130, 255, 1)s",
   },
 };
 
@@ -63,6 +64,7 @@ const darkTheme = {
     deep: "black",
     border: "#363636",
     borderInput: "#363636",
+    link: "rgba(1, 113, 255, 1)",
   },
 };
 

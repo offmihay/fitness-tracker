@@ -1,20 +1,22 @@
-import { StyleSheet, View, Keyboard } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
-import { useUser } from "@clerk/clerk-expo";
+import { StyleSheet, View, Keyboard, TouchableOpacity, ScrollView } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import UserAvatar from "@/src/components/settings/UserAvatar";
 import DatePickerInput from "@/src/components/settings/DatePickerInput";
-import { pickImage } from "@/src/utils/imageUtils";
-import {
-  useSetProfileImageMutation,
-  useUpdateUserMutation,
-} from "@/src/hooks/mutations/useUserMutation";
-import { FontAwesome6 } from "@expo/vector-icons";
+import { pickGalleryImage } from "@/src/utils/pickGalleryImage.tsx";
+import { useSetProfileImageMutation, useUpdateUserMutation } from "@/src/mutations/useUserMutation";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
-import * as ImagePicker from "expo-image-picker";
-import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
+import { useNavigation } from "expo-router";
+import CustomText from "@/src/components/shared/text/CustomText";
+import useFocusWithTimeout from "@/src/hooks/useFocusWithTimeout";
+import ChooseCameraModal from "@/src/components/settings/ChooseCameraModal";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { pickCameraImage } from "@/src/utils/pickCameraImage";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 
 type PersonalInfoProps = {};
 
@@ -29,10 +31,14 @@ type FormData = {
 };
 
 const PersonalInfo = ({}: PersonalInfoProps) => {
+  const { signOut } = useAuth();
+  const navigation = useNavigation();
   const { t } = useTranslation();
   const { user } = useUser();
   const [image, setImage] = useState<string | null>(user?.imageUrl || null);
   const [loadingImg, setLoadingImg] = useState(true);
+  const { isAnyInputFocused, handleFocus, handleBlur } = useFocusWithTimeout(100);
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   const {
     watch,
@@ -49,6 +55,60 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
     },
     mode: "onChange",
   });
+
+  const resetValues = () => {
+    if (user) {
+      reset({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        birthday: (user.unsafeMetadata?.birthday as string) || "",
+      });
+    }
+  };
+
+  const updateValues = async () => {
+    try {
+      await handleSubmit(onSubmit)();
+    } catch (error) {
+      console.error("Form submission error:", error);
+      resetValues();
+    }
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        isAnyInputFocused ? (
+          <TouchableOpacity
+            onPress={updateValues}
+            className="pb-1"
+            disabled={Object.keys(formErrors).length !== 0 || !isDirty}
+          >
+            <CustomText
+              weight="bold"
+              styling="link"
+              style={{ opacity: Object.keys(formErrors).length !== 0 || !isDirty ? 0.5 : 1 }}
+            >
+              {t("common.done")}
+            </CustomText>
+          </TouchableOpacity>
+        ) : null,
+      headerLeft: () =>
+        isAnyInputFocused ? (
+          <TouchableOpacity
+            onPress={() => {
+              resetValues();
+              Keyboard.dismiss();
+            }}
+            className="pb-1"
+          >
+            <CustomText weight="semibold" styling="link">
+              {t("common.cancel")}
+            </CustomText>
+          </TouchableOpacity>
+        ) : null,
+    });
+  }, [navigation, isAnyInputFocused, Object.keys(formErrors).length, isDirty]);
 
   const formDataMutation = useUpdateUserMutation({
     onSuccess: (_, variables) => {
@@ -72,50 +132,6 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
       }
     },
   });
-
-  const setProfileImgMutation = useSetProfileImageMutation({
-    onError: (err) => {
-      setImage(user?.imageUrl || null);
-      console.log("Error setting profile image:", JSON.stringify(err));
-    },
-  });
-
-  const handleImagePick = useCallback(async () => {
-    const result = await pickImage();
-    if (result) {
-      setImage(result);
-      setProfileImgMutation.mutate(result);
-    }
-  }, [setProfileImgMutation]);
-
-  const handleCameraPress = async () => {
-    // const permission = await ImagePicker.getCameraPermissionsAsync();
-    // if (permission.status !== ImagePicker.PermissionStatus.GRANTED) {
-    //   const requestPermission = await ImagePicker.requestCameraPermissionsAsync();
-    //   if (requestPermission.status !== ImagePicker.PermissionStatus.GRANTED) {
-    //     return null;
-    //   }
-    // }
-    const requestPermission = await ImagePicker.requestCameraPermissionsAsync();
-    if (requestPermission.status === ImagePicker.PermissionStatus.GRANTED) {
-      return null;
-    }
-
-    const result = await ImagePicker.launchCameraAsync({
-      selectionLimit: 1,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      cameraType: ImagePicker.CameraType.front,
-      allowsEditing: true,
-      quality: 1,
-      base64: true,
-    });
-
-    if (!result.canceled && result.assets && result.assets[0].base64) {
-      return `data:image/jpeg;base64,${result.assets[0].base64}`;
-    }
-
-    return null;
-  };
 
   const onSubmit = (data: FormData) => {
     const permittedKeys = [
@@ -142,101 +158,139 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   };
 
   useEffect(() => {
-    if (user) {
-      reset({
-        firstName: user.firstName || "",
-        lastName: user.lastName || "",
-        birthday: (user.unsafeMetadata?.birthday as string) || "",
-      });
-    }
+    resetValues();
   }, [user, reset]);
 
-  return (
-    <DismissKeyboardView className="h-full">
-      <View className="m-4 h-full">
-        <View className="mx-auto">
-          <UserAvatar
-            image={image}
-            loading={loadingImg}
-            onPickImage={handleImagePick}
-            isPending={setProfileImgMutation.isPending}
-            onLoadStart={() => setLoadingImg(true)}
-            onLoad={() => setLoadingImg(false)}
-          />
-        </View>
+  const handleOpenCameraModal = () => {
+    Keyboard.dismiss();
+    bottomSheetRef.current?.present();
+  };
 
-        {/* <CustomTextInput disabled value={user?.primaryEmailAddress?.emailAddress} /> */}
-        <Controller
-          control={control}
-          rules={
-            {
-              // required: "First name is required",
-            }
-          }
-          render={({ field: { onChange, value, onBlur } }) => (
-            <CustomTextInput
-              onBlur={onBlur}
-              autoComplete="given-name"
-              label={t("settings.personalInfo.firstName")}
-              onChangeText={onChange}
-              value={value}
-              useClearButton
-              isError={!!formErrors.firstName}
-              returnKeyType="done"
-            />
-          )}
-          name="firstName"
-        />
-        <Controller
-          control={control}
-          rules={{
-            // required: "Last name is required",
-            maxLength: 15,
-          }}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <CustomTextInput
-              onBlur={onBlur}
-              autoComplete="family-name"
-              label={t("settings.personalInfo.lastName")}
-              onChangeText={onChange}
-              value={value}
-              isError={!!formErrors.lastName}
-              useClearButton
-              returnKeyType="done"
-            />
-          )}
-          name="lastName"
-        />
-        <Controller
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <DatePickerInput
-              label={t("settings.personalInfo.birthday")}
-              value={value}
-              onChange={onChange}
-            />
-          )}
-          name="birthday"
-        />
-        <TouchableBtn
-          onPress={handleSubmit(onSubmit)}
-          className="mt-6"
-          loading={formDataMutation.isPending}
-          disabled={!isDirty}
-          nodeLeft={(color) => <FontAwesome6 name="save" size={24} color={color} />}
-          title={t("settings.personalInfo.saveChanges")}
-          checkAnimation={{
-            enabled: true,
-            isSuccess: formDataMutation.isSuccess,
-            isError: formDataMutation.isError,
-            timeOut: 2000,
-          }}
+  const setProfileImgMutation = useSetProfileImageMutation({
+    onError: (err) => {
+      setImage(user?.imageUrl || null);
+      console.log("Error setting profile image:", JSON.stringify(err));
+    },
+  });
+
+  const handleGalleryImagePick = useCallback(async () => {
+    const result = await pickGalleryImage();
+    if (result) {
+      setImage(result);
+      setProfileImgMutation.mutate(result);
+    }
+  }, [setProfileImgMutation]);
+
+  const handleCameraImagePick = useCallback(async () => {
+    const result = await pickCameraImage();
+    if (result) {
+      setImage(result);
+      setProfileImgMutation.mutate(result);
+    }
+  }, [setProfileImgMutation]);
+
+  return (
+    <KeyboardAwareScrollView
+      style={styles.wrapper}
+      keyboardShouldPersistTaps="always"
+      keyboardOpeningTime={100}
+      contentContainerStyle={{ width: "100%", margin: 0 }}
+      scrollEnabled={true}
+      extraScrollHeight={-125}
+      extraHeight={10}
+      showsVerticalScrollIndicator={false}
+    >
+      <View className="mx-auto mt-4">
+        <UserAvatar
+          image={image}
+          loading={loadingImg}
+          onPickImage={handleOpenCameraModal}
+          isPending={setProfileImgMutation.isPending}
+          onLoadStart={() => setLoadingImg(true)}
+          onLoad={() => setLoadingImg(false)}
         />
       </View>
-    </DismissKeyboardView>
+      <View className="mt-8">
+        <CustomTextInput
+          disabled
+          disabledText
+          value={user?.primaryEmailAddress?.emailAddress}
+          label={t("settings.personalInfo.email")}
+        />
+      </View>
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, value, onBlur } }) => (
+          <CustomTextInput
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            autoComplete="given-name"
+            label={t("settings.personalInfo.firstName")}
+            onChangeText={onChange}
+            value={value}
+            useClearButton
+            isError={!!formErrors.firstName}
+            returnKeyType="done"
+            onSubmitEditing={updateValues}
+          />
+        )}
+        name="firstName"
+      />
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, value, onBlur } }) => (
+          <CustomTextInput
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            autoComplete="family-name"
+            label={t("settings.personalInfo.lastName")}
+            onChangeText={onChange}
+            value={value}
+            isError={!!formErrors.lastName}
+            useClearButton
+            returnKeyType="done"
+            onSubmitEditing={updateValues}
+          />
+        )}
+        name="lastName"
+      />
+      <Controller
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <DatePickerInput
+            label={t("settings.personalInfo.birthday")}
+            value={value}
+            onChange={onChange}
+            selectedDate={value ? new Date(value) : new Date()}
+            onConfirm={updateValues}
+          />
+        )}
+        name="birthday"
+      />
+      <TouchableBtn onPress={() => signOut()}>
+        <CustomText weight="bold">{t("common.save")}</CustomText>
+      </TouchableBtn>
+      <ChooseCameraModal
+        ref={bottomSheetRef}
+        onGallery={() => handleGalleryImagePick()}
+        onCamera={() => handleCameraImagePick()}
+      />
+    </KeyboardAwareScrollView>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+  },
+});
 
 export default PersonalInfo;

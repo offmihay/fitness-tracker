@@ -6,7 +6,6 @@ import { TouchableOpacity, Text } from "react-native";
 
 export default function Layout() {
   const { t } = useTranslation();
-  const { signOut } = useAuth();
   return (
     <Stack screenOptions={{ headerShown: true }}>
       <Stack.Screen
@@ -21,11 +20,6 @@ export default function Layout() {
           title: t("settings.personalInfo.title"),
           headerBackTitle: t("settings.headerBackTitle"),
           headerBackTitleVisible: true,
-          headerRight: (props) => (
-            <TouchableOpacity onPress={() => signOut()}>
-              <MaterialIcons name="logout" size={24} color={props.tintColor} />
-            </TouchableOpacity>
-          ),
         }}
       />
     </Stack>

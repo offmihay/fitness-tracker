@@ -5,7 +5,7 @@ import { t } from "i18next";
 import CustomText from "../../../components/shared/text/CustomText";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
-import { useSignUpPasswordMutation } from "../../../hooks/mutations/useSignUpMutation";
+import { useSignUpPasswordMutation } from "../../../mutations/useSignUpMutation";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { Controller, useForm } from "react-hook-form";

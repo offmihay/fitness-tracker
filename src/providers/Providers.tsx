@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
-import { AuthProvider } from "../hooks/AuthContext";
 import { SettingsProvider } from "../hooks/SettingsContext";
 import { tokenCache } from "../utils/secureStore";
 import { useColorScheme } from "react-native";
@@ -11,6 +10,8 @@ import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { settings } = useSettings();
@@ -58,17 +59,19 @@ if (!publishableKey) {
 
 const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <ClerkLoaded>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <SettingsProvider>
-              <ThemeProviders>{children}</ThemeProviders>
-            </SettingsProvider>
-          </AuthProvider>
-        </QueryClientProvider>
-      </ClerkLoaded>
-    </ClerkProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+          <ClerkLoaded>
+            <QueryClientProvider client={queryClient}>
+              <SettingsProvider>
+                <ThemeProviders>{children}</ThemeProviders>
+              </SettingsProvider>
+            </QueryClientProvider>
+          </ClerkLoaded>
+        </ClerkProvider>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 };
 

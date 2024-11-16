@@ -51,7 +51,9 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         )}
       </View>
       <TouchableOpacity onPress={onPickImage} className="mt-2">
-        <CustomText style={{ color: theme.colors.primary }}>Change avatar</CustomText>
+        <CustomText styling="link" type="default">
+          Change avatar
+        </CustomText>
       </TouchableOpacity>
     </Pressable>
   );

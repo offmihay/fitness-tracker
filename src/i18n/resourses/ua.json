@@ -1,10 +1,10 @@
 {
   "settings": {
     "title": "Налаштування",
-    "headerBackTitle": "Налаштування",
+    "headerBackTitle": "Назад",
 
     "personalInfo": {
-      "title": "Особиста інформація",
+      "title": "Змінити профіль",
 
       "firstName": "Ім'я",
       "lastName": "Прізвище",
@@ -89,7 +89,7 @@
     "Password has been found in an online data breach. For account safety, please use a different password.": "Цей пароль було знайдено в онлайн-витоку даних. Будь ласка, використовуйте інший пароль.",
     "Incorrect code": "Невірний код",
     "Too many failed attempts. You have to try again with the same or another method.": "Забагато невдалих спроб. Неможливо повторно надіслати код. Спробуйте знову тим самим або іншим способом.",
-    "Enter email address.": "Введіть адресу електронної пошти",
+    "Enter email address.": "Введіть адресу ел. пошти",
     "Enter code.": "Введіть код",
     "Enter password.": "Введіть пароль",
     "Unable to resend new code": "Неможливо повторно надіслати новий код",
@@ -104,6 +104,13 @@
     "yes": "Так",
     "no": "Ні",
     "delete": "Видалити",
-    "edit": "Редагувати"
+    "edit": "Редагувати",
+    "back": "Назад",
+    "done": "Готово"
+  },
+
+  "modal": {
+    "openGallery": "Відкрити галерею",
+    "openCamera": "Відкрити камеру"
   }
 }

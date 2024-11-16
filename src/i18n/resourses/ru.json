@@ -1,10 +1,10 @@
 {
   "settings": {
     "title": "Настройки",
-    "headerBackTitle": "Настройки",
+    "headerBackTitle": "Назад",
 
     "personalInfo": {
-      "title": "Личная информация",
+      "title": "Изменить профиль",
 
       "firstName": "Имя",
       "lastName": "Фамилия",
@@ -100,10 +100,17 @@
 
   "common": {
     "confirm": "Подтвердить",
-    "cancel": "Отменить",
+    "cancel": "Отмена",
     "yes": "Да",
     "no": "Нет",
     "delete": "Удалить",
-    "edit": "Редактировать"
+    "edit": "Редактировать",
+    "back": "Назад",
+    "done": "Готово"
+  },
+
+  "modal": {
+    "openGallery": "Открыть галерею",
+    "openCamera": "Открыть камеру"
   }
 }

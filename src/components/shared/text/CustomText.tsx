@@ -4,12 +4,23 @@ import { useCustomTheme } from "../../../hooks/useCustomTheme";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 type Props = {
-  type?: "predefault" | "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
+  type?: "predefault" | "default" | "title" | "subtitle" | "link";
+  styling?: "link";
+  weight?: "normal" | "semibold" | "bold";
   color?: string;
   center?: boolean;
 } & React.ComponentProps<typeof Text>;
 
-const CustomText = ({ children, color, type = "default", center, style, ...rest }: Props) => {
+const CustomText = ({
+  children,
+  color,
+  type = "default",
+  center,
+  styling,
+  style,
+  weight = "normal",
+  ...rest
+}: Props) => {
   const theme = useCustomTheme();
   const colorText = color ? color : theme.colors.text;
 
@@ -17,13 +28,16 @@ const CustomText = ({ children, color, type = "default", center, style, ...rest 
     <Animated.Text
       style={[
         { color: colorText },
-        type === "predefault" ? styles.predefault : undefined,
-        type === "default" ? styles.default : undefined,
-        type === "title" ? styles.title : undefined,
-        type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
-        type === "subtitle" ? styles.subtitle : undefined,
-        type === "link" ? { ...styles.link } : undefined,
-        center ? styles.center : undefined,
+        type === "predefault" && styles.predefault,
+        type === "default" && styles.default,
+        type === "title" && styles.title,
+        type === "subtitle" && styles.subtitle,
+        type === "link" && styles.link,
+        styling === "link" && { color: theme.colors.link },
+        center && styles.center,
+        weight === "normal" && styles.normal,
+        weight === "semibold" && styles.semiBold,
+        weight === "bold" && styles.bold,
         style,
       ]}
       {...rest}
@@ -42,11 +56,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
   },
-  defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: "600",
-  },
   title: {
     fontSize: 32,
     fontWeight: "bold",
@@ -64,6 +73,16 @@ const styles = StyleSheet.create({
 
   center: {
     textAlign: "center",
+  },
+
+  normal: {
+    fontWeight: "400",
+  },
+  semiBold: {
+    fontWeight: "500",
+  },
+  bold: {
+    fontWeight: "600",
   },
 });
 

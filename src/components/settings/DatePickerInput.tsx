@@ -8,9 +8,17 @@ type DatePickerInputProps = {
   label: string;
   value: string;
   onChange: (date: Date) => void;
+  selectedDate?: Date;
+  onConfirm?: () => void;
 };
 
-const DatePickerInput: React.FC<DatePickerInputProps> = ({ label, value, onChange }) => {
+const DatePickerInput: React.FC<DatePickerInputProps> = ({
+  label,
+  value,
+  onChange,
+  selectedDate,
+  onConfirm,
+}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const { i18n, t } = useTranslation();
 
@@ -23,6 +31,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({ label, value, onChang
   const handleConfirm = (date: Date) => {
     onChange(date);
     hideDatePicker();
+    onConfirm?.();
   };
 
   return (
@@ -46,6 +55,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({ label, value, onChang
         minimumDate={new Date(new Date().getFullYear() - 100, 0, 1)}
         confirmTextIOS={t("common.confirm")}
         cancelTextIOS={t("common.cancel")}
+        date={selectedDate}
       />
     </View>
   );

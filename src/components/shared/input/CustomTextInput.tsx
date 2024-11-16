@@ -38,6 +38,7 @@ type Props = {
   isError?: boolean;
   useClearButton?: boolean;
   isPassword?: boolean;
+  disabledText?: boolean;
 } & React.ComponentProps<typeof TextInput>;
 
 const CustomTextInput = ({
@@ -56,6 +57,7 @@ const CustomTextInput = ({
   isError,
   useClearButton,
   onClear,
+  disabledText,
   ...rest
 }: Props) => {
   const theme = useTheme || useCustomTheme();
@@ -165,6 +167,7 @@ const CustomTextInput = ({
             styles.input,
             {
               color: theme.colors.text,
+              opacity: !disabledText ? 1 : 0.5,
             },
             style,
           ]}
