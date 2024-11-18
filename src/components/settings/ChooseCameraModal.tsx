@@ -62,7 +62,11 @@ const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, 
               style={[{ backgroundColor: theme.colors.surface }, styles.btnContent]}
               onPress={handleOnGallery}
             >
-              <CustomText weight="semibold" style={{ color: theme.colors.link }}>
+              <CustomText
+                weight="semibold"
+                type="upperdefault"
+                style={{ color: theme.colors.link }}
+              >
                 {t("modal.openGallery")}
               </CustomText>
             </TouchableOpacity>
@@ -74,7 +78,11 @@ const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, 
               style={[{ backgroundColor: theme.colors.surface }, styles.btnContent]}
               onPress={handleOnCamera}
             >
-              <CustomText weight="semibold" style={{ color: theme.colors.link }}>
+              <CustomText
+                weight="semibold"
+                type="upperdefault"
+                style={{ color: theme.colors.link }}
+              >
                 {t("modal.openCamera")}
               </CustomText>
             </TouchableOpacity>
@@ -87,7 +95,7 @@ const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, 
               style={[{ backgroundColor: theme.colors.surface }, styles.btnContent]}
               onPress={handleDismiss}
             >
-              <CustomText weight="bold" style={{ color: theme.colors.link }}>
+              <CustomText weight="bold" type="upperdefault" style={{ color: theme.colors.link }}>
                 {t("common.cancel")}
               </CustomText>
             </TouchableOpacity>

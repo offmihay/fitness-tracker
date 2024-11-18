@@ -79,7 +79,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () =>
-        isAnyInputFocused ? (
+        isAnyInputFocused || isDirty ? (
           <TouchableOpacity
             onPress={updateValues}
             className="pb-1"
@@ -95,7 +95,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           </TouchableOpacity>
         ) : null,
       headerLeft: () =>
-        isAnyInputFocused ? (
+        isAnyInputFocused || isDirty ? (
           <TouchableOpacity
             onPress={() => {
               resetValues();

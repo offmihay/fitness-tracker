@@ -125,7 +125,6 @@ const SignInModal = ({}: Props) => {
                       useClearButton
                       isError={!!formErrors.email}
                       textContentType="oneTimeCode"
-                      keyboardType="email-address"
                     />
                   )}
                   name="email"
@@ -159,7 +158,6 @@ const SignInModal = ({}: Props) => {
                       label={t("signin.password")}
                       isPassword
                       isError={!!formErrors.password}
-                      keyboardType="email-address"
                       textContentType="oneTimeCode"
                     />
                   )}

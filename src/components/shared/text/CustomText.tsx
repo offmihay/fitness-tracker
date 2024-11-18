@@ -4,7 +4,7 @@ import { useCustomTheme } from "../../../hooks/useCustomTheme";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 type Props = {
-  type?: "predefault" | "default" | "title" | "subtitle" | "link";
+  type?: "predefault" | "default" | "upperdefault" | "title" | "subtitle" | "link";
   styling?: "link";
   weight?: "normal" | "semibold" | "bold" | "bolder";
   color?: string;
@@ -30,6 +30,7 @@ const CustomText = ({
         { color: colorText },
         type === "predefault" && styles.predefault,
         type === "default" && styles.default,
+        type === "upperdefault" && styles.upperdefault,
         type === "title" && styles.title,
         type === "subtitle" && styles.subtitle,
         type === "link" && styles.link,
@@ -56,6 +57,10 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
+  },
+  upperdefault: {
+    fontSize: 18,
+    lineHeight: 28,
   },
   title: {
     fontSize: 32,

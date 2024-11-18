@@ -40,7 +40,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
         <CustomTextInput
           label={label}
           disabled
-          onPressIn={showDatePicker}
+          onPress={showDatePicker}
           value={value ? new Date(value).toLocaleDateString(i18n.language) : ""}
           useClearButton
         />
