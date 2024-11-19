@@ -40,8 +40,8 @@
     "upcoming": "Предстоящие тренировки",
     "completed": "Завершенные тренировки"
   },
-  "workouts": {
-    "title": "Тренировки",
+  "tournaments": {
+    "title": "Турниры",
     "myWorkouts": "Мои тренировки",
     "createWorkout": "Создать новую тренировку",
     "workoutPlans": "Планы тренировок",

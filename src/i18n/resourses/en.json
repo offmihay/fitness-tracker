@@ -40,8 +40,8 @@
     "upcoming": "Upcoming Workouts",
     "completed": "Completed Workouts"
   },
-  "workouts": {
-    "title": "Workouts",
+  "tournaments": {
+    "title": "Tournaments",
     "myWorkouts": "My Workouts",
     "createWorkout": "Create New Workout",
     "workoutPlans": "Workout Plans",

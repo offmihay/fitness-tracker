@@ -22,9 +22,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="workouts"
+        name="tournaments"
         options={{
-          title: t("workouts.title"),
+          title: t("tournaments.title"),
           tabBarIcon: ({ color }) => <MaterialIcons name="sports-tennis" size={24} color={color} />,
         }}
       />

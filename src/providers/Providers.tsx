@@ -1,3 +1,4 @@
+import "../utils/textOverride";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { SettingsProvider } from "../hooks/SettingsContext";

@@ -62,11 +62,7 @@ const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, 
               style={[{ backgroundColor: theme.colors.surface }, styles.btnContent]}
               onPress={handleOnGallery}
             >
-              <CustomText
-                weight="semibold"
-                type="upperdefault"
-                style={{ color: theme.colors.link }}
-              >
+              <CustomText weight="normal" type="upperdefault" style={{ color: theme.colors.link }}>
                 {t("modal.openGallery")}
               </CustomText>
             </TouchableOpacity>
@@ -78,11 +74,7 @@ const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, 
               style={[{ backgroundColor: theme.colors.surface }, styles.btnContent]}
               onPress={handleOnCamera}
             >
-              <CustomText
-                weight="semibold"
-                type="upperdefault"
-                style={{ color: theme.colors.link }}
-              >
+              <CustomText weight="normal" type="upperdefault" style={{ color: theme.colors.link }}>
                 {t("modal.openCamera")}
               </CustomText>
             </TouchableOpacity>

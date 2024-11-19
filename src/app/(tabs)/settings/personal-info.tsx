@@ -5,7 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import UserAvatar from "@/src/components/settings/UserAvatar";
 import DatePickerInput from "@/src/components/settings/DatePickerInput";
-import { pickGalleryImage } from "@/src/utils/pickGalleryImage.tsx";
 import { useSetProfileImageMutation, useUpdateUserMutation } from "@/src/mutations/useUserMutation";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { useNavigation } from "expo-router";
@@ -18,6 +17,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import { Octicons } from "@expo/vector-icons";
+import { pickGalleryImage } from "@/src/utils/pickGalleryImage";
 
 type PersonalInfoProps = {};
 
