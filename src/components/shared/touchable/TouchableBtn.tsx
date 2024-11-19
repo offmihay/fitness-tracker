@@ -1,12 +1,4 @@
-import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextProps,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from "react-native";
+import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import React, { useEffect, useState } from "react";
 import Loader from "../loader/Loader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
@@ -18,7 +10,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { CombinedDarkTheme } from "@/src/theme/theme";
 import { FontAwesome } from "@expo/vector-icons";
 
 type Props = {
@@ -40,7 +31,6 @@ type Props = {
   nodeRight?: (color: string) => React.ReactNode;
   nodeLeft?: (color: string) => React.ReactNode;
   title?: string;
-  useTheme?: typeof CombinedDarkTheme;
   checkAnimation?: {
     enabled?: boolean;
     isSuccess?: boolean;
@@ -59,11 +49,10 @@ const TouchableBtn = ({
   nodeRight,
   nodeLeft,
   title,
-  useTheme,
   checkAnimation = { enabled: false, timeOut: 2000 },
   ...rest
 }: Props) => {
-  const theme = useTheme || useCustomTheme();
+  const theme = useCustomTheme();
 
   const [isCheckAnimated, setIsCheckAnimated] = useState(false);
   const startCheckAnimation = () => {

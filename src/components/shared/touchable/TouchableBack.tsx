@@ -5,14 +5,12 @@ import { useRouter } from "expo-router";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { CombinedDarkTheme } from "@/src/theme/theme";
 
-type Props = {
-  useTheme?: typeof CombinedDarkTheme;
-};
+type Props = {};
 
-const TouchableBack = ({ useTheme }: Props) => {
+const TouchableBack: React.FC<Props> = () => {
   const router = useRouter();
 
-  const theme = useTheme || useCustomTheme();
+  const theme = useCustomTheme();
 
   return (
     <TouchableOpacity style={styles.backBtn} onPress={router.back}>

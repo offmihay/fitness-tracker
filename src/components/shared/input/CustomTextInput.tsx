@@ -26,7 +26,6 @@ type Props = {
   style?: StyleProp<TextStyle>;
   disabled?: boolean;
   styleWrapper?: StyleProp<ViewStyle>;
-  useTheme?: typeof CombinedDarkTheme;
   value?: string | undefined;
   onChangeText?: ((text: string) => void) | undefined;
   onClear?: (isClear: boolean) => void;
@@ -48,7 +47,6 @@ const CustomTextInput = ({
   disabled,
   value,
   onChangeText,
-  useTheme,
   styleWrapper,
   viewNode,
   label,
@@ -60,7 +58,7 @@ const CustomTextInput = ({
   disabledText,
   ...rest
 }: Props) => {
-  const theme = useTheme || useCustomTheme();
+  const theme = useCustomTheme();
   const [isFocusedState, setIsFocusedState] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 

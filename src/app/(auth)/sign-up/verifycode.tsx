@@ -23,7 +23,7 @@ type VerificationCodeData = {
 };
 
 const SignUpVerifyCodeScreen = () => {
-  const theme = useCustomTheme("dark");
+  const theme = useCustomTheme();
   const router = useRouter();
 
   const { secondsLeft, setSecondsLeft } = useCountdown(30);
