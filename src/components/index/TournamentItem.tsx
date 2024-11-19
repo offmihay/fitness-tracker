@@ -1,12 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
+import CustomText from "../shared/text/CustomText";
 
 type Props = {};
 
 const TournamentItem = ({}: Props) => {
   return (
     <View>
-      <Text>TournamentItem</Text>
+      <CustomText>TournamentItem</CustomText>
     </View>
   );
 };

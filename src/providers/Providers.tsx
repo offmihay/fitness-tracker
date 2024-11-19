@@ -1,4 +1,3 @@
-import "../utils/textOverride";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { SettingsProvider } from "../hooks/SettingsContext";
@@ -8,7 +7,7 @@ import { PaperProvider } from "react-native-paper";
 import { useSettings } from "../hooks/useSettings";
 import { CombinedDarkTheme, CombinedLightTheme } from "../theme/theme";
 import { ThemeProvider } from "@react-navigation/native";
-import { useFonts } from "expo-font";
+// import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -19,25 +18,25 @@ const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) =
   const colorScheme = useColorScheme();
   const currentTheme = settings.theme || colorScheme;
 
-  const [loaded, error] = useFonts({
-    RubikWetPaint: require("../../assets/fonts/RubikWetPaint-Regular.ttf"),
-    PlayRegular: {
-      uri: require("../../assets/fonts/Play-Regular.ttf"),
-    },
-    PlayBold: {
-      uri: require("../../assets/fonts/Play-Bold.ttf"),
-    },
-  });
+  // const [loaded, error] = useFonts({
+  //   RubikWetPaint: require("../../assets/fonts/RubikWetPaint-Regular.ttf"),
+  //   PlayRegular: {
+  //     uri: require("../../assets/fonts/Play-Regular.ttf"),
+  //   },
+  //   PlayBold: {
+  //     uri: require("../../assets/fonts/Play-Bold.ttf"),
+  //   },
+  // });
 
-  useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
+  // useEffect(() => {
+  //   if (loaded || error) {
+  //     SplashScreen.hideAsync();
+  //   }
+  // }, [loaded, error]);
 
-  if (!loaded && !error) {
-    return null;
-  }
+  // if (!loaded && !error) {
+  //   return null;
+  // }
 
   const theme = currentTheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
 

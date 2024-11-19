@@ -1,3 +1,4 @@
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useAuth } from "@clerk/clerk-expo";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
@@ -6,8 +7,9 @@ import { TouchableOpacity, Text } from "react-native";
 
 export default function Layout() {
   const { t } = useTranslation();
+  const theme = useCustomTheme();
   return (
-    <Stack screenOptions={{ headerShown: true }}>
+    <Stack screenOptions={{ headerShown: true, headerTintColor: theme.colors.text }}>
       <Stack.Screen
         name="index"
         options={{

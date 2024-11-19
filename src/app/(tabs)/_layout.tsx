@@ -18,14 +18,16 @@ export default function TabLayout() {
         name="index"
         options={{
           title: t("home.title"),
-          tabBarIcon: ({ color }) => <AntDesign name="home" size={24} color={color} />,
+          tabBarIcon: ({ color, size }) => <AntDesign name="home" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="tournaments"
         options={{
           title: t("tournaments.title"),
-          tabBarIcon: ({ color }) => <MaterialIcons name="sports-tennis" size={24} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="sports-tennis" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -33,7 +35,7 @@ export default function TabLayout() {
         options={{
           headerShown: false,
           title: t("settings.title"),
-          tabBarIcon: ({ color }) => <Feather name="settings" size={24} color={color} />,
+          tabBarIcon: ({ color, size }) => <Feather name="settings" size={size} color={color} />,
         }}
       />
     </Tabs>

@@ -40,6 +40,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   const [loadingImg, setLoadingImg] = useState(true);
   const { isAnyInputFocused, handleFocus, handleBlur } = useFocusWithTimeout(100);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const theme = useCustomTheme();
 
   const {
     watch,
@@ -87,7 +88,8 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           >
             <CustomText
               weight="bold"
-              styling="link"
+              type="upperdefault"
+              color={theme.colors.text}
               style={{ opacity: Object.keys(formErrors).length !== 0 || !isDirty ? 0.5 : 1 }}
             >
               {t("common.done")}
@@ -101,9 +103,9 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
               resetValues();
               Keyboard.dismiss();
             }}
-            className="pb-1"
+            className=""
           >
-            <CustomText weight="semibold" styling="link">
+            <CustomText weight="normal" type="upperdefault" color={theme.colors.text}>
               {t("common.cancel")}
             </CustomText>
           </TouchableOpacity>
