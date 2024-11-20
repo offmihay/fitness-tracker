@@ -22,17 +22,14 @@ const lightTheme = {
     textSecondary: "#555555",
     textTertiary: "#888888",
     textSurface: "rgba(100, 100, 100, 0.8)",
-    icon: "#0082FF",
-    onSurfaceVariant: "#0082FF",
     error: "#ff4b4b",
     success: "#388E3C",
     warning: "#F57C00",
     info: "#1976D2",
     divider: "rgba(0, 0, 0, 0.12  )",
     deep: "white",
-    border: "#d8d7d7",
-    borderInput: "#b3b3b3",
-    link: "rgba(0, 130, 255, 1)",
+    border: "#b3b3b3",
+    link: "#008bff",
   },
 };
 
@@ -54,8 +51,6 @@ const darkTheme = {
     textSecondary: "#CCCCCC",
     textTertiary: "#999999",
     textSurface: "rgba(255, 255, 255, 0.7)",
-    icon: "#0171FF",
-    onSurfaceVariant: "#0171FF",
     error: "#ff3f3f",
     success: "#4CAF50",
     warning: "#FFA726",
@@ -63,8 +58,7 @@ const darkTheme = {
     divider: "rgba(255, 255, 255, 0.12)",
     deep: "black",
     border: "#363636",
-    borderInput: "#363636",
-    link: "rgba(1, 113, 255, 1)",
+    link: "#008bff",
   },
 };
 

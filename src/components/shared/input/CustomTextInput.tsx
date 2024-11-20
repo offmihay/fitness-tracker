@@ -79,7 +79,7 @@ const CustomTextInput = ({
   });
 
   const animatedWrapperStyle = useAnimatedStyle(() => ({
-    borderColor: withTiming(isError ? theme.colors.error : theme.colors.borderInput, {
+    borderColor: withTiming(isError ? theme.colors.error : theme.colors.border, {
       duration: 500,
     }),
   }));
