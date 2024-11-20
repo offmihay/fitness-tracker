@@ -8,8 +8,6 @@ import { useSettings } from "../hooks/useSettings";
 import { CombinedDarkTheme, CombinedLightTheme } from "../theme/theme";
 import { ThemeProvider } from "@react-navigation/native";
 // import { useFonts } from "expo-font";
-import { useEffect } from "react";
-import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 

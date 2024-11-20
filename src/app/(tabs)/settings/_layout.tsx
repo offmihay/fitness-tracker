@@ -21,7 +21,6 @@ export default function Layout() {
         options={{
           title: t("settings.personalInfo.title"),
           headerBackTitle: t("settings.headerBackTitle"),
-          headerBackTitleVisible: true,
         }}
       />
     </Stack>
