@@ -21,13 +21,15 @@ const settings = ({}: Props) => {
     <View style={styles.wrapper}>
       <CustomListSection>
         {settingsList.map((item, index) => {
-          const listItemProps = {
-            key: `list-${item.key}`,
-            isLast: settingsList.length - 1 === index,
-            ...item,
-          };
+          const { key: _, ...listItemProps } = item;
 
-          const listItem = <CustomListItem {...listItemProps} />;
+          const listItem = (
+            <CustomListItem
+              key={`list-${item.key}`}
+              isLast={settingsList.length - 1 === index}
+              {...listItemProps}
+            />
+          );
 
           const dropdown = Object.keys(dropdowns).find(
             (dropdown) => dropdown === item.key
