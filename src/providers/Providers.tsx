@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { SettingsProvider } from "../hooks/SettingsContext";
 import { tokenCache } from "../utils/secureStore";
-import { useColorScheme } from "react-native";
+import { Appearance } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { useSettings } from "../hooks/useSettings";
 import { CombinedDarkTheme, CombinedLightTheme } from "../theme/theme";
@@ -10,11 +10,19 @@ import { ThemeProvider } from "@react-navigation/native";
 // import { useFonts } from "expo-font";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { useEffect, useState } from "react";
 
 const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { settings } = useSettings();
-  const colorScheme = useColorScheme();
+  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
   const currentTheme = settings.theme || colorScheme;
+
+  useEffect(() => {
+    const sub = Appearance.addChangeListener(({ colorScheme }) => {
+      setColorScheme(colorScheme);
+    });
+    return () => sub.remove();
+  }, []);
 
   // const [loaded, error] = useFonts({
   //   RubikWetPaint: require("../../assets/fonts/RubikWetPaint-Regular.ttf"),
