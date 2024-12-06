@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/clerk-expo": "^2.2.29",
     "@expo/vector-icons": "^14.0.3",
+    "@formatjs/intl-datetimeformat": "^6.16.5",
     "@gorhom/bottom-sheet": "^5",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "8.2.0",

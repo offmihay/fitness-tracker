@@ -127,5 +127,9 @@
   "modal": {
     "openGallery": "Open Gallery",
     "openCamera": "Open Camera"
+  },
+
+  "index": {
+    "register": "Register"
   }
 }

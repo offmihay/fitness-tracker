@@ -8,7 +8,8 @@
       "latitude": 50.4501,
       "longitude": 30.5234
     },
-    "date": "2024-11-20T15:00:00Z",
+    "dateStart": "2024-11-20T15:00:00Z",
+    "dateEnd": "2024-11-23T15:00:00Z",
     "entryFee": 50,
     "prizePool": 500,
     "ageRestrictions": {
@@ -18,16 +19,19 @@
     "skillLevel": "Amateur",
     "format": "Singles",
     "maxParticipants": 16,
-    "currentParticipants": [
-      {
-        "id": "uuid1",
-        "name": "John Doe"
-      },
-      {
-        "id": "uuid2",
-        "name": "Jane Smith"
-      }
-    ],
+    "currentParticipants": {
+      "count": 12,
+      "participants": [
+        {
+          "id": "uuid1",
+          "name": "John Doe"
+        },
+        {
+          "id": "uuid2",
+          "name": "Jane Smith"
+        }
+      ]
+    },
     "organizer": {
       "id": "organizerId",
       "name": "Club XYZ",
@@ -37,6 +41,7 @@
       },
       "verified": true
     },
+    "title": "Squash Tournament for Beginners",
     "description": "A fun badminton tournament for amateurs with great prizes!",
     "status": "Upcoming",
     "imageUrl": "https://odessa-sport.info/images/another1/2014/fesenko_skvosh_3.jpg"
@@ -50,7 +55,8 @@
       "latitude": 49.8397,
       "longitude": 24.0297
     },
-    "date": "2024-12-10T12:00:00Z",
+    "dateStart": "2024-12-10T12:00:00Z",
+    "dateEnd": "2024-12-10T12:00:00Z",
     "entryFee": 30,
     "prizePool": 300,
     "ageRestrictions": {
@@ -59,12 +65,19 @@
     "skillLevel": "Beginner",
     "format": "Doubles",
     "maxParticipants": 20,
-    "currentParticipants": [
-      {
-        "id": "uuid3",
-        "name": "Alice Brown"
-      }
-    ],
+    "currentParticipants": {
+      "count": 12,
+      "participants": [
+        {
+          "id": "uuid1",
+          "name": "John Doe"
+        },
+        {
+          "id": "uuid2",
+          "name": "Jane Smith"
+        }
+      ]
+    },
     "organizer": {
       "id": "organizerId2",
       "name": "Sports Club Alpha",
@@ -73,6 +86,7 @@
       },
       "verified": true
     },
+    "title": "Badminton tournement for Beginner",
     "description": "Join our friendly badminton doubles tournament!",
     "status": "Upcoming",
     "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQwWSUmipK7HZE1O9hL7OBnNSeOnnkhaRlw&s"
@@ -86,7 +100,8 @@
       "latitude": 46.4825,
       "longitude": 30.7233
     },
-    "date": "2025-01-15T10:00:00Z",
+    "dateStart": "2025-01-15T10:00:00Z",
+    "dateEnd": "2025-01-15T10:00:00Z",
     "entryFee": 100,
     "prizePool": 1000,
     "ageRestrictions": {
@@ -96,7 +111,10 @@
     "skillLevel": "Professional",
     "format": "Singles",
     "maxParticipants": 12,
-    "currentParticipants": [],
+    "currentParticipants": {
+      "count": 0,
+      "participants": []
+    },
     "organizer": {
       "id": "organizerId3",
       "name": "Pro Tennis Club",
@@ -106,6 +124,7 @@
       },
       "verified": true
     },
+    "title": "Exclusive tennis tournament for professionals",
     "description": "Exclusive tennis tournament for professionals!",
     "status": "Upcoming",
     "imageUrl": "https://afisha.london/wp-content/uploads/2021/06/REUTERS_Andrew-Couldridge_File-Photo.jpg"
