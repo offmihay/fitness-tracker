@@ -10,7 +10,7 @@ import useCountdown from "@/src/hooks/useCountdown";
 import {
   useResendVerificationCodeMutation,
   useVerifyEmailCodeMutation,
-} from "../../../mutations/useSignUpMutation";
+} from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { Controller, useForm } from "react-hook-form";

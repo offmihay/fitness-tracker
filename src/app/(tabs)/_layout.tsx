@@ -4,6 +4,12 @@ import { Redirect, Tabs } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+export const globalScreenOptions = {
+  headerTitleStyle: {
+    fontWeight: 600 as const,
+  },
+};
+
 export default function TabLayout() {
   const { t } = useTranslation();
   const { isSignedIn } = useAuth();
@@ -13,7 +19,7 @@ export default function TabLayout() {
   }
 
   return (
-    <Tabs>
+    <Tabs screenOptions={globalScreenOptions}>
       <Tabs.Screen
         name="index"
         options={{
@@ -31,6 +37,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="tournaments"
         options={{
+          headerShown: false,
           title: t("tournaments.title"),
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="sports-tennis" size={size} color={color} />

@@ -7,7 +7,7 @@ import CustomText from "../../../components/shared/text/CustomText";
 
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
-import { useSignUpMutation } from "../../../mutations/useSignUpMutation";
+import { useSignUpMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { Controller, useForm } from "react-hook-form";

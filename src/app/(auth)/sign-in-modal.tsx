@@ -12,7 +12,7 @@ import CustomText from "../../components/shared/text/CustomText";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
-import { useSignInMutation } from "@/src/mutations/useSignInMutation";
+import { useSignInMutation } from "@/src/queries/signin";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { Controller, useForm } from "react-hook-form";

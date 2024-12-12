@@ -74,7 +74,12 @@ const TouchableBtn = ({
     }
   }, [loading]);
 
-  const color = type === "white" ? "black" : "white";
+  const color =
+    type === "white"
+      ? "black"
+      : (type === "grey" && !theme.dark) || type === "lightgrey"
+      ? "black"
+      : "white";
   const opacityColor =
     disabled && !isCheckAnimated && theme.dark
       ? "grey"
@@ -248,7 +253,7 @@ const styles = StyleSheet.create({
   whiteButton: {
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "rgba(0, 0, 0, 0.09)",
+    borderColor: "rgba(0, 0, 0, 0.1)",
   },
 
   darkgreyButton: {

@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import UserAvatar from "@/src/components/settings/UserAvatar";
 import DatePickerInput from "@/src/components/settings/DatePickerInput";
-import { useSetProfileImageMutation, useUpdateUserMutation } from "@/src/mutations/useUserMutation";
+import { useSetProfileImageMutation, useUpdateUserMutation } from "@/src/queries/user";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { useNavigation } from "expo-router";
 import CustomText from "@/src/components/shared/text/CustomText";

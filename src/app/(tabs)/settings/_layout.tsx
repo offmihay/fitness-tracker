@@ -1,12 +1,13 @@
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { globalScreenOptions } from "../_layout";
 
 export default function Layout() {
   const { t } = useTranslation();
   const theme = useCustomTheme();
   return (
-    <Stack screenOptions={{ headerShown: true, headerTintColor: theme.colors.text }}>
+    <Stack screenOptions={globalScreenOptions}>
       <Stack.Screen
         name="index"
         options={{

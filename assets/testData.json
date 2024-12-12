@@ -44,7 +44,8 @@
     "title": "Squash Tournament for Beginners",
     "description": "A fun badminton tournament for amateurs with great prizes!",
     "status": "Upcoming",
-    "imageUrl": "https://odessa-sport.info/images/another1/2014/fesenko_skvosh_3.jpg"
+    "imageUrl": "https://odessa-sport.info/images/another1/2014/fesenko_skvosh_3.jpg",
+    "rules": "1. Формат турніру:\nКількість учасників: 16.\nФормат: плей-офф на вибування.\nКожен матч — 3 з 5 сетів.\n2. Майданчик:\n\nСтандартний сквошний майданчик (9,75 м x 6,4 м).\n3. Очки:\n\nОчки рахуються за системою Rally Scoring (очки заробляються на кожному розіграші).\nДля виграшу сету потрібно 11 очок (при 10:10 — два очка на перевагу).\nДля виграшу матчу потрібно 3 сети з 5.\n4. Подавання м'яча:\n\nПодавання здійснюється з однієї з половин майданчика.\nМ'яч повинен перш за все потрапити у передню стіну вище рівня лінії (2,13 м).\n5. Поведінка:\n\nГравці повинні дотримуватися спортивної етики та поважати суддів.\nУ разі порушень — дискваліфікація.\n6. Визначення переможця:\n\nПереможець визначається за кількістю виграних сетів."
   },
   {
     "id": "uuid2",
@@ -89,7 +90,8 @@
     "title": "Badminton tournement for Beginner",
     "description": "Join our friendly badminton doubles tournament!",
     "status": "Upcoming",
-    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQwWSUmipK7HZE1O9hL7OBnNSeOnnkhaRlw&s"
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQwWSUmipK7HZE1O9hL7OBnNSeOnnkhaRlw&s",
+    "rules": "Турнір з футболу для 8 команд. Формат плей-офф, на вибування. Кожен матч складається з 2 таймів по 20 хвилин. У разі нічії — додатковий час (2 тайми по 10 хвилин) та пенальті. Поле стандартне (100-110 м в довжину, 64-75 м в ширину). Кількість гравців на полі: 7 на 7. Якщо м'яч вийшов за межі поля, визначається аут або кутовий удар залежно від ситуації. За гру з порушенням — жовта або червона картка. Переможе команда, що виграє матч."
   },
   {
     "id": "uuid3",
@@ -127,6 +129,7 @@
     "title": "Exclusive tennis tournament for professionals",
     "description": "Exclusive tennis tournament for professionals!",
     "status": "Upcoming",
-    "imageUrl": "https://afisha.london/wp-content/uploads/2021/06/REUTERS_Andrew-Couldridge_File-Photo.jpg"
+    "imageUrl": "https://afisha.london/wp-content/uploads/2021/06/REUTERS_Andrew-Couldridge_File-Photo.jpg",
+    "rules": "Турнір з тенісу для 16 учасників. Формат плей-офф, на вибування. Кожен матч складається з 2 виграних сетів, максимум 3. Корт стандартний. Система очок: 15, 30, 40, гейм. Щоб виграти сет, потрібно виграти 6 геймів, якщо 5:5 — тай-брейк. Подавання завжди з задньої лінії, м'яч має потрапити в зону суперника. Поважаємо суперників і суддів, за порушення правил можна бути дискваліфікованим. Переможе той, хто виграє 2 з 3 сетів."
   }
 ]

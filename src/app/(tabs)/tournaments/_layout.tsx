@@ -10,14 +10,7 @@ export default function Layout() {
       <Stack.Screen
         name="index"
         options={{
-          title: t("home.title"),
-        }}
-      />
-      <Stack.Screen
-        name="tournament"
-        options={{
-          title: t("home.title"),
-          headerShown: false,
+          title: t("tournaments.title"),
         }}
       />
     </Stack>

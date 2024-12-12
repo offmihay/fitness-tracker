@@ -1,7 +1,6 @@
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { globalScreenOptions } from "../_layout";
+import { globalScreenOptions } from "../../../_layout";
 
 export default function Layout() {
   const { t } = useTranslation();
@@ -10,14 +9,14 @@ export default function Layout() {
       <Stack.Screen
         name="index"
         options={{
-          title: t("home.title"),
+          headerTitle: "Tournament",
         }}
       />
       <Stack.Screen
-        name="tournament"
+        name="rules"
         options={{
-          title: t("home.title"),
-          headerShown: false,
+          headerTitle: "Rules",
+          headerBackTitle: t("settings.headerBackTitle"),
         }}
       />
     </Stack>

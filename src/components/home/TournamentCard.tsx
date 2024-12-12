@@ -13,6 +13,7 @@ type Props = {
   location: string;
   dateTime: string;
   patricipants: string;
+  entryFee: string;
   prizePool: string;
   handleRegister: () => void;
   handleOpenDetails: () => void;
@@ -23,6 +24,7 @@ const TournamentCard = ({
   location,
   dateTime,
   patricipants,
+  entryFee,
   prizePool,
   imageSource,
   handleRegister,
@@ -32,30 +34,48 @@ const TournamentCard = ({
   const { t } = useTranslation();
 
   const [height, setHeight] = useState(40);
-  const [hasMultilineText, setHasMultilineText] = useState(false);
+  const [multilineStates, setMultilineStates] = useState<boolean[]>([]);
 
   const handleTextLayout = useCallback(
-    (event: any) => {
+    (index: number) => (event: any) => {
       const { lines } = event.nativeEvent;
-      if (lines.length > 1 && !hasMultilineText) {
-        setHasMultilineText(true);
-      }
+      const isMultiline = lines.length > 1;
+
+      setMultilineStates((prev) => {
+        const newStates = [...prev];
+        newStates[index] = isMultiline;
+        return newStates;
+      });
     },
-    [hasMultilineText]
+    []
   );
 
   useEffect(() => {
-    setHeight(hasMultilineText ? 40 : 30);
-  }, [hasMultilineText]);
+    if (multilineStates.some((isMultiline) => isMultiline)) {
+      setHeight(40);
+    } else if (multilineStates.length === 4) {
+      setHeight(30);
+    }
+  }, [multilineStates]);
 
   return (
     <TouchableOpacity onPress={handleOpenDetails} activeOpacity={0.8}>
       <View style={[{ backgroundColor: theme.colors.surface }, styles.wrapper]}>
         <View
-          style={{ width: "100%", height: 170, borderRadius: 10, overflow: "hidden" }}
+          style={{
+            width: "100%",
+            height: 170,
+            borderRadius: 10,
+            overflow: "hidden",
+            position: "relative",
+          }}
           className="mb-4"
         >
           <Image source={imageSource} style={{ width: "100%", height: "100%" }}></Image>
+          <View style={[styles.prizeBadge, { backgroundColor: theme.colors.surface }]}>
+            <FontAwesome6 name="sack-dollar" size={18} color={theme.colors.text} />
+            <CustomText style={{ fontWeight: 800 }}>{prizePool}</CustomText>
+          </View>
         </View>
         <CustomText type="subtitle">{title}</CustomText>
         <View className="flex flex-row mt-4">
@@ -70,7 +90,7 @@ const TournamentCard = ({
                   numberOfLines={2}
                   ellipsizeMode="tail"
                   style={{ maxWidth: 175 }}
-                  onTextLayout={handleTextLayout}
+                  onTextLayout={handleTextLayout(1)}
                 >
                   {location}
                 </CustomText>
@@ -84,7 +104,7 @@ const TournamentCard = ({
                   numberOfLines={2}
                   ellipsizeMode="tail"
                   style={{ maxWidth: 175 }}
-                  onTextLayout={handleTextLayout}
+                  onTextLayout={handleTextLayout(2)}
                 >
                   {dateTime}
                 </CustomText>
@@ -102,7 +122,7 @@ const TournamentCard = ({
                   numberOfLines={2}
                   ellipsizeMode="tail"
                   style={{ maxWidth: 90 }}
-                  onTextLayout={handleTextLayout}
+                  onTextLayout={handleTextLayout(3)}
                 >
                   {patricipants}
                 </CustomText>
@@ -116,21 +136,24 @@ const TournamentCard = ({
                   numberOfLines={2}
                   ellipsizeMode="tail"
                   style={{ maxWidth: 90 }}
-                  onTextLayout={handleTextLayout}
+                  onTextLayout={handleTextLayout(4)}
                 >
-                  {prizePool}
+                  {entryFee}
                 </CustomText>
               </View>
             </View>
           </View>
         </View>
-        <TouchableBtn
-          onPress={handleRegister}
-          title={t("index.register")}
-          nodeLeft={(color) => <></>}
-          type="grey"
-          className="mt-4"
-        />
+
+        <View className="flex flex-row justify-between mt-4">
+          <TouchableBtn
+            title={t("index.register")}
+            style={{ width: "48%" }}
+            onPress={handleRegister}
+            nodeLeft={(color) => <></>}
+          />
+          <TouchableBtn type="grey" title="Save for Later" style={{ width: "48%" }} />
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -145,6 +168,19 @@ const styles = StyleSheet.create({
   border: {
     borderWidth: 1,
     borderColor: "red",
+  },
+
+  prizeBadge: {
+    position: "absolute",
+    padding: 10,
+    borderRadius: 10,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    right: 10,
+    bottom: 10,
+    opacity: 1,
   },
 });
 

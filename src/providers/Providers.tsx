@@ -24,26 +24,6 @@ const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) =
     return () => sub.remove();
   }, []);
 
-  // const [loaded, error] = useFonts({
-  //   RubikWetPaint: require("../../assets/fonts/RubikWetPaint-Regular.ttf"),
-  //   PlayRegular: {
-  //     uri: require("../../assets/fonts/Play-Regular.ttf"),
-  //   },
-  //   PlayBold: {
-  //     uri: require("../../assets/fonts/Play-Bold.ttf"),
-  //   },
-  // });
-
-  // useEffect(() => {
-  //   if (loaded || error) {
-  //     SplashScreen.hideAsync();
-  //   }
-  // }, [loaded, error]);
-
-  // if (!loaded && !error) {
-  //   return null;
-  // }
-
   const theme = currentTheme === "dark" ? CombinedDarkTheme : CombinedLightTheme;
 
   return (
