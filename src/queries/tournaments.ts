@@ -1,28 +1,23 @@
-import { useQuery, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { Tournament } from "../types/Tournament";
-import testData from "../../assets/testData.json";
 
-export const useAllTournamentsQuery = (
-  options?: UseQueryOptions<Tournament[]>
-): UseQueryResult<Tournament[]> => {
-  return useQuery<Tournament[]>({
+const getData = async <TData>(url: string) => {
+  const data = await fetch(url);
+  const json = await data.json();
+  return json as TData;
+};
+
+export const useAllTournamentsQuery = () => {
+  return useQuery({
     queryKey: ["tournaments"],
-    queryFn: async (): Promise<Tournament[]> => {
-      const data = fetch("https://67532eb7f3754fcea7bb12e9.mockapi.io/tournaments").then(
-        (response) => response.json()
-      );
-      return data;
-      // return testData as Tournament[];
+    queryFn: () => {
+      return getData<Tournament[]>("https://67532eb7f3754fcea7bb12e9.mockapi.io/tournaments");
     },
     initialData: [],
-    ...options,
   });
 };
 
-export const useTournamentQuery = (
-  id: string,
-  options?: UseQueryOptions<Tournament>
-): UseQueryResult<Tournament> => {
+export const useTournamentQuery = (id: string): UseQueryResult<Tournament> => {
   return useQuery<Tournament>({
     queryKey: ["tournament", id],
     queryFn: async (): Promise<Tournament> => {
@@ -32,7 +27,25 @@ export const useTournamentQuery = (
 
       return data;
     },
+  });
+};
 
-    ...options,
+export const useCreateTournamentMutation = () => {
+  return useMutation({
+    mutationFn: async (data: Tournament): Promise<Tournament> => {
+      const response = await fetch("https://67532eb7f3754fcea7bb12e9.mockapi.io/tournaments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create tournament");
+      }
+
+      return response.json();
+    },
   });
 };

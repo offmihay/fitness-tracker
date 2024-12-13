@@ -98,9 +98,11 @@ const TournamentDetails = ({
             <MaterialIcons name="18-up-rating" size={24} color={theme.colors.primary} />
             <CustomText>
               <CustomText weight="bold">Age Restriction: </CustomText>
-              {data?.ageRestrictions.maxAge
-                ? `${data?.ageRestrictions.minAge} - ${data.ageRestrictions.maxAge}`
-                : `${data?.ageRestrictions.minAge}+`}
+              {data?.ageRestrictions?.maxAge != null && data?.ageRestrictions?.minAge != null
+                ? `${data.ageRestrictions.minAge} - ${data.ageRestrictions.maxAge}`
+                : data?.ageRestrictions?.minAge != null
+                ? `${data.ageRestrictions.minAge}+`
+                : "No age restrictions"}
             </CustomText>
           </View>
         </View>
@@ -138,17 +140,21 @@ const TournamentDetails = ({
           <CustomMap geoCoordinates={data?.geoCoordinates} description={data?.location} />
         </View>
       </View>
-      <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
-        <CustomText type="subtitle" className="mb-4">
-          Organizer Details
-        </CustomText>
-        <CustomText>Organized by {data?.organizer.name}.</CustomText>
-        <CustomText>
-          Contact us:<CustomText> </CustomText>
-          <CustomText type="link">{data?.organizer.contact.email}.</CustomText>
-        </CustomText>
-        {data?.organizer.contact.phone && <CustomText>{data?.organizer.contact.phone}</CustomText>}
-      </View>
+      {data.organizer && (
+        <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
+          <CustomText type="subtitle" className="mb-4">
+            Organizer Details
+          </CustomText>
+          <CustomText>Organized by {data?.organizer.name ?? "Unknown"}.</CustomText>
+          <CustomText>
+            Contact us:<CustomText> </CustomText>
+            <CustomText type="link">{data?.organizer.contact.email}.</CustomText>
+          </CustomText>
+          {data?.organizer.contact.phone && (
+            <CustomText>{data?.organizer.contact.phone}</CustomText>
+          )}
+        </View>
+      )}
     </View>
   );
 };

@@ -1,20 +1,20 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
 
 import TournamentCard from "@/src/components/home/TournamentCard";
 import { getFormatDateRange } from "@/src/utils/geFormatDateString";
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useRouter } from "expo-router";
 import { useAllTournamentsQuery } from "@/src/queries/tournaments";
 import CustomText from "@/src/components/shared/text/CustomText";
+import { useSettings } from "@/src/hooks/useSettings";
 
 type HomePageProps = {};
 
 const HomePage = ({}: HomePageProps) => {
-  const theme = useCustomTheme();
+  const { settings } = useSettings();
   const router = useRouter();
 
-  const { data, isLoading } = useAllTournamentsQuery();
+  const { data, isLoading, refetch } = useAllTournamentsQuery();
 
   const handleOpenDetails = (id: string) => {
     router.push({
@@ -27,8 +27,14 @@ const HomePage = ({}: HomePageProps) => {
     console.log("Register", title);
   };
 
+  const handleRefresh = () => {
+    refetch();
+  };
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}
+    >
       <View style={styles.wrapper}>
         <View className="flex gap-4">
           {data &&
@@ -41,10 +47,14 @@ const HomePage = ({}: HomePageProps) => {
                 imageSource={item.imageUrl}
                 title={item.title}
                 location={item.location}
-                dateTime={getFormatDateRange(item.dateStart, item.dateEnd)}
-                patricipants={`${item.currentParticipants.count}/${item.maxParticipants}`}
-                prizePool={`${item.prizePool.toString()} UAH`}
-                entryFee={`${item.entryFee.toString()} UAH`}
+                dateTime={getFormatDateRange(item.dateStart, item.dateEnd, settings.language)}
+                patricipants={
+                  item.currentParticipants && item.currentParticipants.count && item.maxParticipants
+                    ? `${item.currentParticipants.count}/${item.maxParticipants}`
+                    : "-"
+                }
+                prizePool={item.prizePool ? `${item.prizePool.toString()} UAH` : "-"}
+                entryFee={item.entryFee ? `${item.entryFee.toString()} UAH` : "-"}
               />
             ))}
           {isLoading && <CustomText>Loading...</CustomText>}

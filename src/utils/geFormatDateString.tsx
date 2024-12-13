@@ -1,9 +1,11 @@
 import i18n from "i18next";
-import { useSettings } from "../hooks/useSettings";
 
-export const getFormatDateRange = (dateStartStr: string, dateEndStr: string) => {
-  const { settings } = useSettings();
-  const localesLangCode = settings.language || i18n.language || "en-US";
+export const getFormatDateRange = (
+  dateStartStr: string,
+  dateEndStr: string,
+  language: string | null
+) => {
+  const localesLangCode = language || i18n.language || "en-US";
 
   const dateStart = new Date(dateStartStr);
   const dateEnd = new Date(dateEndStr);
