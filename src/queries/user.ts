@@ -11,24 +11,20 @@ export type FormData = {
   unsafeMetadata?: Record<string, any>;
 };
 
-export const useSetProfileImageMutation = (options?: UseMutationOptions<void, unknown, string>) => {
+export const useSetProfileImageMutation = () => {
   const { user } = useUser();
   return useMutation({
-    mutationFn: (imgUrl: string): Promise<void> => {
-      if (!user) return Promise.resolve();
-      return user.setProfileImage({ file: imgUrl }).then(() => undefined);
+    mutationFn: (imgUrl: string) => {
+      return user!.setProfileImage({ file: imgUrl });
     },
-    ...options,
   });
 };
 
-export const useUpdateUserMutation = (options?: UseMutationOptions<void, unknown, FormData>) => {
+export const useUpdateUserMutation = () => {
   const { user } = useUser();
   return useMutation({
-    mutationFn: (data: FormData): Promise<void> => {
-      if (!user) return Promise.resolve();
-      return user.update(data).then(() => undefined);
+    mutationFn: (data: FormData) => {
+      return user!.update(data);
     },
-    ...options,
   });
 };

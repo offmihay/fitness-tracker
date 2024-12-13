@@ -113,28 +113,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
     });
   }, [navigation, isAnyInputFocused, Object.keys(formErrors).length, isDirty]);
 
-  const formDataMutation = useUpdateUserMutation({
-    onSuccess: (_, variables) => {
-      Keyboard.dismiss();
-      reset(variables, { keepIsSubmitted: false, keepIsValid: true });
-    },
-    onError: (error: any) => {
-      if (error.clerkError) {
-        error.errors.forEach((err: any) => {
-          const errParam = "root.clerkError";
-          setError(errParam, {
-            type: err.code,
-            message: t(`errors.${err.code}`),
-          });
-        });
-      } else {
-        setError("root.serverError", {
-          type: "server_error",
-          message: t(`errors.server_error`),
-        });
-      }
-    },
-  });
+  const formDataMutation = useUpdateUserMutation();
 
   const onSubmit = (data: FormData) => {
     const permittedKeys = [
@@ -157,7 +136,28 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
     );
 
     const formData = { ...permittedData, unsafeMetadata: unpermittedData };
-    formDataMutation.mutate(formData);
+    formDataMutation.mutate(formData, {
+      onSuccess: (_, variables) => {
+        Keyboard.dismiss();
+        reset(variables, { keepIsSubmitted: false, keepIsValid: true });
+      },
+      onError: (error: any) => {
+        if (error.clerkError) {
+          error.errors.forEach((err: any) => {
+            const errParam = "root.clerkError";
+            setError(errParam, {
+              type: err.code,
+              message: t(`errors.${err.code}`),
+            });
+          });
+        } else {
+          setError("root.serverError", {
+            type: "server_error",
+            message: t(`errors.server_error`),
+          });
+        }
+      },
+    });
   };
 
   useEffect(() => {
@@ -169,28 +169,29 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
     bottomSheetRef.current?.present();
   };
 
-  const setProfileImgMutation = useSetProfileImageMutation({
-    onError: (err) => {
-      setImage(user?.imageUrl || null);
-      console.log("Error setting profile image:", JSON.stringify(err));
-    },
-  });
+  const setProfileImgMutation = useSetProfileImageMutation();
 
-  const handleGalleryImagePick = useCallback(async () => {
+  const saveProfileImage = (uri: string | null) => {
+    if (uri) {
+      setImage(uri);
+      setProfileImgMutation.mutate(uri, {
+        onError: (err) => {
+          setImage(user?.imageUrl || null);
+          console.log("Error setting profile image:", JSON.stringify(err));
+        },
+      });
+    }
+  };
+
+  const handleGalleryImagePick = async () => {
     const result = await pickGalleryImage();
-    if (result) {
-      setImage(result);
-      setProfileImgMutation.mutate(result);
-    }
-  }, [setProfileImgMutation]);
+    saveProfileImage(result);
+  };
 
-  const handleCameraImagePick = useCallback(async () => {
+  const handleCameraImagePick = async () => {
     const result = await pickCameraImage();
-    if (result) {
-      setImage(result);
-      setProfileImgMutation.mutate(result);
-    }
-  }, [setProfileImgMutation]);
+    saveProfileImage(result);
+  };
 
   return (
     <KeyboardAwareScrollView
@@ -272,6 +273,8 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             onChange={onChange}
             selectedDate={value ? new Date(value) : new Date()}
             onConfirm={updateValues}
+            minimumDate={new Date(new Date().getFullYear() - 100, 0, 1)}
+            maximumDate={new Date()}
           />
         )}
         name="birthday"
