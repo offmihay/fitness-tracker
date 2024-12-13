@@ -4,7 +4,7 @@ import { Alert, Linking } from "react-native";
 export const pickCameraImage = async (): Promise<string | null> => {
   const handleLaunchCamera = async () => {
     const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: "images",
       allowsEditing: true,
       quality: 1,
       aspect: [3, 4],
