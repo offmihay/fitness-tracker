@@ -18,6 +18,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import { Octicons } from "@expo/vector-icons";
 import { pickGalleryImage } from "@/src/utils/pickGalleryImage";
+import RHFormInput from "@/src/components/shared/form/RHFormInput";
+import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
 
 type PersonalInfoProps = {};
 
@@ -53,7 +55,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
     defaultValues: {
       firstName: user?.firstName || "",
       lastName: user?.lastName || "",
-      birthday: (user?.unsafeMetadata?.birthday as string) || "",
+      birthday: user?.unsafeMetadata?.birthday || "",
     },
     mode: "onChange",
   });
@@ -195,98 +197,82 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
 
   return (
     <KeyboardAwareScrollView
-      style={styles.wrapper}
-      keyboardShouldPersistTaps="always"
-      keyboardOpeningTime={100}
-      contentContainerStyle={{ width: "100%", margin: 0 }}
       scrollEnabled={true}
-      extraScrollHeight={-125}
-      extraHeight={10}
-      showsVerticalScrollIndicator={false}
+      extraScrollHeight={-70}
+      keyboardShouldPersistTaps="handled"
+      enableOnAndroid={true}
+      keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
     >
-      <View className="mx-auto mt-4">
-        <UserAvatar
-          image={image}
-          loading={loadingImg}
-          onPickImage={handleOpenCameraModal}
-          isPending={setProfileImgMutation.isPending}
-          onLoadStart={() => setLoadingImg(true)}
-          onLoad={() => setLoadingImg(false)}
-        />
-      </View>
-      <View className="mt-8">
-        <CustomTextInput
-          disabled
-          disabledText
-          value={user?.primaryEmailAddress?.emailAddress}
-          label={t("settings.personalInfo.email")}
-        />
-      </View>
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, value, onBlur } }) => (
+      <View style={styles.wrapper}>
+        <View className="mx-auto mt-4">
+          <UserAvatar
+            image={image}
+            loading={loadingImg}
+            onPickImage={handleOpenCameraModal}
+            isPending={setProfileImgMutation.isPending}
+            onLoadStart={() => setLoadingImg(true)}
+            onLoad={() => setLoadingImg(false)}
+          />
+        </View>
+        <View className="flex flex-col gap-4 mt-8">
           <CustomTextInput
-            onBlur={handleBlur}
-            onFocus={handleFocus}
-            autoComplete="given-name"
-            label={t("settings.personalInfo.firstName")}
-            onChangeText={onChange}
-            value={value}
-            useClearButton
-            isError={!!formErrors.firstName}
-            returnKeyType="done"
-            onSubmitEditing={updateValues}
+            disabled
+            disabledText
+            value={user?.primaryEmailAddress?.emailAddress}
+            label={t("settings.personalInfo.email")}
           />
-        )}
-        name="firstName"
-      />
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, value, onBlur } }) => (
-          <CustomTextInput
-            onBlur={handleBlur}
-            onFocus={handleFocus}
-            autoComplete="family-name"
-            label={t("settings.personalInfo.lastName")}
-            onChangeText={onChange}
-            value={value}
-            isError={!!formErrors.lastName}
-            useClearButton
-            returnKeyType="done"
-            onSubmitEditing={updateValues}
-          />
-        )}
-        name="lastName"
-      />
-      <Controller
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <DatePickerInput
-            label={t("settings.personalInfo.birthday")}
-            value={value}
-            onChange={onChange}
-            selectedDate={value ? new Date(value) : new Date()}
-            onConfirm={updateValues}
-            minimumDate={new Date(new Date().getFullYear() - 100, 0, 1)}
-            maximumDate={new Date()}
-          />
-        )}
-        name="birthday"
-      />
-      <TouchableBtn
-        onPress={() => signOut()}
-        title={t("settings.personalInfo.signOut")}
-        nodeLeft={(color) => <Octicons name="sign-out" size={20} color={color} />}
-        type="grey"
-        className="mt-6"
-      />
 
+          <RHFormInput
+            name="firstName"
+            label={t("settings.personalInfo.firstName")}
+            control={control}
+            rules={{
+              required: true,
+            }}
+            inputProps={{
+              useClearButton: true,
+              isError: !!formErrors.firstName,
+              returnKeyType: "done",
+              onSubmitEditing: updateValues,
+              onBlur: handleBlur,
+              onFocus: handleFocus,
+            }}
+          />
+          <RHFormInput
+            name="lastName"
+            label={t("settings.personalInfo.lastName")}
+            control={control}
+            rules={{
+              required: true,
+            }}
+            inputProps={{
+              useClearButton: true,
+              isError: !!formErrors.lastName,
+              returnKeyType: "done",
+              onSubmitEditing: updateValues,
+              onBlur: handleBlur,
+              onFocus: handleFocus,
+            }}
+          />
+          <RHFormDatePicker
+            name="birthday"
+            label={t("settings.personalInfo.birthday")}
+            datePickerProps={{
+              minimumDate: new Date(new Date().getFullYear() - 100, 0, 1),
+              maximumDate: new Date(),
+              onConfirm: updateValues,
+            }}
+            control={control}
+          />
+        </View>
+        <TouchableBtn
+          onPress={() => signOut()}
+          title={t("settings.personalInfo.signOut")}
+          nodeLeft={(color) => <Octicons name="sign-out" size={20} color={color} />}
+          type="grey"
+          className="mt-6"
+        />
+      </View>
       <ChooseCameraModal
         ref={bottomSheetRef}
         onGallery={() => handleGalleryImagePick()}

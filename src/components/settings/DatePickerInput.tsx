@@ -1,8 +1,9 @@
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React, { useState, forwardRef, useImperativeHandle, useRef } from "react";
 import CustomTextInput from "../shared/input/CustomTextInput";
 import { useTranslation } from "react-i18next";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Keyboard, Pressable, View } from "react-native";
+import { Keyboard, Pressable, View, TextInput } from "react-native";
+import CustomText from "../shared/text/CustomText";
 
 type DatePickerInputProps = {
   label: string;
@@ -12,24 +13,25 @@ type DatePickerInputProps = {
   onConfirm?: () => void;
   minimumDate?: Date;
   maximumDate?: Date;
+  inputProps?: Partial<React.ComponentProps<typeof CustomTextInput>>;
 };
 
-export interface DatePickerInputRef {
-  show: () => void;
+export interface InputRef {
+  focus: () => void;
 }
 
-const DatePickerInput = forwardRef<DatePickerInputRef, DatePickerInputProps>(
-  ({ label, value, onChange, selectedDate, onConfirm, minimumDate, maximumDate }, ref) => {
+const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
+  (
+    { label, value, onChange, selectedDate, onConfirm, minimumDate, maximumDate, inputProps },
+    ref
+  ) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [isConfirmed, setIsConfirmed] = useState(false);
     const { i18n, t } = useTranslation();
 
-    useImperativeHandle(ref, () => ({
-      show: () => setDatePickerVisibility(true),
-    }));
-
     const showDatePicker = () => {
-      setDatePickerVisibility(true);
       Keyboard.dismiss();
+      setDatePickerVisibility(true);
     };
 
     const hideDatePicker = () => setDatePickerVisibility(false);
@@ -37,25 +39,56 @@ const DatePickerInput = forwardRef<DatePickerInputRef, DatePickerInputProps>(
     const handleConfirm = (date: Date) => {
       onChange(date);
       hideDatePicker();
-      onConfirm?.();
+      setIsConfirmed(true);
+    };
+
+    useImperativeHandle(ref, () => ({
+      focus: () => {
+        showDatePicker();
+      },
+    }));
+
+    const handleAfterHide = () => {
+      setTimeout(() => {
+        if (isConfirmed) {
+          setIsConfirmed(false);
+          onConfirm?.();
+        }
+      }, 0);
+    };
+
+    const formatDate = (date: string | Date): string => {
+      const parsedDate = new Date(date);
+      return isNaN(parsedDate.getTime()) ? "" : parsedDate.toLocaleDateString(i18n.language);
     };
 
     return (
       <View>
         <Pressable onPress={showDatePicker}>
           <CustomTextInput
+            selectTextOnFocus={false}
             label={label}
-            disabled
             onPress={showDatePicker}
-            value={value instanceof Date ? value.toLocaleDateString(i18n.language) : value}
+            disabled
+            value={formatDate(value)}
             useClearButton
+            isForceFocused={isDatePickerVisible}
+            {...inputProps}
           />
         </Pressable>
         <DateTimePickerModal
+          customHeaderIOS={() => (
+            <View style={{ paddingTop: 10 }}>
+              <CustomText center type="upperdefault" weight="bold">
+                {label}
+              </CustomText>
+            </View>
+          )}
           isVisible={isDatePickerVisible}
           mode="date"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
+          onHide={handleAfterHide}
           locale={i18n.language}
           maximumDate={maximumDate}
           minimumDate={minimumDate}

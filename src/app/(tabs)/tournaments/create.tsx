@@ -1,13 +1,15 @@
 import { StyleSheet, TextInput, View } from "react-native";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Controller, Form, useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { useTranslation } from "react-i18next";
 import { Tournament } from "@/src/types/Tournament";
 import { useCreateTournamentMutation } from "@/src/queries/tournaments";
-import DatePickerInput, { DatePickerInputRef } from "@/src/components/settings/DatePickerInput";
-import FormField from "@/src/components/tournaments/FormField";
+import DatePickerInput from "@/src/components/settings/DatePickerInput";
+import RHFormInput from "@/src/components/shared/form/RHFormInput";
+import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
 
 type Props = {};
 
@@ -26,23 +28,7 @@ const CreateTournament = ({}: Props) => {
     mode: "onChange",
   });
 
-  console.log(watch("title"));
-
-  const titleRef = useRef<TextInput | null>(null);
-  const cityRef = useRef<TextInput | null>(null);
-  const locationRef = useRef<TextInput | null>(null);
-  const entryFeeRef = useRef<TextInput | null>(null);
-  const prizePoolRef = useRef<TextInput | null>(null);
-  const descriptionRef = useRef<TextInput | null>(null);
-  const dateStartRef = useRef<DatePickerInputRef | null>(null);
-  const dateEndRef = useRef<DatePickerInputRef | null>(null);
-  const skillLevelRef = useRef<TextInput | null>(null);
-  const formatRef = useRef<TextInput | null>(null);
-  const minAgeRef = useRef<TextInput | null>(null);
-  const maxAgeRef = useRef<TextInput | null>(null);
-
   const handleFormSubmit = (data: Tournament) => {
-    console.log(data);
     createTournamentMutation.mutate(data, {
       onSuccess: (data) => {
         console.log("Tournament created:", data);
@@ -54,216 +40,120 @@ const CreateTournament = ({}: Props) => {
   };
 
   return (
-    <KeyboardAwareScrollView extraHeight={-20} extraScrollHeight={-15}>
+    <KeyboardAwareScrollView
+      scrollEnabled={true}
+      extraScrollHeight={-70}
+      keyboardShouldPersistTaps="handled"
+      enableOnAndroid={true}
+      keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
+    >
       <View style={styles.wrapper}>
-        <FormField
-          control={control}
-          name="title"
-          label={"title"}
-          onSubmitEditing={() => setFocus("city")}
-        />
+        <View className="flex flex-col gap-4">
+          <RHFormInput
+            name="title"
+            label={"title"}
+            control={control}
+            onSubmitEditing={() => setFocus("description")}
+          />
+          <RHFormInput
+            name="description"
+            label={"description"}
+            inputProps={{
+              style: {
+                height: 100,
+              },
+              styleWrapper: {
+                height: 110,
+              },
+              multiline: true,
+            }}
+            control={control}
+            onSubmitEditing={() => setFocus("dateStart")}
+          />
+          <RHFormDatePicker
+            name="dateStart"
+            label={"Start date"}
+            datePickerProps={{
+              minimumDate: new Date(),
+              maximumDate: new Date(new Date().getFullYear() + 5, 0, 1),
+            }}
+            control={control}
+            onSubmitEditing={() => setFocus("dateEnd")}
+          />
+          <RHFormDatePicker
+            name="dateEnd"
+            label={"End date"}
+            datePickerProps={{
+              minimumDate: watch("dateStart") ? new Date(watch("dateStart")) : undefined,
+            }}
+            control={control}
+            onSubmitEditing={() => setFocus("city")}
+          />
+          <RHFormInput
+            name="city"
+            label={"city"}
+            control={control}
+            onSubmitEditing={() => setFocus("location")}
+          />
+          <RHFormInput
+            name="location"
+            label={"location"}
+            control={control}
+            onSubmitEditing={() => setFocus("entryFee")}
+          />
+          <RHFormInput
+            name="entryFee"
+            label={"entryFee"}
+            inputProps={{ keyboardType: "numbers-and-punctuation" }}
+            control={control}
+            onSubmitEditing={() => setFocus("prizePool")}
+          />
+          <RHFormInput
+            name="prizePool"
+            label={"prizePool"}
+            inputProps={{
+              keyboardType: "numbers-and-punctuation",
+            }}
+            control={control}
+            onSubmitEditing={() => setFocus("skillLevel")}
+          />
+          <RHFormInput
+            name="skillLevel"
+            label={"skillLevel"}
+            control={control}
+            onSubmitEditing={() => setFocus("format")}
+          />
+          <RHFormInput
+            name="format"
+            label={"format"}
+            control={control}
+            onSubmitEditing={() => setFocus("ageRestrictions.minAge")}
+          />
+          <View className="flex flex-row">
+            <View className="w-1/2 pr-1">
+              <RHFormInput
+                name="ageRestrictions.minAge"
+                label={"minAge"}
+                inputProps={{ keyboardType: "numbers-and-punctuation" }}
+                control={control}
+                onSubmitEditing={() => setFocus("ageRestrictions.maxAge")}
+              />
+            </View>
+            <View className="w-1/2 pl-1">
+              <RHFormInput
+                name="ageRestrictions.maxAge"
+                label={"maxAge"}
+                inputProps={{
+                  keyboardType: "numbers-and-punctuation",
+                }}
+                control={control}
+                onSubmitEditing={() => void 0}
+              />
+            </View>
+          </View>
+        </View>
 
-        {/* <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value, ref } }) => (
-            <CustomTextInput
-              ref={ref}
-              label={"title"}
-              value={value}
-              onChangeText={onChange}
-              returnKeyType="next"
-              onSubmitEditing={() => setFocus("city")}
-            />
-          )}
-          name="title"
-        /> */}
-
-        <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value, ref } }) => (
-            <CustomTextInput
-              ref={ref}
-              label={"city"}
-              value={value}
-              onChangeText={onChange}
-              returnKeyType="next"
-              onSubmitEditing={() => locationRef.current?.focus()}
-            />
-          )}
-          name="city"
-        />
-
-        <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value, ref } }) => (
-            <CustomTextInput
-              ref={ref}
-              label={"location"}
-              value={value}
-              onChangeText={onChange}
-              returnKeyType="next"
-              onSubmitEditing={() => dateStartRef.current?.show()}
-            />
-          )}
-          name="location"
-        />
-
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, value } }) => (
-            <DatePickerInput
-              ref={dateStartRef}
-              label={"dateStart"}
-              value={value}
-              onChange={onChange}
-              selectedDate={value ? new Date(value) : new Date()}
-              minimumDate={new Date()}
-              onConfirm={() => dateEndRef.current?.show()}
-            />
-          )}
-          name="dateStart"
-        />
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, value } }) => (
-            <DatePickerInput
-              ref={dateEndRef}
-              label={"dateEnd"}
-              value={value}
-              onChange={onChange}
-              selectedDate={value ? new Date(value) : new Date()}
-              onConfirm={() => entryFeeRef.current?.focus()}
-              //   minimumDate={watch("dateStart")}
-            />
-          )}
-          name="dateEnd"
-        />
-
-        <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <CustomTextInput
-              ref={entryFeeRef}
-              label={"entryFee"}
-              value={value?.toString()}
-              onChangeText={onChange}
-              // keyboardType="numeric"
-              returnKeyType="next"
-              onSubmitEditing={() => prizePoolRef.current?.focus()}
-            />
-          )}
-          name="entryFee"
-        />
-
-        <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <CustomTextInput
-              ref={prizePoolRef}
-              label={"prizePool"}
-              value={value?.toString()}
-              onChangeText={onChange}
-              // keyboardType="numeric"
-              returnKeyType="next"
-              onSubmitEditing={() => descriptionRef.current?.focus()}
-            />
-          )}
-          name="prizePool"
-        />
-
-        <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <CustomTextInput
-              ref={descriptionRef}
-              label={"description"}
-              value={value}
-              onChangeText={onChange}
-              returnKeyType="next"
-              onSubmitEditing={() => skillLevelRef.current?.focus()}
-            />
-          )}
-          name="description"
-        />
-        <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <CustomTextInput
-              ref={skillLevelRef}
-              label={"skillLevel"}
-              value={value}
-              onChangeText={onChange}
-              returnKeyType="next"
-              onSubmitEditing={() => formatRef.current?.focus()}
-            />
-          )}
-          name="skillLevel"
-        />
-
-        <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <CustomTextInput
-              ref={formatRef}
-              label={"format"}
-              value={value}
-              onChangeText={onChange}
-              returnKeyType="next"
-              onSubmitEditing={() => minAgeRef.current?.focus()}
-            />
-          )}
-          name="format"
-        />
-
-        <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <CustomTextInput
-              ref={minAgeRef}
-              label={"minAge"}
-              value={value?.toString()}
-              onChangeText={onChange}
-              // keyboardType="numeric"
-              returnKeyType="next"
-              onSubmitEditing={() => maxAgeRef.current?.focus()}
-            />
-          )}
-          name="ageRestrictions.minAge"
-        />
-
-        <Controller
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <CustomTextInput
-              ref={maxAgeRef}
-              label={"maxAge"}
-              value={value?.toString()}
-              onChangeText={onChange}
-              // keyboardType="numeric"
-              returnKeyType="done"
-              onSubmitEditing={handleSubmit(handleFormSubmit)}
-            />
-          )}
-          name="ageRestrictions.maxAge"
-        />
-
-        {/* <TouchableBtn title="Create" onPress={handleSubmit(onSubmit)} /> */}
+        <TouchableBtn title="Create" className="mt-4" onPress={handleSubmit(handleFormSubmit)} />
       </View>
     </KeyboardAwareScrollView>
   );
