@@ -2,9 +2,9 @@ import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
 
 import TournamentCard from "@/src/components/home/TournamentCard";
-import { getFormatDateRange } from "@/src/utils/geFormatDateString";
+import { getFormatDateRange } from "@/src/utils/getFormatDateString";
 import { useRouter } from "expo-router";
-import { useAllTournamentsQuery } from "@/src/queries/tournaments";
+import { useAllTournaments } from "@/src/queries/tournaments";
 import CustomText from "@/src/components/shared/text/CustomText";
 import { useSettings } from "@/src/hooks/useSettings";
 
@@ -14,7 +14,7 @@ const HomePage = ({}: HomePageProps) => {
   const { settings } = useSettings();
   const router = useRouter();
 
-  const { data, isLoading, refetch } = useAllTournamentsQuery();
+  const { data, isLoading, refetch } = useAllTournaments();
 
   const handleOpenDetails = (id: string) => {
     router.push({

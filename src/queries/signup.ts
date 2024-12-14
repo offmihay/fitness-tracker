@@ -1,23 +1,22 @@
 import { useSignUp } from "@clerk/clerk-expo";
 import { useMutation } from "@tanstack/react-query";
 
-// Hook for initial email sign-up
 export const useSignUpMutation = () => {
   const { isLoaded, signUp } = useSignUp();
 
   const signUpMutation = useMutation({
-    mutationFn: (emailAddress: string) =>
-      isLoaded
-        ? signUp.create({
-            emailAddress,
-          })
-        : Promise.resolve(undefined),
+    mutationFn: async (emailAddress: string) => {
+      if (isLoaded) {
+        await signUp.create({
+          emailAddress,
+        });
+      }
+    },
   });
 
   return signUpMutation;
 };
 
-// Hook for password creation during sign-up
 type SignUpPasswordParams = {
   emailAddress: string;
   password: string;
@@ -33,12 +32,11 @@ export const useSignUpPasswordMutation = () => {
           emailAddress,
           password,
         });
-        return (
-          signUpResponse &&
-          (await signUp.prepareEmailAddressVerification({ strategy: "email_code" }))
-        );
-      } else {
-        return Promise.resolve(undefined);
+
+        if (signUpResponse) {
+          return await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+        } else {
+        }
       }
     },
   });
@@ -46,30 +44,28 @@ export const useSignUpPasswordMutation = () => {
   return signUpPasswordMutation;
 };
 
-// Hook for resending verification code
 export const useResendVerificationCodeMutation = () => {
   const { isLoaded, signUp } = useSignUp();
 
   return useMutation({
-    mutationFn: () =>
-      isLoaded
-        ? signUp.prepareEmailAddressVerification({ strategy: "email_code" })
-        : Promise.resolve(undefined),
+    mutationFn: async () => {
+      if (isLoaded) {
+        await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      }
+    },
   });
 };
 
-// Hook for verifying email code and completing sign-up
 export const useVerifyEmailCodeMutation = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
 
   return useMutation({
     mutationFn: async (code: string) => {
-      if (!isLoaded) {
-        return Promise.resolve(undefined);
-      }
-      await signUp.attemptEmailAddressVerification({ code });
-      if (signUp.status === "complete") {
-        await setActive({ session: signUp.createdSessionId });
+      if (isLoaded) {
+        await signUp.attemptEmailAddressVerification({ code });
+        if (signUp.status === "complete") {
+          await setActive({ session: signUp.createdSessionId });
+        }
       }
     },
   });

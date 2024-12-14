@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import React, { useEffect } from "react";
 import CustomText from "@/src/components/shared/text/CustomText";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
-import { useTournamentQuery } from "@/src/queries/tournaments";
+import { useTournamentByID } from "@/src/queries/tournaments";
 import { ScrollView } from "react-native-gesture-handler";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import TournamentDetails from "@/src/components/home/TournamentDetails";
@@ -12,7 +12,7 @@ type Props = {};
 const TournamentDetailsScreen = ({}: Props) => {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
-  const { data, isLoading } = useTournamentQuery(id as string);
+  const { data, isLoading, error } = useTournamentByID(id as string);
 
   useEffect(() => {
     if (data?.title) {

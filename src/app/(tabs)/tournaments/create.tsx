@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { useTranslation } from "react-i18next";
 import { Tournament } from "@/src/types/Tournament";
-import { useCreateTournamentMutation } from "@/src/queries/tournaments";
+import { useTournamentMutation } from "@/src/queries/tournaments";
 import DatePickerInput from "@/src/components/settings/DatePickerInput";
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
@@ -15,7 +15,7 @@ type Props = {};
 
 const CreateTournament = ({}: Props) => {
   const { t } = useTranslation();
-  const createTournamentMutation = useCreateTournamentMutation();
+  const createTournamentMutation = useTournamentMutation();
 
   const {
     control,

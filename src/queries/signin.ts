@@ -20,8 +20,6 @@ export const useSignInMutation = () => {
         if (signInAttempt.status === "complete") {
           await setActive({ session: signInAttempt.createdSessionId });
         }
-      } else {
-        return Promise.resolve(undefined);
       }
     },
   });

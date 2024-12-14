@@ -1,51 +1,36 @@
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { Tournament } from "../types/Tournament";
+import fetchApi from "../api/Api";
 
-const getData = async <TData>(url: string) => {
-  const data = await fetch(url);
-  const json = await data.json();
-  return json as TData;
-};
-
-export const useAllTournamentsQuery = () => {
+export const useAllTournaments = () => {
   return useQuery({
     queryKey: ["tournaments"],
-    queryFn: () => {
-      return getData<Tournament[]>("https://67532eb7f3754fcea7bb12e9.mockapi.io/tournaments");
+    queryFn: async () => {
+      const response = await fetchApi<any, Tournament[]>("/tournaments");
+      return response.data;
     },
     initialData: [],
   });
 };
 
-export const useTournamentQuery = (id: string): UseQueryResult<Tournament> => {
+export const useTournamentByID = (id: string): UseQueryResult<Tournament> => {
   return useQuery<Tournament>({
     queryKey: ["tournament", id],
-    queryFn: async (): Promise<Tournament> => {
-      const data = await fetch(
-        `https://67532eb7f3754fcea7bb12e9.mockapi.io/tournaments/${id}`
-      ).then((response) => response.json());
-
-      return data;
+    queryFn: async () => {
+      const response = await fetchApi<any, Tournament>(`/tournaments/${id}`);
+      return response.data;
     },
   });
 };
 
-export const useCreateTournamentMutation = () => {
+export const useTournamentMutation = () => {
   return useMutation({
     mutationFn: async (data: Tournament): Promise<Tournament> => {
-      const response = await fetch("https://67532eb7f3754fcea7bb12e9.mockapi.io/tournaments", {
+      const response = await fetchApi<Tournament, Tournament>("/tournaments", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        body: data,
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to create tournament");
-      }
-
-      return response.json();
+      return response.data;
     },
   });
 };
