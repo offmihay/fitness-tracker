@@ -66,9 +66,9 @@ const CreateTournament = ({}: Props) => {
                 height: 110,
               },
               multiline: true,
+              returnKeyType: "default",
             }}
             control={control}
-            onSubmitEditing={() => setFocus("dateStart")}
           />
           <RHFormDatePicker
             name="dateStart"
@@ -78,7 +78,6 @@ const CreateTournament = ({}: Props) => {
               maximumDate: new Date(new Date().getFullYear() + 5, 0, 1),
             }}
             control={control}
-            onSubmitEditing={() => setFocus("dateEnd")}
           />
           <RHFormDatePicker
             name="dateEnd"
@@ -87,7 +86,6 @@ const CreateTournament = ({}: Props) => {
               minimumDate: watch("dateStart") ? new Date(watch("dateStart")) : undefined,
             }}
             control={control}
-            onSubmitEditing={() => setFocus("city")}
           />
           <RHFormInput
             name="city"

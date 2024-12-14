@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Keyboard, Pressable, View, TextInput } from "react-native";
 import CustomText from "../shared/text/CustomText";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 type DatePickerInputProps = {
   label: string;
@@ -28,6 +29,7 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isConfirmed, setIsConfirmed] = useState(false);
     const { i18n, t } = useTranslation();
+    const theme = useCustomTheme();
 
     const showDatePicker = () => {
       Keyboard.dismiss();
@@ -71,7 +73,6 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
             onPress={showDatePicker}
             disabled
             value={formatDate(value)}
-            useClearButton
             isForceFocused={isDatePickerVisible}
             {...inputProps}
           />
@@ -95,6 +96,8 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
           confirmTextIOS={t("common.confirm")}
           cancelTextIOS={t("common.cancel")}
           date={selectedDate || new Date()}
+          pickerContainerStyleIOS={{ backgroundColor: theme.colors.surfaceDark }}
+          buttonTextColorIOS={theme.colors.link}
         />
       </View>
     );

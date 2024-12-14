@@ -59,10 +59,10 @@ const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, 
           <View style={[styles.btn, { backgroundColor: "black" }]}>
             <TouchableOpacity
               activeOpacity={0.85}
-              style={[{ backgroundColor: theme.colors.surface }, styles.btnContent]}
+              style={[{ backgroundColor: theme.colors.surfaceDark }, styles.btnContent]}
               onPress={handleOnGallery}
             >
-              <CustomText weight="normal" type="upperdefault" style={{ color: theme.colors.link }}>
+              <CustomText weight="normal" type="subtitle" style={{ color: theme.colors.link }}>
                 {t("modal.openGallery")}
               </CustomText>
             </TouchableOpacity>
@@ -71,10 +71,10 @@ const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, 
           <View style={[styles.btn, { backgroundColor: "black" }]}>
             <TouchableOpacity
               activeOpacity={0.85}
-              style={[{ backgroundColor: theme.colors.surface }, styles.btnContent]}
+              style={[{ backgroundColor: theme.colors.surfaceDark }, styles.btnContent]}
               onPress={handleOnCamera}
             >
-              <CustomText weight="normal" type="upperdefault" style={{ color: theme.colors.link }}>
+              <CustomText weight="normal" type="subtitle" style={{ color: theme.colors.link }}>
                 {t("modal.openCamera")}
               </CustomText>
             </TouchableOpacity>
@@ -84,10 +84,10 @@ const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, 
           <View style={[styles.btn, { backgroundColor: "black" }]}>
             <TouchableOpacity
               activeOpacity={0.85}
-              style={[{ backgroundColor: theme.colors.surface }, styles.btnContent]}
+              style={[{ backgroundColor: theme.colors.surfaceDark }, styles.btnContent]}
               onPress={handleDismiss}
             >
-              <CustomText weight="bold" type="upperdefault" style={{ color: theme.colors.link }}>
+              <CustomText weight="bold" type="subtitle" style={{ color: theme.colors.link }}>
                 {t("common.cancel")}
               </CustomText>
             </TouchableOpacity>

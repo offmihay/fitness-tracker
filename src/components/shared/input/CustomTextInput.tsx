@@ -172,7 +172,6 @@ const CustomTextInput = forwardRef<TextInput, Props>(
         ]}
       >
         <TextInput
-          scrollEnabled={false}
           ref={ref}
           secureTextEntry={isPassword && !isPasswordVisible}
           editable={!disabled}
