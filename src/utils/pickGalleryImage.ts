@@ -1,7 +1,8 @@
 import * as ImagePicker from "expo-image-picker";
+import { ImagePickerOptions } from "expo-image-picker";
 import { Alert, Linking } from "react-native";
 
-export const pickGalleryImage = async (): Promise<string | null> => {
+export const pickGalleryImage = async (options?: ImagePickerOptions) => {
   const handleLaunchGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       selectionLimit: 1,
@@ -9,11 +10,11 @@ export const pickGalleryImage = async (): Promise<string | null> => {
       allowsEditing: true,
       aspect: [4, 4],
       quality: 1,
-      base64: true,
+      ...options,
     });
 
-    if (!result.canceled && result.assets && result.assets[0].base64) {
-      return `data:image/jpeg;base64,${result.assets[0].base64}`;
+    if (!result.canceled && result.assets?.[0]) {
+      return result.assets[0];
     }
 
     return null;
