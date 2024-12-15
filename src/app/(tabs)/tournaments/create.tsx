@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, View } from "react-native";
+import { Keyboard, StyleSheet, TextInput, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 import { Controller, Form, useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -6,10 +6,15 @@ import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { useTranslation } from "react-i18next";
 import { Tournament } from "@/src/types/Tournament";
 import { useTournamentMutation } from "@/src/queries/tournaments";
-import DatePickerInput from "@/src/components/settings/DatePickerInput";
+
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
+import DropdownCheckbox, { DropdownItem } from "@/src/components/shared/dropdown/DropdownCheckbox";
+import CustomPicker from "@/src/components/shared/picker/CustomPicker";
+import CustomPickerItem from "@/src/components/shared/picker/CustomPickerItem";
+import DropdownModal from "@/src/components/shared/modal/DropdownModal";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 type Props = {};
 
@@ -23,6 +28,7 @@ const CreateTournament = ({}: Props) => {
     watch,
     setFocus,
     formState: { errors: formErrors },
+    setValue,
   } = useForm<Tournament>({
     defaultValues: {},
     mode: "onChange",
@@ -37,6 +43,36 @@ const CreateTournament = ({}: Props) => {
         console.error("Failed to create tournament:", error);
       },
     });
+  };
+
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const handleOpenCameraModal = () => {
+    Keyboard.dismiss();
+    bottomSheetRef.current?.present();
+  };
+
+  const dropdownItems = {
+    "customize-theme": [
+      {
+        key: "Amateur",
+        title: t("Amateur"),
+        isSelected: watch("skillLevel") === "Amateur",
+        onPress: () => setValue("skillLevel", "Amateur"),
+      },
+      {
+        key: "Beginner",
+        title: t("Beginner"),
+        isSelected: watch("skillLevel") === "Beginner",
+        onPress: () => setValue("skillLevel", "Beginner"),
+      },
+      {
+        key: "Professional",
+        title: t("Professional"),
+        isSelected: watch("skillLevel") === "Professional",
+        onPress: () => setValue("skillLevel", "Professional"),
+      },
+    ],
   };
 
   return (
@@ -87,6 +123,38 @@ const CreateTournament = ({}: Props) => {
             }}
             control={control}
           />
+          <View className="flex flex-row">
+            <View className="w-1/2 pr-1">
+              <DropdownCheckbox items={dropdownItems["customize-theme"] as DropdownItem[]}>
+                <RHFormInput
+                  name="skillLevel"
+                  label={"skillLevel"}
+                  control={control}
+                  inputProps={{ disabled: true }}
+                />
+              </DropdownCheckbox>
+            </View>
+
+            <DropdownModal
+              ref={bottomSheetRef}
+              selectedValue={watch("format")}
+              onValueChange={(itemValue) => setValue("format", itemValue)}
+              items={[
+                { label: "Singles", value: "Singles" },
+                { label: "Doubles", value: "Doubles" },
+                { label: "Squad", value: "Squad" },
+              ]}
+              selectAnLabel="Select format..."
+            />
+            <View className="w-1/2 pl-1">
+              <RHFormInput
+                name="format"
+                label={"format"}
+                control={control}
+                inputProps={{ disabled: true, onPress: handleOpenCameraModal }}
+              />
+            </View>
+          </View>
           <RHFormInput
             name="city"
             label={"city"}
@@ -115,18 +183,7 @@ const CreateTournament = ({}: Props) => {
             control={control}
             onSubmitEditing={() => setFocus("skillLevel")}
           />
-          <RHFormInput
-            name="skillLevel"
-            label={"skillLevel"}
-            control={control}
-            onSubmitEditing={() => setFocus("format")}
-          />
-          <RHFormInput
-            name="format"
-            label={"format"}
-            control={control}
-            onSubmitEditing={() => setFocus("ageRestrictions.minAge")}
-          />
+
           <View className="flex flex-row">
             <View className="w-1/2 pr-1">
               <RHFormInput

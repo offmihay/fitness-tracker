@@ -8,7 +8,7 @@ import BottomSheet, {
 
 import { Divider } from "react-native-paper";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import CustomText from "../shared/text/CustomText";
+import CustomText from "../text/CustomText";
 import { useTranslation } from "react-i18next";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 
 export type Ref = BottomSheetModal;
 
-const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, ref) => {
+const ChooseCameraModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, ref) => {
   const { t } = useTranslation();
   const theme = useCustomTheme();
   const snapPointsModal = useMemo(() => ["25%"], []);
@@ -98,7 +98,7 @@ const CustomBottomSheetModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, 
   );
 });
 
-export default CustomBottomSheetModal;
+export default ChooseCameraModal;
 
 const styles = StyleSheet.create({
   contentContainer: {

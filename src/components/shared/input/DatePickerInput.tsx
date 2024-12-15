@@ -1,10 +1,12 @@
 import React, { useState, forwardRef, useImperativeHandle, useRef } from "react";
-import CustomTextInput from "../shared/input/CustomTextInput";
+
 import { useTranslation } from "react-i18next";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Keyboard, Pressable, View, TextInput } from "react-native";
-import CustomText from "../shared/text/CustomText";
+
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import CustomTextInput from "./CustomTextInput";
+import CustomText from "../text/CustomText";
 
 type DatePickerInputProps = {
   label: string;

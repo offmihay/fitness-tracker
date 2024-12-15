@@ -1,9 +1,5 @@
 import { Control, Controller, FieldPath, FieldValues, useFormContext } from "react-hook-form";
 import CustomTextInput from "../input/CustomTextInput";
-import { Tournament } from "@/src/types/Tournament";
-import { KeyboardTypeOptions, TextInput } from "react-native";
-import { forwardRef } from "react";
-import DatePickerInput from "../../settings/DatePickerInput";
 
 type Props<TFieldValues extends FieldValues> = {
   name: FieldPath<TFieldValues>;

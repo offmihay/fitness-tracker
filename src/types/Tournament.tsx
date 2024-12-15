@@ -1,5 +1,5 @@
 type SkillLevel = "Amateur" | "Beginner" | "Professional";
-type Format = "Singles" | "Doubles";
+type Format = "Singles" | "Doubles" | "Squad";
 type Status = "Upcoming" | "Ongoing" | "Finished";
 
 interface Participant {

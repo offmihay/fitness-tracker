@@ -4,7 +4,6 @@ import React from "react";
 import DropdownCheckbox, {
   DropdownItem,
 } from "../../../components/shared/dropdown/DropdownCheckbox";
-import { useTranslation } from "react-i18next";
 
 import CustomListItem from "../../../components/shared/list/CustomListItem";
 import CustomListSection from "../../../components/shared/list/CustomListSection";
@@ -13,7 +12,6 @@ import { getDropdownItems, getSettingsList } from "../../../components/settings/
 type Props = {};
 
 const settings = ({}: Props) => {
-  const { t } = useTranslation();
   const dropdowns = getDropdownItems();
   const settingsList = getSettingsList();
 
@@ -39,10 +37,7 @@ const settings = ({}: Props) => {
             return listItem;
           } else {
             return (
-              <DropdownCheckbox
-                items={dropdowns[dropdown] as DropdownItem[]}
-                key={`dropdown-${item.key}`}
-              >
+              <DropdownCheckbox items={dropdowns[dropdown] as DropdownItem[]} key={item.key}>
                 {listItem}
               </DropdownCheckbox>
             );

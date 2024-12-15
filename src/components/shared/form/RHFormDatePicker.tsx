@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
 import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
-import DatePickerInput from "../../settings/DatePickerInput";
+import DatePickerInput from "../input/DatePickerInput";
 
 type Props<TFieldValues extends FieldValues> = {
   name: FieldPath<TFieldValues>;
