@@ -16,13 +16,15 @@ const Workouts = ({}: Props) => {
   const [uploadedImage, setUploadedImage] = useState<any>();
 
   const uploadImageMutation = useMutation({
-    mutationFn: async (image: ImagePickerAsset) => {
+    mutationFn: async (images: ImagePickerAsset[]) => {
       const formData = new FormData();
 
-      formData.append("file", {
-        uri: image.uri,
-        name: image.fileName,
-        type: image.type,
+      images.forEach((img) => {
+        formData.append("file", {
+          uri: img.uri,
+          name: img.fileName,
+          type: img.type,
+        });
       });
 
       const resp = await fetch(

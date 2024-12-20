@@ -186,14 +186,12 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
 
   const handleGalleryImagePick = async () => {
     const result = await pickGalleryImage({ base64: true });
-    if (result) {
-      saveProfileImage(`data:image/jpeg;base64,${result.base64}`);
-    }
+    result && saveProfileImage(`data:image/jpeg;base64,${result[0].base64}`);
   };
 
   const handleCameraImagePick = async () => {
-    const result = await pickCameraImage();
-    saveProfileImage(result);
+    const result = await pickCameraImage({ base64: true });
+    result && saveProfileImage(`data:image/jpeg;base64,${result.base64}`);
   };
 
   return (

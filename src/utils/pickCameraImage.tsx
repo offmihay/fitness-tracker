@@ -1,18 +1,19 @@
 import * as ImagePicker from "expo-image-picker";
+import { ImagePickerOptions } from "expo-image-picker";
 import { Alert, Linking } from "react-native";
 
-export const pickCameraImage = async (): Promise<string | null> => {
+export const pickCameraImage = async (options?: ImagePickerOptions) => {
   const handleLaunchCamera = async () => {
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: "images",
       allowsEditing: true,
       quality: 1,
-      aspect: [3, 4],
-      base64: true,
+      ...options,
     });
-    if (!result.canceled && result.assets && result.assets[0].base64) {
-      return `data:image/jpeg;base64,${result.assets[0].base64}`;
+    if (!result.canceled && result.assets?.[0]) {
+      return { ...result.assets[0], assetId: result.assets[0].uri };
     }
+
     return null;
   };
 

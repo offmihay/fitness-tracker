@@ -54,5 +54,11 @@ export interface Tournament {
   rules: string;
   description: string;
   status: Status;
-  imageUrl: string;
+  images: ImageResult[];
 }
+
+export type ImageResult = {
+  url: string;
+  secure_url: string;
+  [key: string]: any;
+};

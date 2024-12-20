@@ -102,6 +102,8 @@ const CustomTextInput = forwardRef<TextInput, Props>(
             ? progress
               ? theme.colors.error
               : theme.colors.textTertiary
+            : isFocused.value
+            ? theme.colors.link
             : theme.colors.textTertiary,
           {
             duration: 500,

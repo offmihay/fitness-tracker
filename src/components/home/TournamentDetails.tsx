@@ -26,7 +26,7 @@ const TournamentDetails = ({
   return (
     <View className="flex flex-col gap-6">
       <View style={{ width: "100%", borderRadius: 10, height: 200, overflow: "hidden" }}>
-        <Image source={data?.imageUrl} style={StyleSheet.absoluteFill} />
+        <Image source={data?.images[0].secure_url} style={StyleSheet.absoluteFill} />
       </View>
       <View className="flex flex-row justify-between">
         <TouchableBtn title="Register" style={{ width: "48%" }} />

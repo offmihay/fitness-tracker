@@ -44,7 +44,7 @@ const HomePage = ({}: HomePageProps) => {
                 key={key}
                 handleOpenDetails={() => handleOpenDetails(item.id)}
                 handleRegister={() => handleRegister(item.title)}
-                imageSource={item.imageUrl}
+                imageSource={item.images && item.images[0].secure_url}
                 title={item.title}
                 location={item.location}
                 dateTime={getFormatDateRange(item.dateStart, item.dateEnd, settings.language)}

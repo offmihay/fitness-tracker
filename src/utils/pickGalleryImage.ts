@@ -5,16 +5,13 @@ import { Alert, Linking } from "react-native";
 export const pickGalleryImage = async (options?: ImagePickerOptions) => {
   const handleLaunchGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      selectionLimit: 1,
       mediaTypes: "images",
-      allowsEditing: true,
-      aspect: [4, 4],
       quality: 1,
       ...options,
     });
 
-    if (!result.canceled && result.assets?.[0]) {
-      return result.assets[0];
+    if (!result.canceled && result.assets) {
+      return result.assets;
     }
 
     return null;
