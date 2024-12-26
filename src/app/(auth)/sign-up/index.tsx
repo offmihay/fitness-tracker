@@ -10,10 +10,11 @@ import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
 import { useSignUpMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
 import CustomKeyboardAvoidingView from "@/src/components/shared/view/CustomKeyboardAvoidingView";
 import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
+import RHFormInput from "@/src/components/shared/form/RHFormInput";
 
 type EmailData = {
   email: string;
@@ -25,20 +26,19 @@ export default function SignUpEmailScreen() {
 
   const signUpMutation = useSignUpMutation();
 
+  const methods = useForm<EmailData>({
+    defaultValues: { email: "" },
+    mode: "onSubmit",
+  });
+
   const {
     control,
     watch,
     handleSubmit,
     formState: { errors: formErrors, isDirty },
-    setError,
     clearErrors,
-    reset,
-  } = useForm<EmailData>({
-    defaultValues: {
-      email: "",
-    },
-    mode: "onSubmit",
-  });
+    setError,
+  } = methods;
 
   useEffect(() => {
     clearErrors();
@@ -73,101 +73,94 @@ export default function SignUpEmailScreen() {
   };
 
   return (
-    <CustomKeyboardAvoidingView
-      keyboardVerticalOffset={-250}
-      style={{ backgroundColor: theme.colors.background }}
-    >
-      <TouchableBack />
-      <DismissKeyboardView>
-        <View style={[styles.wrapper]}>
-          <View style={[styles.contentWrapper]}>
-            <View className="h-[300]">
-              <Animated.View layout={LinearTransition} className="mb-12">
-                <CustomText type="subtitle" color={theme.colors.text} center>
-                  {t("signup.titleEmail")}
-                </CustomText>
-              </Animated.View>
-              <Animated.View layout={LinearTransition}>
-                <Controller
-                  control={control}
-                  rules={{
-                    maxLength: { value: 30, message: t("errors.email_too_long") },
-                    pattern: {
-                      value: /^\s*[\w-\.]+@([\w-]+\.)+[\w-]{1,4}\s*$/g,
-                      message: t("errors.email_invalid"),
-                    },
-                  }}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <CustomTextInput
-                      value={value}
-                      onChangeText={onChange}
-                      onBlur={onBlur}
-                      label={t("signup.email")}
-                      keyboardType="email-address"
-                      useClearButton
-                      isError={!!formErrors.email}
-                    />
-                  )}
-                  name="email"
-                />
-              </Animated.View>
-
-              <Animated.View
-                layout={LinearTransition}
-                className="ml-2 mb-1"
-                entering={FadeIn.duration(300)}
-                exiting={FadeOut.duration(300)}
-              >
+    <FormProvider {...methods}>
+      <CustomKeyboardAvoidingView
+        keyboardVerticalOffset={-250}
+        style={{ backgroundColor: theme.colors.background }}
+      >
+        <TouchableBack />
+        <DismissKeyboardView>
+          <View style={[styles.wrapper]}>
+            <View style={[styles.contentWrapper]}>
+              <View className="h-[300]">
+                <Animated.View layout={LinearTransition} className="mb-12">
+                  <CustomText type="subtitle" color={theme.colors.text} center>
+                    {t("signup.titleEmail")}
+                  </CustomText>
+                </Animated.View>
+                <Animated.View layout={LinearTransition}>
+                  <RHFormInput
+                    name="email"
+                    label={t("signup.email")}
+                    control={control}
+                    inputProps={{
+                      useClearButton: true,
+                      isError: !!formErrors.email,
+                    }}
+                    rules={{
+                      maxLength: { value: 30, message: t("errors.email_too_long") },
+                      pattern: {
+                        value: /^\s*[\w-\.]+@([\w-]+\.)+[\w-]{1,4}\s*$/g,
+                        message: t("errors.email_invalid"),
+                      },
+                    }}
+                  />
+                </Animated.View>
                 {formErrors.email?.message && (
-                  <CustomText color={theme.colors.error} type="predefault">
-                    {formErrors.email?.message}
-                  </CustomText>
-                )}
-              </Animated.View>
-
-              <Animated.View layout={LinearTransition} className="ml-2 w-[200] mt-2">
-                <TouchableOpacity
-                  onPress={() =>
-                    router.navigate({
-                      pathname: "/sign-in-modal",
-                    })
-                  }
-                >
-                  <CustomText color="#0082FF" type="predefault">
-                    {t("signup.alreadyHaveAccount")}
-                    {/* <Loader style={{ margin: 0, width: 25, height: 15 }} /> */}
-                  </CustomText>
-                </TouchableOpacity>
-              </Animated.View>
-              <Animated.View
-                layout={LinearTransition}
-                className="ml-2 mt-1"
-                entering={FadeIn.duration(300)}
-                exiting={FadeOut.duration(300)}
-              >
-                {formErrors.root &&
-                  Object.values(formErrors.root).map((error, index) => (
-                    <CustomText color={theme.colors.error} type="predefault" key={index}>
-                      {(error as { message: string }).message}
+                  <Animated.View
+                    layout={LinearTransition}
+                    className="ml-2 mb-1"
+                    entering={FadeIn.duration(300)}
+                    exiting={FadeOut.duration(300)}
+                  >
+                    <CustomText color={theme.colors.error} type="predefault">
+                      {formErrors.email?.message}
                     </CustomText>
-                  ))}
-              </Animated.View>
-              <Animated.View className="mt-6" layout={LinearTransition}>
-                <TouchableBtn
-                  onPress={handleSubmit(onCheckUpEmail)}
-                  loading={signUpMutation.isPending}
-                  title={t("signup.continue")}
-                  disabled={!watch("email") || !!formErrors.email}
-                />
-              </Animated.View>
-              {/* <Animated.View style={{ marginTop: 10 }}>
-                <CustomText>asd</CustomText>
-              </Animated.View> */}
+                  </Animated.View>
+                )}
+
+                <Animated.View layout={LinearTransition} className="ml-2 w-[200] mt-2">
+                  <TouchableOpacity
+                    onPress={() =>
+                      router.navigate({
+                        pathname: "/sign-in-modal",
+                      })
+                    }
+                  >
+                    <CustomText color="#0082FF" type="predefault">
+                      {t("signup.alreadyHaveAccount")}
+                      {/* <Loader style={{ margin: 0, width: 25, height: 15 }} /> */}
+                    </CustomText>
+                  </TouchableOpacity>
+                </Animated.View>
+                {formErrors.root && (
+                  <Animated.View
+                    layout={LinearTransition}
+                    className="ml-2 mt-1"
+                    entering={FadeIn.duration(300)}
+                    exiting={FadeOut.duration(300)}
+                  >
+                    {Object.values(formErrors.root).map((error, index) => (
+                      <CustomText color={theme.colors.error} type="predefault" key={index}>
+                        {(error as { message: string }).message}
+                      </CustomText>
+                    ))}
+                  </Animated.View>
+                )}
+                <Animated.View className="mt-6" layout={LinearTransition}>
+                  <TouchableBtn
+                    onPress={handleSubmit(onCheckUpEmail)}
+                    loading={signUpMutation.isPending}
+                    title={t("signup.continue")}
+                    disabled={!watch("email") || Object.keys(formErrors).length !== 0}
+                  />
+                </Animated.View>
+              </View>
             </View>
           </View>
-        </View>
-      </DismissKeyboardView>
-    </CustomKeyboardAvoidingView>
+        </DismissKeyboardView>
+      </CustomKeyboardAvoidingView>
+    </FormProvider>
   );
 }
 

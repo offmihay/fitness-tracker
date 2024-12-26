@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { t } from "i18next";
 import CustomText from "../../../components/shared/text/CustomText";
@@ -12,11 +12,11 @@ import {
   useVerifyEmailCodeMutation,
 } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
-import { Controller, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
 import CustomKeyboardAvoidingView from "@/src/components/shared/view/CustomKeyboardAvoidingView";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
+import RHFormInput from "@/src/components/shared/form/RHFormInput";
 
 type VerificationCodeData = {
   code: string;
@@ -27,6 +27,14 @@ const SignUpVerifyCodeScreen = () => {
   const router = useRouter();
 
   const { secondsLeft, setSecondsLeft } = useCountdown(30);
+
+  const methods = useForm<VerificationCodeData>({
+    defaultValues: {
+      code: "",
+    },
+    mode: "onSubmit",
+  });
+
   const {
     control,
     watch,
@@ -35,12 +43,7 @@ const SignUpVerifyCodeScreen = () => {
     reset,
     setError,
     clearErrors,
-  } = useForm<VerificationCodeData>({
-    defaultValues: {
-      code: "",
-    },
-    mode: "onSubmit",
-  });
+  } = methods;
 
   useEffect(() => {
     clearErrors();
@@ -101,114 +104,108 @@ const SignUpVerifyCodeScreen = () => {
   };
 
   return (
-    <CustomKeyboardAvoidingView
-      keyboardVerticalOffset={-200}
-      style={{ backgroundColor: theme.colors.background }}
-    >
-      <TouchableBack />
-      <DismissKeyboardView>
-        <View style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
-          <View style={[styles.contentWrapper]}>
-            <View className="h-[300]">
-              <Animated.View className="mb-12" layout={LinearTransition}>
-                <CustomText type="subtitle" center color={theme.colors.text}>
-                  {t("signup.titleVerifyCode")}
-                </CustomText>
-              </Animated.View>
-              <Animated.View layout={LinearTransition}>
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: 6,
-                    maxLength: 6,
-                  }}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <CustomTextInput
-                      value={value}
-                      label={t("signup.code")}
-                      onChangeText={onChange}
-                      onBlur={onBlur}
-                      keyboardType="number-pad"
-                      maxLength={6}
-                      isError={!!formErrors.code}
-                    />
-                  )}
-                  name="code"
-                />
-              </Animated.View>
-
-              {formErrors.code?.message && (
-                <Animated.View
-                  layout={LinearTransition}
-                  className="ml-2 mb-1"
-                  entering={FadeIn.duration(300)}
-                  exiting={FadeOut.duration(300)}
-                >
-                  <CustomText color={theme.colors.error} type="predefault">
-                    {formErrors.code?.message}
+    <FormProvider {...methods}>
+      <CustomKeyboardAvoidingView
+        keyboardVerticalOffset={-200}
+        style={{ backgroundColor: theme.colors.background }}
+      >
+        <TouchableBack />
+        <DismissKeyboardView>
+          <View style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
+            <View style={[styles.contentWrapper]}>
+              <View className="h-[300]">
+                <Animated.View className="mb-12" layout={LinearTransition}>
+                  <CustomText type="subtitle" center color={theme.colors.text}>
+                    {t("signup.titleVerifyCode")}
                   </CustomText>
                 </Animated.View>
-              )}
+                <Animated.View layout={LinearTransition}>
+                  <RHFormInput
+                    name="code"
+                    label={t("signup.code")}
+                    control={control}
+                    inputProps={{
+                      isError: !!formErrors.code,
+                      keyboardType: "number-pad",
+                      maxLength: 6,
+                    }}
+                  />
+                </Animated.View>
 
-              <Animated.View className="ml-2 mt-1" layout={LinearTransition}>
-                {secondsLeft !== null && (
-                  <CustomText color={theme.colors.text} type="predefault">
-                    {`${t("signup.notReceiveCode")} `}
-                    {`${t("signup.tryAgainIn")}: ${secondsLeft}`}
-                  </CustomText>
+                {formErrors.code?.message && (
+                  <Animated.View
+                    layout={LinearTransition}
+                    className="ml-2 mb-1"
+                    entering={FadeIn.duration(300)}
+                    exiting={FadeOut.duration(300)}
+                  >
+                    <CustomText color={theme.colors.error} type="predefault">
+                      {formErrors.code?.message}
+                    </CustomText>
+                  </Animated.View>
                 )}
-              </Animated.View>
-              <Animated.View className="mt-1 ml-2" layout={LinearTransition}>
-                <TouchableOpacity
-                  onPress={handleResendCode}
-                  disabled={
-                    secondsLeft !== 0 || secondsLeft === null || resendCodeMutation.isPending
-                  }
-                  style={{ width: 200 }}
-                >
-                  <View className="flex flex-row items-center">
-                    <CustomText
-                      color={secondsLeft === 0 && secondsLeft !== null ? "#0082FF" : "grey"}
-                      type="predefault"
-                    >
-                      {t("signup.requestNewCode")}
-                    </CustomText>
-                    {resendCodeMutation.isPending && (
-                      <View>
-                        <Loader style={{ width: 20, height: 20 }} />
-                      </View>
-                    )}
-                  </View>
-                </TouchableOpacity>
-              </Animated.View>
-              <Animated.View
-                layout={LinearTransition}
-                className="ml-2 mt-1"
-                entering={FadeIn.duration(300)}
-                exiting={FadeOut.duration(300)}
-              >
-                {formErrors.root &&
-                  Object.values(formErrors.root).map((error, index) => (
-                    <CustomText color={theme.colors.error} type="predefault" key={index}>
-                      {(error as { message: string }).message}
-                    </CustomText>
-                  ))}
-              </Animated.View>
 
-              <Animated.View className="mt-6">
-                <TouchableBtn
-                  activeOpacity={0.85}
-                  onPress={handleSubmit(onPressVerify)}
-                  loading={verifyCodeMutation.isPending}
-                  title={t("signup.complete")}
-                  disabled={watch("code").length != 6 || !!formErrors.code}
-                />
-              </Animated.View>
+                <Animated.View className="ml-2 mt-1" layout={LinearTransition}>
+                  {secondsLeft !== null && (
+                    <CustomText color={theme.colors.text} type="predefault">
+                      {`${t("signup.notReceiveCode")} `}
+                      {`${t("signup.tryAgainIn")}: ${secondsLeft}`}
+                    </CustomText>
+                  )}
+                </Animated.View>
+                <Animated.View className="mt-1 ml-2" layout={LinearTransition}>
+                  <TouchableOpacity
+                    onPress={handleResendCode}
+                    disabled={
+                      secondsLeft !== 0 || secondsLeft === null || resendCodeMutation.isPending
+                    }
+                    style={{ width: 200 }}
+                  >
+                    <View className="flex flex-row items-center">
+                      <CustomText
+                        color={secondsLeft === 0 && secondsLeft !== null ? "#0082FF" : "grey"}
+                        type="predefault"
+                      >
+                        {t("signup.requestNewCode")}
+                      </CustomText>
+                      {resendCodeMutation.isPending && (
+                        <View>
+                          <Loader style={{ width: 20, height: 20 }} />
+                        </View>
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                </Animated.View>
+                {formErrors.root && (
+                  <Animated.View
+                    layout={LinearTransition}
+                    className="ml-2 mt-1"
+                    entering={FadeIn.duration(300)}
+                    exiting={FadeOut.duration(300)}
+                  >
+                    {Object.values(formErrors.root).map((error, index) => (
+                      <CustomText color={theme.colors.error} type="predefault" key={index}>
+                        {(error as { message: string }).message}
+                      </CustomText>
+                    ))}
+                  </Animated.View>
+                )}
+
+                <Animated.View className="mt-6" layout={LinearTransition}>
+                  <TouchableBtn
+                    activeOpacity={0.85}
+                    onPress={handleSubmit(onPressVerify)}
+                    loading={verifyCodeMutation.isPending}
+                    title={t("signup.complete")}
+                    disabled={watch("code").length != 6 || Object.keys(formErrors).length !== 0}
+                  />
+                </Animated.View>
+              </View>
             </View>
           </View>
-        </View>
-      </DismissKeyboardView>
-    </CustomKeyboardAvoidingView>
+        </DismissKeyboardView>
+      </CustomKeyboardAvoidingView>
+    </FormProvider>
   );
 };
 

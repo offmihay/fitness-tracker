@@ -23,6 +23,7 @@ type Props = {
     | "error"
     | "success"
     | "white"
+    | "transparent"
     | "grey"
     | "darkgrey"
     | "lightgrey";
@@ -169,11 +170,7 @@ const TouchableBtn = ({
         )}
         {!isCheckAnimated && !loading && nodeRight && nodeRight(opacityColor)}
         {!isCheckAnimated && loading && (
-          <Animated.View
-            style={styles.loaderWrapper}
-            // entering={FadeIn.duration(300)}
-            // exiting={FadeOut.duration(200)}
-          >
+          <Animated.View style={styles.loaderWrapper}>
             <Loader />
           </Animated.View>
         )}

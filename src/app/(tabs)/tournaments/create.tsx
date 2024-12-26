@@ -124,9 +124,9 @@ const CreateTournament = ({}: Props) => {
                 onPress={handleOpenCameraModal}
               />
 
-              <View className="flex flex-row gap-2">
-                {images &&
-                  images.map((image, index) => (
+              {images && (
+                <View className="flex flex-row gap-2">
+                  {images.map((image, index) => (
                     <View className="relative" key={index}>
                       <Image
                         source={{ uri: image?.uri }}
@@ -144,7 +144,8 @@ const CreateTournament = ({}: Props) => {
                       )}
                     </View>
                   ))}
-              </View>
+                </View>
+              )}
 
               <ChooseCameraModal
                 ref={bottomSheetRef}

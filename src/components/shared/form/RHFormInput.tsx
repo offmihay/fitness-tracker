@@ -26,6 +26,7 @@ const RHFormInput = <TFieldValues extends FieldValues>(props: Props<TFieldValues
             label={label}
             value={inputValue}
             onChangeText={onChange}
+            onBlur={onBlur}
             returnKeyType="next"
             onSubmitEditing={onSubmitEditing}
             {...inputProps}
