@@ -117,7 +117,7 @@ const CreateTournament = ({}: Props) => {
             />
             <View className="flex flex-row gap-3 items-center">
               <TouchableBtn
-                title="Choose photo"
+                title="Add photo"
                 type="grey"
                 nodeLeft={(color) => <FontAwesome name="image" size={24} color={color} />}
                 style={{ width: 180 }}
