@@ -1,6 +1,6 @@
-import { Keyboard, StyleSheet, View } from "react-native";
-import React, { useRef, useState } from "react";
-import { FontAwesome } from "@expo/vector-icons";
+import { Keyboard, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Loader from "../shared/loader/Loader";
 import ChooseCameraModal from "../shared/modal/ChooseCameraModal";
 import TouchableBtn from "../shared/touchable/TouchableBtn";
@@ -10,10 +10,15 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { ImagePickerAsset } from "expo-image-picker";
 import { useUploadImage } from "@/src/queries/upload-image";
 import { Image } from "expo-image";
+import CustomText from "../shared/text/CustomText";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { ImageUploadResponse } from "@/src/types/imageType";
 
 export type UploadedImageAsset = ImagePickerAsset & {
   publicId?: string;
   isError?: boolean;
+  uniqueID?: string;
+  secure_url?: string;
 };
 
 type Props = {
@@ -21,16 +26,15 @@ type Props = {
 };
 
 const ChoosePhoto = (props: Props) => {
+  const theme = useCustomTheme();
   const { onImageUploadSuccess } = props;
 
   const uploadImage = useUploadImage();
 
   const [images, setImages] = useState<UploadedImageAsset[]>([]);
 
-  // image which is currently being uploaded
-  const [uploadingImage, setUploadingImage] = useState<UploadedImageAsset>();
-
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const handleOpenCameraModal = () => {
     Keyboard.dismiss();
@@ -38,79 +42,122 @@ const ChoosePhoto = (props: Props) => {
   };
 
   const handleGalleryImagePick = async () => {
-    const result = await pickGalleryImage({ allowsMultipleSelection: true, selectionLimit: 3 });
+    const result = await pickGalleryImage({ allowsEditing: true });
 
-    result && handleUploadImages(result);
+    result && handleUploadImage({ ...result[0], uniqueID: `${result[0].assetId}${Date.now()}` });
   };
 
   const handleCameraImagePick = async () => {
     const result = await pickCameraImage({});
-    result && handleUploadImages([result]);
+    result && handleUploadImage(result);
   };
 
-  const handleUploadImages = (imagePickerAssets: ImagePickerAsset[]) => {
-    images.push(...imagePickerAssets);
-    imagePickerAssets.forEach((imagePickerAsset) => {
-      if (imagePickerAsset) {
-        const imageToUpload: UploadedImageAsset = { ...imagePickerAsset };
-        setUploadingImage(imageToUpload);
+  const handleUploadImage = (imagePickerAsset: UploadedImageAsset) => {
+    if (!imagePickerAsset) return;
 
-        uploadImage.mutate(imagePickerAsset, {
-          onSuccess: (data) => {
-            imageToUpload.publicId = data.public_id;
-            onImageUploadSuccess(images);
-          },
-          onError: (error) => {
-            // todo: handle errors
-            imageToUpload.isError = true;
-          },
-          onSettled: (data) => {
-            setUploadingImage(undefined);
-            console.log(data);
-          },
-        });
-      }
+    const isExisted = images.some((img) => img.uniqueID === imagePickerAsset.uniqueID);
+
+    if (!isExisted) {
+      setImages((prev) => [...prev, { ...imagePickerAsset, isError: false }]);
+    } else {
+      setImages((prev) =>
+        prev.map((img) =>
+          img.assetId === imagePickerAsset.assetId ? { ...img, isError: false } : img
+        )
+      );
+    }
+    uploadImage.mutate(imagePickerAsset, {
+      onSuccess: (data: ImageUploadResponse) => {
+        setImages((prev) =>
+          prev.map(
+            (img) =>
+              img.assetId === imagePickerAsset.assetId
+                ? { ...img, publicId: data.secure_url, secure_url: data.secure_url }
+                : img // here change data.public_id if needed + type data
+          )
+        );
+      },
+      onError: (error) => {
+        setImages((prev) =>
+          prev.map((img) =>
+            img.assetId === imagePickerAsset.assetId ? { ...img, isError: true } : img
+          )
+        );
+      },
     });
   };
 
+  useEffect(() => {
+    const readyImages = images.filter((img) => img.publicId && !img.isError);
+    onImageUploadSuccess(readyImages);
+  }, [images]);
+
   return (
-    <View className="flex gap-2">
-      <TouchableBtn
-        title="Choose photo"
-        type="grey"
-        nodeLeft={(color) => <FontAwesome name="image" size={24} color={color} />}
-        style={{ width: 180 }}
+    <View className="flex flex-row gap-3">
+      <TouchableOpacity
+        style={styles.btnChoose}
         onPress={handleOpenCameraModal}
-      />
+        activeOpacity={0.5}
+      >
+        <View className="flex flex-row gap-2 w-full justify-center">
+          <FontAwesome name="image" size={24} color={"white"} />
+          <CustomText>Add photo</CustomText>
+        </View>
+      </TouchableOpacity>
 
       {images && (
-        <View className="flex flex-row gap-2 flex-wrap">
-          {images.map((image, index) => {
-            const isUploading =
-              uploadImage.isPending &&
-              !image.publicId &&
-              image.publicId === uploadingImage?.publicId;
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          onContentSizeChange={() => {
+            scrollViewRef.current?.scrollToEnd({ animated: true });
+          }}
+        >
+          <View className="flex flex-row gap-2 flex-wrap">
+            {images.map((image, index) => {
+              const isError = image.isError;
+              const isUploading = uploadImage.isPending && !image.publicId && !isError;
 
-            return (
-              <View className="relative" key={index}>
-                <Image
-                  source={{ uri: image?.uri }}
-                  style={{
-                    width: 45,
-                    height: 45,
-                    borderRadius: 5,
-                    opacity: isUploading ? 0.7 : 1,
-                  }}
-                />
-                {isUploading && (
-                  <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                    <Loader style={{ width: 45, height: 45 }} />
-                  </View>
-                )}
-              </View>
-            );
-          })}
-        </View>
+              return (
+                <View
+                  className="relative"
+                  key={index}
+                  style={[
+                    { borderRadius: 5, width: 45, height: 45, overflow: "hidden" },
+                    isError && {
+                      borderWidth: 1,
+                      borderColor: theme.colors.error,
+                    },
+                  ]}
+                >
+                  <Image
+                    source={{ uri: image?.uri }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+
+                      opacity: isUploading || isError ? 0.7 : 1,
+                    }}
+                  />
+                  {isUploading && (
+                    <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                      <Loader style={{ width: 45, height: 45 }} />
+                    </View>
+                  )}
+                  {isError && (
+                    <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                      <TouchableOpacity onPress={() => handleUploadImage(image)}>
+                        <FontAwesome6 name="arrow-rotate-right" size={18} color="white" />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              );
+            })}
+          </View>
+        </ScrollView>
       )}
 
       <ChooseCameraModal
@@ -126,6 +173,15 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 10,
     paddingVertical: 20,
+  },
+
+  btnChoose: {
+    borderWidth: 1,
+    borderColor: "#363636",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    width: 160,
   },
 });
 

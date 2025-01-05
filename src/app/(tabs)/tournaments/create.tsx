@@ -1,40 +1,22 @@
-import { Keyboard, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { Controller, Form, FormProvider, useForm } from "react-hook-form";
+import { StyleSheet, View } from "react-native";
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import { useTranslation } from "react-i18next";
-import { ImageResult, Tournament } from "@/src/types/Tournament";
+import { Tournament } from "@/src/types/tournamentType";
 import { useTournamentMutation } from "@/src/queries/tournaments";
 
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
 import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
 import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
-import DropdownCheckbox, { DropdownItem } from "@/src/components/shared/dropdown/DropdownCheckbox";
-import CustomPicker from "@/src/components/shared/picker/CustomPicker";
-import CustomPickerItem from "@/src/components/shared/picker/CustomPickerItem";
-import DropdownModal from "@/src/components/shared/modal/DropdownModal";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import RHFormDropdownInput from "@/src/components/shared/form/RHFormDropdownInput";
-import CustomText from "@/src/components/shared/text/CustomText";
-import { FontAwesome } from "@expo/vector-icons";
-import ChooseCameraModal from "@/src/components/shared/modal/ChooseCameraModal";
-import { pickCameraImage } from "@/src/utils/pickCameraImage";
-import { pickGalleryImage } from "@/src/utils/pickGalleryImage";
-import { ImagePickerAsset } from "expo-image-picker";
-import { usePendingUploads, useUploadImage } from "@/src/queries/upload-image";
-import { Image } from "expo-image";
-import Loader from "@/src/components/shared/loader/Loader";
+import ChoosePhoto, { UploadedImageAsset } from "@/src/components/tournaments/ChoosePhoto";
 
 type Props = {};
 
 const CreateTournament = ({}: Props) => {
   const { t } = useTranslation();
   const createTournamentMutation = useTournamentMutation();
-  const { data: pendingUploads = {} } = usePendingUploads();
-
-  const uploadImage = useUploadImage();
-  const [images, setImages] = useState<ImagePickerAsset[] | []>([]);
 
   const methods = useForm<Tournament>({
     defaultValues: {},
@@ -61,42 +43,9 @@ const CreateTournament = ({}: Props) => {
     });
   };
 
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const handleOpenCameraModal = () => {
-    Keyboard.dismiss();
-    bottomSheetRef.current?.present();
+  const updateImages = (images: UploadedImageAsset[]) => {
+    setValue("images", images);
   };
-
-  const handleGalleryImagePick = async () => {
-    const result = await pickGalleryImage({ allowsMultipleSelection: true, selectionLimit: 3 });
-    result && handleUploadImage(result);
-  };
-
-  const handleCameraImagePick = async () => {
-    const result = await pickCameraImage({});
-    result && handleUploadImage([result]);
-  };
-
-  const handleUploadImage = (images: ImagePickerAsset[]) => {
-    if (images) {
-      setImages(images);
-      images.forEach((image) => {
-        uploadImage.mutate(
-          { image, asset_id: image.assetId || "" },
-          {
-            onSuccess: (data) => {
-              setValue("images", [data.result]); // change because onSuccess return only last uploaded image
-            },
-            onError: (error) => {
-              console.error("Failed to upload image:", error);
-            },
-          }
-        );
-      });
-    }
-  };
-
-  const isUploading = (asset_id: string) => !!pendingUploads[asset_id];
 
   return (
     <FormProvider {...methods}>
@@ -108,51 +57,14 @@ const CreateTournament = ({}: Props) => {
         keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
       >
         <View style={styles.wrapper}>
-          <View className="flex flex-col gap-4">
+          <View className="flex flex-col gap-1">
             <RHFormInput
               name="title"
               label={"title"}
               control={control}
               onSubmitEditing={() => setFocus("description")}
             />
-            <View className="flex flex-row gap-3 items-center">
-              <TouchableBtn
-                title="Add photo"
-                type="grey"
-                nodeLeft={(color) => <FontAwesome name="image" size={24} color={color} />}
-                style={{ width: 180 }}
-                onPress={handleOpenCameraModal}
-              />
-
-              {images && (
-                <View className="flex flex-row gap-2">
-                  {images.map((image, index) => (
-                    <View className="relative" key={index}>
-                      <Image
-                        source={{ uri: image?.uri }}
-                        style={{
-                          width: 45,
-                          height: 45,
-                          borderRadius: 5,
-                          opacity: isUploading(image.assetId!) ? 0.7 : 1,
-                        }}
-                      />
-                      {isUploading(image.assetId!) && (
-                        <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                          <Loader style={{ width: 45, height: 45 }} />
-                        </View>
-                      )}
-                    </View>
-                  ))}
-                </View>
-              )}
-
-              <ChooseCameraModal
-                ref={bottomSheetRef}
-                onGallery={() => handleGalleryImagePick()}
-                onCamera={() => handleCameraImagePick()}
-              />
-            </View>
+            <ChoosePhoto onImageUploadSuccess={updateImages} />
 
             <RHFormInput
               name="description"

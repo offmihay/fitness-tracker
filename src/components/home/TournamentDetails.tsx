@@ -5,7 +5,7 @@ import CustomMap from "../shared/map/CustomMap";
 import CustomText from "../shared/text/CustomText";
 import TouchableBtn from "../shared/touchable/TouchableBtn";
 import { Image } from "expo-image";
-import { Tournament } from "@/src/types/Tournament";
+import { Tournament } from "@/src/types/tournamentType";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 type Props = {

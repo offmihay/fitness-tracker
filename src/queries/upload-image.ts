@@ -25,9 +25,14 @@ export const useUploadImage = () => {
         }
       );
 
-      const result = await resp.json();
+      if (!resp.ok) {
+        const errorText = await resp.text();
+        throw new Error(
+          `Ошибка загрузки файла. Код статуса: ${resp.status}. Сообщение: ${errorText}`
+        );
+      }
 
-      // throw new Error("ITS AN ERROR");
+      const result = await resp.json();
       return result;
     },
   });

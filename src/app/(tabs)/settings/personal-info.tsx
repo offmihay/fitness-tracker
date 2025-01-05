@@ -213,7 +213,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             onLoad={() => setLoadingImg(false)}
           />
         </View>
-        <View className="flex flex-col gap-4 mt-8">
+        <View className="flex flex-col gap-1 mt-8">
           <CustomTextInput
             disabled
             disabledText
