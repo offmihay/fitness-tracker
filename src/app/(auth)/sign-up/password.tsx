@@ -149,6 +149,7 @@ const SignUpPasswordScreen = () => {
                         label={t("signup.confirmPassword")}
                         isPassword
                         isError={!!formErrors.passwordConfirm}
+                        textContentType="oneTimeCode"
                       />
                     )}
                     name="passwordConfirm"

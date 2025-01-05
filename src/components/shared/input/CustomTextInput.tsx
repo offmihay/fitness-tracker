@@ -168,7 +168,6 @@ const CustomTextInput = forwardRef<TextInput, Props>(
           ]}
         >
           <TextInput
-            textContentType="oneTimeCode"
             ref={ref}
             secureTextEntry={isPassword && !isPasswordVisible}
             editable={!disabled}
@@ -204,41 +203,45 @@ const CustomTextInput = forwardRef<TextInput, Props>(
           )}
 
           {!isPassword && useClearButton && (
-            <Animated.View style={styles.icon} entering={FadeIn} exiting={FadeOut}>
+            <View style={styles.icon}>
               {value && value.length > 0 && isFocusedState && (
-                <TouchableOpacity
-                  onPress={clearText}
-                  style={StyleSheet.absoluteFill}
-                  className="justify-center items-center"
-                >
-                  <AntDesign
-                    name="closecircle"
-                    color={theme.colors.textSurface}
-                    style={{ opacity: theme.dark ? 1 : 0.5 }}
-                    size={14}
-                  />
-                </TouchableOpacity>
+                <Animated.View style={StyleSheet.absoluteFill} entering={FadeIn} exiting={FadeOut}>
+                  <TouchableOpacity
+                    onPress={clearText}
+                    style={StyleSheet.absoluteFill}
+                    className="justify-center items-center"
+                  >
+                    <AntDesign
+                      name="closecircle"
+                      color={theme.colors.textSurface}
+                      style={{ opacity: theme.dark ? 1 : 0.5 }}
+                      size={14}
+                    />
+                  </TouchableOpacity>
+                </Animated.View>
               )}
-            </Animated.View>
+            </View>
           )}
           {isPassword && (
-            <Animated.View style={styles.icon} entering={FadeIn} exiting={FadeOut}>
+            <View style={styles.icon}>
               {value && value.length > 0 && (
-                <TouchableOpacity
-                  onPressIn={() => togglePasswordVisibility(true)}
-                  onPressOut={() => togglePasswordVisibility(false)}
-                  style={StyleSheet.absoluteFill}
-                  className="justify-center items-center"
-                >
-                  <Ionicons
-                    name={isPasswordVisible ? "eye" : "eye-off"}
-                    color={theme.colors.textSurface}
-                    style={{ opacity: theme.dark ? 1 : 0.5 }}
-                    size={18}
-                  />
-                </TouchableOpacity>
+                <Animated.View style={StyleSheet.absoluteFill} entering={FadeIn} exiting={FadeOut}>
+                  <TouchableOpacity
+                    onPressIn={() => togglePasswordVisibility(true)}
+                    onPressOut={() => togglePasswordVisibility(false)}
+                    style={StyleSheet.absoluteFill}
+                    className="justify-center items-center"
+                  >
+                    <Ionicons
+                      name={isPasswordVisible ? "eye" : "eye-off"}
+                      color={theme.colors.textSurface}
+                      style={{ opacity: theme.dark ? 1 : 0.5 }}
+                      size={18}
+                    />
+                  </TouchableOpacity>
+                </Animated.View>
               )}
-            </Animated.View>
+            </View>
           )}
         </Animated.View>
       </View>

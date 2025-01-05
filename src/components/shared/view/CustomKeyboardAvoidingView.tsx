@@ -9,7 +9,6 @@ const CustomKeyboardAvoidingView: React.FC<Props> = ({ children, ...props }) => 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      // ignoreIOSKeyboardWillChangeEvents={true}
       style={{ flex: 1 }}
       {...props}
     >
