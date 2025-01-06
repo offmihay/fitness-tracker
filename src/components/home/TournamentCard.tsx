@@ -64,7 +64,7 @@ const TournamentCard = ({
         <View
           style={{
             width: "100%",
-            height: 170,
+            height: 190,
             borderRadius: 10,
             overflow: "hidden",
             position: "relative",

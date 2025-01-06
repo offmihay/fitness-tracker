@@ -187,7 +187,18 @@ const CreateTournament = ({}: Props) => {
             </View>
           </View>
 
-          <TouchableBtn title="Create" className="mt-4" onPress={handleSubmit(handleFormSubmit)} />
+          <TouchableBtn
+            title="Create"
+            className="mt-4"
+            onPress={handleSubmit(handleFormSubmit)}
+            loading={createTournamentMutation.isPending}
+            statusAnimation={{
+              enabled: true,
+              useOnlySuccess: true,
+              isSuccess: createTournamentMutation.isSuccess,
+              timeOut: 3000,
+            }}
+          />
         </View>
       </KeyboardAwareScrollView>
     </FormProvider>

@@ -44,7 +44,7 @@ const darkTheme = {
     accent: "rgba(1, 113, 255, 0.7)",
     background: "#121212",
     surface: "#1E1E1E",
-    surfaceDark: "#141414",
+    surfaceDark: "#1b1b1b",
     surfaceLight: "#1c1c1e",
     surfaceDisabled: "#171717",
     text: "#FFFFFF",

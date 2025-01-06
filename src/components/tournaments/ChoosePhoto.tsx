@@ -1,4 +1,11 @@
-import { Keyboard, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  ActionSheetIOS,
+  Keyboard,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Loader from "../shared/loader/Loader";
@@ -13,6 +20,7 @@ import { Image } from "expo-image";
 import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { ImageUploadResponse } from "@/src/types/imageType";
+import { useTranslation } from "react-i18next";
 
 export type UploadedImageAsset = ImagePickerAsset & {
   publicId?: string;
@@ -28,6 +36,7 @@ type Props = {
 const ChoosePhoto = (props: Props) => {
   const theme = useCustomTheme();
   const { onImageUploadSuccess } = props;
+  const { t } = useTranslation();
 
   const uploadImage = useUploadImage();
 
@@ -93,79 +102,81 @@ const ChoosePhoto = (props: Props) => {
   }, [images]);
 
   return (
-    <View className="flex flex-row gap-3">
-      <TouchableOpacity
-        style={styles.btnChoose}
-        onPress={handleOpenCameraModal}
-        activeOpacity={0.5}
-      >
-        <View className="flex flex-row gap-2 w-full justify-center">
-          <FontAwesome name="image" size={24} color={"white"} />
-          <CustomText>Add photo</CustomText>
-        </View>
-      </TouchableOpacity>
-
-      {images && (
-        <ScrollView
-          ref={scrollViewRef}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          onContentSizeChange={() => {
-            scrollViewRef.current?.scrollToEnd({ animated: true });
-          }}
+    <>
+      <View className="flex flex-row gap-3">
+        <TouchableOpacity
+          style={styles.btnChoose}
+          onPress={handleOpenCameraModal}
+          activeOpacity={0.5}
         >
-          <View className="flex flex-row gap-2 flex-wrap">
-            {images.map((image, index) => {
-              const isError = image.isError;
-              const isUploading = uploadImage.isPending && !image.publicId && !isError;
-
-              return (
-                <View
-                  className="relative"
-                  key={index}
-                  style={[
-                    { borderRadius: 5, width: 45, height: 45, overflow: "hidden" },
-                    isError && {
-                      borderWidth: 1,
-                      borderColor: theme.colors.error,
-                    },
-                  ]}
-                >
-                  <Image
-                    source={{ uri: image?.uri }}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-
-                      opacity: isUploading || isError ? 0.7 : 1,
-                    }}
-                  />
-                  {isUploading && (
-                    <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                      <Loader style={{ width: 45, height: 45 }} />
-                    </View>
-                  )}
-                  {isError && (
-                    <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                      <TouchableOpacity onPress={() => handleUploadImage(image)}>
-                        <FontAwesome6 name="arrow-rotate-right" size={18} color="white" />
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                </View>
-              );
-            })}
+          <View className="flex flex-row gap-2 w-full justify-center">
+            <FontAwesome name="image" size={24} color={"white"} />
+            <CustomText>Add photo</CustomText>
           </View>
-        </ScrollView>
-      )}
+        </TouchableOpacity>
 
-      <ChooseCameraModal
-        ref={bottomSheetRef}
-        onGallery={() => handleGalleryImagePick()}
-        onCamera={() => handleCameraImagePick()}
-      />
-    </View>
+        {images && (
+          <ScrollView
+            ref={scrollViewRef}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            onContentSizeChange={() => {
+              scrollViewRef.current?.scrollToEnd({ animated: true });
+            }}
+          >
+            <View className="flex flex-row gap-2 flex-wrap">
+              {images.map((image, index) => {
+                const isError = image.isError;
+                const isUploading = uploadImage.isPending && !image.publicId && !isError;
+
+                return (
+                  <View
+                    className="relative"
+                    key={index}
+                    style={[
+                      { borderRadius: 5, width: 45, height: 45, overflow: "hidden" },
+                      isError && {
+                        borderWidth: 1,
+                        borderColor: theme.colors.error,
+                      },
+                    ]}
+                  >
+                    <Image
+                      source={{ uri: image?.uri }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+
+                        opacity: isUploading || isError ? 0.7 : 1,
+                      }}
+                    />
+                    {isUploading && (
+                      <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                        <Loader style={{ width: 45, height: 45 }} />
+                      </View>
+                    )}
+                    {isError && (
+                      <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                        <TouchableOpacity onPress={() => handleUploadImage(image)}>
+                          <FontAwesome6 name="arrow-rotate-right" size={18} color="white" />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+                );
+              })}
+            </View>
+          </ScrollView>
+        )}
+
+        <ChooseCameraModal
+          ref={bottomSheetRef}
+          onGallery={() => handleGalleryImagePick()}
+          onCamera={() => handleCameraImagePick()}
+        />
+      </View>
+    </>
   );
 };
 

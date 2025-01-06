@@ -22,7 +22,7 @@ export type Ref = BottomSheetModal;
 const ChooseCameraModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, ref) => {
   const { t } = useTranslation();
   const theme = useCustomTheme();
-  const snapPointsModal = useMemo(() => ["25%"], []);
+  const snapPointsModal = useMemo(() => ["30%"], []);
 
   const handleDismiss = useCallback(() => {
     if (ref && "current" in ref && ref.current) {
@@ -105,11 +105,13 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 8,
     marginHorizontal: 10,
+    justifyContent: "flex-end",
+    paddingBottom: 30,
   },
 
   btn: {
     width: "100%",
-    height: 55,
+    height: 60,
   },
   btnContent: {
     width: "100%",
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
   },
 
   btnWrapper: {
-    borderRadius: 10,
+    borderRadius: 15,
     overflow: "hidden",
   },
 });

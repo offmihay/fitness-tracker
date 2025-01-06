@@ -32,7 +32,7 @@ type Props = {
   nodeRight?: (color: string) => React.ReactNode;
   nodeLeft?: (color: string) => React.ReactNode;
   title?: string;
-  checkAnimation?: {
+  statusAnimation?: {
     enabled?: boolean;
     isSuccess?: boolean;
     isError?: boolean;
@@ -50,27 +50,27 @@ const TouchableBtn = ({
   nodeRight,
   nodeLeft,
   title,
-  checkAnimation = { enabled: false, timeOut: 2000 },
+  statusAnimation = { enabled: false, timeOut: 2000 },
   ...rest
 }: Props) => {
   const theme = useCustomTheme();
 
   const [isCheckAnimated, setIsCheckAnimated] = useState(false);
-  const startCheckAnimation = () => {
+  const startStatusAnimation = () => {
     setIsCheckAnimated(true);
     setTimeout(() => {
       setIsCheckAnimated(false);
-    }, checkAnimation?.timeOut);
+    }, statusAnimation?.timeOut);
   };
 
   const [loadingState, setLoadingState] = useState(false);
 
   useEffect(() => {
-    if (checkAnimation.enabled) {
-      if (checkAnimation.isError && checkAnimation.useOnlySuccess) return;
+    if (statusAnimation.enabled) {
+      if (statusAnimation.isError && statusAnimation.useOnlySuccess) return;
       setLoadingState(loading);
       if (loadingState && !loading) {
-        startCheckAnimation();
+        startStatusAnimation();
       }
     }
   }, [loading]);
@@ -91,9 +91,9 @@ const TouchableBtn = ({
   const styleDisabledColor = theme.dark ? styles.darkgreyButton : styles.lightgreyButton;
   const styleEnabledColor =
     type === "error" ||
-    (!checkAnimation.useOnlySuccess && checkAnimation.isError && isCheckAnimated)
+    (!statusAnimation.useOnlySuccess && statusAnimation.isError && isCheckAnimated)
       ? styles.errorButton
-      : type === "success" || (checkAnimation?.isSuccess && isCheckAnimated)
+      : type === "success" || (statusAnimation?.isSuccess && isCheckAnimated)
       ? styles.successButton
       : type === "primary"
       ? styles.primaryButton
@@ -180,10 +180,10 @@ const TouchableBtn = ({
             entering={FadeIn.duration(500)}
             exiting={FadeOut.duration(150)}
           >
-            {checkAnimation.isSuccess && (
+            {statusAnimation.isSuccess && (
               <FontAwesome name="check" size={24} color={opacityColor} />
             )}
-            {checkAnimation.isError && !checkAnimation.useOnlySuccess && (
+            {statusAnimation.isError && !statusAnimation.useOnlySuccess && (
               <FontAwesome name="close" size={24} color={opacityColor} />
             )}
           </Animated.View>
