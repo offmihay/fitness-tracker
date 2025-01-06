@@ -266,7 +266,6 @@ const styles = StyleSheet.create({
   label: {
     position: "absolute",
     paddingHorizontal: 5,
-    lineHeight: 20,
   },
   icon: {
     height: 40,

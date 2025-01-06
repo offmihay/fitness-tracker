@@ -24,6 +24,7 @@ const DropdownModal = forwardRef(
 
     const { t } = useTranslation();
     const theme = useCustomTheme();
+
     const snapPointsModal = useMemo(() => ["30%"], []);
 
     const handleDismiss = useCallback(() => {

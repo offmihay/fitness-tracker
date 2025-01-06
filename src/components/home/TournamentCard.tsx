@@ -89,7 +89,7 @@ const TournamentCard = ({
                   type="predefault"
                   numberOfLines={2}
                   ellipsizeMode="tail"
-                  style={{ maxWidth: 175 }}
+                  style={{ maxWidth: "80%" }}
                   onTextLayout={handleTextLayout(1)}
                 >
                   {location}
@@ -103,7 +103,7 @@ const TournamentCard = ({
                   type="predefault"
                   numberOfLines={2}
                   ellipsizeMode="tail"
-                  style={{ maxWidth: 175 }}
+                  style={{ maxWidth: "80%" }}
                   onTextLayout={handleTextLayout(2)}
                 >
                   {dateTime}
@@ -121,7 +121,7 @@ const TournamentCard = ({
                   type="predefault"
                   numberOfLines={2}
                   ellipsizeMode="tail"
-                  style={{ maxWidth: 90 }}
+                  style={{ maxWidth: "75%" }}
                   onTextLayout={handleTextLayout(3)}
                 >
                   {patricipants}
@@ -135,7 +135,7 @@ const TournamentCard = ({
                   type="predefault"
                   numberOfLines={2}
                   ellipsizeMode="tail"
-                  style={{ maxWidth: 90 }}
+                  style={{ maxWidth: "75%" }}
                   onTextLayout={handleTextLayout(4)}
                 >
                   {entryFee}
@@ -147,12 +147,16 @@ const TournamentCard = ({
 
         <View className="flex flex-row justify-between mt-4">
           <TouchableBtn
-            title={t("index.register")}
+            title={t("home.tournament.register")}
             style={{ width: "48%" }}
             onPress={handleRegister}
             nodeLeft={(color) => <></>}
           />
-          <TouchableBtn type="grey" title="Save for Later" style={{ width: "48%" }} />
+          <TouchableBtn
+            type="grey"
+            title={t("home.tournament.saveForLater")}
+            style={{ width: "48%" }}
+          />
         </View>
       </View>
     </TouchableOpacity>

@@ -1,11 +1,13 @@
-import { Keyboard, StyleSheet, View } from "react-native";
+import { Keyboard, Platform, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { Control, Controller, FieldPath, FieldValues, useFormContext } from "react-hook-form";
 import DatePickerInput from "../input/DatePickerInput";
 import CustomTextInput from "../input/CustomTextInput";
-import DropdownModal, { DropdownModalProps } from "../modal/DropdownModal";
+import DropdownModal, { DropdownModalProps } from "../modal/DropdownModal [ios]";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { PickerItemProps } from "@react-native-picker/picker";
+import CustomPicker from "../picker/CustomPicker [android]";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 type Props<TFieldValues extends FieldValues, T extends string> = {
   control: Control<TFieldValues>;
@@ -21,6 +23,7 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
   props: Props<TFieldValues, T>
 ) => {
   const { control, name, label, rules, onSubmitEditing, inputProps, dropdownProps } = props;
+  const theme = useCustomTheme();
 
   const [isOpen, setOpen] = useState(false);
 
@@ -28,7 +31,7 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
-  const handleOpenCameraModal = () => {
+  const handleOpenModal = () => {
     Keyboard.dismiss();
     bottomSheetRef.current?.present();
     setOpen(true);
@@ -45,7 +48,7 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
         name={name}
         rules={rules}
         render={({ field: { onChange, value, ref } }) => {
-          return (
+          return Platform.OS === "ios" ? (
             <CustomTextInput
               ref={ref}
               disabled={true}
@@ -54,18 +57,30 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
               onChangeText={onChange}
               returnKeyType="next"
               onSubmitEditing={onSubmitEditing}
-              onPress={handleOpenCameraModal}
+              onPress={handleOpenModal}
               isForceFocused={isOpen}
               {...inputProps}
             />
+          ) : Platform.OS === "android" ? (
+            <CustomPicker
+              selectedValue={value}
+              onValueChange={(itemValue, itemIndex) => {
+                onChange(itemValue);
+                dropdownProps.onValueChange?.(itemValue, itemIndex);
+              }}
+              items={dropdownProps.items}
+              selectAnLabel={dropdownProps.selectAnLabel}
+            />
+          ) : (
+            <></>
           );
         }}
       />
-      <DropdownModal ref={bottomSheetRef} {...dropdownProps} onDismiss={onDismiss} />
+      {Platform.OS === "ios" && (
+        <DropdownModal ref={bottomSheetRef} {...dropdownProps} onDismiss={onDismiss} />
+      )}
     </>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default RHFormDropdownInput;

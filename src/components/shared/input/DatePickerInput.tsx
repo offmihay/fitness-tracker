@@ -2,7 +2,7 @@ import React, { useState, forwardRef, useImperativeHandle, useRef } from "react"
 
 import { useTranslation } from "react-i18next";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Keyboard, Pressable, View, TextInput } from "react-native";
+import { Keyboard, Pressable, View, TextInput, Platform } from "react-native";
 
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "./CustomTextInput";
@@ -41,8 +41,8 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
     const hideDatePicker = () => setDatePickerVisibility(false);
 
     const handleConfirm = (date: Date) => {
-      onChange(date);
       hideDatePicker();
+      onChange(date);
       setIsConfirmed(true);
     };
 

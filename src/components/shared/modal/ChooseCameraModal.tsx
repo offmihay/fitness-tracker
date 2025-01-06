@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useMemo, useRef } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -55,7 +55,7 @@ const ChooseCameraModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, ref) 
       handleComponent={null}
     >
       <BottomSheetView style={styles.contentContainer}>
-        <View style={[styles.btnWrapper]}>
+        <View style={[styles.btnWrapper, { borderRadius: Platform.OS === "ios" ? 15 : 8 }]}>
           <View style={[styles.btn, { backgroundColor: "black" }]}>
             <TouchableOpacity
               activeOpacity={0.85}
@@ -80,7 +80,7 @@ const ChooseCameraModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, ref) 
             </TouchableOpacity>
           </View>
         </View>
-        <View style={[styles.btnWrapper]}>
+        <View style={[styles.btnWrapper, { borderRadius: Platform.OS === "ios" ? 15 : 8 }]}>
           <View style={[styles.btn, { backgroundColor: "black" }]}>
             <TouchableOpacity
               activeOpacity={0.85}
@@ -122,7 +122,6 @@ const styles = StyleSheet.create({
   },
 
   btnWrapper: {
-    borderRadius: 15,
     overflow: "hidden",
   },
 });

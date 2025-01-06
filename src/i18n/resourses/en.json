@@ -35,17 +35,59 @@
   },
   "home": {
     "title": "Home",
-    "welcome": "Welcome to your dashboard!",
-    "today": "Today's Workouts",
-    "upcoming": "Upcoming Workouts",
-    "completed": "Completed Workouts"
+    "tournament": {
+      "register": "Register",
+      "saveForLater": "Save for Later",
+      "description": "Description",
+      "participants": "Participants",
+      "rules": "Rules",
+      "organizer": "Organizer",
+      "sportType": "Sport type",
+      "format": "Format",
+      "skillLevel": "Skill Level",
+      "ageRestriction": "Age Restriction",
+      "noAgeRestrictions": "No age restrictions",
+      "entryFee": "Entry fee",
+      "prizePool": "Prize Pool",
+      "location": "Location",
+      "organizerDetails": "Organizer Details",
+      "organizedBy": "Organized by {{name}}",
+      "unknown": "Unknown",
+      "contactUs": "Contact us"
+    }
   },
   "tournaments": {
     "title": "Tournaments",
-    "myWorkouts": "My Workouts",
-    "createWorkout": "Create New Workout",
-    "workoutPlans": "Workout Plans",
-    "favorites": "Favorite Workouts"
+    "create": {
+      "title": "Create Tournament",
+      "titleTournament": "Title",
+      "description": "Description",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "skillLevel": "Skill Level",
+      "format": "Format",
+      "city": "City",
+      "location": "Location",
+      "entryFee": "Entry Fee",
+      "prizePool": "Prize Pool",
+      "minAge": "Min Age",
+      "maxAge": "Max Age",
+      "createButton": "Create",
+      "successMessage": "Tournament created:",
+      "errorMessage": "Failed to create tournament:",
+      "selectSkillLevel": "Select skill level...",
+      "selectFormat": "Select format...",
+      "skillLevels": {
+        "amateur": "Amateur",
+        "beginner": "Beginner",
+        "professional": "Professional"
+      },
+      "formats": {
+        "singles": "Singles",
+        "doubles": "Doubles",
+        "squad": "Squad"
+      }
+    }
   },
 
   "signin": {

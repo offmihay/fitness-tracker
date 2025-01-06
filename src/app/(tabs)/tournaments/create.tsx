@@ -35,10 +35,10 @@ const CreateTournament = ({}: Props) => {
   const handleFormSubmit = (data: Tournament) => {
     createTournamentMutation.mutate(data, {
       onSuccess: (data) => {
-        console.log("Tournament created:", data);
+        console.log(t("tournaments.create.successMessage"), data);
       },
       onError: (error) => {
-        console.error("Failed to create tournament:", error);
+        console.error(t("tournaments.create.errorMessage"), error);
       },
     });
   };
@@ -51,16 +51,14 @@ const CreateTournament = ({}: Props) => {
     <FormProvider {...methods}>
       <KeyboardAwareScrollView
         scrollEnabled={true}
-        extraScrollHeight={-70}
         keyboardShouldPersistTaps="handled"
-        enableOnAndroid={true}
         keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
       >
         <View style={styles.wrapper}>
           <View className="flex flex-col gap-1">
             <RHFormInput
               name="title"
-              label={"title"}
+              label={t("tournaments.create.titleTournament")}
               control={control}
               onSubmitEditing={() => setFocus("description")}
             />
@@ -68,7 +66,7 @@ const CreateTournament = ({}: Props) => {
 
             <RHFormInput
               name="description"
-              label={"description"}
+              label={t("tournaments.create.description")}
               inputProps={{
                 style: {
                   height: 100,
@@ -77,13 +75,14 @@ const CreateTournament = ({}: Props) => {
                   height: 110,
                 },
                 multiline: true,
+                textAlignVertical: "top",
                 returnKeyType: "default",
               }}
               control={control}
             />
             <RHFormDatePicker
               name="dateStart"
-              label={"Start date"}
+              label={t("tournaments.create.startDate")}
               datePickerProps={{
                 minimumDate: new Date(),
                 maximumDate: new Date(new Date().getFullYear() + 5, 0, 1),
@@ -92,7 +91,7 @@ const CreateTournament = ({}: Props) => {
             />
             <RHFormDatePicker
               name="dateEnd"
-              label={"End date"}
+              label={t("tournaments.create.endDate")}
               datePickerProps={{
                 minimumDate: watch("dateStart") ? new Date(watch("dateStart")) : undefined,
               }}
@@ -103,16 +102,19 @@ const CreateTournament = ({}: Props) => {
                 <RHFormDropdownInput
                   control={control}
                   name="skillLevel"
-                  label="SkillLevel"
+                  label={t("tournaments.create.skillLevel")}
                   dropdownProps={{
                     selectedValue: watch("skillLevel"),
                     onValueChange: (itemValue) => setValue("skillLevel", itemValue),
                     items: [
-                      { label: "Amateur", value: "Amateur" },
-                      { label: "Beginner", value: "Beginner" },
-                      { label: "Professional", value: "Professional" },
+                      { label: t("tournaments.create.skillLevels.amateur"), value: "Amateur" },
+                      { label: t("tournaments.create.skillLevels.beginner"), value: "Beginner" },
+                      {
+                        label: t("tournaments.create.skillLevels.professional"),
+                        value: "Professional",
+                      },
                     ],
-                    selectAnLabel: "Select skillLevel ...",
+                    selectAnLabel: t("tournaments.create.selectSkillLevel"),
                   }}
                 />
               </View>
@@ -120,42 +122,42 @@ const CreateTournament = ({}: Props) => {
                 <RHFormDropdownInput
                   control={control}
                   name="format"
-                  label="Format"
+                  label={t("tournaments.create.format")}
                   dropdownProps={{
                     selectedValue: watch("format"),
                     onValueChange: (itemValue) => setValue("format", itemValue),
                     items: [
-                      { label: "Singles", value: "Singles" },
-                      { label: "Doubles", value: "Doubles" },
-                      { label: "Squad", value: "Squad" },
+                      { label: t("tournaments.create.formats.singles"), value: "Singles" },
+                      { label: t("tournaments.create.formats.doubles"), value: "Doubles" },
+                      { label: t("tournaments.create.formats.squad"), value: "Squad" },
                     ],
-                    selectAnLabel: "Select format...",
+                    selectAnLabel: t("tournaments.create.selectFormat"),
                   }}
                 />
               </View>
             </View>
             <RHFormInput
               name="city"
-              label={"city"}
+              label={t("tournaments.create.city")}
               control={control}
               onSubmitEditing={() => setFocus("location")}
             />
             <RHFormInput
               name="location"
-              label={"location"}
+              label={t("tournaments.create.location")}
               control={control}
               onSubmitEditing={() => setFocus("entryFee")}
             />
             <RHFormInput
               name="entryFee"
-              label={"entryFee"}
+              label={t("tournaments.create.entryFee")}
               inputProps={{ keyboardType: "numbers-and-punctuation" }}
               control={control}
               onSubmitEditing={() => setFocus("prizePool")}
             />
             <RHFormInput
               name="prizePool"
-              label={"prizePool"}
+              label={t("tournaments.create.prizePool")}
               inputProps={{
                 keyboardType: "numbers-and-punctuation",
               }}
@@ -167,7 +169,7 @@ const CreateTournament = ({}: Props) => {
               <View className="w-1/2 pr-1">
                 <RHFormInput
                   name="ageRestrictions.minAge"
-                  label={"minAge"}
+                  label={t("tournaments.create.minAge")}
                   inputProps={{ keyboardType: "numbers-and-punctuation" }}
                   control={control}
                   onSubmitEditing={() => setFocus("ageRestrictions.maxAge")}
@@ -176,7 +178,7 @@ const CreateTournament = ({}: Props) => {
               <View className="w-1/2 pl-1">
                 <RHFormInput
                   name="ageRestrictions.maxAge"
-                  label={"maxAge"}
+                  label={t("tournaments.create.maxAge")}
                   inputProps={{
                     keyboardType: "numbers-and-punctuation",
                   }}
@@ -188,7 +190,7 @@ const CreateTournament = ({}: Props) => {
           </View>
 
           <TouchableBtn
-            title="Create"
+            title={t("tournaments.create.createButton")}
             className="mt-4"
             onPress={handleSubmit(handleFormSubmit)}
             loading={createTournamentMutation.isPending}

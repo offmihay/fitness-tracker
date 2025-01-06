@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     paddingHorizontal: 20,
-    marginBottom: 350,
   },
   contentWrapper: {
     flex: 1,

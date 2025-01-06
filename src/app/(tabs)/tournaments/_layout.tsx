@@ -13,6 +13,12 @@ export default function Layout() {
           title: t("tournaments.title"),
         }}
       />
+      <Stack.Screen
+        name="create"
+        options={{
+          title: t("tournaments.create.title"),
+        }}
+      />
     </Stack>
   );
 }

@@ -57,7 +57,7 @@ const ChoosePhoto = (props: Props) => {
   };
 
   const handleCameraImagePick = async () => {
-    const result = await pickCameraImage({});
+    const result = await pickCameraImage({ aspect: [3, 4] });
     result && handleUploadImage(result);
   };
 
@@ -101,16 +101,33 @@ const ChoosePhoto = (props: Props) => {
     onImageUploadSuccess(readyImages);
   }, [images]);
 
+  const onPress = () =>
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: [t("common.cancel"), t("modal.openGallery"), t("modal.openCamera")],
+        cancelButtonIndex: 0,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+          // cancel action
+        } else if (buttonIndex === 1) {
+          handleGalleryImagePick();
+        } else if (buttonIndex === 2) {
+          handleCameraImagePick();
+        }
+      }
+    );
+
   return (
     <>
       <View className="flex flex-row gap-3">
         <TouchableOpacity
-          style={styles.btnChoose}
+          style={[styles.btnChoose, { borderColor: theme.colors.border }]}
           onPress={handleOpenCameraModal}
           activeOpacity={0.5}
         >
           <View className="flex flex-row gap-2 w-full justify-center">
-            <FontAwesome name="image" size={24} color={"white"} />
+            <FontAwesome name="image" size={24} color={theme.colors.text} />
             <CustomText>Add photo</CustomText>
           </View>
         </TouchableOpacity>
@@ -176,6 +193,12 @@ const ChoosePhoto = (props: Props) => {
           onCamera={() => handleCameraImagePick()}
         />
       </View>
+      {/* <TouchableOpacity style={styles.btnChoose} onPress={onPress} activeOpacity={0.5}>
+        <View className="flex flex-row gap-2 w-full justify-center">
+          <FontAwesome name="image" size={24} color={"white"} />
+          <CustomText>Add ph IOS</CustomText>
+        </View>
+      </TouchableOpacity> */}
     </>
   );
 };
@@ -188,7 +211,6 @@ const styles = StyleSheet.create({
 
   btnChoose: {
     borderWidth: 1,
-    borderColor: "#363636",
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 10,

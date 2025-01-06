@@ -3,11 +3,14 @@ import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Platform } from "react-native";
 
 export const globalScreenOptions = {
   headerTitleStyle: {
     fontWeight: 600 as const,
   },
+  headerTitleAlign: "center" as const,
+  tabBarHideOnKeyboard: Platform.OS === "android" ? true : false,
 };
 
 export default function TabLayout() {
