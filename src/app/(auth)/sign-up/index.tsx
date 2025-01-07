@@ -5,8 +5,8 @@ import { t } from "i18next";
 
 import CustomText from "../../../components/shared/text/CustomText";
 
-import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
-import TouchableBack from "@/src/components/shared/touchable/TouchableBack";
+import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
+import TouchableBack from "@/src/components/shared/button/ButtonBack";
 import { useSignUpMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";

@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import ChoosePhoto, { UploadedImageAsset } from "@/src/components/tournaments/ChoosePhoto";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
 import { useRouter } from "expo-router";
 
 type Props = {};

@@ -15,7 +15,7 @@ import { Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
 
 const SignIn = () => {
   const { t } = useTranslation();

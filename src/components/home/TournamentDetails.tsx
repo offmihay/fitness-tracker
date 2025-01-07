@@ -3,7 +3,7 @@ import React from "react";
 import { Ionicons, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import CustomMap from "../shared/map/CustomMap";
 import CustomText from "../shared/text/CustomText";
-import TouchableBtn from "../shared/touchable/TouchableBtn";
+import TouchableBtn from "../shared/button/ButtonDefault";
 import { Image } from "expo-image";
 import { Tournament } from "@/src/types/tournamentType";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";

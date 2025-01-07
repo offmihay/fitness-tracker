@@ -7,7 +7,7 @@ import { Tournament } from "@/src/types/tournamentType";
 import { useTournamentMutation } from "@/src/queries/tournaments";
 
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
-import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
 import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
 import RHFormDropdownInput from "@/src/components/shared/form/RHFormDropdownInput";
 import ChoosePhoto, { UploadedImageAsset } from "@/src/components/tournaments/ChoosePhoto";

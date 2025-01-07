@@ -4,7 +4,7 @@ import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import TouchableBtn from "../shared/touchable/TouchableBtn";
+import TouchableBtn from "../shared/button/ButtonDefault";
 import { useTranslation } from "react-i18next";
 
 type Props = {
@@ -145,7 +145,7 @@ const TournamentCard = ({
           </View>
         </View>
 
-        <View className="flex flex-row justify-between mt-4">
+        {/* <View className="flex flex-row justify-between mt-4">
           <TouchableBtn
             title={t("home.tournament.register")}
             style={{ width: "48%" }}
@@ -157,7 +157,7 @@ const TournamentCard = ({
             title={t("home.tournament.saveForLater")}
             style={{ width: "48%" }}
           />
-        </View>
+        </View> */}
       </View>
     </TouchableOpacity>
   );
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   prizeBadge: {
     position: "absolute",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 5,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",

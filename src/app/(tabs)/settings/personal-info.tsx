@@ -14,7 +14,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { pickCameraImage } from "@/src/utils/pickCameraImage";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
 import { Octicons } from "@expo/vector-icons";
 import { pickGalleryImage } from "@/src/utils/pickGalleryImage";
 import RHFormInput from "@/src/components/shared/form/RHFormInput";

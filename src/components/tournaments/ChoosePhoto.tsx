@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Loader from "../shared/loader/Loader";
 import ChooseCameraModal from "../shared/modal/ChooseCameraModal";
-import TouchableBtn from "../shared/touchable/TouchableBtn";
+import TouchableBtn from "../shared/button/ButtonDefault";
 import { pickCameraImage } from "@/src/utils/pickCameraImage";
 import { pickGalleryImage } from "@/src/utils/pickGalleryImage";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -21,6 +21,8 @@ import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { ImageUploadResponse } from "@/src/types/imageType";
 import { useTranslation } from "react-i18next";
+import ButtonInput from "../shared/button/ButonInput";
+import CustomIcon from "../shared/icon/CustomIcon";
 
 export type UploadedImageAsset = ImagePickerAsset & {
   publicId?: string;
@@ -34,9 +36,9 @@ type Props = {
 };
 
 const ChoosePhoto = (props: Props) => {
-  const theme = useCustomTheme();
   const { onImageUploadSuccess } = props;
   const { t } = useTranslation();
+  const theme = useCustomTheme();
 
   const uploadImage = useUploadImage();
 
@@ -101,36 +103,17 @@ const ChoosePhoto = (props: Props) => {
     onImageUploadSuccess(readyImages);
   }, [images]);
 
-  const onPress = () =>
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: [t("common.cancel"), t("modal.openGallery"), t("modal.openCamera")],
-        cancelButtonIndex: 0,
-      },
-      (buttonIndex) => {
-        if (buttonIndex === 0) {
-          // cancel action
-        } else if (buttonIndex === 1) {
-          handleGalleryImagePick();
-        } else if (buttonIndex === 2) {
-          handleCameraImagePick();
-        }
-      }
-    );
-
   return (
     <>
       <View className="flex flex-row gap-3">
-        <TouchableOpacity
-          style={[styles.btnChoose, { borderColor: theme.colors.border }]}
-          onPress={handleOpenCameraModal}
-          activeOpacity={0.5}
-        >
+        <ButtonInput onPress={handleOpenCameraModal}>
           <View className="flex flex-row gap-2 w-full justify-center">
-            <FontAwesome name="image" size={24} color={theme.colors.text} />
+            <CustomIcon
+              render={(color, size) => <FontAwesome name="image" size={size} color={color} />}
+            />
             <CustomText>Add photo</CustomText>
           </View>
-        </TouchableOpacity>
+        </ButtonInput>
 
         {images && (
           <ScrollView
@@ -193,29 +176,8 @@ const ChoosePhoto = (props: Props) => {
           onCamera={() => handleCameraImagePick()}
         />
       </View>
-      {/* <TouchableOpacity style={styles.btnChoose} onPress={onPress} activeOpacity={0.5}>
-        <View className="flex flex-row gap-2 w-full justify-center">
-          <FontAwesome name="image" size={24} color={"white"} />
-          <CustomText>Add ph IOS</CustomText>
-        </View>
-      </TouchableOpacity> */}
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-  },
-
-  btnChoose: {
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    width: 160,
-  },
-});
 
 export default ChoosePhoto;

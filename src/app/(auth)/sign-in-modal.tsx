@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import CustomText from "../../components/shared/text/CustomText";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
-import TouchableBtn from "@/src/components/shared/touchable/TouchableBtn";
+import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
 import { useSignInMutation } from "@/src/queries/signin";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Controller, FormProvider, useForm } from "react-hook-form";
