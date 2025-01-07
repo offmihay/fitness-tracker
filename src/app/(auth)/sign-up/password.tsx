@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { t } from "i18next";
 import CustomText from "../../../components/shared/text/CustomText";
-import TouchableBack from "@/src/components/shared/button/ButtonBack";
+import ButtonBack from "@/src/components/shared/button/ButtonBack";
 import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
 import { useSignUpPasswordMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
@@ -94,7 +94,7 @@ const SignUpPasswordScreen = () => {
         keyboardVerticalOffset={-200}
         style={{ backgroundColor: theme.colors.background }}
       >
-        <TouchableBack />
+        <ButtonBack />
         <DismissKeyboardView>
           <View style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
             <View style={[styles.contentWrapper]}>

@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { t } from "i18next";
 import CustomText from "../../../components/shared/text/CustomText";
 import Loader from "@/src/components/shared/loader/Loader";
-import TouchableBack from "@/src/components/shared/button/ButtonBack";
+import ButtonBack from "@/src/components/shared/button/ButtonBack";
 import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
 import useCountdown from "@/src/hooks/useCountdown";
 import {
@@ -109,7 +109,7 @@ const SignUpVerifyCodeScreen = () => {
         keyboardVerticalOffset={-200}
         style={{ backgroundColor: theme.colors.background }}
       >
-        <TouchableBack />
+        <ButtonBack />
         <DismissKeyboardView>
           <View style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
             <View style={[styles.contentWrapper]}>

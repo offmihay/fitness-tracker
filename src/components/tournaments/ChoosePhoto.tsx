@@ -21,7 +21,7 @@ import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { ImageUploadResponse } from "@/src/types/imageType";
 import { useTranslation } from "react-i18next";
-import ButtonInput from "../shared/button/ButonInput";
+import ButtonInput from "../shared/button/ButtonInput";
 import CustomIcon from "../shared/icon/CustomIcon";
 
 export type UploadedImageAsset = ImagePickerAsset & {
@@ -106,14 +106,16 @@ const ChoosePhoto = (props: Props) => {
   return (
     <>
       <View className="flex flex-row gap-3">
-        <ButtonInput onPress={handleOpenCameraModal}>
-          <View className="flex flex-row gap-2 w-full justify-center">
-            <CustomIcon
-              render={(color, size) => <FontAwesome name="image" size={size} color={color} />}
-            />
-            <CustomText>Add photo</CustomText>
-          </View>
-        </ButtonInput>
+        <View style={{ width: 160 }}>
+          <ButtonInput onPress={handleOpenCameraModal}>
+            <View className="flex flex-row gap-2 w-full justify-center">
+              <CustomIcon
+                render={(color, size) => <FontAwesome name="image" size={size} color={color} />}
+              />
+              <CustomText>Add photo</CustomText>
+            </View>
+          </ButtonInput>
+        </View>
 
         {images && (
           <ScrollView

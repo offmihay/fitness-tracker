@@ -1,10 +1,11 @@
 import React, { forwardRef, useCallback, useMemo } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 import { Picker } from "@react-native-picker/picker";
+import { AntDesign } from "@expo/vector-icons";
 
 type PickerItemProps = React.ComponentProps<typeof Picker.Item>;
 
@@ -25,7 +26,7 @@ const DropdownModal = forwardRef(
     const { t } = useTranslation();
     const theme = useCustomTheme();
 
-    const snapPointsModal = useMemo(() => ["30%"], []);
+    const snapPointsModal = useMemo(() => ["35%"], []);
 
     const handleDismiss = useCallback(() => {
       if (ref && "current" in ref && ref.current) {
@@ -53,12 +54,14 @@ const DropdownModal = forwardRef(
         snapPoints={snapPointsModal}
         index={0}
         backdropComponent={renderBackdrop}
-        backgroundStyle={{ backgroundColor: theme.colors.surfaceDark }}
-        // handleComponent={null}
+        backgroundStyle={{ backgroundColor: theme.colors.background }}
         handleIndicatorStyle={{ backgroundColor: theme.colors.textTertiary }}
         handleStyle={{ position: "absolute", left: 0, right: 0, margin: "auto" }}
       >
         <BottomSheetView style={styles.contentContainer}>
+          <TouchableOpacity style={styles.closeIcon} onPress={() => handleDismiss()}>
+            <AntDesign name="close" size={24} color={theme.colors.textSecondary} />
+          </TouchableOpacity>
           <Picker
             selectedValue={selectedValue}
             onValueChange={handleValueChange}
@@ -66,6 +69,7 @@ const DropdownModal = forwardRef(
               color: theme.colors.text,
               padding: 0,
               width: "100%",
+              height: "100%",
             }}
           >
             {selectAnLabel && (
@@ -88,5 +92,19 @@ export default DropdownModal as <T extends string>(
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
+    paddingBottom: 20,
+    position: "relative",
+  },
+
+  closeIcon: {
+    position: "absolute",
+    right: 5,
+    top: 5,
+    zIndex: 1000,
+    width: 50,
+    height: 50,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

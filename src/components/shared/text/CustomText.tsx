@@ -22,7 +22,11 @@ const CustomText = ({
   ...rest
 }: Props) => {
   const theme = useCustomTheme();
+
   const colorText = color ? color : theme.colors.text;
+  // if (children === "Football") {
+  //   console.log(theme);
+  // }
 
   return (
     <Animated.Text

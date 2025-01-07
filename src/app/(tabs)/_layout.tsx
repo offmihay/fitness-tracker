@@ -10,7 +10,7 @@ export const globalScreenOptions = {
     fontWeight: 600 as const,
   },
   headerTitleAlign: "center" as const,
-  tabBarHideOnKeyboard: Platform.OS === "android" ? true : false,
+  tabBarHideOnKeyboard: Platform.OS === "android",
 };
 
 export default function TabLayout() {

@@ -1,4 +1,5 @@
-type SkillLevel = "Amateur" | "Beginner" | "Professional";
+export type TournamentSportType = "badminton" | "tennis" | "squash";
+export type TournamentSkillLevel = "amateur" | "beginner" | "professional";
 type Format = "Singles" | "Doubles" | "Squad";
 type Status = "Upcoming" | "Ongoing" | "Finished";
 
@@ -45,7 +46,7 @@ export interface Tournament {
   entryFee: number;
   prizePool: number;
   ageRestrictions: AgeRestrictions;
-  skillLevel: SkillLevel;
+  skillLevel: TournamentSkillLevel;
   format: Format;
   maxParticipants: number;
   currentParticipants: CurrentParticipants;

@@ -7,7 +7,7 @@ import { CombinedDarkTheme } from "@/src/theme/theme";
 
 type Props = {};
 
-const TouchableBack: React.FC<Props> = () => {
+const ButtonBack: React.FC<Props> = () => {
   const router = useRouter();
 
   const theme = useCustomTheme();
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TouchableBack;
+export default ButtonBack;

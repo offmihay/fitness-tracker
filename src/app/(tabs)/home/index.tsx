@@ -7,7 +7,8 @@ import { useRouter } from "expo-router";
 import { useAllTournaments } from "@/src/queries/tournaments";
 import CustomText from "@/src/components/shared/text/CustomText";
 import { useSettings } from "@/src/hooks/useSettings";
-import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
+import FilterModal from "@/src/components/home/filter/FilterModal";
+import SortModal from "@/src/components/home/filter/SortModal";
 
 type HomePageProps = {};
 
@@ -37,7 +38,11 @@ const HomePage = ({}: HomePageProps) => {
       refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}
     >
       <View style={styles.wrapper}>
-        <View className="mb-4"></View>
+        <View className="mb-4 flex flex-row justify-between">
+          <SortModal />
+          <FilterModal />
+        </View>
+
         <View className="flex gap-4">
           {data &&
             !isLoading &&

@@ -28,6 +28,7 @@ const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
   return (
     <PaperProvider theme={theme}>
+      {/* @ts-ignore */}
       <ThemeProvider value={theme}>{children}</ThemeProvider>
     </PaperProvider>
   );

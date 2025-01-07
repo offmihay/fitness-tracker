@@ -2,11 +2,13 @@ import React, { useState, forwardRef, useImperativeHandle, useRef } from "react"
 
 import { useTranslation } from "react-i18next";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Keyboard, Pressable, View, TextInput, Platform } from "react-native";
+import { Keyboard, Pressable, View, TextInput, Platform, TouchableOpacity } from "react-native";
 
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "./CustomTextInput";
 import CustomText from "../text/CustomText";
+import ButtonAction from "../button/ButtonAction";
+import { Divider } from "react-native-paper";
 
 type DatePickerInputProps = {
   label: string;
@@ -95,11 +97,20 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
           locale={i18n.language}
           maximumDate={maximumDate}
           minimumDate={minimumDate}
-          confirmTextIOS={t("common.confirm")}
-          cancelTextIOS={t("common.cancel")}
           date={selectedDate || new Date()}
           pickerContainerStyleIOS={{ backgroundColor: theme.colors.surfaceDark }}
           buttonTextColorIOS={theme.colors.link}
+          customCancelButtonIOS={({ onPress }) => (
+            <ButtonAction.Group>
+              <ButtonAction onPress={onPress} title={t("common.cancel")} />
+            </ButtonAction.Group>
+          )}
+          customConfirmButtonIOS={({ onPress }) => (
+            <ButtonAction.Group>
+              <View />
+              <ButtonAction onPress={onPress} title={t("common.confirm")} />
+            </ButtonAction.Group>
+          )}
         />
       </View>
     );

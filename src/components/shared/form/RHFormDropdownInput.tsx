@@ -23,11 +23,8 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
   props: Props<TFieldValues, T>
 ) => {
   const { control, name, label, rules, onSubmitEditing, inputProps, dropdownProps } = props;
-  const theme = useCustomTheme();
 
   const [isOpen, setOpen] = useState(false);
-
-  // const { watch, setValue } = useFormContext();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 

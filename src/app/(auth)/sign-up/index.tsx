@@ -6,7 +6,7 @@ import { t } from "i18next";
 import CustomText from "../../../components/shared/text/CustomText";
 
 import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
-import TouchableBack from "@/src/components/shared/button/ButtonBack";
+import ButtonBack from "@/src/components/shared/button/ButtonBack";
 import { useSignUpMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
@@ -78,7 +78,7 @@ export default function SignUpEmailScreen() {
         keyboardVerticalOffset={-250}
         style={{ backgroundColor: theme.colors.background }}
       >
-        <TouchableBack />
+        <ButtonBack />
         <DismissKeyboardView>
           <View style={[styles.wrapper]}>
             <View style={[styles.contentWrapper]}>
