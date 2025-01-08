@@ -16,11 +16,11 @@ type Filter = {
 const FilterItem = ({
   label,
   isSelected,
-  onToggle,
+  onPress,
 }: {
   label: string;
   isSelected: boolean;
-  onToggle: () => void;
+  onPress: () => void;
 }) => {
   const theme = useCustomTheme();
 
@@ -31,7 +31,7 @@ const FilterItem = ({
         styles.filterItem,
         { backgroundColor: isSelected ? theme.colors.primary : theme.colors.surface },
       ]}
-      onPress={onToggle}
+      onPress={onPress}
     >
       <CustomText>{label}</CustomText>
     </TouchableOpacity>
@@ -61,7 +61,6 @@ const ModalContent = () => {
     });
   };
 
-  const theme = useCustomTheme();
   return (
     <View style={styles.modalWrapper}>
       <View className="flex flex-col gap-6">
@@ -70,17 +69,17 @@ const ModalContent = () => {
           <View style={styles.filterWrapper} className="mt-4">
             <FilterItem
               label="Badminton"
-              onToggle={() => handleChangeFilter("sportType", "badminton")}
+              onPress={() => handleChangeFilter("sportType", "badminton")}
               isSelected={filter.sportType.includes("badminton")}
             />
             <FilterItem
               label="Squash"
-              onToggle={() => handleChangeFilter("sportType", "squash")}
+              onPress={() => handleChangeFilter("sportType", "squash")}
               isSelected={filter.sportType.includes("squash")}
             />
             <FilterItem
               label="Tennis"
-              onToggle={() => handleChangeFilter("sportType", "tennis")}
+              onPress={() => handleChangeFilter("sportType", "tennis")}
               isSelected={filter.sportType.includes("tennis")}
             />
           </View>
@@ -91,17 +90,17 @@ const ModalContent = () => {
           <View style={styles.filterWrapper} className="mt-4">
             <FilterItem
               label="Amateur"
-              onToggle={() => handleChangeFilter("skillLevel", "amateur")}
+              onPress={() => handleChangeFilter("skillLevel", "amateur")}
               isSelected={filter.skillLevel.includes("amateur")}
             />
             <FilterItem
               label="Beginner"
-              onToggle={() => handleChangeFilter("skillLevel", "beginner")}
+              onPress={() => handleChangeFilter("skillLevel", "beginner")}
               isSelected={filter.skillLevel.includes("beginner")}
             />
             <FilterItem
               label="Professional"
-              onToggle={() => handleChangeFilter("skillLevel", "professional")}
+              onPress={() => handleChangeFilter("skillLevel", "professional")}
               isSelected={filter.skillLevel.includes("professional")}
             />
           </View>

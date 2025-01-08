@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Loader from "../shared/loader/Loader";
 import ChooseCameraModal from "../shared/modal/ChooseCameraModal";
-import TouchableBtn from "../shared/button/ButtonDefault";
+import ButtonDefault from "../shared/button/ButtonDefault";
 import { pickCameraImage } from "@/src/utils/pickCameraImage";
 import { pickGalleryImage } from "@/src/utils/pickGalleryImage";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";

@@ -41,7 +41,7 @@ type Props = {
   };
 } & React.ComponentProps<typeof TouchableOpacity>;
 
-const TouchableBtn = ({
+const ButtonDefault = ({
   style,
   styleText,
   loading = false,
@@ -262,4 +262,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TouchableBtn;
+export default ButtonDefault;

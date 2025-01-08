@@ -3,7 +3,7 @@ import React from "react";
 import { Ionicons, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import CustomMap from "../shared/map/CustomMap";
 import CustomText from "../shared/text/CustomText";
-import TouchableBtn from "../shared/button/ButtonDefault";
+import ButtonDefault from "../shared/button/ButtonDefault";
 import { Image } from "expo-image";
 import { Tournament } from "@/src/types/tournamentType";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
@@ -31,8 +31,8 @@ const TournamentDetails = ({
         <Image source={data?.images[0].secure_url} style={StyleSheet.absoluteFill} />
       </View>
       <View className="flex flex-row justify-between">
-        <TouchableBtn title={t("home.tournament.register")} style={{ width: "48%" }} />
-        <TouchableBtn
+        <ButtonDefault title={t("home.tournament.register")} style={{ width: "48%" }} />
+        <ButtonDefault
           type="grey"
           title={t("home.tournament.saveForLater")}
           style={{ width: "48%" }}

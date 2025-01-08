@@ -5,7 +5,7 @@ import { t } from "i18next";
 import CustomText from "../../../components/shared/text/CustomText";
 import Loader from "@/src/components/shared/loader/Loader";
 import ButtonBack from "@/src/components/shared/button/ButtonBack";
-import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
+import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import useCountdown from "@/src/hooks/useCountdown";
 import {
   useResendVerificationCodeMutation,
@@ -192,7 +192,7 @@ const SignUpVerifyCodeScreen = () => {
                 )}
 
                 <Animated.View className="mt-6" layout={LinearTransition}>
-                  <TouchableBtn
+                  <ButtonDefault
                     activeOpacity={0.85}
                     onPress={handleSubmit(onPressVerify)}
                     loading={verifyCodeMutation.isPending}

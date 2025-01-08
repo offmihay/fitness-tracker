@@ -5,7 +5,7 @@ import { t } from "i18next";
 
 import CustomText from "../../../components/shared/text/CustomText";
 
-import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
+import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import ButtonBack from "@/src/components/shared/button/ButtonBack";
 import { useSignUpMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
@@ -148,7 +148,7 @@ export default function SignUpEmailScreen() {
                   </Animated.View>
                 )}
                 <Animated.View className="mt-6" layout={LinearTransition}>
-                  <TouchableBtn
+                  <ButtonDefault
                     onPress={handleSubmit(onCheckUpEmail)}
                     loading={signUpMutation.isPending}
                     title={t("signup.continue")}

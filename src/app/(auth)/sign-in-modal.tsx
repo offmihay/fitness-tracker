@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import CustomText from "../../components/shared/text/CustomText";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
-import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
+import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import { useSignInMutation } from "@/src/queries/signin";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Controller, FormProvider, useForm } from "react-hook-form";
@@ -173,7 +173,7 @@ const SignInModal = ({}: Props) => {
                 </Animated.View>
               )}
               <Animated.View layout={LinearTransition} className="mt-6">
-                <TouchableBtn
+                <ButtonDefault
                   activeOpacity={0.85}
                   onPress={handleSubmit(onSignInPress)}
                   loading={signInMutation.isPending}

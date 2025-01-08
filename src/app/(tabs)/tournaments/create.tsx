@@ -7,7 +7,7 @@ import { Tournament } from "@/src/types/tournamentType";
 import { useTournamentMutation } from "@/src/queries/tournaments";
 
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
-import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
+import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
 import RHFormDropdownInput from "@/src/components/shared/form/RHFormDropdownInput";
 import ChoosePhoto, { UploadedImageAsset } from "@/src/components/tournaments/ChoosePhoto";
@@ -189,7 +189,7 @@ const CreateTournament = ({}: Props) => {
             </View>
           </View>
 
-          <TouchableBtn
+          <ButtonDefault
             title={t("tournaments.create.createButton")}
             className="mt-4"
             onPress={handleSubmit(handleFormSubmit)}

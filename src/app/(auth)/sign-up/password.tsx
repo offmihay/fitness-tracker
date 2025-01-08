@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { t } from "i18next";
 import CustomText from "../../../components/shared/text/CustomText";
 import ButtonBack from "@/src/components/shared/button/ButtonBack";
-import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
+import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import { useSignUpPasswordMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
@@ -171,7 +171,7 @@ const SignUpPasswordScreen = () => {
                   </Animated.View>
                 )}
                 <Animated.View layout={LinearTransition} className="mt-6">
-                  <TouchableBtn
+                  <ButtonDefault
                     activeOpacity={0.85}
                     onPress={handleSubmit(onContinuePress)}
                     loading={signUpPasswordMutation.isPending}

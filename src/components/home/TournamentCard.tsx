@@ -4,7 +4,7 @@ import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import TouchableBtn from "../shared/button/ButtonDefault";
+import ButtonDefault from "../shared/button/ButtonDefault";
 import { useTranslation } from "react-i18next";
 
 type Props = {

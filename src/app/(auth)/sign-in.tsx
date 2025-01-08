@@ -15,7 +15,7 @@ import { Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import TouchableBtn from "@/src/components/shared/button/ButtonDefault";
+import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 
 const SignIn = () => {
   const { t } = useTranslation();
@@ -63,7 +63,7 @@ const SignIn = () => {
       <SafeAreaView style={styles.wrapper}>
         <View style={styles.content}>
           <View className="flex flex-col gap-3">
-            <TouchableBtn
+            <ButtonDefault
               activeOpacity={0.85}
               onPress={googleSignIn}
               type="white"
@@ -75,7 +75,7 @@ const SignIn = () => {
               )}
               title={t("signin.continueGoogle")}
             />
-            <TouchableBtn
+            <ButtonDefault
               activeOpacity={0.85}
               onPress={appleSignIn}
               type="white"
@@ -87,7 +87,7 @@ const SignIn = () => {
               )}
               title={t("signin.continueApple")}
             />
-            <TouchableBtn
+            <ButtonDefault
               type="darkgrey"
               activeOpacity={0.85}
               onPress={() => router.navigate("/sign-in-modal")}
