@@ -1,14 +1,9 @@
-import React, { forwardRef, useCallback, useMemo, useRef } from "react";
-import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
+import React, { forwardRef, useCallback, useMemo } from "react";
+import { StyleSheet } from "react-native";
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 
-import { Divider, ThemeProvider } from "react-native-paper";
+import { ThemeProvider } from "react-native-paper";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import CustomText from "../text/CustomText";
 import { useTranslation } from "react-i18next";
 import ButtonAction from "../button/ButtonAction";
 

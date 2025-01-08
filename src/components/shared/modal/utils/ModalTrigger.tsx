@@ -1,12 +1,12 @@
 import { Keyboard, StyleSheet, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { BottomSheetModal, BottomSheetModalProps } from "@gorhom/bottom-sheet";
-import CustomModal from "./CustomModal";
+import CustomModal from "../CustomModal";
 
 type Props = {
   renderTrigger: (onPress: () => void) => React.ReactNode;
   modalContent: React.ReactNode;
-  bottomSheetProps: Omit<BottomSheetModalProps, "children">;
+  bottomSheetProps?: Omit<BottomSheetModalProps, "children">;
 };
 
 const ModalTrigger = (props: Props) => {

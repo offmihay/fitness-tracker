@@ -3,7 +3,7 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTranslation } from "react-i18next";
-import { Tournament } from "@/src/types/tournamentType";
+import { Tournament } from "@/src/types/TournamentType";
 import { useTournamentMutation } from "@/src/queries/tournaments";
 
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
@@ -50,6 +50,8 @@ const CreateTournament = ({}: Props) => {
   return (
     <FormProvider {...methods}>
       <KeyboardAwareScrollView
+        extraScrollHeight={-70}
+        enableOnAndroid={true}
         scrollEnabled={true}
         keyboardShouldPersistTaps="handled"
         keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
@@ -107,11 +109,11 @@ const CreateTournament = ({}: Props) => {
                     selectedValue: watch("skillLevel"),
                     onValueChange: (itemValue) => setValue("skillLevel", itemValue),
                     items: [
-                      { label: t("tournaments.create.skillLevels.amateur"), value: "Amateur" },
-                      { label: t("tournaments.create.skillLevels.beginner"), value: "Beginner" },
+                      { label: t("tournaments.create.skillLevels.amateur"), value: "amateur" },
+                      { label: t("tournaments.create.skillLevels.beginner"), value: "beginner" },
                       {
                         label: t("tournaments.create.skillLevels.professional"),
-                        value: "Professional",
+                        value: "professional",
                       },
                     ],
                     selectAnLabel: t("tournaments.create.selectSkillLevel"),

@@ -69,7 +69,6 @@ export default CustomModal;
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    paddingBottom: 20,
     position: "relative",
   },
 

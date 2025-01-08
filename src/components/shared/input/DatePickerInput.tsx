@@ -1,17 +1,11 @@
-import React, { useState, forwardRef, useImperativeHandle, useRef } from "react";
-
+import React, { useState, forwardRef, useImperativeHandle, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Keyboard, Pressable, View, TextInput, Platform, TouchableOpacity } from "react-native";
-
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { Keyboard, Pressable, View } from "react-native";
 import CustomTextInput from "./CustomTextInput";
-import CustomText from "../text/CustomText";
-import ButtonAction from "../button/ButtonAction";
-import { Divider } from "react-native-paper";
+import DatePickerModal from "../modal/DatePickerModal";
 
 type DatePickerInputProps = {
-  label: string;
+  label?: string;
   value: string | Date;
   onChange: (date: Date) => void;
   selectedDate?: Date;
@@ -19,6 +13,7 @@ type DatePickerInputProps = {
   minimumDate?: Date;
   maximumDate?: Date;
   inputProps?: Partial<React.ComponentProps<typeof CustomTextInput>>;
+  renderTrigger?: (props: { onPress: () => void; value: string; label?: string }) => ReactNode;
 };
 
 export interface InputRef {
@@ -27,13 +22,22 @@ export interface InputRef {
 
 const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
   (
-    { label, value, onChange, selectedDate, onConfirm, minimumDate, maximumDate, inputProps },
+    {
+      label,
+      value,
+      onChange,
+      selectedDate,
+      onConfirm,
+      minimumDate,
+      maximumDate,
+      inputProps,
+      renderTrigger,
+    },
     ref
   ) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isConfirmed, setIsConfirmed] = useState(false);
-    const { i18n, t } = useTranslation();
-    const theme = useCustomTheme();
+    const { i18n } = useTranslation();
 
     const showDatePicker = () => {
       Keyboard.dismiss();
@@ -68,49 +72,36 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
       return isNaN(parsedDate.getTime()) ? "" : parsedDate.toLocaleDateString(i18n.language);
     };
 
+    const formattedValue = formatDate(value);
+
+    const renderDefaultTrigger = () => (
+      <CustomTextInput
+        selectTextOnFocus={false}
+        label={label}
+        onPress={showDatePicker}
+        disabled
+        value={formattedValue}
+        isForceFocused={isDatePickerVisible}
+        {...inputProps}
+      />
+    );
+
     return (
       <View>
         <Pressable onPress={showDatePicker}>
-          <CustomTextInput
-            selectTextOnFocus={false}
-            label={label}
-            onPress={showDatePicker}
-            disabled
-            value={formatDate(value)}
-            isForceFocused={isDatePickerVisible}
-            {...inputProps}
-          />
+          {renderTrigger
+            ? renderTrigger({ onPress: showDatePicker, value: formattedValue, label })
+            : renderDefaultTrigger()}
         </Pressable>
-        <DateTimePickerModal
-          customHeaderIOS={() => (
-            <View style={{ paddingTop: 10 }}>
-              <CustomText center type="upperdefault" weight="bold">
-                {label}
-              </CustomText>
-            </View>
-          )}
+        <DatePickerModal
           isVisible={isDatePickerVisible}
-          mode="date"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
           onHide={handleAfterHide}
-          locale={i18n.language}
-          maximumDate={maximumDate}
+          label={label || ""}
+          selectedDate={selectedDate || new Date()}
           minimumDate={minimumDate}
-          date={selectedDate || new Date()}
-          pickerContainerStyleIOS={{ backgroundColor: theme.colors.surfaceDark }}
-          buttonTextColorIOS={theme.colors.link}
-          customCancelButtonIOS={({ onPress }) => (
-            <ButtonAction.Group>
-              <ButtonAction onPress={onPress} title={t("common.cancel")} />
-            </ButtonAction.Group>
-          )}
-          customConfirmButtonIOS={({ onPress }) => (
-            <ButtonAction.Group>
-              <View />
-              <ButtonAction onPress={onPress} title={t("common.confirm")} />
-            </ButtonAction.Group>
-          )}
+          maximumDate={maximumDate}
         />
       </View>
     );

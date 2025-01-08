@@ -8,7 +8,7 @@ import { useAllTournaments } from "@/src/queries/tournaments";
 import CustomText from "@/src/components/shared/text/CustomText";
 import { useSettings } from "@/src/hooks/useSettings";
 import FilterModal from "@/src/components/home/filter/FilterModal";
-import SortModal from "@/src/components/home/filter/SortModal";
+import SortModal from "@/src/components/home/sort/SortModal";
 
 type HomePageProps = {};
 

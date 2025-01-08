@@ -1,9 +1,10 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import ModalTrigger from "../../shared/modal/ModalTrigger";
+
 import ButtonFilter from "../../shared/button/ButtonFilter";
 import { Ionicons } from "@expo/vector-icons";
 import CustomText from "../../shared/text/CustomText";
+import ModalTrigger from "../../shared/modal/utils/ModalTrigger";
 
 type Props = {};
 

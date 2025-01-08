@@ -34,7 +34,7 @@ const ButtonFilter = (props: Props) => {
 
 const styles = StyleSheet.create({
   btnWrapper: {
-    borderRadius: 50,
+    borderRadius: 10,
     paddingVertical: 6,
     paddingHorizontal: 15,
   },

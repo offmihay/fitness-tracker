@@ -19,7 +19,7 @@ import { useUploadImage } from "@/src/queries/upload-image";
 import { Image } from "expo-image";
 import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { ImageUploadResponse } from "@/src/types/imageType";
+import { ImageUploadResponse } from "@/src/types/ImageType";
 import { useTranslation } from "react-i18next";
 import ButtonInput from "../shared/button/ButtonInput";
 import CustomIcon from "../shared/icon/CustomIcon";

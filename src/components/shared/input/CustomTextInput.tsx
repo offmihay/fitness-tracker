@@ -159,11 +159,11 @@ const CustomTextInput = forwardRef<TextInput, Props>(
         <Animated.View
           style={[
             styles.container,
-            styleWrapper,
             {
               backgroundColor: color || theme.colors.background,
               borderWidth: 1,
             },
+            styleWrapper,
             animatedWrapperStyle,
           ]}
         >

@@ -1,0 +1,86 @@
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
+import CustomText from "../../shared/text/CustomText";
+import Animated, { FadeIn, FadeOut, useAnimatedStyle, withTiming } from "react-native-reanimated";
+import { AntDesign } from "@expo/vector-icons";
+
+type Props = {
+  label: string;
+  isSelected: boolean;
+  onPress: () => void;
+  onClear?: () => void;
+  useClearButton?: boolean;
+};
+
+const FilterItem = ({ label, isSelected, onPress, onClear, useClearButton }: Props) => {
+  const theme = useCustomTheme();
+
+  const animatedWrapperStyle = useAnimatedStyle(() => ({
+    backgroundColor: withTiming(isSelected ? theme.colors.primary : theme.colors.surface, {
+      duration: 300,
+    }),
+  }));
+
+  return (
+    <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
+      <Animated.View
+        style={[
+          styles.filterItem,
+          {
+            paddingRight: isSelected && useClearButton ? 40 : 18,
+          },
+          animatedWrapperStyle,
+        ]}
+      >
+        <CustomText>{label}</CustomText>
+
+        {useClearButton && (
+          <View style={styles.icon}>
+            {isSelected && (
+              <Animated.View style={StyleSheet.absoluteFill} entering={FadeIn}>
+                <TouchableOpacity
+                  onPress={onClear}
+                  style={StyleSheet.absoluteFill}
+                  className="justify-center items-center"
+                >
+                  <AntDesign
+                    name="closecircle"
+                    color={theme.colors.textSurface}
+                    style={{ opacity: theme.dark ? 1 : 0.5 }}
+                    size={14}
+                  />
+                </TouchableOpacity>
+              </Animated.View>
+            )}
+          </View>
+        )}
+      </Animated.View>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  filterItem: {
+    paddingHorizontal: 18,
+    paddingVertical: 6,
+    borderRadius: 10,
+    minHeight: 40,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    position: "relative",
+  },
+
+  icon: {
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    top: 0,
+    width: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
+export default FilterItem;
