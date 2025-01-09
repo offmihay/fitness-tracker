@@ -43,12 +43,7 @@ const FilterItem = ({ label, isSelected, onPress, onClear, useClearButton }: Pro
                   style={StyleSheet.absoluteFill}
                   className="justify-center items-center"
                 >
-                  <AntDesign
-                    name="closecircle"
-                    color={theme.colors.textSurface}
-                    style={{ opacity: theme.dark ? 1 : 0.5 }}
-                    size={14}
-                  />
+                  <AntDesign name="closecircle" color="white" style={{ opacity: 0.8 }} size={14} />
                 </TouchableOpacity>
               </Animated.View>
             )}

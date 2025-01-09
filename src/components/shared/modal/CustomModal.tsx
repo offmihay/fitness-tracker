@@ -10,7 +10,6 @@ import {
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 import { AntDesign } from "@expo/vector-icons";
-import CustomText from "../text/CustomText";
 import { ThemeProvider } from "react-native-paper";
 
 export type Props = {

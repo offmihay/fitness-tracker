@@ -170,48 +170,6 @@ const FilterContent = () => {
                 />
               </View>
             </View>
-            <View>
-              <CustomText type="subtitle">Date</CustomText>
-              <View style={styles.filterWrapperSingle} className="mt-4">
-                <DatePickerInput
-                  label="Date"
-                  value={filterSingle.date}
-                  onChange={(value) => handleChangeSingle("date", value)}
-                  selectedDate={filterSingle.date ? new Date(filterSingle.date) : new Date()}
-                  minimumDate={new Date()}
-                  renderTrigger={({ onPress, value }) => (
-                    <FilterItem
-                      onPress={onPress}
-                      label={value || "Choose date.."}
-                      isSelected={!!value}
-                      onClear={() => handleChangeSingle("date", "")}
-                      useClearButton
-                    />
-                  )}
-                />
-              </View>
-            </View>
-            <View>
-              <CustomText type="subtitle">Date</CustomText>
-              <View style={styles.filterWrapperSingle} className="mt-4">
-                <DatePickerInput
-                  label="Date"
-                  value={filterSingle.date}
-                  onChange={(value) => handleChangeSingle("date", value)}
-                  selectedDate={filterSingle.date ? new Date(filterSingle.date) : new Date()}
-                  minimumDate={new Date()}
-                  renderTrigger={({ onPress, value }) => (
-                    <FilterItem
-                      onPress={onPress}
-                      label={value || "Choose date.."}
-                      isSelected={!!value}
-                      onClear={() => handleChangeSingle("date", "")}
-                      useClearButton
-                    />
-                  )}
-                />
-              </View>
-            </View>
           </View>
         </KeyboardAwareScrollView>
       </View>

@@ -4,6 +4,7 @@ import ButtonFilter from "../../shared/button/ButtonFilter";
 import { FontAwesome6 } from "@expo/vector-icons";
 import ModalContent from "./FilterContent";
 import ModalTrigger from "../../shared/modal/utils/ModalTrigger";
+import { Platform } from "react-native";
 
 const FilterModal = () => {
   const snapPoints = useMemo(() => ["90%"], []);
@@ -22,7 +23,7 @@ const FilterModal = () => {
       modalContent={<ModalContent />}
       bottomSheetProps={{
         snapPoints,
-        enableContentPanningGesture: false,
+        enableContentPanningGesture: Platform.OS === "android" ? false : true,
       }}
     />
   );
