@@ -7,12 +7,10 @@ import FilterItem from "./FilterItem";
 import DatePickerInput from "../../shared/input/DatePickerInput";
 import CustomTextInput from "../../shared/input/CustomTextInput";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { FilterGroup, FilterSingle, FilterRange, Range, Filter } from "./types/FilterType";
+import { FilterGroup, FilterSingle, FilterRange, Range, Filter } from "./types";
 import FilterStickyFooter from "./FilterStickyFooter";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
-import { useQuery } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { pickFromObject } from "@/src/utils/pickFromObject";
 
 const FilterContent = () => {
   const { dismiss } = useBottomSheetModal();
