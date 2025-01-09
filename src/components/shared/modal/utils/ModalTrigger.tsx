@@ -1,6 +1,5 @@
-import { Keyboard, StyleSheet, View } from "react-native";
-import React, { useRef, useState } from "react";
-import { BottomSheetModal, BottomSheetModalProps } from "@gorhom/bottom-sheet";
+import React, { useState } from "react";
+import { BottomSheetModalProps } from "@gorhom/bottom-sheet";
 import CustomModal from "../CustomModal";
 
 type Props = {
@@ -12,30 +11,26 @@ type Props = {
 
 const ModalTrigger = (props: Props) => {
   const { name, renderTrigger, modalContent, bottomSheetProps } = props;
-
-  const [, setOpen] = useState(false);
-
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleOpenModal = () => {
-    Keyboard.dismiss();
-    bottomSheetRef.current?.present();
-    setOpen(true);
+    setIsOpen(true);
   };
 
-  const onDismiss = () => {
-    setOpen(false);
+  const handleCloseModal = () => {
+    setIsOpen(false);
   };
 
   return (
     <>
       <CustomModal
         name={name}
-        ref={bottomSheetRef}
-        onDismiss={onDismiss}
-        content={modalContent}
+        isOpen={isOpen}
         bottomSheetProps={bottomSheetProps}
-      />
+        onDismiss={handleCloseModal}
+      >
+        {modalContent}
+      </CustomModal>
       {renderTrigger(handleOpenModal)}
     </>
   );

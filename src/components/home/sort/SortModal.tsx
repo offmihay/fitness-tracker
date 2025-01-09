@@ -30,7 +30,7 @@ const SortModal = (props: Props) => {
       )}
       modalContent={
         <View style={styles.modalWrapper}>
-          <CustomText color="white">location</CustomText>
+          <CustomText>location</CustomText>
         </View>
       }
     />

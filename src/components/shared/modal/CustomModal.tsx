@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo } from "react";
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef } from "react";
 import { Keyboard, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   BottomSheetBackdrop,
@@ -14,32 +14,50 @@ import { ThemeProvider } from "react-native-paper";
 
 export type Props = {
   name: string;
-  content: React.ReactNode;
+  children: React.ReactNode;
+  isOpen: boolean;
   onDismiss?: () => void;
   bottomSheetProps?: Omit<BottomSheetModalProps, "children">;
 };
 
 export type Ref = BottomSheetModal;
 
-const CustomModal = forwardRef((props: Props, ref: React.Ref<Ref>) => {
-  const { name, content, onDismiss, bottomSheetProps } = props;
+const CustomModal = (props: Props) => {
+  const { name, children, isOpen, onDismiss, bottomSheetProps } = props;
 
   const { t } = useTranslation();
   const theme = useCustomTheme();
 
   const snapPointsModal = useMemo(() => ["30%"], []);
 
-  const handleDismiss = useCallback(() => {
-    if (ref && "current" in ref && ref.current) {
-      ref.current.dismiss();
+  const ref = useRef<BottomSheetModal>(null);
+
+  const handleOpen = useCallback(() => {
+    if (ref.current) {
       Keyboard.dismiss();
+      ref.current.present();
     }
-  }, [ref]);
+  }, []);
+
+  const handleDismiss = useCallback(() => {
+    if (ref.current) {
+      Keyboard.dismiss();
+      ref.current.dismiss();
+    }
+  }, []);
 
   const renderBackdrop = useCallback(
     (props: any) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />,
     []
   );
+
+  useEffect(() => {
+    if (isOpen) {
+      handleOpen();
+    } else {
+      handleDismiss();
+    }
+  }, [isOpen]);
 
   return (
     <BottomSheetModal
@@ -60,12 +78,12 @@ const CustomModal = forwardRef((props: Props, ref: React.Ref<Ref>) => {
           <TouchableOpacity style={styles.closeIcon} onPress={() => handleDismiss()}>
             <AntDesign name="close" size={24} color={theme.colors.textSecondary} />
           </TouchableOpacity>
-          <View style={{ width: "100%", height: "100%" }}>{content}</View>
+          <View style={{ width: "100%", height: "100%" }}>{children}</View>
         </BottomSheetView>
       </ThemeProvider>
     </BottomSheetModal>
   );
-});
+};
 
 export default CustomModal;
 
