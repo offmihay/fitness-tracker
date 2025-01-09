@@ -48,7 +48,7 @@
     "react-dom": "18.3.1",
     "react-hook-form": "^7.53.1",
     "react-i18next": "^15.1.0",
-    "react-native": "0.76.5",
+    "react-native": "0.77.0-rc.0",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-ios-context-menu": "^2.5.2",
     "react-native-ios-utilities": "4.5.3",
