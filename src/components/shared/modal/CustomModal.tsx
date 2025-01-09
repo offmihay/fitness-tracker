@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useMemo } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Keyboard, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -32,6 +32,7 @@ const CustomModal = forwardRef((props: Props, ref: React.Ref<Ref>) => {
   const handleDismiss = useCallback(() => {
     if (ref && "current" in ref && ref.current) {
       ref.current.dismiss();
+      Keyboard.dismiss();
     }
   }, [ref]);
 
@@ -43,6 +44,7 @@ const CustomModal = forwardRef((props: Props, ref: React.Ref<Ref>) => {
   return (
     <BottomSheetModal
       onDismiss={onDismiss}
+      enableDynamicSizing={false}
       ref={ref}
       snapPoints={snapPointsModal}
       index={0}

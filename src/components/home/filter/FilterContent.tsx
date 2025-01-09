@@ -1,38 +1,24 @@
-import {
-  Keyboard,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import CustomText from "../../shared/text/CustomText";
-import { TournamentSkillLevel, TournamentSportType } from "@/src/types/TournamentType";
 import { Divider } from "react-native-paper";
 import ButtonDefault from "../../shared/button/ButtonDefault";
 import FilterItem from "./FilterItem";
 import DatePickerInput from "../../shared/input/DatePickerInput";
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomTextInput from "../../shared/input/CustomTextInput";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { KeyboardProvider, KeyboardStickyView } from "react-native-keyboard-controller";
-import { hexToRgba } from "@/src/utils/hexToRgba";
+import { FilterGroup, FilterSingle, FilterRange, Range } from "../../../types/FilterType";
+import FilterStickyFooter from "./FilterStickyFooter";
 
-type FilterGroup = {
-  sportType: TournamentSportType[];
-  skillLevel: TournamentSkillLevel[];
-};
-
-type FilterSingle = {
-  date: Date | string;
-};
-
-const ModalContent = () => {
-  const theme = useCustomTheme();
+const FilterContent = () => {
   const [filterGroup, setFilterGroup] = useState<FilterGroup>({ sportType: [], skillLevel: [] });
   const [filterSingle, setFilterSingle] = useState<FilterSingle>({ date: "" });
+  const [filterRange, setFilterRange] = useState<FilterRange>({
+    prizePool: { min: undefined, max: undefined },
+    entryFee: { min: undefined, max: undefined },
+  });
 
-  const handleChangeFilterGroup = <T extends keyof FilterGroup>(
+  const handleChangeGroup = <T extends keyof FilterGroup>(
     filterType: T,
     filterValue: FilterGroup[T][number]
   ) => {
@@ -51,22 +37,33 @@ const ModalContent = () => {
     });
   };
 
-  const handleChangeFilterGroupSingle = <T extends keyof FilterSingle>(
+  const handleChangeSingle = <T extends keyof FilterSingle>(
     filterType: T,
     filterValue: FilterSingle[T]
   ) => {
     setFilterSingle((prev) => ({ ...prev, [filterType]: filterValue }));
   };
 
+  const handleChangeRange = (filterType: keyof FilterRange, limit: keyof Range, value: string) => {
+    setFilterRange((prev) => {
+      const newFilter = { ...prev };
+      const prevLimit = newFilter[filterType];
+      newFilter[filterType] = { ...prevLimit, [limit]: value === "" ? undefined : Number(value) };
+      return newFilter;
+    });
+  };
+
   return (
     <>
       <View style={styles.modalWrapper}>
         <KeyboardAwareScrollView
-          extraScrollHeight={0}
+          extraScrollHeight={80}
+          contentContainerStyle={styles.scrollContent}
           enableOnAndroid={true}
           scrollEnabled={true}
           keyboardShouldPersistTaps="handled"
           keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
+          showsVerticalScrollIndicator={false}
         >
           <View className="flex flex-col gap-6">
             <View>
@@ -74,31 +71,19 @@ const ModalContent = () => {
               <View style={styles.filterWrapperGroup} className="mt-4">
                 <FilterItem
                   label="Badminton"
-                  onPress={() => handleChangeFilterGroup("sportType", "badminton")}
+                  onPress={() => handleChangeGroup("sportType", "badminton")}
                   isSelected={filterGroup.sportType.includes("badminton")}
                 />
                 <FilterItem
                   label="Squash"
-                  onPress={() => handleChangeFilterGroup("sportType", "squash")}
+                  onPress={() => handleChangeGroup("sportType", "squash")}
                   isSelected={filterGroup.sportType.includes("squash")}
                 />
                 <FilterItem
                   label="Tennis"
-                  onPress={() => handleChangeFilterGroup("sportType", "tennis")}
+                  onPress={() => handleChangeGroup("sportType", "tennis")}
                   isSelected={filterGroup.sportType.includes("tennis")}
                 />
-              </View>
-            </View>
-            <Divider />
-            <View>
-              <CustomText type="subtitle">PrizePool</CustomText>
-              <View style={styles.filterWrapperSingle} className="mt-4">
-                <View className="w-1/2 pr-2">
-                  <CustomTextInput label="From" keyboardType="number-pad" />
-                </View>
-                <View className="w-1/2 pl-2">
-                  <CustomTextInput label="To" keyboardType="number-pad" />
-                </View>
               </View>
             </View>
             <Divider />
@@ -107,28 +92,70 @@ const ModalContent = () => {
               <View style={styles.filterWrapperGroup} className="mt-4">
                 <FilterItem
                   label="Amateur"
-                  onPress={() => handleChangeFilterGroup("skillLevel", "amateur")}
+                  onPress={() => handleChangeGroup("skillLevel", "amateur")}
                   isSelected={filterGroup.skillLevel.includes("amateur")}
                 />
                 <FilterItem
                   label="Beginner"
-                  onPress={() => handleChangeFilterGroup("skillLevel", "beginner")}
+                  onPress={() => handleChangeGroup("skillLevel", "beginner")}
                   isSelected={filterGroup.skillLevel.includes("beginner")}
                 />
                 <FilterItem
                   label="Professional"
-                  onPress={() => handleChangeFilterGroup("skillLevel", "professional")}
+                  onPress={() => handleChangeGroup("skillLevel", "professional")}
                   isSelected={filterGroup.skillLevel.includes("professional")}
                 />
               </View>
             </View>
             <Divider />
             <View>
+              <CustomText type="subtitle">PrizePool</CustomText>
+              <View style={styles.filterWrapperSingle} className="mt-4">
+                <View className="w-1/2 pr-2">
+                  <CustomTextInput
+                    label="From"
+                    keyboardType="number-pad"
+                    onChangeText={(value) => handleChangeRange("prizePool", "min", value)}
+                  />
+                </View>
+                <View className="w-1/2 pl-2">
+                  <CustomTextInput
+                    label="To"
+                    keyboardType="number-pad"
+                    onChangeText={(value) => handleChangeRange("prizePool", "max", value)}
+                  />
+                </View>
+              </View>
+            </View>
+            <Divider />
+            <View>
+              <CustomText type="subtitle">Entry fee</CustomText>
+              <View style={styles.filterWrapperSingle} className="mt-4">
+                <View className="w-1/2 pr-2">
+                  <CustomTextInput
+                    label="From"
+                    keyboardType="number-pad"
+                    onChangeText={(value) => handleChangeRange("entryFee", "min", value)}
+                  />
+                </View>
+                <View className="w-1/2 pl-2">
+                  <CustomTextInput
+                    label="To"
+                    keyboardType="number-pad"
+                    onChangeText={(value) => handleChangeRange("entryFee", "max", value)}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <Divider />
+            <View>
               <CustomText type="subtitle">Date</CustomText>
               <View style={styles.filterWrapperSingle} className="mt-4">
                 <DatePickerInput
+                  label="Date"
                   value={filterSingle.date}
-                  onChange={(value) => handleChangeFilterGroupSingle("date", value)}
+                  onChange={(value) => handleChangeSingle("date", value)}
                   selectedDate={filterSingle.date ? new Date(filterSingle.date) : new Date()}
                   minimumDate={new Date()}
                   renderTrigger={({ onPress, value }) => (
@@ -136,7 +163,49 @@ const ModalContent = () => {
                       onPress={onPress}
                       label={value || "Choose date.."}
                       isSelected={!!value}
-                      onClear={() => handleChangeFilterGroupSingle("date", "")}
+                      onClear={() => handleChangeSingle("date", "")}
+                      useClearButton
+                    />
+                  )}
+                />
+              </View>
+            </View>
+            <View>
+              <CustomText type="subtitle">Date</CustomText>
+              <View style={styles.filterWrapperSingle} className="mt-4">
+                <DatePickerInput
+                  label="Date"
+                  value={filterSingle.date}
+                  onChange={(value) => handleChangeSingle("date", value)}
+                  selectedDate={filterSingle.date ? new Date(filterSingle.date) : new Date()}
+                  minimumDate={new Date()}
+                  renderTrigger={({ onPress, value }) => (
+                    <FilterItem
+                      onPress={onPress}
+                      label={value || "Choose date.."}
+                      isSelected={!!value}
+                      onClear={() => handleChangeSingle("date", "")}
+                      useClearButton
+                    />
+                  )}
+                />
+              </View>
+            </View>
+            <View>
+              <CustomText type="subtitle">Date</CustomText>
+              <View style={styles.filterWrapperSingle} className="mt-4">
+                <DatePickerInput
+                  label="Date"
+                  value={filterSingle.date}
+                  onChange={(value) => handleChangeSingle("date", value)}
+                  selectedDate={filterSingle.date ? new Date(filterSingle.date) : new Date()}
+                  minimumDate={new Date()}
+                  renderTrigger={({ onPress, value }) => (
+                    <FilterItem
+                      onPress={onPress}
+                      label={value || "Choose date.."}
+                      isSelected={!!value}
+                      onClear={() => handleChangeSingle("date", "")}
                       useClearButton
                     />
                   )}
@@ -145,33 +214,28 @@ const ModalContent = () => {
             </View>
           </View>
         </KeyboardAwareScrollView>
-        <StickyFooter />
       </View>
-    </>
-  );
-};
-
-const StickyFooter = () => {
-  const offset = { closed: 0, opened: 30 };
-  const theme = useCustomTheme();
-  const backgroundColorWithOpacity = hexToRgba(theme.colors.background, 1);
-  return (
-    <KeyboardProvider>
-      <KeyboardStickyView offset={offset} style={{ flex: 1, justifyContent: "flex-end" }}>
-        <View style={[styles.bottomWrapper, { backgroundColor: backgroundColorWithOpacity }]}>
-          <ButtonDefault title="Show results" />
+      <FilterStickyFooter>
+        <View style={styles.buttonWrapper}>
+          <ButtonDefault
+            title="Show results"
+            onPress={() => console.log({ ...filterGroup, ...filterSingle, ...filterRange })}
+          />
         </View>
-      </KeyboardStickyView>
-    </KeyboardProvider>
+      </FilterStickyFooter>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   modalWrapper: {
-    flex: 1,
-    paddingTop: 50,
+    paddingVertical: 50,
     paddingHorizontal: 20,
-    position: "relative",
+  },
+
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 100,
   },
 
   filterWrapperGroup: {
@@ -186,11 +250,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  bottomWrapper: {
-    paddingTop: 20,
+  buttonWrapper: {
     paddingBottom: 50,
-    // borderRadius: 20,
+    paddingTop: 20,
   },
 });
 
-export default ModalContent;
+export default FilterContent;

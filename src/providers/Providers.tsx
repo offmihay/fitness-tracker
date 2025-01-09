@@ -11,6 +11,7 @@ import { ThemeProvider } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useEffect, useState } from "react";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { settings } = useSettings();
@@ -46,19 +47,21 @@ if (!publishableKey) {
 
 const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomSheetModalProvider>
-        <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-          <ClerkLoaded>
-            <QueryClientProvider client={queryClient}>
-              <SettingsProvider>
-                <ThemeProviders>{children}</ThemeProviders>
-              </SettingsProvider>
-            </QueryClientProvider>
-          </ClerkLoaded>
-        </ClerkProvider>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
+    <KeyboardProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <BottomSheetModalProvider>
+          <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+            <ClerkLoaded>
+              <QueryClientProvider client={queryClient}>
+                <SettingsProvider>
+                  <ThemeProviders>{children}</ThemeProviders>
+                </SettingsProvider>
+              </QueryClientProvider>
+            </ClerkLoaded>
+          </ClerkProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </KeyboardProvider>
   );
 };
 

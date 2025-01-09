@@ -32,7 +32,7 @@ const FilterItem = ({ label, isSelected, onPress, onClear, useClearButton }: Pro
           animatedWrapperStyle,
         ]}
       >
-        <CustomText>{label}</CustomText>
+        <CustomText color={isSelected ? "white" : theme.colors.text}>{label}</CustomText>
 
         {useClearButton && (
           <View style={styles.icon}>

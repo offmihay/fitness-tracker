@@ -36,7 +36,6 @@
       "package": "com.offmihay.fitnesstracker"
     },
     "web": {
-      "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
     "plugins": [

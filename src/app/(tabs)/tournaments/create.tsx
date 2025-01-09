@@ -49,15 +49,16 @@ const CreateTournament = ({}: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <KeyboardAwareScrollView
-        extraScrollHeight={-70}
-        enableOnAndroid={true}
-        scrollEnabled={true}
-        keyboardShouldPersistTaps="handled"
-        keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
-      >
-        <View style={styles.wrapper}>
-          <View className="flex flex-col gap-1">
+      <View style={styles.wrapper}>
+        <KeyboardAwareScrollView
+          extraScrollHeight={-70}
+          contentContainerStyle={[styles.scrollContent]}
+          enableOnAndroid={true}
+          keyboardShouldPersistTaps="handled"
+          keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
+          showsVerticalScrollIndicator={false}
+        >
+          <View className="flex flex-col gap-1" style={{ flex: 1 }}>
             <RHFormInput
               name="title"
               label={t("tournaments.create.titleTournament")}
@@ -203,8 +204,8 @@ const CreateTournament = ({}: Props) => {
               timeOut: 3000,
             }}
           />
-        </View>
-      </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
+      </View>
     </FormProvider>
   );
 };
@@ -214,6 +215,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     paddingVertical: 20,
+  },
+
+  scrollContent: {
+    flexGrow: 1,
   },
 });
 

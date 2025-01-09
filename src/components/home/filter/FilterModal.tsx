@@ -22,6 +22,7 @@ const FilterModal = () => {
       modalContent={<ModalContent />}
       bottomSheetProps={{
         snapPoints,
+        enableContentPanningGesture: false,
       }}
     />
   );

@@ -9,15 +9,11 @@ type Props = {};
 
 const Tournaments = ({}: Props) => {
   const { navigate } = useRouter();
-  // <ButtonDefault title="Create tournament" onPress={() => navigate("tournaments/create")} />
 
   return (
-    <>
-      <View>
-        <CustomTextInput />
-      </View>
-      <StickyFooter />
-    </>
+    <View style={styles.wrapper}>
+      <ButtonDefault title="Create tournament" onPress={() => navigate("tournaments/create")} />
+    </View>
   );
 };
 
@@ -30,15 +26,3 @@ const styles = StyleSheet.create({
 });
 
 export default Tournaments;
-
-const StickyFooter = () => {
-  const offset = { closed: 0, opened: 70 };
-  const { navigate } = useRouter();
-  return (
-    <KeyboardProvider>
-      <KeyboardStickyView offset={offset} style={{ flex: 1, justifyContent: "flex-end" }}>
-        <ButtonDefault title="Create tournament" onPress={() => navigate("tournaments/create")} />
-      </KeyboardStickyView>
-    </KeyboardProvider>
-  );
-};
