@@ -13,6 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { ThemeProvider } from "react-native-paper";
 
 export type Props = {
+  name: string;
   content: React.ReactNode;
   onDismiss?: () => void;
   bottomSheetProps?: Omit<BottomSheetModalProps, "children">;
@@ -21,7 +22,7 @@ export type Props = {
 export type Ref = BottomSheetModal;
 
 const CustomModal = forwardRef((props: Props, ref: React.Ref<Ref>) => {
-  const { content, onDismiss, bottomSheetProps } = props;
+  const { name, content, onDismiss, bottomSheetProps } = props;
 
   const { t } = useTranslation();
   const theme = useCustomTheme();
@@ -42,6 +43,7 @@ const CustomModal = forwardRef((props: Props, ref: React.Ref<Ref>) => {
 
   return (
     <BottomSheetModal
+      name={name}
       onDismiss={onDismiss}
       enableDynamicSizing={false}
       ref={ref}

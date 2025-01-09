@@ -1,5 +1,5 @@
-import { StyleSheet, View } from "react-native";
-import React, { useState } from "react";
+import { Keyboard, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import CustomText from "../../shared/text/CustomText";
 import { Divider } from "react-native-paper";
 import ButtonDefault from "../../shared/button/ButtonDefault";
@@ -7,31 +7,52 @@ import FilterItem from "./FilterItem";
 import DatePickerInput from "../../shared/input/DatePickerInput";
 import CustomTextInput from "../../shared/input/CustomTextInput";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { FilterGroup, FilterSingle, FilterRange, Range } from "../../../types/FilterType";
+import { FilterGroup, FilterSingle, FilterRange, Range, Filter } from "./types/FilterType";
 import FilterStickyFooter from "./FilterStickyFooter";
+import { useBottomSheetModal } from "@gorhom/bottom-sheet";
+import { useQuery } from "@tanstack/react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { pickFromObject } from "@/src/utils/pickFromObject";
 
 const FilterContent = () => {
-  const [filterGroup, setFilterGroup] = useState<FilterGroup>({ sportType: [], skillLevel: [] });
-  const [filterSingle, setFilterSingle] = useState<FilterSingle>({ date: "" });
-  const [filterRange, setFilterRange] = useState<FilterRange>({
-    prizePool: { min: undefined, max: undefined },
-    entryFee: { min: undefined, max: undefined },
-  });
+  const { dismiss } = useBottomSheetModal();
+
+  const emptyFilter: Filter = {
+    sportType: [],
+    skillLevel: [],
+    date: "",
+    prizePool: {},
+    entryFee: {},
+  };
+
+  const [filter, setFilter] = useState<Filter>(emptyFilter);
+
+  useEffect(() => {
+    const fetchStoredFilter = async () => {
+      const storedData = await AsyncStorage.getItem("filter-tournaments");
+      const result = storedData ? (JSON.parse(storedData) as Filter) : null;
+      return result ?? emptyFilter;
+    };
+
+    fetchStoredFilter().then((filterStorage) => {
+      setFilter(filterStorage);
+    });
+  }, []);
 
   const handleChangeGroup = <T extends keyof FilterGroup>(
     filterType: T,
     filterValue: FilterGroup[T][number]
   ) => {
-    setFilterGroup((prev) => {
+    setFilter((prev) => {
       const newFilter = { ...prev };
       const isToggled = newFilter[filterType].some((item) => item === filterValue);
 
       if (isToggled) {
         newFilter[filterType] = newFilter[filterType].filter(
           (item) => item !== filterValue
-        ) as FilterGroup[T];
+        ) as Filter[T];
       } else {
-        newFilter[filterType] = [...newFilter[filterType], filterValue] as FilterGroup[T];
+        newFilter[filterType] = [...newFilter[filterType], filterValue] as Filter[T];
       }
       return newFilter;
     });
@@ -41,16 +62,26 @@ const FilterContent = () => {
     filterType: T,
     filterValue: FilterSingle[T]
   ) => {
-    setFilterSingle((prev) => ({ ...prev, [filterType]: filterValue }));
+    setFilter((prev) => ({ ...prev, [filterType]: filterValue }));
   };
 
   const handleChangeRange = (filterType: keyof FilterRange, limit: keyof Range, value: string) => {
-    setFilterRange((prev) => {
+    setFilter((prev) => {
       const newFilter = { ...prev };
       const prevLimit = newFilter[filterType];
       newFilter[filterType] = { ...prevLimit, [limit]: value === "" ? undefined : Number(value) };
       return newFilter;
     });
+  };
+
+  const handleShowResults = async () => {
+    try {
+      await AsyncStorage.setItem("filter-tournaments", JSON.stringify(filter));
+    } catch (e) {
+      console.error("Failed to save filter settings", e);
+    }
+    Keyboard.dismiss();
+    dismiss("filter-modal");
   };
 
   return (
@@ -72,17 +103,17 @@ const FilterContent = () => {
                 <FilterItem
                   label="Badminton"
                   onPress={() => handleChangeGroup("sportType", "badminton")}
-                  isSelected={filterGroup.sportType.includes("badminton")}
+                  isSelected={filter.sportType.includes("badminton")}
                 />
                 <FilterItem
                   label="Squash"
                   onPress={() => handleChangeGroup("sportType", "squash")}
-                  isSelected={filterGroup.sportType.includes("squash")}
+                  isSelected={filter.sportType.includes("squash")}
                 />
                 <FilterItem
                   label="Tennis"
                   onPress={() => handleChangeGroup("sportType", "tennis")}
-                  isSelected={filterGroup.sportType.includes("tennis")}
+                  isSelected={filter.sportType.includes("tennis")}
                 />
               </View>
             </View>
@@ -93,17 +124,17 @@ const FilterContent = () => {
                 <FilterItem
                   label="Amateur"
                   onPress={() => handleChangeGroup("skillLevel", "amateur")}
-                  isSelected={filterGroup.skillLevel.includes("amateur")}
+                  isSelected={filter.skillLevel.includes("amateur")}
                 />
                 <FilterItem
                   label="Beginner"
                   onPress={() => handleChangeGroup("skillLevel", "beginner")}
-                  isSelected={filterGroup.skillLevel.includes("beginner")}
+                  isSelected={filter.skillLevel.includes("beginner")}
                 />
                 <FilterItem
                   label="Professional"
                   onPress={() => handleChangeGroup("skillLevel", "professional")}
-                  isSelected={filterGroup.skillLevel.includes("professional")}
+                  isSelected={filter.skillLevel.includes("professional")}
                 />
               </View>
             </View>
@@ -115,14 +146,18 @@ const FilterContent = () => {
                   <CustomTextInput
                     label="From"
                     keyboardType="number-pad"
+                    value={filter.prizePool?.min?.toString() ?? ""}
                     onChangeText={(value) => handleChangeRange("prizePool", "min", value)}
+                    useClearButton
                   />
                 </View>
                 <View className="w-1/2 pl-2">
                   <CustomTextInput
                     label="To"
                     keyboardType="number-pad"
+                    value={filter.prizePool?.max?.toString() ?? ""}
                     onChangeText={(value) => handleChangeRange("prizePool", "max", value)}
+                    useClearButton
                   />
                 </View>
               </View>
@@ -135,14 +170,18 @@ const FilterContent = () => {
                   <CustomTextInput
                     label="From"
                     keyboardType="number-pad"
+                    value={filter.entryFee?.min?.toString() ?? ""}
                     onChangeText={(value) => handleChangeRange("entryFee", "min", value)}
+                    useClearButton
                   />
                 </View>
                 <View className="w-1/2 pl-2">
                   <CustomTextInput
                     label="To"
                     keyboardType="number-pad"
+                    value={filter.entryFee?.max?.toString() ?? ""}
                     onChangeText={(value) => handleChangeRange("entryFee", "max", value)}
+                    useClearButton
                   />
                 </View>
               </View>
@@ -154,9 +193,9 @@ const FilterContent = () => {
               <View style={styles.filterWrapperSingle} className="mt-4">
                 <DatePickerInput
                   label="Date"
-                  value={filterSingle.date}
+                  value={filter.date}
                   onChange={(value) => handleChangeSingle("date", value)}
-                  selectedDate={filterSingle.date ? new Date(filterSingle.date) : new Date()}
+                  selectedDate={filter.date ? new Date(filter.date) : new Date()}
                   minimumDate={new Date()}
                   renderTrigger={({ onPress, value }) => (
                     <FilterItem
@@ -175,10 +214,7 @@ const FilterContent = () => {
       </View>
       <FilterStickyFooter>
         <View style={styles.buttonWrapper}>
-          <ButtonDefault
-            title="Show results"
-            onPress={() => console.log({ ...filterGroup, ...filterSingle, ...filterRange })}
-          />
+          <ButtonDefault title="Show results" onPress={handleShowResults} />
         </View>
       </FilterStickyFooter>
     </>

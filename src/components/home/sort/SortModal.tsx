@@ -13,6 +13,7 @@ const SortModal = (props: Props) => {
 
   return (
     <ModalTrigger
+      name="sort-modal"
       renderTrigger={(onPress) => (
         <ButtonFilter
           onPress={onPress}

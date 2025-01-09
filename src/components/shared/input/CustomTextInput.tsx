@@ -203,7 +203,12 @@ const CustomTextInput = forwardRef<TextInput, Props>(
           )}
 
           {!isPassword && useClearButton && (
-            <View style={styles.icon}>
+            <View
+              style={[
+                styles.icon,
+                value && value.length > 0 && isFocusedState ? null : StyleSheet.absoluteFill,
+              ]}
+            >
               {value && value.length > 0 && isFocusedState && (
                 <Animated.View style={StyleSheet.absoluteFill} entering={FadeIn} exiting={FadeOut}>
                   <TouchableOpacity

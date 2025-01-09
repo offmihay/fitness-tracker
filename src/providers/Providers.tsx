@@ -47,21 +47,21 @@ if (!publishableKey) {
 
 const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <KeyboardProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <BottomSheetModalProvider>
-          <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-            <ClerkLoaded>
-              <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <KeyboardProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <BottomSheetModalProvider>
+            <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+              <ClerkLoaded>
                 <SettingsProvider>
                   <ThemeProviders>{children}</ThemeProviders>
                 </SettingsProvider>
-              </QueryClientProvider>
-            </ClerkLoaded>
-          </ClerkProvider>
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </KeyboardProvider>
+              </ClerkLoaded>
+            </ClerkProvider>
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+      </KeyboardProvider>
+    </QueryClientProvider>
   );
 };
 

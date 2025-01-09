@@ -4,13 +4,14 @@ import { BottomSheetModal, BottomSheetModalProps } from "@gorhom/bottom-sheet";
 import CustomModal from "../CustomModal";
 
 type Props = {
+  name: string;
   renderTrigger: (onPress: () => void) => React.ReactNode;
   modalContent: React.ReactNode;
   bottomSheetProps?: Omit<BottomSheetModalProps, "children">;
 };
 
 const ModalTrigger = (props: Props) => {
-  const { renderTrigger, modalContent, bottomSheetProps } = props;
+  const { name, renderTrigger, modalContent, bottomSheetProps } = props;
 
   const [, setOpen] = useState(false);
 
@@ -29,6 +30,7 @@ const ModalTrigger = (props: Props) => {
   return (
     <>
       <CustomModal
+        name={name}
         ref={bottomSheetRef}
         onDismiss={onDismiss}
         content={modalContent}

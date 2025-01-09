@@ -11,6 +11,7 @@ const FilterModal = () => {
 
   return (
     <ModalTrigger
+      name="filter-modal"
       renderTrigger={(onPress) => (
         <ButtonFilter
           label="Filter"
