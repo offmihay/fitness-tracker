@@ -11,12 +11,12 @@ import CustomText from "@/src/components/shared/text/CustomText";
 import useFocusWithTimeout from "@/src/hooks/useFocusWithTimeout";
 import ChooseCameraModal from "@/src/components/shared/modal/ChooseCameraModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { pickCameraImage } from "@/src/utils/pickCameraImage";
+import { pickCameraImage } from "@/src/services/pickCameraImage";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import { Octicons } from "@expo/vector-icons";
-import { pickGalleryImage } from "@/src/utils/pickGalleryImage";
+import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
 import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
 

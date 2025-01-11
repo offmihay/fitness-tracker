@@ -5,7 +5,7 @@ import CustomMap from "../shared/map/CustomMap";
 import CustomText from "../shared/text/CustomText";
 import ButtonDefault from "../shared/button/ButtonDefault";
 import { Image } from "expo-image";
-import { Tournament } from "@/src/types/TournamentType";
+import { Tournament } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 

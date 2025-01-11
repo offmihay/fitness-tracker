@@ -1,6 +1,6 @@
 import i18n from "i18next";
 
-export const getFormatDateRange = (
+export const formatDateRange = (
   dateStartStr: string,
   dateEndStr: string,
   language: string | null
@@ -9,6 +9,11 @@ export const getFormatDateRange = (
 
   const dateStart = new Date(dateStartStr);
   const dateEnd = new Date(dateEndStr);
+
+  if (isNaN(dateStart.getTime()) || isNaN(dateEnd.getTime())) {
+    return "Invalid date";
+  }
+
   const options: Intl.DateTimeFormatOptions = {
     day: "numeric",
     month: "short",

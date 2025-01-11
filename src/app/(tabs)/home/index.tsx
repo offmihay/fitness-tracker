@@ -2,7 +2,7 @@ import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
 
 import TournamentCard from "@/src/components/home/TournamentCard";
-import { getFormatDateRange } from "@/src/utils/getFormatDateString";
+import { formatDateRange } from "@/src/utils/formatDateString";
 import { useRouter } from "expo-router";
 import { useAllTournaments } from "@/src/queries/tournaments";
 import CustomText from "@/src/components/shared/text/CustomText";
@@ -54,7 +54,7 @@ const HomePage = ({}: HomePageProps) => {
                 imageSource={item.images && item.images[0].secure_url!}
                 title={item.title}
                 location={item.location}
-                dateTime={getFormatDateRange(item.dateStart, item.dateEnd, settings.language)}
+                dateTime={formatDateRange(item.dateStart, item.dateEnd, settings.language)}
                 patricipants={
                   item.currentParticipants && item.currentParticipants.count && item.maxParticipants
                     ? `${item.currentParticipants.count}/${item.maxParticipants}`

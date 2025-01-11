@@ -1,4 +1,4 @@
-import { TournamentSportType, TournamentSkillLevel } from "@/src/types/TournamentType";
+import { TournamentSportType, TournamentSkillLevel } from "@/src/types/tournament";
 
 export type Range = {
   min?: number;

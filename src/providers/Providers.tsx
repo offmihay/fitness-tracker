@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
-import { SettingsProvider } from "../hooks/SettingsContext";
-import { tokenCache } from "../utils/secureStore";
+import { SettingsProvider } from "../context/SettingsContext";
+import { tokenCache } from "../services/secureStore";
 import { Appearance } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { useSettings } from "../hooks/useSettings";

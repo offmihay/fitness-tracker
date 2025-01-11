@@ -3,7 +3,7 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTranslation } from "react-i18next";
-import { Tournament } from "@/src/types/TournamentType";
+import { Tournament } from "@/src/types/tournament";
 import { useTournamentMutation } from "@/src/queries/tournaments";
 
 import RHFormInput from "@/src/components/shared/form/RHFormInput";

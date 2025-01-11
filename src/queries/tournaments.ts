@@ -1,6 +1,6 @@
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
-import { Tournament } from "../types/TournamentType";
-import fetchApi from "../api/Api";
+import { Tournament } from "../types/tournament";
+import fetchApi from "../api/fetchApi";
 
 export const useAllTournaments = () => {
   return useQuery({
