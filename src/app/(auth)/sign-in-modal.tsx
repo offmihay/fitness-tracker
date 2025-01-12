@@ -6,12 +6,10 @@ import { useRouter } from "expo-router";
 import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import { useSignInMutation } from "@/src/queries/signin";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
 import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
-import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
-import CustomKeyboardAvoidingView from "@/src/components/shared/view/CustomKeyboardAvoidingView";
 
 type Props = {};
 
@@ -86,104 +84,98 @@ const SignInModal = ({}: Props) => {
       <DismissKeyboardView>
         <View style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
           <View style={[styles.contentWrapper]}>
-            <View className="max-h-[200]">
-              <Animated.View layout={LinearTransition} className="mb-12">
-                <CustomText
-                  type="subtitle"
-                  style={{ textAlign: "center" }}
-                  color={theme.colors.text}
-                >
-                  {t("signin.modal.title")}
+            <Animated.View layout={LinearTransition} className="mb-12">
+              <CustomText type="subtitle" style={{ textAlign: "center" }} color={theme.colors.text}>
+                {t("signin.modal.title")}
+              </CustomText>
+            </Animated.View>
+            <Animated.View layout={LinearTransition}>
+              <RHFormInput
+                name="email"
+                label={t("signin.email")}
+                control={control}
+                inputProps={{
+                  useClearButton: true,
+                  isError: !!formErrors.email,
+                  textContentType: "oneTimeCode",
+                }}
+              />
+            </Animated.View>
+            {formErrors.email?.message && (
+              <Animated.View
+                layout={LinearTransition}
+                className="ml-2 mb-2"
+                entering={FadeIn.duration(300)}
+                exiting={FadeOut.duration(300)}
+              >
+                <CustomText color={theme.colors.error} type="predefault">
+                  {formErrors.email?.message}
                 </CustomText>
               </Animated.View>
-              <Animated.View layout={LinearTransition}>
-                <RHFormInput
-                  name="email"
-                  label={t("signin.email")}
-                  control={control}
-                  inputProps={{
-                    useClearButton: true,
-                    isError: !!formErrors.email,
-                    textContentType: "oneTimeCode",
-                  }}
-                />
-              </Animated.View>
-              {formErrors.email?.message && (
-                <Animated.View
-                  layout={LinearTransition}
-                  className="ml-2 mb-2"
-                  entering={FadeIn.duration(300)}
-                  exiting={FadeOut.duration(300)}
-                >
-                  <CustomText color={theme.colors.error} type="predefault">
-                    {formErrors.email?.message}
-                  </CustomText>
-                </Animated.View>
-              )}
+            )}
 
-              <Animated.View layout={LinearTransition}>
-                <RHFormInput
-                  name="password"
-                  label={t("signin.password")}
-                  control={control}
-                  inputProps={{
-                    isPassword: true,
-                    isError: !!formErrors.password,
-                    textContentType: "password",
-                  }}
-                  rules={{
-                    minLength: { value: 8, message: t("errors.password_too_short") },
-                    maxLength: { value: 20, message: t("errors.password_too_long") },
-                  }}
-                />
+            <Animated.View layout={LinearTransition}>
+              <RHFormInput
+                name="password"
+                label={t("signin.password")}
+                control={control}
+                inputProps={{
+                  isPassword: true,
+                  isError: !!formErrors.password,
+                  textContentType: "password",
+                }}
+                rules={{
+                  minLength: { value: 8, message: t("errors.password_too_short") },
+                  maxLength: { value: 20, message: t("errors.password_too_long") },
+                }}
+              />
+            </Animated.View>
+            {formErrors.password?.message && (
+              <Animated.View
+                layout={LinearTransition}
+                className="ml-2 mb-1"
+                entering={FadeIn.duration(300)}
+                exiting={FadeOut.duration(300)}
+              >
+                <CustomText color={theme.colors.error} type="predefault">
+                  {formErrors.password?.message}
+                </CustomText>
               </Animated.View>
-              {formErrors.password?.message && (
-                <Animated.View
-                  layout={LinearTransition}
-                  className="ml-2 mb-1"
-                  entering={FadeIn.duration(300)}
-                  exiting={FadeOut.duration(300)}
-                >
-                  <CustomText color={theme.colors.error} type="predefault">
-                    {formErrors.password?.message}
-                  </CustomText>
-                </Animated.View>
-              )}
+            )}
 
-              <Animated.View layout={LinearTransition} className="ml-2 w-[200] mt-2">
-                <TouchableOpacity onPress={void 0}>
-                  <CustomText color="#0082FF" type="predefault">
-                    {t("signin.modal.forgotPassword")}
-                    {/* <Loader style={{ margin: 0, width: 25, height: 15 }} /> */}
+            <Animated.View layout={LinearTransition} className="ml-2 w-[200] mt-2">
+              <TouchableOpacity onPress={void 0}>
+                <CustomText color="#0082FF" type="predefault">
+                  {t("signin.modal.forgotPassword")}
+                  {/* <Loader style={{ margin: 0, width: 25, height: 15 }} /> */}
+                </CustomText>
+              </TouchableOpacity>
+            </Animated.View>
+            {formErrors.root && (
+              <Animated.View
+                layout={LinearTransition}
+                className="ml-2 mt-1"
+                entering={FadeIn.duration(300)}
+                exiting={FadeOut.duration(300)}
+              >
+                {Object.values(formErrors.root).map((error, index) => (
+                  <CustomText color={theme.colors.error} type="predefault" key={index}>
+                    {(error as { message: string }).message}
                   </CustomText>
-                </TouchableOpacity>
+                ))}
               </Animated.View>
-              {formErrors.root && (
-                <Animated.View
-                  layout={LinearTransition}
-                  className="ml-2 mt-1"
-                  entering={FadeIn.duration(300)}
-                  exiting={FadeOut.duration(300)}
-                >
-                  {Object.values(formErrors.root).map((error, index) => (
-                    <CustomText color={theme.colors.error} type="predefault" key={index}>
-                      {(error as { message: string }).message}
-                    </CustomText>
-                  ))}
-                </Animated.View>
-              )}
-              <Animated.View layout={LinearTransition} className="mt-6">
-                <ButtonDefault
-                  activeOpacity={0.85}
-                  onPress={handleSubmit(onSignInPress)}
-                  loading={signInMutation.isPending}
-                  title={t("signin.modal.signin")}
-                  disabled={
-                    !watch("email") || !watch("password") || Object.keys(formErrors).length !== 0
-                  }
-                />
-              </Animated.View>
-            </View>
+            )}
+            <Animated.View layout={LinearTransition} className="mt-6">
+              <ButtonDefault
+                activeOpacity={0.85}
+                onPress={handleSubmit(onSignInPress)}
+                loading={signInMutation.isPending}
+                title={t("signin.modal.signin")}
+                disabled={
+                  !watch("email") || !watch("password") || Object.keys(formErrors).length !== 0
+                }
+              />
+            </Animated.View>
           </View>
         </View>
       </DismissKeyboardView>
@@ -195,6 +187,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     paddingHorizontal: 20,
+    marginBottom: 280,
   },
   contentWrapper: {
     flex: 1,

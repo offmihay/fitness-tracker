@@ -9,6 +9,7 @@ import CustomText from "@/src/components/shared/text/CustomText";
 import { useSettings } from "@/src/hooks/useSettings";
 import FilterModal from "@/src/components/home/filter/FilterModal";
 import SortModal from "@/src/components/home/sort/SortModal";
+import useScrollProps from "@/src/hooks/useScrollProps";
 
 type HomePageProps = {};
 

@@ -1,5 +1,5 @@
-import { StyleSheet, View } from "react-native";
-import React from "react";
+import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,9 @@ import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
 import RHFormDropdownInput from "@/src/components/shared/form/RHFormDropdownInput";
 import ChoosePhoto, { UploadedImageAsset } from "@/src/components/tournaments/ChoosePhoto";
+import CustomText from "@/src/components/shared/text/CustomText";
+import { Divider } from "react-native-paper";
+import useScrollProps from "@/src/hooks/useScrollProps";
 
 type Props = {};
 
@@ -47,17 +50,24 @@ const CreateTournament = ({}: Props) => {
     setValue("images", images);
   };
 
+  const { scrollPropOnBlur, handleScroll } = useScrollProps(200);
+
   return (
     <FormProvider {...methods}>
       <View style={styles.wrapper}>
         <KeyboardAwareScrollView
-          extraScrollHeight={-70}
+          {...scrollPropOnBlur}
+          onScroll={handleScroll}
+          // extraScrollHeight={-70}
           contentContainerStyle={[styles.scrollContent]}
           enableOnAndroid={true}
           keyboardShouldPersistTaps="handled"
           keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
           showsVerticalScrollIndicator={false}
         >
+          <CustomText type="subtitle" className="ml-1 mb-3">
+            Base Information
+          </CustomText>
           <View className="flex flex-col gap-1" style={{ flex: 1 }}>
             <RHFormInput
               name="title"
@@ -65,8 +75,6 @@ const CreateTournament = ({}: Props) => {
               control={control}
               onSubmitEditing={() => setFocus("description")}
             />
-            <ChoosePhoto onImageUploadSuccess={updateImages} />
-
             <RHFormInput
               name="description"
               label={t("tournaments.create.description")}
@@ -83,23 +91,97 @@ const CreateTournament = ({}: Props) => {
               }}
               control={control}
             />
-            <RHFormDatePicker
-              name="dateStart"
-              label={t("tournaments.create.startDate")}
-              datePickerProps={{
-                minimumDate: new Date(),
-                maximumDate: new Date(new Date().getFullYear() + 5, 0, 1),
-              }}
+            <View className="mt-1">
+              <ChoosePhoto onImageUploadSuccess={updateImages} />
+            </View>
+            <Divider className="mt-4" />
+            <CustomText type="subtitle" className="ml-1 my-3">
+              Location & Date
+            </CustomText>
+
+            <RHFormInput
+              name="location"
+              label={t("tournaments.create.location")}
               control={control}
+              onSubmitEditing={() => setFocus("city")}
             />
-            <RHFormDatePicker
-              name="dateEnd"
-              label={t("tournaments.create.endDate")}
-              datePickerProps={{
-                minimumDate: watch("dateStart") ? new Date(watch("dateStart")) : undefined,
-              }}
+            <RHFormInput
+              name="city"
+              label={t("tournaments.create.city")}
               control={control}
+              onSubmitEditing={() => setFocus("dateStart")}
             />
+            <View className="flex flex-row">
+              <View className="w-1/2 pr-1">
+                <RHFormDatePicker
+                  name="dateStart"
+                  label={t("tournaments.create.startDate")}
+                  datePickerProps={{
+                    minimumDate: new Date(),
+                    maximumDate: new Date(new Date().getFullYear() + 5, 0, 1),
+                  }}
+                  control={control}
+                />
+              </View>
+              <View className="w-1/2 pl-1">
+                <RHFormDatePicker
+                  name="dateEnd"
+                  label={t("tournaments.create.endDate")}
+                  datePickerProps={{
+                    minimumDate: watch("dateStart") ? new Date(watch("dateStart")) : undefined,
+                  }}
+                  control={control}
+                />
+              </View>
+            </View>
+            <Divider className="mt-3" />
+            <CustomText type="subtitle" className="ml-1 my-3">
+              Restrictions
+            </CustomText>
+
+            <View className="flex flex-row">
+              <View className="w-1/2 pr-1">
+                <RHFormInput
+                  name="entryFee"
+                  label={t("tournaments.create.entryFee")}
+                  inputProps={{ keyboardType: "numbers-and-punctuation" }}
+                  control={control}
+                  onSubmitEditing={() => setFocus("prizePool")}
+                />
+              </View>
+              <View className="w-1/2 pl-1">
+                <RHFormInput
+                  name="prizePool"
+                  label={t("tournaments.create.prizePool")}
+                  inputProps={{
+                    keyboardType: "numbers-and-punctuation",
+                  }}
+                  control={control}
+                  onSubmitEditing={() => setFocus("ageRestrictions.minAge")}
+                />
+              </View>
+            </View>
+            <View className="flex flex-row">
+              <View className="w-1/2 pr-1">
+                <RHFormInput
+                  name="ageRestrictions.minAge"
+                  label={t("tournaments.create.minAge")}
+                  inputProps={{ keyboardType: "numbers-and-punctuation" }}
+                  control={control}
+                  onSubmitEditing={() => setFocus("ageRestrictions.maxAge")}
+                />
+              </View>
+              <View className="w-1/2 pl-1">
+                <RHFormInput
+                  name="ageRestrictions.maxAge"
+                  label={t("tournaments.create.maxAge")}
+                  inputProps={{
+                    keyboardType: "numbers-and-punctuation",
+                  }}
+                  control={control}
+                />
+              </View>
+            </View>
             <View className="flex flex-row">
               <View className="w-1/2 pr-1">
                 <RHFormDropdownInput
@@ -136,57 +218,6 @@ const CreateTournament = ({}: Props) => {
                     ],
                     selectAnLabel: t("tournaments.create.selectFormat"),
                   }}
-                />
-              </View>
-            </View>
-            <RHFormInput
-              name="city"
-              label={t("tournaments.create.city")}
-              control={control}
-              onSubmitEditing={() => setFocus("location")}
-            />
-            <RHFormInput
-              name="location"
-              label={t("tournaments.create.location")}
-              control={control}
-              onSubmitEditing={() => setFocus("entryFee")}
-            />
-            <RHFormInput
-              name="entryFee"
-              label={t("tournaments.create.entryFee")}
-              inputProps={{ keyboardType: "numbers-and-punctuation" }}
-              control={control}
-              onSubmitEditing={() => setFocus("prizePool")}
-            />
-            <RHFormInput
-              name="prizePool"
-              label={t("tournaments.create.prizePool")}
-              inputProps={{
-                keyboardType: "numbers-and-punctuation",
-              }}
-              control={control}
-              onSubmitEditing={() => setFocus("ageRestrictions.minAge")}
-            />
-
-            <View className="flex flex-row">
-              <View className="w-1/2 pr-1">
-                <RHFormInput
-                  name="ageRestrictions.minAge"
-                  label={t("tournaments.create.minAge")}
-                  inputProps={{ keyboardType: "numbers-and-punctuation" }}
-                  control={control}
-                  onSubmitEditing={() => setFocus("ageRestrictions.maxAge")}
-                />
-              </View>
-              <View className="w-1/2 pl-1">
-                <RHFormInput
-                  name="ageRestrictions.maxAge"
-                  label={t("tournaments.create.maxAge")}
-                  inputProps={{
-                    keyboardType: "numbers-and-punctuation",
-                  }}
-                  control={control}
-                  onSubmitEditing={() => void 0}
                 />
               </View>
             </View>

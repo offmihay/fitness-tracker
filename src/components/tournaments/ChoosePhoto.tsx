@@ -136,9 +136,14 @@ const ChoosePhoto = (props: Props) => {
                     className="relative"
                     key={index}
                     style={[
-                      { borderRadius: 5, width: 45, height: 45, overflow: "hidden" },
-                      isError && {
+                      {
                         borderWidth: 1,
+                        borderRadius: 5,
+                        width: 45,
+                        height: 45,
+                        overflow: "hidden",
+                      },
+                      isError && {
                         borderColor: theme.colors.error,
                       },
                     ]}

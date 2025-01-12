@@ -11,6 +11,7 @@ import { FilterGroup, FilterSingle, FilterRange, Range, Filter } from "./types";
 import FilterStickyFooter from "./FilterStickyFooter";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useScrollProps from "@/src/hooks/useScrollProps";
 
 const FilterContent = () => {
   const { dismiss } = useBottomSheetModal();
@@ -82,11 +83,15 @@ const FilterContent = () => {
     dismiss("filter-modal");
   };
 
+  const { scrollPropOnBlur, handleScroll } = useScrollProps(100);
+
   return (
     <>
       <View style={styles.modalWrapper}>
         <KeyboardAwareScrollView
-          extraScrollHeight={80}
+          {...scrollPropOnBlur}
+          onScroll={handleScroll}
+          extraScrollHeight={60}
           contentContainerStyle={styles.scrollContent}
           enableOnAndroid={true}
           scrollEnabled={true}

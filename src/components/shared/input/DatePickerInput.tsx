@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Keyboard, Pressable, View } from "react-native";
 import CustomTextInput from "./CustomTextInput";
 import DatePickerModal from "../modal/DatePickerModal";
+import { TextInput } from "react-native-paper";
 
 type DatePickerInputProps = {
   label?: string;

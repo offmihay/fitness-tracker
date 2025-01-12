@@ -204,10 +204,7 @@ const CustomTextInput = forwardRef<TextInput, Props>(
 
           {!isPassword && useClearButton && (
             <View
-              style={[
-                styles.icon,
-                value && value.length > 0 && isFocusedState ? null : StyleSheet.absoluteFill,
-              ]}
+              style={[styles.icon, value && value.length > 0 && isFocusedState && { width: 50 }]}
             >
               {value && value.length > 0 && isFocusedState && (
                 <Animated.View style={StyleSheet.absoluteFill} entering={FadeIn} exiting={FadeOut}>
@@ -274,7 +271,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: 40,
-    width: 50,
+    width: 0,
     justifyContent: "center",
     alignItems: "center",
   },

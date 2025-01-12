@@ -9,11 +9,9 @@ import {
   Appearance,
 } from "react-native";
 import { Image, ImageBackground } from "expo-image";
-import { useCustomTheme } from "../../hooks/useCustomTheme";
 import CustomText from "../../components/shared/text/CustomText";
 import { Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 
