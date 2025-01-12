@@ -1,4 +1,4 @@
-const backendUrl = "https://67532eb7f3754fcea7bb12e9.mockapi.io";
+const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 

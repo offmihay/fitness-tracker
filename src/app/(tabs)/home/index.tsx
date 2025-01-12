@@ -52,7 +52,7 @@ const HomePage = ({}: HomePageProps) => {
                 key={key}
                 handleOpenDetails={() => handleOpenDetails(item.id)}
                 handleRegister={() => handleRegister(item.title)}
-                imageSource={item.images && item.images[0].secure_url!}
+                imageSource={item.images && item.images[0].secureUrl}
                 title={item.title}
                 location={item.location}
                 dateTime={formatDateRange(item.dateStart, item.dateEnd, settings.language)}

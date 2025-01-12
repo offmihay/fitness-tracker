@@ -10,13 +10,13 @@ export default function Layout() {
       <Stack.Screen
         name="index"
         options={{
-          title: t("tournaments.title"),
+          title: t("myTournaments.title"),
         }}
       />
       <Stack.Screen
         name="create"
         options={{
-          title: t("tournaments.create.title"),
+          title: t("myTournaments.create.title"),
         }}
       />
     </Stack>

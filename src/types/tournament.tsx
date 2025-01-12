@@ -1,7 +1,7 @@
-export type TournamentSportType = "badminton" | "tennis" | "squash";
+export type TournamentSportType = "badminton" | "tennis" | "squash" | "tableTennis";
 export type TournamentSkillLevel = "amateur" | "beginner" | "professional";
-type Format = "Singles" | "Doubles" | "Squad";
-type Status = "Upcoming" | "Ongoing" | "Finished";
+type Status = "upcoming" | "ongoing" | "finished";
+type Format = "singles" | "doubles" | "squad";
 
 interface Participant {
   id: string;
@@ -15,7 +15,7 @@ interface CurrentParticipants {
 
 interface OrganizerContact {
   email: string;
-  phone?: string; // optional, since not all examples have a phone
+  phone?: string;
 }
 
 interface Organizer {
@@ -27,7 +27,7 @@ interface Organizer {
 
 interface AgeRestrictions {
   minAge: number;
-  maxAge?: number; // optional, as seen in the second item
+  maxAge?: number;
 }
 
 interface GeoCoordinates {
@@ -35,30 +35,34 @@ interface GeoCoordinates {
   longitude: number;
 }
 
-export interface Tournament {
-  id: string;
-  sportType: string;
-  city: string;
-  location: string;
-  geoCoordinates: GeoCoordinates;
-  dateStart: string; // ISO datetime string
-  dateEnd: string; // ISO datetime string
-  entryFee: number;
-  prizePool: number;
+export interface TournamentRequest {
   ageRestrictions: AgeRestrictions;
+  city: string;
+  createdAt: string;
+  currentParticipants: CurrentParticipants;
+  dateEnd: string;
+  dateStart: string;
+  description: string;
+  entryFee: number;
+  geoCoordinates: GeoCoordinates;
+  id: string;
+  images: Image[];
+  location: string;
+  maxParticipants: number;
+  organizer: Organizer;
+  prizePool: number;
+  rules: string;
   skillLevel: TournamentSkillLevel;
   format: Format;
-  maxParticipants: number;
-  currentParticipants: CurrentParticipants;
-  organizer: Organizer;
-  title: string;
-  rules: string;
-  description: string;
+  sportType: string;
   status: Status;
-  images: Image[];
+  title: string;
 }
 
 export type Image = {
-  secure_url?: string;
-  [key: string]: any;
+  id: string;
+  publicId: string | null;
+  secureUrl: string;
+  tournamentId: string;
+  url: string;
 };

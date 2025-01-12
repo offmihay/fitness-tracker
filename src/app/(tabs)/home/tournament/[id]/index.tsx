@@ -29,14 +29,14 @@ const TournamentDetailsScreen = ({}: Props) => {
 
   const handleOpenParticipants = () => {
     router.push({
-      pathname: "/home/tournament/[id]/participants",
+      pathname: "/home/tournament/[id]/rules",
       params: {},
     });
   };
 
   const handleOpenOrganizer = () => {
     router.push({
-      pathname: "/home/tournament/[id]/opganizer",
+      pathname: "/home/tournament/[id]/rules",
       params: {},
     });
   };

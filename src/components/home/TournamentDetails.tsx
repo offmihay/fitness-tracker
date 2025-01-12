@@ -5,12 +5,12 @@ import CustomMap from "../shared/map/CustomMap";
 import CustomText from "../shared/text/CustomText";
 import ButtonDefault from "../shared/button/ButtonDefault";
 import { Image } from "expo-image";
-import { Tournament } from "@/src/types/tournament";
+import { TournamentRequest } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 
 type Props = {
-  data: Tournament;
+  data: TournamentRequest;
   handleOpenRules: () => void;
   handleOpenParticipants: () => void;
   handleOpenOrganizer: () => void;
@@ -23,12 +23,12 @@ const TournamentDetails = ({
   handleOpenOrganizer,
 }: Props) => {
   const theme = useCustomTheme();
-  const { t } = useTranslation();
+  const { t } = useTranslation("");
 
   return (
     <View className="flex flex-col gap-6">
       <View style={{ width: "100%", borderRadius: 10, height: 250, overflow: "hidden" }}>
-        <Image source={data?.images[0].secure_url} style={StyleSheet.absoluteFill} />
+        <Image source={data?.images[0].secureUrl} style={StyleSheet.absoluteFill} />
       </View>
       <View className="flex flex-row justify-between">
         <ButtonDefault title={t("home.tournament.register")} style={{ width: "48%" }} />
@@ -82,28 +82,28 @@ const TournamentDetails = ({
           <View className="flex flex-row gap-4 items-center">
             <MaterialIcons name="sports-tennis" size={24} color={theme.colors.primary} />
             <CustomText>
-              <CustomText weight="bold">{t("home.tournament.sportType")}: </CustomText>
+              <CustomText weight="bold">{t("tournament.sportType.title")}: </CustomText>
               {data?.sportType}
             </CustomText>
           </View>
-          <View className="flex flex-row gap-4 items-center">
+          {/* <View className="flex flex-row gap-4 items-center">
             <Ionicons name="information-circle" size={24} color={theme.colors.primary} />
             <CustomText>
               <CustomText weight="bold">{t("home.tournament.format")}: </CustomText>
               {data?.format}
             </CustomText>
-          </View>
+          </View> */}
           <View className="flex flex-row gap-4 items-center">
             <MaterialIcons name="fitness-center" size={24} color={theme.colors.primary} />
             <CustomText>
-              <CustomText weight="bold">{t("home.tournament.skillLevel")}: </CustomText>
+              <CustomText weight="bold">{t("tournament.skillLevel.title")}: </CustomText>
               {data?.skillLevel}
             </CustomText>
           </View>
           <View className="flex flex-row gap-4 items-center">
             <MaterialIcons name="18-up-rating" size={24} color={theme.colors.primary} />
             <CustomText>
-              <CustomText weight="bold">{t("home.tournament.ageRestriction")}: </CustomText>
+              <CustomText weight="bold">{t("tournament.ageRestriction.title")}: </CustomText>
               {data?.ageRestrictions?.maxAge != null && data?.ageRestrictions?.minAge != null
                 ? `${data.ageRestrictions.minAge} - ${data.ageRestrictions.maxAge}`
                 : data?.ageRestrictions?.minAge != null
@@ -118,14 +118,14 @@ const TournamentDetails = ({
           <View className="flex flex-row gap-4 items-center">
             <FontAwesome6 name="money-check" size={21} color={theme.colors.primary} />
             <CustomText>
-              <CustomText weight="bold">{t("home.tournament.entryFee")}: </CustomText>
+              <CustomText weight="bold">{t("tournament.entryFee")}: </CustomText>
               {data?.entryFee} UAH
             </CustomText>
           </View>
           <View className="flex flex-row gap-4 items-center">
             <FontAwesome6 name="sack-dollar" size={24} color={theme.colors.primary} />
             <CustomText>
-              <CustomText weight="bold">{t("home.tournament.prizePool")}: </CustomText>
+              <CustomText weight="bold">{t("tournament.prizePool")}: </CustomText>
               {data?.prizePool} UAH
             </CustomText>
           </View>

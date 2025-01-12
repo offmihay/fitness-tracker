@@ -15,14 +15,14 @@ import { pickCameraImage } from "@/src/services/pickCameraImage";
 import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { ImagePickerAsset } from "expo-image-picker";
-import { useUploadImage } from "@/src/queries/upload-image";
+import { ImageUploadResponse, useUploadImage } from "@/src/queries/upload-image";
 import { Image } from "expo-image";
 import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { ImageUploadResponse } from "@/src/types/image";
 import { useTranslation } from "react-i18next";
 import ButtonInput from "../shared/button/ButtonInput";
 import CustomIcon from "../shared/icon/CustomIcon";
+import { ImageForm } from "./create/types";
 
 export type UploadedImageAsset = ImagePickerAsset & {
   publicId?: string;
@@ -32,7 +32,7 @@ export type UploadedImageAsset = ImagePickerAsset & {
 };
 
 type Props = {
-  onImageUploadSuccess: (images: UploadedImageAsset[]) => void;
+  onImageUploadSuccess: (images: ImageForm[]) => void;
 };
 
 const ChoosePhoto = (props: Props) => {
@@ -78,13 +78,10 @@ const ChoosePhoto = (props: Props) => {
       );
     }
     uploadImage.mutate(imagePickerAsset, {
-      onSuccess: (data: ImageUploadResponse) => {
+      onSuccess: (data) => {
         setImages((prev) =>
-          prev.map(
-            (img) =>
-              img.assetId === imagePickerAsset.assetId
-                ? { ...img, publicId: data.secure_url, secure_url: data.secure_url }
-                : img // here change data.public_id if needed + type data
+          prev.map((img) =>
+            img.assetId === imagePickerAsset.assetId ? { ...img, publicId: data.public_id } : img
           )
         );
       },
@@ -99,7 +96,9 @@ const ChoosePhoto = (props: Props) => {
   };
 
   useEffect(() => {
-    const readyImages = images.filter((img) => img.publicId && !img.isError);
+    const readyImages = images
+      .filter((img) => img.publicId && !img.isError)
+      .map((img) => ({ publicId: img.publicId }));
     onImageUploadSuccess(readyImages);
   }, [images]);
 

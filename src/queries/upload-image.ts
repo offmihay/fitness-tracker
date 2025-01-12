@@ -1,6 +1,31 @@
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ImagePickerAsset } from "expo-image-picker";
 import FormData from "form-data";
+import fetchApi from "../api/fetchApi";
+
+export type ImageUploadResponse = {
+  api_key: string;
+  asset_folder: string;
+  asset_id: string;
+  bytes: number;
+  created_at: string;
+  display_name: string;
+  etag: string;
+  format: string;
+  height: number;
+  original_filename: string;
+  placeholder: boolean;
+  public_id: string;
+  resource_type: string;
+  secure_url: string;
+  signature: string;
+  tags: string[];
+  type: string;
+  url: string;
+  version: number;
+  version_id: string;
+  width: number;
+};
 
 export const useUploadImage = () => {
   return useMutation({
@@ -25,15 +50,9 @@ export const useUploadImage = () => {
         }
       );
 
-      if (!resp.ok) {
-        const errorText = await resp.text();
-        throw new Error(
-          `Ошибка загрузки файла. Код статуса: ${resp.status}. Сообщение: ${errorText}`
-        );
-      }
+      const response = await fetchApi<any, ImageUploadResponse>("/files");
 
-      const result = await resp.json();
-      return result;
+      return response.data;
     },
   });
 };

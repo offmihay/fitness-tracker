@@ -180,6 +180,8 @@ const CustomTextInput = forwardRef<TextInput, Props>(
               {
                 color: theme.colors.text,
                 opacity: !disabledText ? 1 : 0.5,
+                paddingRight:
+                  useClearButton && value && value.length > 0 && isFocusedState ? 0 : 20,
               },
               style,
             ]}

@@ -29,6 +29,7 @@ const RHFormInput = <TFieldValues extends FieldValues>(props: Props<TFieldValues
             onBlur={onBlur}
             returnKeyType="next"
             onSubmitEditing={onSubmitEditing}
+            useClearButton={true}
             {...inputProps}
           />
         );
