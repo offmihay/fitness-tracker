@@ -3,7 +3,6 @@ import { Dimensions, NativeScrollEvent, NativeSyntheticEvent, Platform } from "r
 
 const useScrollProps = (keyCoord: number) => {
   const [scrollY, setScrollY] = useState(0);
-  console.log("scrollY", scrollY);
 
   const scrollPropOnBlur = useMemo(() => {
     if (scrollY > keyCoord) {

@@ -1,27 +1,25 @@
 export type TournamentFormData = {
+  sportType: string;
   title: string;
   description: string;
-  sportType: string;
+  rules?: string;
   city: string;
   location: string;
-  dateStart: string;
-  dateEnd: string;
+  dateStart: Date;
+  dateEnd: Date;
   entryFee: string;
   prizePool: string;
   skillLevel: string;
-  format: string;
-  maxParticipants: number;
-
-  status: string;
-  rules: string;
+  format?: string;
+  maxParticipants?: string;
   images: ImageForm[];
-  geoCoordinates: {
+  geoCoordinates?: {
     latitude: number;
     longitude: number;
   };
   ageRestrictions: {
-    minAge: number;
-    maxAge: number;
+    minAge: string;
+    maxAge: string;
   };
 };
 

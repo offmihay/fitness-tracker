@@ -5,7 +5,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useTranslation } from "react-i18next";
 import { TournamentRequest } from "@/src/types/tournament";
 import { useTournamentMutation } from "@/src/queries/tournaments";
-
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
 import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
@@ -15,6 +14,8 @@ import CustomText from "@/src/components/shared/text/CustomText";
 import { Divider } from "react-native-paper";
 import useScrollProps from "@/src/hooks/useScrollProps";
 import { ImageForm, TournamentFormData } from "@/src/components/tournaments/create/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TournamentSchema } from "@/src/components/tournaments/create/schema";
 
 type Props = {};
 
@@ -25,6 +26,7 @@ const CreateTournament = ({}: Props) => {
   const methods = useForm<TournamentFormData>({
     defaultValues: {},
     mode: "onChange",
+    resolver: zodResolver(TournamentSchema),
   });
 
   const {
@@ -52,6 +54,8 @@ const CreateTournament = ({}: Props) => {
   };
 
   const { scrollPropOnBlur, handleScroll } = useScrollProps(200);
+
+  console.log(formErrors);
 
   return (
     <FormProvider {...methods}>

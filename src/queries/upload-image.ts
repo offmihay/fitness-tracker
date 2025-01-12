@@ -39,18 +39,13 @@ export const useUploadImage = () => {
         type: image.mimeType || "image/jpeg",
       });
 
-      const resp = await fetch(
-        "https://fitness-tracker-backend-production-1f9c.up.railway.app/files",
-        {
-          method: "POST",
-          body: formData as any,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      const response = await fetchApi<any, ImageUploadResponse>("/files");
+      const response = await fetchApi<any, ImageUploadResponse>("/files", {
+        body: formData,
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       return response.data;
     },

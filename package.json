@@ -13,6 +13,7 @@
     "@expo/vector-icons": "^14.0.3",
     "@formatjs/intl-datetimeformat": "^6.16.5",
     "@gorhom/bottom-sheet": "^5",
+    "@hookform/resolvers": "^3.10.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "8.2.0",
     "@react-native-google-signin/google-signin": "^13.1.0",
@@ -62,7 +63,8 @@
     "react-native-screens": "~4.4.0",
     "react-native-svg": "15.8.0",
     "react-native-web": "~0.19.10",
-    "zeego": "^2.0.3"
+    "zeego": "^2.0.3",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

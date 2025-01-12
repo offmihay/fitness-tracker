@@ -26,16 +26,25 @@ const fetchApi = async <T, U>(
     url.searchParams.append(key, value);
   });
 
+  const requestHeaders = new Headers(headers);
+
   const requestOptions: RequestInit = {
     method,
-    headers: {
-      "Content-Type": "application/json",
-      ...headers,
-    },
+    headers: requestHeaders,
   };
 
   if (method !== "GET" && body) {
-    requestOptions.body = JSON.stringify(body);
+    const isMultipartFormData = requestHeaders.get("Content-Type") === "multipart/form-data";
+
+    if (isMultipartFormData && body instanceof FormData) {
+      requestOptions.body = body as any;
+      requestHeaders.delete("Content-Type");
+    } else {
+      requestOptions.body = JSON.stringify(body);
+      if (!requestHeaders.has("Content-Type")) {
+        requestHeaders.set("Content-Type", "application/json");
+      }
+    }
   }
 
   const response = await fetch(url.toString(), requestOptions);
@@ -45,13 +54,10 @@ const fetchApi = async <T, U>(
       const errorResponse = await response.json();
       throw new Error(errorResponse.message || "An error occurred");
     }
-    throw new Error(`API request failed with status ${response.status}`, {});
+    throw new Error(`API request failed with status ${response.status}`);
   }
 
   const data = await response.json();
-
-  // todo: handle errors and transform data as needed
-  // e.g. 401
 
   return {
     data,
