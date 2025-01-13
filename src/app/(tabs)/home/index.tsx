@@ -1,5 +1,5 @@
-import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
-import React from "react";
+import { FlatList, RefreshControl, ScrollView, StyleSheet, View } from "react-native";
+import React, { useCallback, useState } from "react";
 
 import TournamentCard from "@/src/components/home/TournamentCard";
 import { formatDateRange } from "@/src/utils/formatDateString";
@@ -17,7 +17,7 @@ const HomePage = ({}: HomePageProps) => {
   const { settings } = useSettings();
   const router = useRouter();
 
-  const { data, isLoading, refetch } = useAllTournaments();
+  const { data, isFetching, refetch } = useAllTournaments();
 
   const handleOpenDetails = (id: string) => {
     router.push({
@@ -30,45 +30,50 @@ const HomePage = ({}: HomePageProps) => {
     console.log("Register", title);
   };
 
-  const handleRefresh = () => {
-    refetch();
-  };
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+
+    const delayPromise = new Promise((resolve) => setTimeout(resolve, 1000));
+
+    Promise.all([refetch(), delayPromise]).then(() => {
+      setIsRefreshing(false);
+    });
+  }, [refetch]);
 
   return (
-    <ScrollView
-      refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}
-    >
-      <View style={styles.wrapper}>
-        <View className="mb-4 flex flex-row justify-between">
-          <SortModal />
-          <FilterModal />
-        </View>
-
-        <View className="flex gap-4">
-          {data &&
-            !isLoading &&
-            data.map((item, key) => (
-              <TournamentCard
-                key={key}
-                handleOpenDetails={() => handleOpenDetails(item.id)}
-                handleRegister={() => handleRegister(item.title)}
-                imageSource={item.images && item.images[0].secureUrl}
-                title={item.title}
-                location={item.location}
-                dateTime={formatDateRange(item.dateStart, item.dateEnd, settings.language)}
-                patricipants={
-                  item.currentParticipants && item.currentParticipants.count && item.maxParticipants
-                    ? `${item.currentParticipants.count}/${item.maxParticipants}`
-                    : "-"
-                }
-                prizePool={item.prizePool ? `${item.prizePool.toString()} UAH` : "-"}
-                entryFee={item.entryFee ? `${item.entryFee.toString()} UAH` : "-"}
-              />
-            ))}
-          {isLoading && <CustomText>Loading...</CustomText>}
-        </View>
-      </View>
-    </ScrollView>
+    <>
+      <FlatList
+        data={data}
+        contentContainerStyle={styles.wrapper}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        ListHeaderComponent={() => (
+          <View className="mb-4 flex flex-row justify-between">
+            <SortModal />
+            <FilterModal />
+          </View>
+        )}
+        renderItem={({ item }) => (
+          <TournamentCard
+            handleOpenDetails={() => handleOpenDetails(item.id)}
+            handleRegister={() => handleRegister(item.title)}
+            imageSource={item.images && item.images[0].secureUrl}
+            title={item.title}
+            location={item.location}
+            dateTime={formatDateRange(item.dateStart, item.dateEnd, settings.language)}
+            patricipants={
+              item.currentParticipants && item.currentParticipants.count && item.maxParticipants
+                ? `${item.currentParticipants.count}/${item.maxParticipants}`
+                : "-"
+            }
+            prizePool={item.prizePool ? `${item.prizePool.toString()} UAH` : "-"}
+            entryFee={item.entryFee ? `${item.entryFee.toString()} UAH` : "-"}
+          />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+    </>
   );
 };
 
@@ -78,5 +83,7 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 10,
     paddingVertical: 20,
+    display: "flex",
+    gap: 16,
   },
 });

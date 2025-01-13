@@ -11,6 +11,8 @@ export const useAllTournaments = () => {
       return response.data;
     },
     initialData: [],
+    retry: 3,
+    retryDelay: 3000,
   });
 };
 
