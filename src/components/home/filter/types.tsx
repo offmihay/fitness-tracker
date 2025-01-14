@@ -1,4 +1,4 @@
-import { TournamentSportType, TournamentSkillLevel } from "@/src/types/tournament";
+import { TournamentSport, TournamentSkillLevel } from "@/src/types/tournament";
 
 export type Range = {
   min?: number;
@@ -6,7 +6,7 @@ export type Range = {
 };
 
 export type Filter = {
-  sportType: TournamentSportType[];
+  sportType: TournamentSport[];
   skillLevel: TournamentSkillLevel[];
   date: Date | string;
   prizePool: Range;

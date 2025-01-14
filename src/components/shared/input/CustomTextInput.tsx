@@ -66,6 +66,8 @@ const CustomTextInput = forwardRef<TextInput, Props>(
     const [isFocusedState, setIsFocusedState] = useState(false);
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+    const [iconWidth, setIconWidth] = useState(0);
+
     const togglePasswordVisibility = (isPasswordVisible: boolean) => {
       setIsPasswordVisible(isPasswordVisible);
     };
@@ -117,6 +119,7 @@ const CustomTextInput = forwardRef<TextInput, Props>(
         hasValue.value && isPassword && clearText();
         setIsFocusedState(true);
         isFocused.value = true;
+        setIconWidth(50);
         onFocus?.(e);
       },
       [onFocus]
@@ -136,6 +139,7 @@ const CustomTextInput = forwardRef<TextInput, Props>(
       (e: any) => {
         setIsFocusedState(false);
         isFocused.value = false;
+        setIconWidth(0);
         onBlur?.(e);
       },
       [onBlur]
@@ -153,6 +157,8 @@ const CustomTextInput = forwardRef<TextInput, Props>(
     useEffect(() => {
       hasValue.value = !!value;
     }, [value]);
+
+    const isFocusedData = value && value.length > 0 && isFocusedState;
 
     return (
       <View className="py-2">
@@ -180,8 +186,7 @@ const CustomTextInput = forwardRef<TextInput, Props>(
               {
                 color: theme.colors.text,
                 opacity: !disabledText ? 1 : 0.5,
-                paddingRight:
-                  useClearButton && value && value.length > 0 && isFocusedState ? 0 : 20,
+                paddingRight: useClearButton && isFocusedData ? 0 : 20,
               },
               style,
             ]}
@@ -205,10 +210,8 @@ const CustomTextInput = forwardRef<TextInput, Props>(
           )}
 
           {!isPassword && useClearButton && (
-            <View
-              style={[styles.icon, value && value.length > 0 && isFocusedState && { width: 50 }]}
-            >
-              {value && value.length > 0 && isFocusedState && (
+            <View style={[styles.icon, { width: iconWidth }]}>
+              {isFocusedData && (
                 <Animated.View style={StyleSheet.absoluteFill} entering={FadeIn} exiting={FadeOut}>
                   <TouchableOpacity
                     onPress={clearText}
@@ -273,7 +276,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: 40,
-    width: 0,
     justifyContent: "center",
     alignItems: "center",
   },

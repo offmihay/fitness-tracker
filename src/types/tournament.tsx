@@ -1,7 +1,26 @@
-export type TournamentSportType = "badminton" | "tennis" | "squash" | "tableTennis";
-export type TournamentSkillLevel = "amateur" | "beginner" | "professional";
-type Status = "upcoming" | "ongoing" | "finished";
-type Format = "singles" | "doubles" | "squad";
+export enum TournamentSport {
+  Badminton = "badminton",
+  Tennis = "tennis",
+  Squash = "squash",
+  TableTennis = "tableTennis",
+}
+export enum TournamentSkillLevel {
+  Amateur = "amateur",
+  Beginner = "beginner",
+  Professional = "professional",
+}
+
+export enum TournamentStatus {
+  Upcoming = "upcoming",
+  Ongoing = "ongoing",
+  Finished = "finished",
+}
+
+export enum TournamentFormat {
+  Singles = "singles",
+  Doubles = "doubles",
+  Squad = "squad",
+}
 
 interface Participant {
   id: string;
@@ -53,9 +72,9 @@ export interface TournamentRequest {
   prizePool: number;
   rules: string;
   skillLevel: TournamentSkillLevel;
-  format: Format;
+  format: TournamentFormat;
   sportType: string;
-  status: Status;
+  status: TournamentStatus;
   title: string;
 }
 

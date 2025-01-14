@@ -1,7 +1,7 @@
 import { StyleSheet, View, Keyboard, TouchableOpacity, ScrollView } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth, useUser } from "@clerk/clerk-expo";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, FormProvider } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import UserAvatar from "@/src/components/settings/UserAvatar";
 import { useSetProfileImageMutation, useUpdateUserMutation } from "@/src/queries/user";
@@ -43,14 +43,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const theme = useCustomTheme();
 
-  const {
-    watch,
-    control,
-    handleSubmit,
-    formState: { errors: formErrors, isDirty },
-    reset,
-    setError,
-  } = useForm({
+  const methods = useForm({
     defaultValues: {
       firstName: user?.firstName || "",
       lastName: user?.lastName || "",
@@ -58,6 +51,15 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
     },
     mode: "onChange",
   });
+
+  const {
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors: formErrors, isDirty },
+    reset,
+    setError,
+  } = methods;
 
   const resetValues = () => {
     if (user) {
@@ -195,89 +197,91 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   };
 
   return (
-    <KeyboardAwareScrollView
-      scrollEnabled={true}
-      extraScrollHeight={-70}
-      keyboardShouldPersistTaps="handled"
-      enableOnAndroid={true}
-      keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
-    >
-      <View style={styles.wrapper}>
-        <View className="mx-auto mt-4">
-          <UserAvatar
-            image={image}
-            loading={loadingImg}
-            onPickImage={handleOpenCameraModal}
-            isPending={setProfileImgMutation.isPending}
-            onLoadStart={() => setLoadingImg(true)}
-            onLoad={() => setLoadingImg(false)}
-          />
-        </View>
-        <View className="flex flex-col gap-1 mt-8">
-          <CustomTextInput
-            disabled
-            disabledText
-            value={user?.primaryEmailAddress?.emailAddress}
-            label={t("settings.personalInfo.email")}
-          />
+    <FormProvider {...methods}>
+      <KeyboardAwareScrollView
+        scrollEnabled={true}
+        extraScrollHeight={-70}
+        keyboardShouldPersistTaps="handled"
+        enableOnAndroid={true}
+        keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
+      >
+        <View style={styles.wrapper}>
+          <View className="mx-auto mt-4">
+            <UserAvatar
+              image={image}
+              loading={loadingImg}
+              onPickImage={handleOpenCameraModal}
+              isPending={setProfileImgMutation.isPending}
+              onLoadStart={() => setLoadingImg(true)}
+              onLoad={() => setLoadingImg(false)}
+            />
+          </View>
+          <View className="flex flex-col gap-1 mt-8">
+            <CustomTextInput
+              disabled
+              disabledText
+              value={user?.primaryEmailAddress?.emailAddress}
+              label={t("settings.personalInfo.email")}
+            />
 
-          <RHFormInput
-            name="firstName"
-            label={t("settings.personalInfo.firstName")}
-            control={control}
-            rules={{
-              required: true,
-            }}
-            inputProps={{
-              useClearButton: true,
-              isError: !!formErrors.firstName,
-              returnKeyType: "done",
-              onSubmitEditing: updateValues,
-              onBlur: handleBlur,
-              onFocus: handleFocus,
-            }}
-          />
-          <RHFormInput
-            name="lastName"
-            label={t("settings.personalInfo.lastName")}
-            control={control}
-            rules={{
-              required: true,
-            }}
-            inputProps={{
-              useClearButton: true,
-              isError: !!formErrors.lastName,
-              returnKeyType: "done",
-              onSubmitEditing: updateValues,
-              onBlur: handleBlur,
-              onFocus: handleFocus,
-            }}
-          />
-          <RHFormDatePicker
-            name="birthday"
-            label={t("settings.personalInfo.birthday")}
-            datePickerProps={{
-              minimumDate: new Date(new Date().getFullYear() - 100, 0, 1),
-              maximumDate: new Date(),
-              onConfirm: updateValues,
-            }}
-            control={control}
+            <RHFormInput
+              name="firstName"
+              label={t("settings.personalInfo.firstName")}
+              control={control}
+              rules={{
+                required: true,
+              }}
+              inputProps={{
+                useClearButton: true,
+                isError: !!formErrors.firstName,
+                returnKeyType: "done",
+                onSubmitEditing: updateValues,
+                onBlur: handleBlur,
+                onFocus: handleFocus,
+              }}
+            />
+            <RHFormInput
+              name="lastName"
+              label={t("settings.personalInfo.lastName")}
+              control={control}
+              rules={{
+                required: true,
+              }}
+              inputProps={{
+                useClearButton: true,
+                isError: !!formErrors.lastName,
+                returnKeyType: "done",
+                onSubmitEditing: updateValues,
+                onBlur: handleBlur,
+                onFocus: handleFocus,
+              }}
+            />
+            <RHFormDatePicker
+              name="birthday"
+              label={t("settings.personalInfo.birthday")}
+              datePickerProps={{
+                minimumDate: new Date(new Date().getFullYear() - 100, 0, 1),
+                maximumDate: new Date(),
+                onConfirm: updateValues,
+              }}
+              control={control}
+            />
+          </View>
+          <ButtonDefault
+            onPress={() => signOut()}
+            title={t("settings.personalInfo.signOut")}
+            nodeLeft={(color) => <Octicons name="sign-out" size={20} color={color} />}
+            type="grey"
+            className="mt-6"
           />
         </View>
-        <ButtonDefault
-          onPress={() => signOut()}
-          title={t("settings.personalInfo.signOut")}
-          nodeLeft={(color) => <Octicons name="sign-out" size={20} color={color} />}
-          type="grey"
-          className="mt-6"
+        <ChooseCameraModal
+          ref={bottomSheetRef}
+          onGallery={() => handleGalleryImagePick()}
+          onCamera={() => handleCameraImagePick()}
         />
-      </View>
-      <ChooseCameraModal
-        ref={bottomSheetRef}
-        onGallery={() => handleGalleryImagePick()}
-        onCamera={() => handleCameraImagePick()}
-      />
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </FormProvider>
   );
 };
 

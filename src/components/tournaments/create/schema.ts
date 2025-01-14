@@ -1,64 +1,65 @@
-import { z, ZodType } from "zod";
-import { TournamentFormData } from "./types";
+import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
+import { z } from "zod";
 
-export const TournamentSchema: ZodType<TournamentFormData> = z
+const dateSchema = z
   .object({
-    title: z.string().min(1, { message: "Title is required" }),
-    description: z.string(),
-    sportType: z.string().min(1, { message: "Sport type is required" }),
-    city: z.string().min(1, { message: "City is required" }),
-    location: z.string().min(1, { message: "Location is required" }),
-    dateStart: z.date(),
-    dateEnd: z.date(),
-    entryFee: z.string().regex(/^[0-9]+(\.[0-9]{1,2})?$/, {
-      message: "Invalid entry fee",
-    }),
-    prizePool: z.string().regex(/^[0-9]+(\.[0-9]{1,2})?$/, {
-      message: "Invalid prize pool",
-    }),
-    skillLevel: z.string().min(1, { message: "Skill level is required" }),
-    // format: z.string(),
-    // maxParticipants: z
-    //   .string({
-    //     required_error: "Max age is required",
-    //   })
-    //   .regex(/^[0-9]+$/, { message: "Must be a valid number" }),
-
-    rules: z.string().optional(),
-    images: z.array(
-      z.object({
-        publicId: z.string().optional(),
-      })
-    ),
-    // geoCoordinates: z.object({
-    //   latitude: z.number({
-    //     required_error: "Latitude is required",
-    //     invalid_type_error: "Latitude must be a number",
-    //   }),
-    //   longitude: z.number({
-    //     required_error: "Longitude is required",
-    //     invalid_type_error: "Longitude must be a number",
-    //   }),
-    // }),
-    ageRestrictions: z
-      .object({
-        minAge: z
-          .string({
-            required_error: "Min age is required",
-          })
-          .regex(/^[0-9]+$/, { message: "Must be a valid number" }),
-        maxAge: z
-          .string({
-            required_error: "Max age is required",
-          })
-          .regex(/^[0-9]+$/, { message: "Must be a valid number" }),
-      })
-      .refine((data) => data.maxAge > data.minAge, {
-        message: "Max age must be greater than Min age",
-        path: ["maxAge"],
-      }),
+    dateStart: z.date({ required_error: "Start date is required" }),
+    dateEnd: z.date({ required_error: "End date is required" }),
   })
-  .refine((data) => data.dateStart.getTime() <= data.dateEnd.getTime(), {
+  .refine((data) => data.dateStart.getTime() <= data.dateEnd.getTime() + 1, {
     message: "End date must be after or equal to start date",
     path: ["dateEnd"],
   });
+
+const moneySchema = z
+  .object({
+    entryFee: z.coerce.number({ required_error: "Entry fee is required" }).min(1),
+    prizePool: z.coerce.number({ required_error: "Prize pool is required" }).min(1),
+  })
+  .refine((data) => data.entryFee < data.prizePool, {
+    message: "Prize pool must be greater than entry fee",
+    path: ["prizePool"],
+  });
+
+const restSchema = z.object({
+  title: z.string({ required_error: "Title is required" }).trim().min(1),
+  description: z.string({ required_error: "Description is required" }).trim().min(1),
+  sportType: z.nativeEnum(TournamentSport, { message: "Invalid sport type" }),
+  city: z.string({ required_error: "City is required" }).trim().min(1),
+  location: z.string({ required_error: "Location is required" }).trim().min(1),
+
+  skillLevel: z.nativeEnum(TournamentSkillLevel, { message: "Invalid skill level" }),
+  maxParticipants: z.coerce.number({ required_error: "Max participants is required" }).min(1),
+  rules: z.string().optional(),
+  images: z
+    .array(
+      z.object({
+        publicId: z.string(),
+      })
+    )
+    .refine((images) => images.length > 0, { message: "At least one image is required" }),
+  // format: z.string(),
+  // geoCoordinates: z.object({
+  //   latitude: z.number({
+  //     required_error: "Latitude is required",
+  //     invalid_type_error: "Latitude must be a number",
+  //   }),
+  //   longitude: z.number({
+  //     required_error: "Longitude is required",
+  //     invalid_type_error: "Longitude must be a number",
+  //   }),
+  // }),
+  ageRestrictions: z
+    .object({
+      minAge: z.coerce.number({ message: "Min age is required" }).min(1),
+      maxAge: z.coerce.number({ message: "Max age is required" }).min(1),
+    })
+    .refine((data) => data.minAge < data.maxAge, {
+      message: "Max age must be greater than Min age",
+      path: ["maxAge"],
+    }),
+});
+
+const TournamentSchema = z.intersection(z.intersection(dateSchema, moneySchema), restSchema);
+export default TournamentSchema;
+export type TournamentFormData = z.infer<typeof TournamentSchema>;

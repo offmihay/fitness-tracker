@@ -1,7 +1,7 @@
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { TournamentRequest } from "../types/tournament";
 import fetchApi from "../api/fetchApi";
-import { TournamentFormData } from "../components/tournaments/create/types";
+import { TournamentFormData } from "../components/tournaments/create/schema";
 
 export const useAllTournaments = () => {
   return useQuery({
@@ -12,7 +12,7 @@ export const useAllTournaments = () => {
     },
     initialData: [],
     retry: 3,
-    retryDelay: 3000,
+    retryDelay: 1000,
   });
 };
 

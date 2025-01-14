@@ -8,6 +8,10 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { PickerItemProps } from "@react-native-picker/picker";
 import CustomPicker from "../picker/CustomPicker [android]";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import get from "lodash/get";
+import Animated, { LinearTransition } from "react-native-reanimated";
+import CustomAnimatedView from "../view/CustomAnimatedView";
+import ErrorAnimatedView from "../view/ErrorAnimatedView";
 
 type Props<TFieldValues extends FieldValues, T extends string> = {
   control: Control<TFieldValues>;
@@ -38,6 +42,9 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
     setOpen(false);
   };
 
+  const { formState } = useFormContext();
+  const error = get(formState.errors, name);
+
   return (
     <>
       <Controller
@@ -46,28 +53,36 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
         rules={rules}
         render={({ field: { onChange, value, ref } }) => {
           return Platform.OS === "ios" ? (
-            <CustomTextInput
-              ref={ref}
-              disabled={true}
-              label={label}
-              value={value}
-              onChangeText={onChange}
-              returnKeyType="next"
-              onSubmitEditing={onSubmitEditing}
-              onPress={handleOpenModal}
-              isForceFocused={isOpen}
-              {...inputProps}
-            />
+            <CustomAnimatedView>
+              <CustomTextInput
+                ref={ref}
+                disabled={true}
+                label={label}
+                value={value}
+                onChangeText={onChange}
+                returnKeyType="next"
+                onSubmitEditing={onSubmitEditing}
+                onPress={handleOpenModal}
+                isForceFocused={isOpen}
+                isError={!!error && !value}
+                {...inputProps}
+              />
+              <ErrorAnimatedView message={!value ? error?.message?.toString() : ""} />
+            </CustomAnimatedView>
           ) : Platform.OS === "android" ? (
-            <CustomPicker
-              selectedValue={value}
-              onValueChange={(itemValue, itemIndex) => {
-                onChange(itemValue);
-                dropdownProps.onValueChange?.(itemValue, itemIndex);
-              }}
-              items={dropdownProps.items}
-              selectAnLabel={dropdownProps.selectAnLabel}
-            />
+            <CustomAnimatedView>
+              <CustomPicker
+                selectedValue={value && !value}
+                isError={!!error}
+                onValueChange={(itemValue, itemIndex) => {
+                  onChange(itemValue);
+                  dropdownProps.onValueChange?.(itemValue, itemIndex);
+                }}
+                items={dropdownProps.items}
+                selectAnLabel={dropdownProps.selectAnLabel}
+              />
+              <ErrorAnimatedView message={!value ? error?.message?.toString() : ""} />
+            </CustomAnimatedView>
           ) : (
             <></>
           );

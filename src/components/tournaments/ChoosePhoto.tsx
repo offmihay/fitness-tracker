@@ -1,28 +1,25 @@
-import {
-  ActionSheetIOS,
-  Keyboard,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Keyboard, ScrollView, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Loader from "../shared/loader/Loader";
 import ChooseCameraModal from "../shared/modal/ChooseCameraModal";
-import ButtonDefault from "../shared/button/ButtonDefault";
 import { pickCameraImage } from "@/src/services/pickCameraImage";
 import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { ImagePickerAsset } from "expo-image-picker";
-import { ImageUploadResponse, useUploadImage } from "@/src/queries/upload-image";
+import { useUploadImage } from "@/src/queries/upload-image";
 import { Image } from "expo-image";
 import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 import ButtonInput from "../shared/button/ButtonInput";
 import CustomIcon from "../shared/icon/CustomIcon";
-import { ImageForm } from "./create/types";
+import CustomAnimatedView from "../shared/view/CustomAnimatedView";
+import ErrorAnimatedView from "../shared/view/ErrorAnimatedView";
+
+export type ImageForm = {
+  publicId: string;
+};
 
 export type UploadedImageAsset = ImagePickerAsset & {
   publicId?: string;
@@ -33,10 +30,11 @@ export type UploadedImageAsset = ImagePickerAsset & {
 
 type Props = {
   onImageUploadSuccess: (images: ImageForm[]) => void;
+  errorMessage: string;
 };
 
 const ChoosePhoto = (props: Props) => {
-  const { onImageUploadSuccess } = props;
+  const { onImageUploadSuccess, errorMessage } = props;
   const { t } = useTranslation();
   const theme = useCustomTheme();
 
@@ -98,13 +96,13 @@ const ChoosePhoto = (props: Props) => {
   useEffect(() => {
     const readyImages = images
       .filter((img) => img.publicId && !img.isError)
-      .map((img) => ({ publicId: img.publicId }));
+      .map((img) => ({ publicId: img.publicId! }));
     onImageUploadSuccess(readyImages);
   }, [images]);
 
   return (
-    <>
-      <View className="flex flex-row gap-3">
+    <CustomAnimatedView>
+      <View className="flex flex-row gap-3 py-1">
         <View style={{ width: 160 }}>
           <ButtonInput onPress={handleOpenCameraModal}>
             <View className="flex flex-row gap-2 w-full justify-center">
@@ -182,7 +180,18 @@ const ChoosePhoto = (props: Props) => {
           onCamera={() => handleCameraImagePick()}
         />
       </View>
-    </>
+      <View className="mt-1">
+        <ErrorAnimatedView
+          message={
+            images
+              .filter((img) => img.publicId && !img.isError)
+              .map((img) => ({ publicId: img.publicId! })).length === 0
+              ? errorMessage
+              : ""
+          }
+        />
+      </View>
+    </CustomAnimatedView>
   );
 };
 

@@ -6,6 +6,7 @@ import CustomText from "../text/CustomText";
 import Animated, {
   FadeIn,
   FadeOut,
+  LinearTransition,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -159,6 +160,7 @@ const ButtonDefault = ({
             styles.lightgreyButton,
           animatedWrapperStyle,
         ]}
+        layout={LinearTransition}
       >
         {!isCheckAnimated && !loading && nodeLeft && nodeLeft(opacityColor)}
         {!isCheckAnimated && !loading && (

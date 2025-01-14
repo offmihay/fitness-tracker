@@ -12,6 +12,7 @@ import FilterStickyFooter from "./FilterStickyFooter";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useScrollProps from "@/src/hooks/useScrollProps";
+import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 
 const FilterContent = () => {
   const { dismiss } = useBottomSheetModal();
@@ -83,7 +84,7 @@ const FilterContent = () => {
     dismiss("filter-modal");
   };
 
-  const { scrollPropOnBlur, handleScroll } = useScrollProps(100);
+  const { scrollPropOnBlur, handleScroll, onContentSizeChange, onLayout } = useScrollProps();
 
   return (
     <>
@@ -91,6 +92,8 @@ const FilterContent = () => {
         <KeyboardAwareScrollView
           {...scrollPropOnBlur}
           onScroll={handleScroll}
+          onContentSizeChange={onContentSizeChange}
+          onLayout={onLayout}
           extraScrollHeight={60}
           contentContainerStyle={styles.scrollContent}
           enableOnAndroid={true}
@@ -105,18 +108,23 @@ const FilterContent = () => {
               <View style={styles.filterWrapperGroup} className="mt-4">
                 <FilterItem
                   label="Badminton"
-                  onPress={() => handleChangeGroup("sportType", "badminton")}
-                  isSelected={filter.sportType.includes("badminton")}
+                  onPress={() => handleChangeGroup("sportType", TournamentSport.Badminton)}
+                  isSelected={filter.sportType.includes(TournamentSport.Badminton)}
                 />
                 <FilterItem
                   label="Squash"
-                  onPress={() => handleChangeGroup("sportType", "squash")}
-                  isSelected={filter.sportType.includes("squash")}
+                  onPress={() => handleChangeGroup("sportType", TournamentSport.Squash)}
+                  isSelected={filter.sportType.includes(TournamentSport.Squash)}
                 />
                 <FilterItem
                   label="Tennis"
-                  onPress={() => handleChangeGroup("sportType", "tennis")}
-                  isSelected={filter.sportType.includes("tennis")}
+                  onPress={() => handleChangeGroup("sportType", TournamentSport.Tennis)}
+                  isSelected={filter.sportType.includes(TournamentSport.Tennis)}
+                />
+                <FilterItem
+                  label="Table Tennis"
+                  onPress={() => handleChangeGroup("sportType", TournamentSport.TableTennis)}
+                  isSelected={filter.sportType.includes(TournamentSport.TableTennis)}
                 />
               </View>
             </View>
@@ -126,18 +134,18 @@ const FilterContent = () => {
               <View style={styles.filterWrapperGroup} className="mt-4">
                 <FilterItem
                   label="Amateur"
-                  onPress={() => handleChangeGroup("skillLevel", "amateur")}
-                  isSelected={filter.skillLevel.includes("amateur")}
+                  onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.Amateur)}
+                  isSelected={filter.skillLevel.includes(TournamentSkillLevel.Amateur)}
                 />
                 <FilterItem
                   label="Beginner"
-                  onPress={() => handleChangeGroup("skillLevel", "beginner")}
-                  isSelected={filter.skillLevel.includes("beginner")}
+                  onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.Beginner)}
+                  isSelected={filter.skillLevel.includes(TournamentSkillLevel.Beginner)}
                 />
                 <FilterItem
                   label="Professional"
-                  onPress={() => handleChangeGroup("skillLevel", "professional")}
-                  isSelected={filter.skillLevel.includes("professional")}
+                  onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.Professional)}
+                  isSelected={filter.skillLevel.includes(TournamentSkillLevel.Professional)}
                 />
               </View>
             </View>
