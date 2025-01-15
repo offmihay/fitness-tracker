@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ViewProps } from "react-native";
 import React from "react";
 import { Divider, List } from "react-native-paper";
 import { useCustomTheme } from "../../../hooks/useCustomTheme";
@@ -9,6 +9,7 @@ export type CustomListItemProps = {
   nodeContentLeft?: React.ReactNode;
   noRightChevron?: boolean;
   icon?: React.ElementType;
+  iconStyle?: ViewProps["style"];
   iconName?: string;
   chevron?: "down" | "up" | "right" | "left";
 } & React.ComponentProps<typeof List.Item>;
@@ -21,6 +22,7 @@ const CustomListItem = ({
   chevron = "right",
   icon: Icon,
   iconName = "home",
+  iconStyle,
   ...rest
 }: CustomListItemProps) => {
   const theme = useCustomTheme();
@@ -28,7 +30,6 @@ const CustomListItem = ({
   return (
     <View className="relative">
       <List.Item
-        // className="py-1"
         style={{
           paddingVertical: 4,
           minHeight: 55,
@@ -55,7 +56,12 @@ const CustomListItem = ({
           <View>
             {nodeContentLeft}
             {Icon ? (
-              <Icon name={iconName} size={24} color={theme.colors.primary} style={props.style} />
+              <Icon
+                name={iconName}
+                size={24}
+                color={theme.colors.primary}
+                style={[props.style, iconStyle]}
+              />
             ) : null}
           </View>
         )}

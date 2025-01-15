@@ -15,6 +15,7 @@ type DatePickerInputProps = {
   maximumDate?: Date;
   inputProps?: Partial<React.ComponentProps<typeof CustomTextInput>>;
   renderTrigger?: (props: { onPress: () => void; value: string; label?: string }) => ReactNode;
+  isDisabled?: boolean;
 };
 
 export interface InputRef {
@@ -33,6 +34,7 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
       maximumDate,
       inputProps,
       renderTrigger,
+      isDisabled = false,
     },
     ref
   ) => {
@@ -41,8 +43,10 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
     const { i18n } = useTranslation();
 
     const showDatePicker = () => {
-      Keyboard.dismiss();
-      setDatePickerVisibility(true);
+      if (!isDisabled) {
+        Keyboard.dismiss();
+        setDatePickerVisibility(true);
+      }
     };
 
     const hideDatePicker = () => setDatePickerVisibility(false);

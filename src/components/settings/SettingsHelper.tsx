@@ -5,19 +5,29 @@ import CustomSwitch from "../shared/switch/Switch";
 import { CustomListItemProps } from "../shared/list/CustomListItem";
 import { useRouter } from "expo-router";
 import { useSettings } from "../../hooks/useSettings";
+import { useUser } from "@clerk/clerk-expo";
 
 export const getSettingsList = () => {
   const { settings, updateSettings } = useSettings();
   const { t } = useTranslation();
   const router = useRouter();
+  const { user } = useUser();
 
   const settingsList: CustomListItemProps[] = [
     {
       key: "personal-info",
       title: t("settings.personalInfo.title"),
       icon: AntDesign,
+      iconStyle: { top: 6 },
       iconName: "user",
-      onPress: () => router.push("/settings/personal-info"),
+      description:
+        `${user?.firstName} ${user?.lastName}`.trim().length !== 0 && !!user?.firstName
+          ? !!user.lastName
+            ? `${user?.firstName} ${user?.lastName}`
+            : user?.firstName
+          : "Not specified",
+
+      onPress: () => router.navigate("/settings/personal-info"),
     },
     {
       key: "customize-theme",

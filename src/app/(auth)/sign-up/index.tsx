@@ -15,6 +15,7 @@ import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanim
 import CustomKeyboardAvoidingView from "@/src/components/shared/view/CustomKeyboardAvoidingView";
 import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
+import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 
 type EmailData = {
   email: string;
@@ -53,21 +54,12 @@ export default function SignUpEmailScreen() {
         });
       },
       onError: (error: any) => {
-        if (error.clerkError) {
-          error.errors.forEach((err: any) => {
-            const param = err.meta.paramName;
-            const errParam = param === "email_address" ? "email" : "root.clerkError";
-            setError(errParam, {
-              type: err.code,
-              message: t(`errors.${err.code}`),
-            });
-          });
-        } else {
-          setError("root.serverError", {
-            type: "server_error",
-            message: t(`errors.server_error`),
-          });
-        }
+        console.log(error);
+        const paramMapper = (paramName: string) => {
+          if (paramName === "email_address") return "email";
+          return "root.clerkError";
+        };
+        clerkHandleErrors(error, setError, t, paramMapper);
       },
     });
   };
@@ -88,36 +80,23 @@ export default function SignUpEmailScreen() {
                     {t("signup.titleEmail")}
                   </CustomText>
                 </Animated.View>
-                <Animated.View layout={LinearTransition}>
-                  <RHFormInput
-                    name="email"
-                    label={t("signup.email")}
-                    control={control}
-                    inputProps={{
-                      useClearButton: true,
-                      isError: !!formErrors.email,
-                    }}
-                    rules={{
-                      maxLength: { value: 30, message: t("errors.email_too_long") },
-                      pattern: {
-                        value: /^\s*[\w-\.]+@([\w-]+\.)+[\w-]{1,4}\s*$/g,
-                        message: t("errors.email_invalid"),
-                      },
-                    }}
-                  />
-                </Animated.View>
-                {formErrors.email?.message && (
-                  <Animated.View
-                    layout={LinearTransition}
-                    className="ml-2 mb-1"
-                    entering={FadeIn.duration(300)}
-                    exiting={FadeOut.duration(300)}
-                  >
-                    <CustomText color={theme.colors.error} type="predefault">
-                      {formErrors.email?.message}
-                    </CustomText>
-                  </Animated.View>
-                )}
+
+                <RHFormInput
+                  name="email"
+                  label={t("signup.email")}
+                  control={control}
+                  inputProps={{
+                    useClearButton: true,
+                    isError: !!formErrors.email,
+                  }}
+                  rules={{
+                    maxLength: { value: 30, message: t("errors.email_too_long") },
+                    pattern: {
+                      value: /^\s*[\w-\.]+@([\w-]+\.)+[\w-]{1,4}\s*$/g,
+                      message: t("errors.email_invalid"),
+                    },
+                  }}
+                />
 
                 <Animated.View layout={LinearTransition} className="ml-2 w-[200] mt-2">
                   <TouchableOpacity

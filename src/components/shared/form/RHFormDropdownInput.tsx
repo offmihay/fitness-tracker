@@ -72,7 +72,7 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
           ) : Platform.OS === "android" ? (
             <CustomAnimatedView>
               <CustomPicker
-                selectedValue={value && !value}
+                selectedValue={value}
                 isError={!!error}
                 onValueChange={(itemValue, itemIndex) => {
                   onChange(itemValue);

@@ -6,6 +6,7 @@
     "personalInfo": {
       "title": "Edit profile",
 
+      "name": "Name",
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
@@ -13,7 +14,14 @@
       "photo": "Photo",
 
       "saveChanges": "Save Changes",
-      "signOut": "Sign Out"
+      "signOut": "Sign Out",
+
+      "changeName": {
+        "title": "Change name"
+      },
+      "changeBirthday": {
+        "title": "Change birthday"
+      }
     },
     "theme": {
       "title": "Choose Theme",

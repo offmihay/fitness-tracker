@@ -1,15 +1,6 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-expo";
-
-export type FormData = {
-  firstName?: string;
-  lastName?: string;
-  primaryEmailAddressId?: string;
-  primaryPhoneNumberId?: string;
-  primaryWeb3WalletId?: string;
-  username?: string;
-  unsafeMetadata?: Record<string, any>;
-};
+import { UpdateUserClerkFormData } from "../utils/clerkTransformData";
 
 export const useSetProfileImageMutation = () => {
   const { user } = useUser();
@@ -23,7 +14,7 @@ export const useSetProfileImageMutation = () => {
 export const useUpdateUserMutation = () => {
   const { user } = useUser();
   return useMutation({
-    mutationFn: (data: FormData) => {
+    mutationFn: (data: Partial<UpdateUserClerkFormData>) => {
       return user!.update(data);
     },
   });

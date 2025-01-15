@@ -60,6 +60,6 @@ const restSchema = z.object({
     }),
 });
 
-const TournamentSchema = z.intersection(z.intersection(dateSchema, moneySchema), restSchema);
-export default TournamentSchema;
-export type TournamentFormData = z.infer<typeof TournamentSchema>;
+const schemaCreateTournament = z.intersection(z.intersection(dateSchema, moneySchema), restSchema);
+export default schemaCreateTournament;
+export type TournamentFormData = z.infer<typeof schemaCreateTournament>;

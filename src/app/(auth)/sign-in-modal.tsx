@@ -10,6 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
 import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
+import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 
 type Props = {};
 
@@ -35,7 +36,6 @@ const SignInModal = ({}: Props) => {
     formState: { errors: formErrors, isDirty },
     clearErrors,
     setError,
-    setFocus,
   } = methods;
 
   const { signInMutation } = useSignInMutation();
@@ -54,26 +54,12 @@ const SignInModal = ({}: Props) => {
           });
         },
         onError: (error: any) => {
-          if (error.clerkError) {
-            error.errors.forEach((err: any) => {
-              const param = err.meta.paramName;
-              const errParam =
-                param === "identifier"
-                  ? "email"
-                  : param === "password"
-                  ? "password"
-                  : "root.clerkError";
-              setError(errParam, {
-                type: err.code,
-                message: t(`errors.${err.code}`),
-              });
-            });
-          } else {
-            setError("root.serverError", {
-              type: "server_error",
-              message: t(`errors.server_error`),
-            });
-          }
+          const paramMapper = (paramName: string) => {
+            if (paramName === "identifier") return "email";
+            if (paramName === "password") return "password";
+            return "root.clerkError";
+          };
+          clerkHandleErrors(error, setError, t, paramMapper);
         },
       }
     );
@@ -89,59 +75,32 @@ const SignInModal = ({}: Props) => {
                 {t("signin.modal.title")}
               </CustomText>
             </Animated.View>
-            <Animated.View layout={LinearTransition}>
-              <RHFormInput
-                name="email"
-                label={t("signin.email")}
-                control={control}
-                inputProps={{
-                  useClearButton: true,
-                  isError: !!formErrors.email,
-                  textContentType: "oneTimeCode",
-                }}
-              />
-            </Animated.View>
-            {formErrors.email?.message && (
-              <Animated.View
-                layout={LinearTransition}
-                className="ml-2 mb-2"
-                entering={FadeIn.duration(300)}
-                exiting={FadeOut.duration(300)}
-              >
-                <CustomText color={theme.colors.error} type="predefault">
-                  {formErrors.email?.message}
-                </CustomText>
-              </Animated.View>
-            )}
 
-            <Animated.View layout={LinearTransition}>
-              <RHFormInput
-                name="password"
-                label={t("signin.password")}
-                control={control}
-                inputProps={{
-                  isPassword: true,
-                  isError: !!formErrors.password,
-                  textContentType: "password",
-                }}
-                rules={{
-                  minLength: { value: 8, message: t("errors.password_too_short") },
-                  maxLength: { value: 20, message: t("errors.password_too_long") },
-                }}
-              />
-            </Animated.View>
-            {formErrors.password?.message && (
-              <Animated.View
-                layout={LinearTransition}
-                className="ml-2 mb-1"
-                entering={FadeIn.duration(300)}
-                exiting={FadeOut.duration(300)}
-              >
-                <CustomText color={theme.colors.error} type="predefault">
-                  {formErrors.password?.message}
-                </CustomText>
-              </Animated.View>
-            )}
+            <RHFormInput
+              name="email"
+              label={t("signin.email")}
+              control={control}
+              inputProps={{
+                useClearButton: true,
+                isError: !!formErrors.email,
+                textContentType: "oneTimeCode",
+              }}
+            />
+
+            <RHFormInput
+              name="password"
+              label={t("signin.password")}
+              control={control}
+              inputProps={{
+                isPassword: true,
+                isError: !!formErrors.password,
+                textContentType: "password",
+              }}
+              rules={{
+                minLength: { value: 8, message: t("errors.password_too_short") },
+                maxLength: { value: 20, message: t("errors.password_too_long") },
+              }}
+            />
 
             <Animated.View layout={LinearTransition} className="ml-2 w-[200] mt-2">
               <TouchableOpacity onPress={void 0}>

@@ -6,13 +6,13 @@ import ButtonDefault from "../../shared/button/ButtonDefault";
 import FilterItem from "./FilterItem";
 import DatePickerInput from "../../shared/input/DatePickerInput";
 import CustomTextInput from "../../shared/input/CustomTextInput";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { FilterGroup, FilterSingle, FilterRange, Range, Filter } from "./types";
-import FilterStickyFooter from "./FilterStickyFooter";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useScrollProps from "@/src/hooks/useScrollProps";
 import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
+import StickyFooterView from "../../shared/view/StickyFooterView";
+import CustomKeyboardAwareScrollView from "../../shared/view/CustomKeyboardAwareScrollView";
 
 const FilterContent = () => {
   const { dismiss } = useBottomSheetModal();
@@ -89,18 +89,10 @@ const FilterContent = () => {
   return (
     <>
       <View style={styles.modalWrapper}>
-        <KeyboardAwareScrollView
-          {...scrollPropOnBlur}
-          onScroll={handleScroll}
-          onContentSizeChange={onContentSizeChange}
-          onLayout={onLayout}
+        <CustomKeyboardAwareScrollView
+          useScrollHook
           extraScrollHeight={60}
-          contentContainerStyle={styles.scrollContent}
-          enableOnAndroid={true}
-          scrollEnabled={true}
-          keyboardShouldPersistTaps="handled"
-          keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
-          showsVerticalScrollIndicator={false}
+          scrollWrapperStyle={{ paddingBottom: 100 }}
         >
           <View className="flex flex-col gap-6">
             <View>
@@ -221,13 +213,13 @@ const FilterContent = () => {
               </View>
             </View>
           </View>
-        </KeyboardAwareScrollView>
+        </CustomKeyboardAwareScrollView>
       </View>
-      <FilterStickyFooter>
+      <StickyFooterView wrapperStyle={{ paddingHorizontal: 20 }} offset={{ closed: 0, opened: 30 }}>
         <View style={styles.buttonWrapper}>
           <ButtonDefault title="Show results" onPress={handleShowResults} />
         </View>
-      </FilterStickyFooter>
+      </StickyFooterView>
     </>
   );
 };

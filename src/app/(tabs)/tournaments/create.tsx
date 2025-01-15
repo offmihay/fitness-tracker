@@ -17,10 +17,13 @@ import CustomText from "@/src/components/shared/text/CustomText";
 import { Divider } from "react-native-paper";
 import useScrollProps from "@/src/hooks/useScrollProps";
 import { zodResolver } from "@hookform/resolvers/zod";
-import TournamentSchema, { TournamentFormData } from "@/src/components/tournaments/create/schema";
+import schemaCreateTournament, {
+  TournamentFormData,
+} from "@/src/components/tournaments/create/schema";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import DualInputSection from "@/src/components/tournaments/DualInputSection";
 import CustomAnimatedView from "@/src/components/shared/view/CustomAnimatedView";
+import CustomKeyboardAwareScrollView from "@/src/components/shared/view/CustomKeyboardAwareScrollView";
 
 const CreateTournament = () => {
   const { t } = useTranslation("");
@@ -28,8 +31,8 @@ const CreateTournament = () => {
 
   const methods = useForm<TournamentFormData>({
     defaultValues: {},
-    mode: "onChange",
-    resolver: zodResolver(TournamentSchema),
+    mode: "onSubmit",
+    resolver: zodResolver(schemaCreateTournament),
   });
 
   const {
@@ -64,22 +67,9 @@ const CreateTournament = () => {
     setValue("images", images);
   };
 
-  const { scrollPropOnBlur, handleScroll, onContentSizeChange, onLayout } = useScrollProps();
-
   return (
     <FormProvider {...methods}>
-      <KeyboardAwareScrollView
-        {...scrollPropOnBlur}
-        onContentSizeChange={onContentSizeChange}
-        onScroll={handleScroll}
-        onLayout={onLayout}
-        extraScrollHeight={-30}
-        contentContainerStyle={[styles.scrollContent]}
-        enableOnAndroid={true}
-        keyboardShouldPersistTaps="handled"
-        keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
-        showsVerticalScrollIndicator={false}
-      >
+      <CustomKeyboardAwareScrollView extraScrollHeight={-30} useScrollHook>
         <View style={styles.wrapper}>
           <CustomText type="subtitle" className="ml-1 mb-3">
             Tournament Details
@@ -283,7 +273,7 @@ const CreateTournament = () => {
             </CustomAnimatedView>
           </View>
         </View>
-      </KeyboardAwareScrollView>
+      </CustomKeyboardAwareScrollView>
     </FormProvider>
   );
 };

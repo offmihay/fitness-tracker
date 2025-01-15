@@ -13,6 +13,7 @@ import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardVie
 import CustomKeyboardAvoidingView from "@/src/components/shared/view/CustomKeyboardAvoidingView";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
+import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 
 type PasswordData = {
   password: string;
@@ -69,20 +70,7 @@ const SignUpPasswordScreen = () => {
           });
         },
         onError: (error: any) => {
-          if (error.clerkError) {
-            error.errors.forEach((err: any) => {
-              const errParam = "root.clerkError";
-              setError(errParam, {
-                type: err.code,
-                message: t(`errors.${err.code}`),
-              });
-            });
-          } else {
-            setError("root.serverError", {
-              type: "server_error",
-              message: t(`errors.server_error`),
-            });
-          }
+          clerkHandleErrors(error, setError, t);
         },
       }
     );
