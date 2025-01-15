@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useMemo } from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 
 import { ThemeProvider } from "react-native-paper";
@@ -18,7 +18,7 @@ export type Ref = BottomSheetModal;
 const ChooseCameraModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, ref) => {
   const { t } = useTranslation();
   const theme = useCustomTheme();
-  const snapPointsModal = useMemo(() => ["30%"], []);
+  const snapPointsModal = useMemo(() => ["35%"], []);
 
   const handleDismiss = useCallback(() => {
     if (ref && "current" in ref && ref.current) {
@@ -49,6 +49,7 @@ const ChooseCameraModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, ref) 
       backdropComponent={renderBackdrop}
       backgroundStyle={{ backgroundColor: "transparent" }}
       handleComponent={null}
+      enableContentPanningGesture={Platform.OS === "android" ? false : true}
     >
       <ThemeProvider theme={theme}>
         <BottomSheetView style={styles.contentContainer}>

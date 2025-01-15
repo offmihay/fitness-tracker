@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Appearance,
+  Platform,
 } from "react-native";
 import { Image, ImageBackground } from "expo-image";
 import CustomText from "../../components/shared/text/CustomText";
@@ -57,7 +58,7 @@ const SignIn = () => {
 
   return (
     <ImageBackground source={require("../../../assets/imgs/signin-background2.jpg")}>
-      <StatusBar barStyle="light-content" />
+      {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
       <SafeAreaView style={styles.wrapper}>
         <View style={styles.content}>
           <View className="flex flex-col gap-3">

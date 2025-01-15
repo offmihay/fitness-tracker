@@ -1,4 +1,4 @@
-import { Keyboard, StyleSheet, View } from "react-native";
+import { Keyboard, Platform, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import CustomText from "../../shared/text/CustomText";
 import { Divider } from "react-native-paper";
@@ -26,6 +26,8 @@ const FilterContent = () => {
   };
 
   const [filter, setFilter] = useState<Filter>(emptyFilter);
+
+  const iosBottomBias = Platform.OS === "ios" ? 30 : 0;
 
   useEffect(() => {
     const fetchStoredFilter = async () => {
@@ -84,17 +86,11 @@ const FilterContent = () => {
     dismiss("filter-modal");
   };
 
-  const { scrollPropOnBlur, handleScroll, onContentSizeChange, onLayout } = useScrollProps();
-
   return (
-    <>
-      <View style={styles.modalWrapper}>
-        <CustomKeyboardAwareScrollView
-          useScrollHook
-          extraScrollHeight={60}
-          scrollWrapperStyle={{ paddingBottom: 100 }}
-        >
-          <View className="flex flex-col gap-6">
+    <View style={{ flex: 1 }}>
+      <View style={[styles.modalWrapper, { paddingBottom: 70 + iosBottomBias }]}>
+        <CustomKeyboardAwareScrollView useScrollHook extraScrollHeight={10}>
+          <View className="flex flex-col gap-6 pb-10">
             <View>
               <CustomText type="subtitle">Sport type</CustomText>
               <View style={styles.filterWrapperGroup} className="mt-4">
@@ -215,19 +211,24 @@ const FilterContent = () => {
           </View>
         </CustomKeyboardAwareScrollView>
       </View>
-      <StickyFooterView wrapperStyle={{ paddingHorizontal: 20 }} offset={{ closed: 0, opened: 30 }}>
-        <View style={styles.buttonWrapper}>
+
+      <StickyFooterView
+        wrapperStyle={{ paddingHorizontal: 20 }}
+        offset={{ closed: 10 - iosBottomBias, opened: 30 }}
+      >
+        <View style={[styles.buttonWrapper]}>
           <ButtonDefault title="Show results" onPress={handleShowResults} />
         </View>
       </StickyFooterView>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   modalWrapper: {
-    paddingVertical: 50,
+    flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 50,
   },
 
   filterWrapperGroup: {
@@ -243,8 +244,8 @@ const styles = StyleSheet.create({
   },
 
   buttonWrapper: {
-    paddingBottom: 50,
-    paddingTop: 20,
+    paddingTop: 15,
+    paddingBottom: 40,
   },
 });
 
