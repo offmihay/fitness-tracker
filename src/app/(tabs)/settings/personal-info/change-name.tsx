@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useUser } from "@clerk/clerk-expo";
@@ -90,7 +90,7 @@ const changeName = () => {
         </View>
       </CustomKeyboardAwareScrollView>
 
-      <StickyFooterView offset={{ closed: 0, opened: 100 }}>
+      <StickyFooterView offset={{ closed: 0, opened: Platform.OS === "android" ? 50 : 80 }}>
         <View style={styles.buttonWrapper}>
           <ButtonDefault
             title="Apply Changes"

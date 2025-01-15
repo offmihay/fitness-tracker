@@ -1,4 +1,4 @@
-import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from "react-native";
+import { NativeScrollEvent, NativeSyntheticEvent, Platform, StyleSheet, View } from "react-native";
 import React, { useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -69,7 +69,10 @@ const CreateTournament = () => {
 
   return (
     <FormProvider {...methods}>
-      <CustomKeyboardAwareScrollView extraScrollHeight={-30} useScrollHook>
+      <CustomKeyboardAwareScrollView
+        extraScrollHeight={Platform.OS === "android" ? 80 : -50}
+        useScrollHook
+      >
         <View style={styles.wrapper}>
           <CustomText type="subtitle" className="ml-1 mb-3">
             Tournament Details
@@ -185,7 +188,7 @@ const CreateTournament = () => {
               label={t("tournament.maxParticipants")}
               inputProps={{ keyboardType: "number-pad" }}
               control={control}
-              onSubmitEditing={() => void 0}
+              onSubmitEditing={() => setFocus("skillLevel")}
             />
 
             <RHFormDropdownInput

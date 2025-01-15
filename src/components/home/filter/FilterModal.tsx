@@ -12,13 +12,13 @@ const FilterModal = () => {
   return (
     <ModalTrigger
       name="filter-modal"
-      renderTrigger={(onPress) => (
+      renderTrigger={(handleOpen) => (
         <ButtonFilter
           label="Filter"
           renderIcon={(color, size) => (
             <FontAwesome6 name="sliders" size={size - 2} color={color} />
           )}
-          onPress={onPress}
+          onPress={handleOpen}
         />
       )}
       modalContent={<FilterContent />}

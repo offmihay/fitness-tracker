@@ -230,11 +230,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: 100,
-  },
-
   filterWrapperGroup: {
     display: "flex",
     flexDirection: "row",

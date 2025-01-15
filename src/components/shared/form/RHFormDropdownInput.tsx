@@ -3,7 +3,6 @@ import React, { useRef, useState } from "react";
 import { Control, Controller, FieldPath, FieldValues, useFormContext } from "react-hook-form";
 import DatePickerInput from "../input/DatePickerInput";
 import CustomTextInput from "../input/CustomTextInput";
-import DropdownModal, { DropdownModalProps } from "../modal/DropdownModal [ios]";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { PickerItemProps } from "@react-native-picker/picker";
 import CustomPicker from "../picker/CustomPicker [android]";
@@ -12,6 +11,8 @@ import get from "lodash/get";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import CustomAnimatedView from "../view/CustomAnimatedView";
 import ErrorAnimatedView from "../view/ErrorAnimatedView";
+import DropdownInputModal, { DropdownModalProps } from "../modal/DropdownInputModal [ios]";
+import DropdownInput from "../input/DropdownInput";
 
 type Props<TFieldValues extends FieldValues, T extends string> = {
   control: Control<TFieldValues>;
@@ -28,20 +29,6 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
 ) => {
   const { control, name, label, rules, onSubmitEditing, inputProps, dropdownProps } = props;
 
-  const [isOpen, setOpen] = useState(false);
-
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
-
-  const handleOpenModal = () => {
-    Keyboard.dismiss();
-    bottomSheetRef.current?.present();
-    setOpen(true);
-  };
-
-  const onDismiss = () => {
-    setOpen(false);
-  };
-
   const { formState } = useFormContext();
   const error = get(formState.errors, name);
 
@@ -53,22 +40,18 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
         rules={rules}
         render={({ field: { onChange, value, ref } }) => {
           return Platform.OS === "ios" ? (
-            <CustomAnimatedView>
-              <CustomTextInput
-                ref={ref}
-                disabled={true}
-                label={label}
-                value={value}
-                onChangeText={onChange}
-                returnKeyType="next"
-                onSubmitEditing={onSubmitEditing}
-                onPress={handleOpenModal}
-                isForceFocused={isOpen}
-                isError={!!error && !value}
-                {...inputProps}
-              />
-              <ErrorAnimatedView message={!value ? error?.message?.toString() : ""} />
-            </CustomAnimatedView>
+            <>
+              <CustomAnimatedView>
+                <DropdownInput
+                  ref={ref}
+                  label={label}
+                  value={value}
+                  dropdownProps={dropdownProps}
+                  onSubmitEditing={onSubmitEditing}
+                />
+                <ErrorAnimatedView message={!value ? error?.message?.toString() : ""} />
+              </CustomAnimatedView>
+            </>
           ) : Platform.OS === "android" ? (
             <CustomAnimatedView>
               <CustomPicker
@@ -88,9 +71,6 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
           );
         }}
       />
-      {Platform.OS === "ios" && (
-        <DropdownModal ref={bottomSheetRef} {...dropdownProps} onDismiss={onDismiss} />
-      )}
     </>
   );
 };

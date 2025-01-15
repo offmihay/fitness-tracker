@@ -15,13 +15,15 @@ export type DropdownModalProps<T extends string> = {
   items: Array<PickerItemProps & { value: T }>;
   selectAnLabel?: string;
   onDismiss?: () => void;
+  onSumbitEditing?: () => void;
 };
 
 export type Ref = BottomSheetModal;
 
 const DropdownModal = forwardRef(
   <T extends string>(props: DropdownModalProps<T>, ref: React.Ref<Ref>) => {
-    const { selectedValue, onValueChange, items, selectAnLabel, onDismiss } = props;
+    const { selectedValue, onValueChange, items, selectAnLabel, onDismiss, onSumbitEditing } =
+      props;
 
     const { t } = useTranslation();
     const theme = useCustomTheme();
@@ -31,6 +33,7 @@ const DropdownModal = forwardRef(
     const handleDismiss = useCallback(() => {
       if (ref && "current" in ref && ref.current) {
         ref.current.dismiss();
+        onDismiss?.();
       }
     }, [ref]);
 
@@ -44,6 +47,7 @@ const DropdownModal = forwardRef(
 
       if (!!itemValue) {
         handleDismiss();
+        onSumbitEditing?.();
       }
     };
 

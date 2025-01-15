@@ -4,7 +4,7 @@ import CustomModal from "../CustomModal";
 
 type Props = {
   name: string;
-  renderTrigger: (onPress: () => void) => React.ReactNode;
+  renderTrigger: (handleOpen: () => void, isOpen?: boolean) => React.ReactNode;
   modalContent: React.ReactNode;
   bottomSheetProps?: Omit<BottomSheetModalProps, "children">;
 };
@@ -31,7 +31,7 @@ const ModalTrigger = (props: Props) => {
       >
         {modalContent}
       </CustomModal>
-      {renderTrigger(handleOpenModal)}
+      {renderTrigger(handleOpenModal, isOpen)}
     </>
   );
 };
