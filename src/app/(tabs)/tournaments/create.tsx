@@ -1,37 +1,31 @@
-import { NativeScrollEvent, NativeSyntheticEvent, Platform, StyleSheet, View } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import { Platform, StyleSheet, View } from "react-native";
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTranslation } from "react-i18next";
-import { TournamentRequest, TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
+import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 import { useTournamentMutation } from "@/src/queries/tournaments";
 import RHFormInput from "@/src/components/shared/form/RHFormInput";
 import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
 import RHFormDropdownInput from "@/src/components/shared/form/RHFormDropdownInput";
-import ChoosePhoto, {
-  ImageForm,
-  UploadedImageAsset,
-} from "@/src/components/tournaments/ChoosePhoto";
+import ChoosePhoto, { ImageForm } from "@/src/components/tournaments/ChoosePhoto";
 import CustomText from "@/src/components/shared/text/CustomText";
 import { Divider } from "react-native-paper";
-import useScrollProps from "@/src/hooks/useScrollProps";
 import { zodResolver } from "@hookform/resolvers/zod";
 import schemaCreateTournament, {
   TournamentFormData,
 } from "@/src/components/tournaments/create/schema";
-import Animated, { LinearTransition } from "react-native-reanimated";
 import DualInputSection from "@/src/components/tournaments/DualInputSection";
 import CustomAnimatedView from "@/src/components/shared/view/CustomAnimatedView";
 import CustomKeyboardAwareScrollView from "@/src/components/shared/view/CustomKeyboardAwareScrollView";
 
 const CreateTournament = () => {
-  const { t } = useTranslation("");
+  const { t } = useTranslation();
   const createTournamentMutation = useTournamentMutation();
-
   const methods = useForm<TournamentFormData>({
     defaultValues: {},
     mode: "onSubmit",
+    shouldFocusError: false,
     resolver: zodResolver(schemaCreateTournament),
   });
 

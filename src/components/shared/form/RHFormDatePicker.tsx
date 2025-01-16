@@ -30,21 +30,23 @@ const RHFormDatePicker = <TFieldValues extends FieldValues>(props: Props<TFieldV
       rules={rules}
       render={({ field: { onChange, value, ref } }) => {
         return (
-          <CustomAnimatedView>
-            <DatePickerInput
-              ref={ref}
-              label={label}
-              value={value}
-              onChange={onChange}
-              selectedDate={value ? new Date(value) : new Date()}
-              onConfirm={onSubmitEditing}
-              inputProps={{
-                isError: !!error,
-              }}
-              {...datePickerProps}
-            />
+          <>
+            <CustomAnimatedView>
+              <DatePickerInput
+                ref={ref}
+                label={label}
+                value={value}
+                onChange={onChange}
+                selectedDate={value ? new Date(value) : new Date()}
+                onConfirm={onSubmitEditing}
+                inputProps={{
+                  isError: !!error,
+                }}
+                {...datePickerProps}
+              />
+            </CustomAnimatedView>
             <ErrorAnimatedView message={error?.message?.toString()} />
-          </CustomAnimatedView>
+          </>
         );
       }}
     />
