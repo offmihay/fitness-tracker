@@ -6,7 +6,12 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "ios": {
+        "cache": {
+          "disabled": true
+        }
+      }
     },
     "preview": {
       "distribution": "internal"
