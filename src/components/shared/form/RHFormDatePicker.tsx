@@ -55,7 +55,7 @@ const RHFormDatePicker = <TFieldValues extends FieldValues>(props: Props<TFieldV
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
 });

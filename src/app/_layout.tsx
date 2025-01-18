@@ -1,7 +1,7 @@
 import "intl-pluralrules";
 import "../i18n/config";
 import "../styles/global.css";
-import Providers from "../providers/Providers";
+import AppProviders from "../providers/AppProviders";
 import AuthGuard from "../components/auth/AuthGuard";
 
 if (process.env.NODE_ENV === "development") {
@@ -14,9 +14,9 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const RootLayout = () => (
-  <Providers>
+  <AppProviders>
     <AuthGuard />
-  </Providers>
+  </AppProviders>
 );
 
 export default RootLayout;

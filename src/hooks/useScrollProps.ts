@@ -31,8 +31,6 @@ const useScrollProps = () => {
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { contentOffset } = event.nativeEvent;
-    // console.log("Scroll: ", contentOffset.y);
-
     if (contentOffset.y > limitCoord) {
       setIsScrolledToBottom(true);
     } else {

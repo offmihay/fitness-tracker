@@ -16,6 +16,7 @@ import {
 } from "@/src/components/settings/personal-info/forms/schema";
 import { useRouter } from "expo-router";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
+import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 
 const changeName = () => {
   const { t } = useTranslation();
@@ -60,36 +61,37 @@ const changeName = () => {
   };
 
   return (
-    <FormProvider {...methods}>
-      <CustomKeyboardAwareScrollView scrollEnabled={false} keyboardShouldPersistTaps="always">
-        <View style={styles.wrapper}>
-          <RHFormInput
-            name="firstName"
-            label={t("settings.personalInfo.firstName")}
-            control={control}
-            rules={{
-              required: { message: "required" },
-            }}
-            inputProps={{
-              useClearButton: true,
-              returnKeyType: "done",
-            }}
-          />
-          <RHFormInput
-            name="lastName"
-            label={t("settings.personalInfo.lastName")}
-            control={control}
-            rules={{
-              required: true,
-            }}
-            inputProps={{
-              useClearButton: true,
-              returnKeyType: "done",
-            }}
-          />
-        </View>
-      </CustomKeyboardAwareScrollView>
-
+    <>
+      <LayoutStatic>
+        <FormProvider {...methods}>
+          <View style={styles.wrapper}>
+            <RHFormInput
+              name="firstName"
+              label={t("settings.personalInfo.firstName")}
+              control={control}
+              rules={{
+                required: { message: "required" },
+              }}
+              inputProps={{
+                useClearButton: true,
+                returnKeyType: "done",
+              }}
+            />
+            <RHFormInput
+              name="lastName"
+              label={t("settings.personalInfo.lastName")}
+              control={control}
+              rules={{
+                required: true,
+              }}
+              inputProps={{
+                useClearButton: true,
+                returnKeyType: "done",
+              }}
+            />
+          </View>
+        </FormProvider>
+      </LayoutStatic>
       <StickyFooterView offset={{ closed: 0, opened: Platform.OS === "android" ? 50 : 80 }}>
         <View style={styles.buttonWrapper}>
           <ButtonDefault
@@ -106,21 +108,20 @@ const changeName = () => {
           />
         </View>
       </StickyFooterView>
-    </FormProvider>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
 
   buttonWrapper: {
     paddingTop: 10,
     paddingBottom: 30,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
 });
 

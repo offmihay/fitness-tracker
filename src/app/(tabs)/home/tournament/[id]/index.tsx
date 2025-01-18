@@ -6,6 +6,7 @@ import { useTournamentByID } from "@/src/queries/tournaments";
 import { ScrollView } from "react-native-gesture-handler";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import TournamentDetails from "@/src/components/home/TournamentDetails";
+import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 
 type Props = {};
 
@@ -42,7 +43,7 @@ const TournamentDetailsScreen = ({}: Props) => {
   };
 
   return (
-    <ScrollView style={{ height: "100%" }}>
+    <LayoutScrollView>
       <View style={styles.wrapper}>
         {!isLoading && data && (
           <TournamentDetails
@@ -54,13 +55,13 @@ const TournamentDetailsScreen = ({}: Props) => {
         )}
         {isLoading && <CustomText>loading...</CustomText>}
       </View>
-    </ScrollView>
+    </LayoutScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
 });

@@ -18,6 +18,7 @@ import schemaCreateTournament, {
 import DualInputSection from "@/src/components/tournaments/DualInputSection";
 import CustomAnimatedView from "@/src/components/shared/view/CustomAnimatedView";
 import CustomKeyboardAwareScrollView from "@/src/components/shared/view/CustomKeyboardAwareScrollView";
+import LayoutKeyboardScrollView from "@/src/components/navigation/layouts/LayoutKeyboardScrollView";
 
 const CreateTournament = () => {
   const { t } = useTranslation();
@@ -62,11 +63,11 @@ const CreateTournament = () => {
   };
 
   return (
-    <FormProvider {...methods}>
-      <CustomKeyboardAwareScrollView
-        extraScrollHeight={Platform.OS === "android" ? 80 : -50}
-        useScrollHook
-      >
+    <LayoutKeyboardScrollView
+      extraScrollHeight={Platform.OS === "android" ? 80 : -50}
+      useScrollFeature
+    >
+      <FormProvider {...methods}>
         <View style={styles.wrapper}>
           <CustomText type="subtitle" className="ml-1 mb-3">
             Tournament Details
@@ -270,20 +271,16 @@ const CreateTournament = () => {
             </CustomAnimatedView>
           </View>
         </View>
-      </CustomKeyboardAwareScrollView>
-    </FormProvider>
+      </FormProvider>
+    </LayoutKeyboardScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingVertical: 20,
-  },
-
-  scrollContent: {
-    flexGrow: 1,
   },
 });
 

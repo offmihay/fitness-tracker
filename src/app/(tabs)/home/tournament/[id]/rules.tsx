@@ -19,7 +19,7 @@ const rules = ({}: Props) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingVertical: 10,
   },
 });

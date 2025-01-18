@@ -1,35 +1,39 @@
-import { StyleSheet, View, ViewProps } from "react-native";
-import React from "react";
+import React, { forwardRef } from "react";
+import { StyleSheet, ViewProps } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useScrollProps from "@/src/hooks/useScrollProps";
 
-type Props = {
-  useScrollHook?: boolean;
-  scrollWrapperStyle?: ViewProps["style"];
-} & React.ComponentProps<typeof KeyboardAwareScrollView>;
+const CustomKeyboardAwareScrollView = forwardRef(
+  (
+    {
+      useScrollFeature = false,
+      scrollWrapperStyle,
+      ...rest
+    }: {
+      useScrollFeature?: boolean;
+      scrollWrapperStyle?: ViewProps["style"];
+    } & React.ComponentProps<typeof KeyboardAwareScrollView>,
+    ref: React.ForwardedRef<KeyboardAwareScrollView> // Тип ref
+  ) => {
+    const { scrollPropOnBlur, handleScroll, onContentSizeChange, onLayout } = useScrollProps();
 
-const CustomKeyboardAwareScrollView = ({
-  useScrollHook = false,
-  scrollWrapperStyle,
-  ...rest
-}: Props) => {
-  const { scrollPropOnBlur, handleScroll, onContentSizeChange, onLayout } = useScrollProps();
-  return (
-    <KeyboardAwareScrollView
-      {...(useScrollHook && scrollPropOnBlur)}
-      onScroll={useScrollHook ? handleScroll : undefined}
-      onContentSizeChange={useScrollHook ? onContentSizeChange : undefined}
-      onLayout={useScrollHook ? onLayout : undefined}
-      contentContainerStyle={[styles.scrollContent, scrollWrapperStyle]}
-      enableOnAndroid={true}
-      scrollEnabled={true}
-      keyboardShouldPersistTaps="handled"
-      keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
-      showsVerticalScrollIndicator={false}
-      {...rest}
-    ></KeyboardAwareScrollView>
-  );
-};
+    return (
+      <KeyboardAwareScrollView
+        ref={ref}
+        enableOnAndroid
+        scrollEnabled
+        keyboardShouldPersistTaps="handled"
+        keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
+        showsVerticalScrollIndicator={false}
+        {...(useScrollFeature && scrollPropOnBlur)}
+        onScroll={useScrollFeature ? handleScroll : undefined}
+        onContentSizeChange={useScrollFeature ? onContentSizeChange : undefined}
+        onLayout={useScrollFeature ? onLayout : undefined}
+        {...rest}
+      />
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   scrollContent: {

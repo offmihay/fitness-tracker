@@ -10,6 +10,7 @@ import { Divider } from "react-native-paper";
 import PersonalInfoList from "@/src/components/settings/personal-info/PersonalInfoList";
 import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import FormBirthday from "@/src/components/settings/personal-info/forms/FormBirthday";
+import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 
 type PersonalInfoProps = {};
 
@@ -21,39 +22,37 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   const router = useRouter();
 
   return (
-    <>
-      <ScrollView style={styles.wrapper}>
-        <UserAvatarList />
-        <PersonalInfoList
-          label={t("settings.personalInfo.name")}
-          value={
-            `${user?.firstName} ${user?.lastName}`.trim().length !== 0 && !!user?.firstName
-              ? !!user.lastName
-                ? `${user?.firstName} ${user?.lastName}`
-                : user?.firstName
-              : "Not specified"
-          }
-          onPress={() => router.navigate({ pathname: "settings/personal-info/change-name" })}
-          icon={<Feather name="user" size={20} color={theme.colors.primary} />}
-        />
-        <PersonalInfoList
-          label={t("settings.personalInfo.email")}
-          value={user?.primaryEmailAddress?.emailAddress || "Not specified"}
-          onPress={() => void 0}
-          icon={<Entypo name="mail" size={20} color={theme.colors.primary} />}
-          disabled
-        />
-        <FormBirthday
-          renderTrigger={(onPress, value) => (
-            <PersonalInfoList
-              label={t("settings.personalInfo.birthday")}
-              value={value || "Not specified"}
-              onPress={onPress}
-              icon={<FontAwesome name="birthday-cake" size={20} color={theme.colors.primary} />}
-            />
-          )}
-        />
-      </ScrollView>
+    <LayoutScrollView alwaysBounceVertical={false}>
+      <UserAvatarList />
+      <PersonalInfoList
+        label={t("settings.personalInfo.name")}
+        value={
+          `${user?.firstName} ${user?.lastName}`.trim().length !== 0 && !!user?.firstName
+            ? !!user.lastName
+              ? `${user?.firstName} ${user?.lastName}`
+              : user?.firstName
+            : "Not specified"
+        }
+        onPress={() => router.navigate({ pathname: "settings/personal-info/change-name" })}
+        icon={<Feather name="user" size={20} color={theme.colors.primary} />}
+      />
+      <PersonalInfoList
+        label={t("settings.personalInfo.email")}
+        value={user?.primaryEmailAddress?.emailAddress || "Not specified"}
+        onPress={() => void 0}
+        icon={<Entypo name="mail" size={20} color={theme.colors.primary} />}
+        disabled
+      />
+      <FormBirthday
+        renderTrigger={(onPress, value) => (
+          <PersonalInfoList
+            label={t("settings.personalInfo.birthday")}
+            value={value || "Not specified"}
+            onPress={onPress}
+            icon={<FontAwesome name="birthday-cake" size={20} color={theme.colors.primary} />}
+          />
+        )}
+      />
       <View style={{ paddingHorizontal: 10, paddingBottom: 20 }}>
         <ButtonDefault
           onPress={() => signOut()}
@@ -63,13 +62,13 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           className="mt-6"
         />
       </View>
-    </>
+    </LayoutScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
+    // flex: 1,
   },
 });
 

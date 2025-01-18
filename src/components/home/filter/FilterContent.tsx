@@ -89,7 +89,7 @@ const FilterContent = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={[styles.modalWrapper, { paddingBottom: 70 + iosBottomBias }]}>
-        <CustomKeyboardAwareScrollView useScrollHook extraScrollHeight={10}>
+        <CustomKeyboardAwareScrollView useScrollFeature extraScrollHeight={10}>
           <View className="flex flex-col gap-6 pb-10">
             <View>
               <CustomText type="subtitle">Sport type</CustomText>

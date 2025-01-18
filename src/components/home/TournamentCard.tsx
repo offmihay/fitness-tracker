@@ -71,7 +71,7 @@ const TournamentCard = ({
           }}
           className="mb-4"
         >
-          <Image source={imageSource} style={{ width: "100%", height: "100%" }}></Image>
+          {/* <Image source={imageSource} style={{ width: "100%", height: "100%" }}></Image> */}
           <View style={[styles.prizeBadge, { backgroundColor: theme.colors.surface }]}>
             <FontAwesome6 name="sack-dollar" size={18} color={theme.colors.text} />
             <CustomText style={{ fontWeight: 800 }}>{prizePool}</CustomText>

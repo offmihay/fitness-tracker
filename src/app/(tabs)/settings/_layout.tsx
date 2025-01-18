@@ -1,13 +1,13 @@
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { globalScreenOptions } from "../_layout";
+import CustomHeader from "@/src/components/navigation/headers/CustomHeader";
+import { stackProps } from "@/src/components/navigation/router-options";
 
 export default function Layout() {
   const { t } = useTranslation();
-  const theme = useCustomTheme();
   return (
-    <Stack screenOptions={globalScreenOptions}>
+    <Stack {...stackProps}>
       <Stack.Screen
         name="index"
         options={{
@@ -18,7 +18,6 @@ export default function Layout() {
         name="personal-info"
         options={{
           title: t("settings.personalInfo.title"),
-          headerShown: false,
         }}
       />
     </Stack>

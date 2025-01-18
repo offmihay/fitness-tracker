@@ -1,11 +1,11 @@
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { globalScreenOptions } from "../../../_layout";
+import { stackProps } from "@/src/components/navigation/router-options";
 
 export default function Layout() {
   const { t } = useTranslation();
   return (
-    <Stack screenOptions={globalScreenOptions}>
+    <Stack {...stackProps}>
       <Stack.Screen
         name="index"
         options={{
