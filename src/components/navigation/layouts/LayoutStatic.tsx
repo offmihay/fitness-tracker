@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import CustomHeader from "../headers/CustomHeader";
+import CustomHeader from "../header/CustomHeader";
 import { SharedValue, useSharedValue } from "react-native-reanimated";
 import CustomLayout from "../CustomLayout";
 
@@ -17,9 +17,7 @@ const LayoutStatic = (props: Props) => {
   const { children, renderHeader, headerConfig } = props;
   return (
     <CustomLayout
-      renderContent={({ maxHeight }) => (
-        <View style={{ paddingTop: maxHeight, paddingBottom: maxHeight }}>{children}</View>
-      )}
+      renderContent={({ maxHeight }) => <View style={{ paddingTop: maxHeight }}>{children}</View>}
       renderHeader={renderHeader}
       headerConfig={headerConfig}
     />

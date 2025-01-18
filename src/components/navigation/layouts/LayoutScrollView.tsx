@@ -22,10 +22,7 @@ const LayoutScrollView = (props: LayoutScrollViewProps) => {
         <Animated.ScrollView
           onScroll={onScroll}
           scrollEventThrottle={16}
-          contentContainerStyle={[
-            { paddingTop: maxHeight, paddingBottom: maxHeight },
-            contentContainerStyle,
-          ]}
+          contentContainerStyle={[{ paddingTop: maxHeight }, contentContainerStyle]}
           {...rest}
         >
           {children}

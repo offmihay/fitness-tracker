@@ -1,7 +1,7 @@
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
-import CustomHeader from "@/src/components/navigation/headers/CustomHeader";
+import CustomHeader from "@/src/components/navigation/header/CustomHeader";
 import { stackProps } from "@/src/components/navigation/router-options";
 
 export default function Layout() {

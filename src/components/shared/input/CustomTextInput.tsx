@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 10,
-    minHeight: 45,
+    height: 45,
     width: "100%",
   },
   input: {
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   icon: {
-    height: 40,
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },

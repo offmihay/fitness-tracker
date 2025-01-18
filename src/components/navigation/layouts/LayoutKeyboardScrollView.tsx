@@ -33,10 +33,7 @@ const LayoutKeyboardScrollView = (props: LayoutKeyboardScrollViewProps) => {
             onMomentumScrollBegin={onScroll}
             onScroll={handleScroll}
             scrollEventThrottle={16}
-            contentContainerStyle={[
-              { paddingTop: maxHeight, paddingBottom: maxHeight, flexGrow: 1 },
-              contentContainerStyle,
-            ]}
+            contentContainerStyle={[{ paddingTop: maxHeight, flexGrow: 1 }, contentContainerStyle]}
             enableOnAndroid
             scrollEnabled
             keyboardShouldPersistTaps="handled"

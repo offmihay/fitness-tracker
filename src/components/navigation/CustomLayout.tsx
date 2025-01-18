@@ -11,8 +11,8 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import type { SharedValue } from "react-native-reanimated";
-import CustomHeader from "./headers/CustomHeader";
-import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "./headers/config";
+import CustomHeader from "./header/CustomHeader";
+import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "./header/config";
 import useScrollProps from "@/src/hooks/useScrollProps";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
