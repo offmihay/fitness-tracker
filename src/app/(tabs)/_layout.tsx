@@ -24,14 +24,12 @@ export default function TabLayout() {
         name="tournaments"
         options={{
           headerShown: false,
-          title: t("myTournaments.title"),
         }}
       />
       <Tabs.Screen
         name="home"
         options={{
           headerShown: false,
-          title: t("home.title"),
         }}
       />
 
@@ -39,7 +37,6 @@ export default function TabLayout() {
         name="settings"
         options={{
           headerShown: false,
-          title: t("settings.title"),
         }}
       />
     </Tabs>

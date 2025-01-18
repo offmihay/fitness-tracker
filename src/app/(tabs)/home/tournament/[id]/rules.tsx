@@ -2,6 +2,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import CustomText from "@/src/components/shared/text/CustomText";
+import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 
 type Props = {};
 
@@ -9,11 +10,11 @@ const rules = ({}: Props) => {
   const { rules } = useLocalSearchParams();
 
   return (
-    <ScrollView>
+    <LayoutScrollView name="rules">
       <View style={styles.wrapper}>
         <CustomText>{rules}</CustomText>
       </View>
-    </ScrollView>
+    </LayoutScrollView>
   );
 };
 

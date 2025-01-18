@@ -4,19 +4,16 @@ import CustomHeader from "../header/CustomHeader";
 import { SharedValue, useSharedValue } from "react-native-reanimated";
 import CustomLayout from "../CustomLayout";
 
-type Props = {
+type Props = Omit<React.ComponentProps<typeof CustomLayout>, "renderContent"> & {
   children: React.ReactNode;
-  renderHeader?: (scrollY: SharedValue<number>) => React.ReactNode;
-  headerConfig?: {
-    maxHeight: number;
-    minHeight: number;
-  };
 };
 
 const LayoutStatic = (props: Props) => {
-  const { children, renderHeader, headerConfig } = props;
+  const { children, renderHeader, headerConfig, name, isNameUnique } = props;
   return (
     <CustomLayout
+      isNameUnique={isNameUnique}
+      name={name}
       renderContent={({ maxHeight }) => <View style={{ paddingTop: maxHeight }}>{children}</View>}
       renderHeader={renderHeader}
       headerConfig={headerConfig}

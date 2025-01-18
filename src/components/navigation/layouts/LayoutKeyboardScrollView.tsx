@@ -3,28 +3,34 @@ import CustomLayout from "../CustomLayout";
 import Animated, { SharedValue } from "react-native-reanimated";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useScrollProps from "@/src/hooks/useScrollProps";
+import { boolean } from "zod";
 
 const AnimatedKeyboardAwareScrollView = Animated.createAnimatedComponent(KeyboardAwareScrollView);
 type AnimatedKeyboardScrollViewProps = React.ComponentProps<typeof AnimatedKeyboardAwareScrollView>;
 
-type LayoutKeyboardScrollViewProps = AnimatedKeyboardScrollViewProps & {
-  children: React.ReactNode;
-  renderHeader?: (scrollY: SharedValue<number>) => React.ReactNode;
-  headerConfig?: {
-    maxHeight: number;
-    minHeight: number;
+type LayoutKeyboardScrollViewProps = AnimatedKeyboardScrollViewProps &
+  Omit<React.ComponentProps<typeof CustomLayout>, "renderContent"> & {
+    useScrollFeature: boolean;
   };
-  useScrollFeature?: boolean;
-};
 
 const LayoutKeyboardScrollView = (props: LayoutKeyboardScrollViewProps) => {
-  const { children, contentContainerStyle, headerConfig, useScrollFeature, renderHeader, ...rest } =
-    props;
+  const {
+    children,
+    contentContainerStyle,
+    headerConfig,
+    useScrollFeature,
+    renderHeader,
+    name,
+    isNameUnique,
+    ...rest
+  } = props;
 
   const { scrollPropOnBlur, handleScroll, onContentSizeChange, onLayout } = useScrollProps();
 
   return (
     <CustomLayout
+      name={name}
+      isNameUnique={isNameUnique}
       renderContent={({ onScroll, maxHeight }) => {
         return (
           <AnimatedKeyboardAwareScrollView

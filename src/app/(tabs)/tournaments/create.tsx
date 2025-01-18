@@ -50,10 +50,10 @@ const CreateTournament = () => {
     };
     createTournamentMutation.mutate(dataAdd, {
       onSuccess: (data) => {
-        console.log(t("myTournaments.create.successMessage"), data);
+        console.log(t("tournaments.create.successMessage"), data);
       },
       onError: (error) => {
-        console.error(t("myTournaments.create.errorMessage"), error);
+        console.error(t("tournaments.create.errorMessage"), error);
       },
     });
   };
@@ -64,6 +64,7 @@ const CreateTournament = () => {
 
   return (
     <LayoutKeyboardScrollView
+      name="createTournament"
       extraScrollHeight={Platform.OS === "android" ? 80 : -50}
       useScrollFeature
     >
@@ -257,7 +258,7 @@ const CreateTournament = () => {
 
             <CustomAnimatedView className="my-5">
               <ButtonDefault
-                title={t("myTournaments.create.createButton")}
+                title={t("tournaments.create.createButton")}
                 className="mt-4"
                 onPress={handleSubmit(handleFormSubmit)}
                 loading={createTournamentMutation.isPending}

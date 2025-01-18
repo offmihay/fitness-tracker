@@ -17,7 +17,7 @@ const settings = ({}: Props) => {
   const settingsList = getSettingsList();
 
   return (
-    <LayoutStatic>
+    <LayoutStatic name="settings">
       <View style={styles.wrapper}>
         <CustomListSection>
           {settingsList.map((item, index) => {

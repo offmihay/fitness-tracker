@@ -1,7 +1,5 @@
-// CustomLayout.tsx
 import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from "react-native";
-import React, { useEffect } from "react";
-import { usePathname } from "expo-router";
+import React from "react";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -13,7 +11,6 @@ import Animated, {
 import type { SharedValue } from "react-native-reanimated";
 import CustomHeader from "./header/CustomHeader";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "./header/config";
-import useScrollProps from "@/src/hooks/useScrollProps";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 type renderContent = {
@@ -23,20 +20,19 @@ type renderContent = {
 
 export type LayoutProps = {
   renderContent: ({ onScroll, maxHeight }: renderContent) => React.ReactNode;
-  renderHeader?: (scrollY: SharedValue<number>) => React.ReactNode;
+  renderHeader?: (scrollY: SharedValue<number>, title: string) => React.ReactNode;
   headerConfig?: {
     maxHeight: number;
     minHeight: number;
   };
+  name: string;
+  isNameUnique?: boolean;
 };
 
 const CustomLayout = (props: LayoutProps) => {
-  const { renderContent, renderHeader, headerConfig } = props;
+  const { renderContent, renderHeader, headerConfig, name, isNameUnique } = props;
 
   const theme = useCustomTheme();
-
-  const pathname = usePathname();
-  console.log(pathname);
 
   const maxHeight = headerConfig?.maxHeight || HEADER_MAX_HEIGHT;
   const minHeight = headerConfig?.minHeight || HEADER_MIN_HEIGHT;
@@ -70,11 +66,11 @@ const CustomLayout = (props: LayoutProps) => {
     <View style={styles.container}>
       {renderHeader ? (
         <Animated.View style={[styles.header, animatedHeaderStyle]}>
-          {renderHeader(scrollY)}
+          {renderHeader(scrollY, name)}
         </Animated.View>
       ) : (
         <Animated.View style={[styles.header, animatedHeaderStyle]}>
-          <CustomHeader scrollY={scrollY} />
+          <CustomHeader scrollY={scrollY} name={name} isNameUnique={isNameUnique} />
         </Animated.View>
       )}
       {renderContent({

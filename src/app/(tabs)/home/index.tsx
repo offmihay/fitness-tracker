@@ -46,6 +46,7 @@ const HomePage = ({}: HomePageProps) => {
 
   return (
     <LayoutFlatList
+      name="home"
       headerConfig={{ maxHeight: 110, minHeight: 110 }}
       renderHeader={() => <HomeHeader />}
       ListHeaderComponent={() => (

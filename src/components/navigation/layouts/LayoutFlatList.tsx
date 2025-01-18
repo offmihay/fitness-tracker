@@ -4,19 +4,16 @@ import Animated, { SharedValue } from "react-native-reanimated";
 
 type AnimatedFlatListProps<T> = React.ComponentProps<typeof Animated.FlatList<T>>;
 
-type LayoutFlatListProps<T> = AnimatedFlatListProps<T> & {
-  renderHeader?: (scrollY: SharedValue<number>) => React.ReactNode;
-  headerConfig?: {
-    maxHeight: number;
-    minHeight: number;
-  };
-};
+type LayoutFlatListProps<T> = AnimatedFlatListProps<T> &
+  Omit<React.ComponentProps<typeof CustomLayout>, "renderContent">;
 
 function LayoutFlatList<T>(props: LayoutFlatListProps<T>) {
-  const { contentContainerStyle, headerConfig, renderHeader, ...rest } = props;
+  const { contentContainerStyle, headerConfig, renderHeader, name, isNameUnique, ...rest } = props;
 
   return (
     <CustomLayout
+      name={name}
+      isNameUnique={isNameUnique}
       renderContent={({ onScroll, maxHeight }) => (
         <Animated.FlatList
           onScroll={onScroll}

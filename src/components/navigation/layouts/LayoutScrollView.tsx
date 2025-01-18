@@ -4,20 +4,24 @@ import Animated, { SharedValue } from "react-native-reanimated";
 
 type AnimatedScrollViewProps = React.ComponentProps<typeof Animated.ScrollView>;
 
-type LayoutScrollViewProps = AnimatedScrollViewProps & {
-  children: React.ReactNode;
-  renderHeader?: (scrollY: SharedValue<number>) => React.ReactNode;
-  headerConfig?: {
-    maxHeight: number;
-    minHeight: number;
-  };
-};
+type LayoutScrollViewProps = AnimatedScrollViewProps &
+  Omit<React.ComponentProps<typeof CustomLayout>, "renderContent">;
 
 const LayoutScrollView = (props: LayoutScrollViewProps) => {
-  const { children, contentContainerStyle, headerConfig, renderHeader, ...rest } = props;
+  const {
+    children,
+    contentContainerStyle,
+    headerConfig,
+    renderHeader,
+    name,
+    isNameUnique,
+    ...rest
+  } = props;
 
   return (
     <CustomLayout
+      name={name}
+      isNameUnique={isNameUnique}
       renderContent={({ onScroll, maxHeight }) => (
         <Animated.ScrollView
           onScroll={onScroll}

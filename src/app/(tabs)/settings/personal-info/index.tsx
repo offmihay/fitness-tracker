@@ -22,7 +22,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   const router = useRouter();
 
   return (
-    <LayoutScrollView alwaysBounceVertical={false}>
+    <LayoutScrollView name="personalInfo" alwaysBounceVertical={false}>
       <UserAvatarList />
       <PersonalInfoList
         label={t("settings.personalInfo.name")}

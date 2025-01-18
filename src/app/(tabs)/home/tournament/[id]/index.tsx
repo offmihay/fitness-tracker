@@ -12,14 +12,7 @@ type Props = {};
 
 const TournamentDetailsScreen = ({}: Props) => {
   const { id } = useLocalSearchParams();
-  const navigation = useNavigation();
   const { data, isLoading, error } = useTournamentByID(id as string);
-
-  useEffect(() => {
-    if (data?.title) {
-      navigation.setOptions({ headerTitle: data.title });
-    }
-  }, [data?.title, navigation]);
 
   const handleOpenRules = () => {
     router.push({
@@ -43,7 +36,7 @@ const TournamentDetailsScreen = ({}: Props) => {
   };
 
   return (
-    <LayoutScrollView>
+    <LayoutScrollView name={data?.title || "Tournament"} isNameUnique>
       <View style={styles.wrapper}>
         {!isLoading && data && (
           <TournamentDetails

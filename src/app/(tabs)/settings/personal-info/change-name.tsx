@@ -62,7 +62,7 @@ const changeName = () => {
 
   return (
     <>
-      <LayoutStatic>
+      <LayoutStatic name="changeName">
         <FormProvider {...methods}>
           <View style={styles.wrapper}>
             <RHFormInput

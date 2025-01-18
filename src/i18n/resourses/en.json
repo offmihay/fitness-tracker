@@ -1,8 +1,5 @@
 {
   "settings": {
-    "title": "Settings",
-    "headerBackTitle": "Settings",
-
     "personalInfo": {
       "title": "Edit profile",
 
@@ -42,7 +39,6 @@
     }
   },
   "home": {
-    "title": "Home",
     "tournament": {
       "register": "Register",
       "saveForLater": "Save for Later",
@@ -58,8 +54,7 @@
       "contactUs": "Contact us"
     }
   },
-  "myTournaments": {
-    "title": "Tournaments",
+  "tournaments": {
     "create": {
       "title": "Create Tournament",
       "createButton": "Create",
@@ -191,5 +186,14 @@
       "doubles": "Doubles",
       "squad": "Squad"
     }
+  },
+
+  "title": {
+    "home": "Home",
+    "tournaments": "Tournaments",
+    "settings": "Settings",
+    "createTournament": "Create Tournament",
+    "personalInfo": "Personal Info",
+    "changeName": "Change Name"
   }
 }
