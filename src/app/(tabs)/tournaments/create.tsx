@@ -65,7 +65,7 @@ const CreateTournament = () => {
   return (
     <LayoutKeyboardScrollView
       name="createTournament"
-      extraScrollHeight={Platform.OS === "android" ? 80 : -50}
+      extraScrollHeight={Platform.OS === "android" ? 80 : 10}
       useScrollFeature
     >
       <FormProvider {...methods}>

@@ -2,13 +2,22 @@ import { View, StyleSheet } from "react-native";
 import { useLinkBuilder } from "@react-navigation/native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import TabBarButton from "./TabBarButton";
+import { BlurView } from "expo-blur";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { opacity } from "react-native-reanimated/lib/typescript/Colors";
 
 const CustomTabBar = (props: BottomTabBarProps) => {
   const { state, descriptors, navigation } = props;
   const { buildHref } = useLinkBuilder();
+  const theme = useCustomTheme();
 
   return (
-    <View style={styles.tabbarWrapper}>
+    <View
+      style={[
+        styles.tabbarWrapper,
+        { backgroundColor: theme.colors.background, borderColor: theme.colors.surfaceLight },
+      ]}
+    >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -52,7 +61,6 @@ const CustomTabBar = (props: BottomTabBarProps) => {
             testID={options.tabBarButtonTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={styles.tabbarItem}
             routeName={route.name}
             isFocused={isFocused}
             //@ts-ignore
@@ -70,19 +78,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#323232",
-    bottom: 30,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    marginHorizontal: 50,
-    borderRadius: 60,
-  },
-
-  tabbarItem: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 10,
-    gap: 2,
+    bottom: 0,
+    paddingBottom: 30,
+    paddingTop: 10,
+    paddingHorizontal: 50,
+    borderTopWidth: 1,
   },
 });
 

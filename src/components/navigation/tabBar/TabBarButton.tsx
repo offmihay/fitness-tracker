@@ -66,25 +66,13 @@ const TabBarButton = (props: Props) => {
   });
 
   const animatedViewStyle = useAnimatedStyle(() => {
-    const scaleValue = interpolate(scale.value, [0, 1], [1, 1.2]);
+    const scaleValue = interpolate(scale.value, [0, 1], [1, 1.3]);
     const top = interpolate(scale.value, [0, 1], [0, 7]);
     return {
       transform: [{ scale: scaleValue }],
       top,
     };
   });
-
-  //   useEffect(() => {
-  //     if (isFocused) {
-  //       bottom.value = withSpring(-30, { duration: 1000 });
-  //       opacity.value = withTiming(1, { duration: 300 });
-  //       scale.value = withSpring(1.4, { duration: 1000 });
-  //     } else {
-  //       bottom.value = withSpring(0, { duration: 1000 });
-  //       opacity.value = withTiming(1, { duration: 300 });
-  //       scale.value = withSpring(-30, { duration: 1000 });
-  //     }
-  //   }, [isFocused]);
 
   return (
     <PlatformPressable
@@ -98,7 +86,7 @@ const TabBarButton = (props: Props) => {
     >
       <View style={styles.button}>
         <Animated.View style={animatedViewStyle}>
-          {icon[routeName](isFocused ? theme.colors.primary : "white")}
+          {icon[routeName](isFocused ? theme.colors.primary : theme.colors.text)}
         </Animated.View>
         <Animated.Text
           style={[

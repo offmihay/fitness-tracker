@@ -34,7 +34,7 @@ const HomeHeader = (props: Props) => {
 const styles = StyleSheet.create({
   wrapper: {
     width: "100%",
-    height: "100%",
+    height: 60,
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 15,

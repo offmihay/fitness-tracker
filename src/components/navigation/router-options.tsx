@@ -16,7 +16,7 @@ const stackScreenOptions: NativeStackNavigationOptions = {
 
 export const tabProps = {
   screenOptions: tabScreenOptions,
-  // tabBar: (props: BottomTabBarProps) => <CustomTabBar {...props} />,
+  tabBar: (props: BottomTabBarProps) => <CustomTabBar {...props} />,
 };
 
 export const stackProps = {

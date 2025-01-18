@@ -1,18 +1,19 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, memo } from "react";
 import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import ButtonDefault from "../shared/button/ButtonDefault";
 import { useTranslation } from "react-i18next";
+import FastImage from "react-native-fast-image";
 
 type Props = {
   title: string;
   imageSource: string;
   location: string;
   dateTime: string;
-  patricipants: string;
+  participants: string;
   entryFee: string;
   prizePool: string;
   handleRegister: () => void;
@@ -23,7 +24,7 @@ const TournamentCard = ({
   title,
   location,
   dateTime,
-  patricipants,
+  participants,
   entryFee,
   prizePool,
   imageSource,
@@ -32,31 +33,6 @@ const TournamentCard = ({
 }: Props) => {
   const theme = useCustomTheme();
   const { t } = useTranslation();
-
-  const [height, setHeight] = useState(40);
-  const [multilineStates, setMultilineStates] = useState<boolean[]>([]);
-
-  const handleTextLayout = useCallback(
-    (index: number) => (event: any) => {
-      const { lines } = event.nativeEvent;
-      const isMultiline = lines.length > 1;
-
-      setMultilineStates((prev) => {
-        const newStates = [...prev];
-        newStates[index] = isMultiline;
-        return newStates;
-      });
-    },
-    []
-  );
-
-  useEffect(() => {
-    if (multilineStates.some((isMultiline) => isMultiline)) {
-      setHeight(40);
-    } else if (multilineStates.length === 4) {
-      setHeight(30);
-    }
-  }, [multilineStates]);
 
   return (
     <TouchableOpacity onPress={handleOpenDetails} activeOpacity={0.8}>
@@ -81,7 +57,7 @@ const TournamentCard = ({
         <View className="flex flex-row mt-4">
           <View style={{ width: "65%" }}>
             <View className="flex flex-col pr-1 gap-1">
-              <View className="flex flex-row gap-2 items-center" style={{ height }}>
+              <View className="flex flex-row gap-2 items-center" style={{ height: 40 }}>
                 <View style={{ width: 25 }}>
                   <FontAwesome6 name="location-dot" size={20} color={theme.colors.text} />
                 </View>
@@ -90,12 +66,11 @@ const TournamentCard = ({
                   numberOfLines={2}
                   ellipsizeMode="tail"
                   style={{ maxWidth: "80%" }}
-                  onTextLayout={handleTextLayout(1)}
                 >
                   {location}
                 </CustomText>
               </View>
-              <View className="flex flex-row gap-2 items-center" style={{ height }}>
+              <View className="flex flex-row gap-2 items-center" style={{ height: 40 }}>
                 <View style={{ width: 25 }}>
                   <Feather name="calendar" size={20} color={theme.colors.text} />
                 </View>
@@ -104,7 +79,6 @@ const TournamentCard = ({
                   numberOfLines={2}
                   ellipsizeMode="tail"
                   style={{ maxWidth: "80%" }}
-                  onTextLayout={handleTextLayout(2)}
                 >
                   {dateTime}
                 </CustomText>
@@ -113,7 +87,7 @@ const TournamentCard = ({
           </View>
           <View style={{ width: "35%" }}>
             <View className="flex flex-col pl-1 gap-1">
-              <View className="flex flex-row gap-2 items-center" style={{ height }}>
+              <View className="flex flex-row gap-2 items-center" style={{ height: 40 }}>
                 <View style={{ width: 25 }}>
                   <Ionicons name="person" size={20} color={theme.colors.text} />
                 </View>
@@ -122,12 +96,11 @@ const TournamentCard = ({
                   numberOfLines={2}
                   ellipsizeMode="tail"
                   style={{ maxWidth: "75%" }}
-                  onTextLayout={handleTextLayout(3)}
                 >
-                  {patricipants}
+                  {participants}
                 </CustomText>
               </View>
-              <View className="flex flex-row gap-2 items-center" style={{ height }}>
+              <View className="flex flex-row gap-2 items-center" style={{ height: 40 }}>
                 <View style={{ width: 25 }}>
                   <FontAwesome6 name="money-check" size={20} color={theme.colors.text} />
                 </View>
@@ -136,7 +109,6 @@ const TournamentCard = ({
                   numberOfLines={2}
                   ellipsizeMode="tail"
                   style={{ maxWidth: "75%" }}
-                  onTextLayout={handleTextLayout(4)}
                 >
                   {entryFee}
                 </CustomText>
@@ -167,6 +139,7 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 20,
     borderRadius: 10,
+    height: 400,
   },
 
   border: {
@@ -188,4 +161,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TournamentCard;
+export default memo(TournamentCard);

@@ -20,7 +20,6 @@ const Scroll_Distance = maxHeight - minHeight;
 const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUnique }) => {
   const theme = useCustomTheme();
   const { t } = useTranslation();
-  console.log(isNameUnique);
 
   const animatedTextStyle = useAnimatedStyle(() => {
     const fontSize = interpolate(
@@ -39,7 +38,7 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
   });
 
   return (
-    <View style={[styles.wrapper, { borderColor: theme.colors.textTertiary }]}>
+    <View style={[styles.wrapper, { borderColor: theme.colors.surfaceLight }]}>
       <View style={styles.titleContainer}>
         <Animated.Text style={[{ color: theme.colors.text }, styles.title, animatedTextStyle]}>
           {isNameUnique ? name : t(`title.${name}`)}
@@ -59,8 +58,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     width: "100%",
     height: "100%",
-    // borderColor: "red",
-    // borderWidth: 1,
     position: "relative",
   },
 
