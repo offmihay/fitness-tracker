@@ -2,7 +2,7 @@ import { useAuth } from "@clerk/clerk-expo";
 import { Redirect, Tabs } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { tabProps } from "@/src/components/navigation/router-options";
+import { tabProps } from "@/src/components/navigation/options";
 
 export default function TabLayout() {
   const { t } = useTranslation();

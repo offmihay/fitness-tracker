@@ -2,10 +2,12 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle, interpolate, Extrapolation } from "react-native-reanimated";
 import type { SharedValue } from "react-native-reanimated";
-import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "./config";
+
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { usePathname } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
 
 interface MyCustomHeaderProps {
   scrollY: SharedValue<number>;
@@ -19,6 +21,7 @@ const Scroll_Distance = maxHeight - minHeight;
 
 const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUnique }) => {
   const theme = useCustomTheme();
+  const insets = useSafeAreaInsets();
   const { t } = useTranslation();
 
   const animatedTextStyle = useAnimatedStyle(() => {

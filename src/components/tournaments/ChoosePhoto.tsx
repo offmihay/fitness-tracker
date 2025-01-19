@@ -8,7 +8,6 @@ import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { ImagePickerAsset } from "expo-image-picker";
 import { useUploadImage } from "@/src/queries/upload-image";
-import { Image } from "expo-image";
 import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
@@ -16,6 +15,7 @@ import ButtonInput from "../shared/button/ButtonInput";
 import CustomIcon from "../shared/icon/CustomIcon";
 import CustomAnimatedView from "../shared/view/CustomAnimatedView";
 import ErrorAnimatedView from "../shared/view/ErrorAnimatedView";
+import FastImage from "@d11/react-native-fast-image";
 
 export type ImageForm = {
   publicId: string;
@@ -145,15 +145,14 @@ const ChoosePhoto = (props: Props) => {
                       },
                     ]}
                   >
-                    <Image
+                    <FastImage
                       source={{ uri: image?.uri }}
                       style={{
                         width: "100%",
                         height: "100%",
-                        objectFit: "cover",
-
                         opacity: isUploading || isError ? 0.7 : 1,
                       }}
+                      resizeMode={FastImage.resizeMode.cover}
                     />
                     {isUploading && (
                       <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">

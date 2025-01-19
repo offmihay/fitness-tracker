@@ -9,12 +9,13 @@ import {
   Appearance,
   Platform,
 } from "react-native";
-import { Image, ImageBackground } from "expo-image";
 import CustomText from "../../components/shared/text/CustomText";
 import { Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
+import BackgroundImage from "@/src/components/shared/image/BackgroundImage";
+import FastImage from "@d11/react-native-fast-image";
 
 const SignIn = () => {
   const { t } = useTranslation();
@@ -57,7 +58,7 @@ const SignIn = () => {
   const appleSignIn = () => appleSignInMutation.mutate();
 
   return (
-    <ImageBackground source={require("../../../assets/imgs/signin-background2.jpg")}>
+    <BackgroundImage source={require("../../../assets/imgs/signin-background2.jpg")}>
       {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
       <SafeAreaView style={styles.wrapper}>
         <View style={styles.content}>
@@ -67,7 +68,7 @@ const SignIn = () => {
               onPress={googleSignIn}
               type="white"
               nodeLeft={() => (
-                <Image
+                <FastImage
                   source={require("../../../assets/imgs/google_icon.png")}
                   style={{ width: 20, height: 20 }}
                 />
@@ -79,7 +80,7 @@ const SignIn = () => {
               onPress={appleSignIn}
               type="white"
               nodeLeft={() => (
-                <Image
+                <FastImage
                   source={require("../../../assets/imgs/apple_icon.png")}
                   style={{ width: 20, height: 20 }}
                 />
@@ -102,7 +103,7 @@ const SignIn = () => {
           </View>
         </View>
       </SafeAreaView>
-    </ImageBackground>
+    </BackgroundImage>
   );
 };
 

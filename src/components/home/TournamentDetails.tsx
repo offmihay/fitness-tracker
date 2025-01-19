@@ -4,10 +4,10 @@ import { Ionicons, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import CustomMap from "../shared/map/CustomMap";
 import CustomText from "../shared/text/CustomText";
 import ButtonDefault from "../shared/button/ButtonDefault";
-import { Image } from "expo-image";
 import { TournamentRequest } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
+import FastImage from "@d11/react-native-fast-image";
 
 type Props = {
   data: TournamentRequest;
@@ -28,7 +28,7 @@ const TournamentDetails = ({
   return (
     <View className="flex flex-col gap-6">
       <View style={{ width: "100%", borderRadius: 10, height: 250, overflow: "hidden" }}>
-        <Image source={data?.images[0].secureUrl} style={StyleSheet.absoluteFill} />
+        <FastImage source={{ uri: data?.images[0].secureUrl }} style={StyleSheet.absoluteFill} />
       </View>
       <View className="flex flex-row justify-between">
         <ButtonDefault title={t("home.tournament.register")} style={{ width: "48%" }} />

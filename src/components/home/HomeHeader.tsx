@@ -1,10 +1,8 @@
 import { StyleSheet, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import DismissKeyboardView from "../shared/view/DismissKeyboardView";
-import SortModal from "./sort/SortModal";
-import FilterModal from "./filter/FilterModal";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Divider } from "react-native-paper";
 
 type Props = {};
@@ -22,6 +20,7 @@ const HomeHeader = (props: Props) => {
         <View style={{ ...styles.inputContainer, backgroundColor: theme.colors.surface }}>
           <TextInput
             placeholder="Search"
+            placeholderTextColor={theme.colors.text}
             style={[styles.input, { color: theme.colors.text }]}
             value={value}
             onChangeText={setValue}

@@ -1,4 +1,4 @@
-import { stackProps } from "@/src/components/navigation/router-options";
+import { stackProps } from "@/src/components/navigation/options";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";

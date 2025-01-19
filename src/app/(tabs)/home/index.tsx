@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 100,
+    paddingBottom: 10,
   },
   headerContainer: {
     flexDirection: "row",

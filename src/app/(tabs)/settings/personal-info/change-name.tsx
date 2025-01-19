@@ -95,7 +95,7 @@ const changeName = () => {
           </FormProvider>
         </DismissKeyboardView>
       </LayoutStatic>
-      <StickyFooterView offset={{ closed: 0, opened: 80 }}>
+      <StickyFooterView offset={{ closed: 0, opened: 100 }}>
         <View style={styles.buttonWrapper}>
           <ButtonDefault
             title="Apply Changes"
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
 
   buttonWrapper: {
     paddingTop: 10,
-    paddingBottom: 100,
+    paddingBottom: 30,
     paddingHorizontal: 20,
   },
 });

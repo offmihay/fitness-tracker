@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, Image, Pressable, TouchableOpacity, StyleSheet, Keyboard } from "react-native";
+import { View, Pressable, TouchableOpacity, StyleSheet, Keyboard } from "react-native";
 import { Entypo, Feather } from "@expo/vector-icons";
 import CustomText from "../../shared/text/CustomText";
 import Loader from "../../shared/loader/Loader";
@@ -12,6 +12,7 @@ import { useSetProfileImageMutation } from "@/src/queries/user";
 import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import { pickCameraImage } from "@/src/services/pickCameraImage";
 import ChooseCameraModal from "../../shared/modal/ChooseCameraModal";
+import FastImage from "@d11/react-native-fast-image";
 
 const UserAvatarList = () => {
   const theme = useCustomTheme();
@@ -62,13 +63,13 @@ const UserAvatarList = () => {
             >
               {!image && <Entypo name="camera" size={35} color={theme.colors.primary} />}
               {image && (
-                <Image
+                <FastImage
                   style={{
-                    objectFit: "cover",
                     width: "100%",
                     height: "100%",
                     opacity: isPending || loadingImg ? 0.5 : 1,
                   }}
+                  resizeMode={FastImage.resizeMode.cover}
                   source={{ uri: image }}
                   onLoadStart={() => setLoadingImg(true)}
                   onLoad={() => setLoadingImg(false)}
@@ -76,7 +77,7 @@ const UserAvatarList = () => {
               )}
               {(isPending || loadingImg) && (
                 <View style={styles.loader}>
-                  <Loader style={{ width: 70, height: 70 }} />
+                  <Loader style={{ width: 50, height: 50 }} />
                 </View>
               )}
             </View>

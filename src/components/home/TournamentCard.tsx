@@ -5,7 +5,6 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import FastImage from "@d11/react-native-fast-image";
-import { Image } from "expo-image";
 
 type Props = {
   title: string;
@@ -46,7 +45,6 @@ const TournamentCard = ({
           }}
           className="mb-4"
         >
-          {/* <Image source={imageSource} style={{ width: "100%", height: "100%" }}></Image> */}
           <FastImage
             style={{ width: "100%", height: "100%" }}
             source={{

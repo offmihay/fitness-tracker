@@ -1,5 +1,5 @@
 import React from "react";
-import CustomLayout from "../CustomLayout";
+import CustomLayout from "../custom/CustomLayout";
 import Animated, { SharedValue } from "react-native-reanimated";
 
 type AnimatedScrollViewProps = React.ComponentProps<typeof Animated.ScrollView>;

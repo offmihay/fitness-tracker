@@ -9,9 +9,10 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import type { SharedValue } from "react-native-reanimated";
-import CustomHeader from "./header/CustomHeader";
-import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "./header/config";
+import CustomHeader from "./CustomHeader";
+
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
 
 type renderContent = {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -63,21 +64,23 @@ const CustomLayout = (props: LayoutProps) => {
   });
 
   return (
-    <View style={styles.container}>
-      {renderHeader ? (
-        <Animated.View style={[styles.header, animatedHeaderStyle]}>
-          {renderHeader(scrollY, name)}
-        </Animated.View>
-      ) : (
-        <Animated.View style={[styles.header, animatedHeaderStyle]}>
-          <CustomHeader scrollY={scrollY} name={name} isNameUnique={isNameUnique} />
-        </Animated.View>
-      )}
-      {renderContent({
-        onScroll: scrollHandler,
-        maxHeight,
-      })}
-    </View>
+    <>
+      <View style={styles.container}>
+        {renderHeader ? (
+          <Animated.View style={[styles.header, animatedHeaderStyle]}>
+            {renderHeader(scrollY, name)}
+          </Animated.View>
+        ) : (
+          <Animated.View style={[styles.header, animatedHeaderStyle]}>
+            <CustomHeader scrollY={scrollY} name={name} isNameUnique={isNameUnique} />
+          </Animated.View>
+        )}
+        {renderContent({
+          onScroll: scrollHandler,
+          maxHeight,
+        })}
+      </View>
+    </>
   );
 };
 

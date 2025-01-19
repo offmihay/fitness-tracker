@@ -91,7 +91,7 @@ const TabBarButton = (props: Props) => {
         <Animated.Text
           style={[
             {
-              color: isFocused ? theme.colors.primary : "white",
+              color: isFocused ? theme.colors.primary : theme.colors.text,
               textAlign: "center",
               fontSize: 11,
             },

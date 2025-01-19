@@ -4,7 +4,7 @@ import {
   BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs/src/types";
 import CustomTabBar from "./tabBar/CustomTabBar";
-import CustomLayout, { LayoutProps } from "./CustomLayout";
+import { Platform } from "react-native";
 
 const tabScreenOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -22,3 +22,6 @@ export const tabProps = {
 export const stackProps = {
   screenOptions: stackScreenOptions,
 };
+
+export const HEADER_MAX_HEIGHT = Platform.OS === "ios" ? 180 : 120;
+export const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 130 : 70;
