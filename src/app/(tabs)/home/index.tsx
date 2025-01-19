@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 10,
+    paddingBottom: 100,
   },
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 16, // Добавьте отступ, если необходимо
+    marginBottom: 16,
   },
 });

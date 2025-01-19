@@ -16,7 +16,7 @@ const lightTheme = {
     background: "#F5F5F7",
     surface: "#FFFFFF",
     surfaceDark: "#FFFFFF",
-    surfaceLight: "#d8d8d8",
+    surfaceLight: "#cacaca",
     surfaceDisabled: "#E8EBEF",
     text: "#000000",
     textSecondary: "#555555",

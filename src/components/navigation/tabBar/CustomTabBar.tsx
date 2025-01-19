@@ -74,7 +74,9 @@ const CustomTabBar = (props: BottomTabBarProps) => {
 
 const styles = StyleSheet.create({
   tabbarWrapper: {
-    height: 90,
+    position: "absolute",
+    minHeight: 90,
+    bottom: 0,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

@@ -14,7 +14,9 @@ const LayoutStatic = (props: Props) => {
     <CustomLayout
       isNameUnique={isNameUnique}
       name={name}
-      renderContent={({ maxHeight }) => <View style={{ paddingTop: maxHeight }}>{children}</View>}
+      renderContent={({ maxHeight }) => (
+        <View style={{ paddingTop: maxHeight, paddingBottom: 200 }}>{children}</View>
+      )}
       renderHeader={renderHeader}
       headerConfig={headerConfig}
     />

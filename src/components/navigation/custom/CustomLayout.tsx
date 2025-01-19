@@ -26,12 +26,13 @@ export type LayoutProps = {
     maxHeight: number;
     minHeight: number;
   };
+  disableHeader?: boolean;
   name: string;
   isNameUnique?: boolean;
 };
 
 const CustomLayout = (props: LayoutProps) => {
-  const { renderContent, renderHeader, headerConfig, name, isNameUnique } = props;
+  const { renderContent, renderHeader, headerConfig, disableHeader, name, isNameUnique } = props;
 
   const theme = useCustomTheme();
 
@@ -66,11 +67,12 @@ const CustomLayout = (props: LayoutProps) => {
   return (
     <>
       <View style={styles.container}>
-        {renderHeader ? (
+        {renderHeader && !disableHeader && (
           <Animated.View style={[styles.header, animatedHeaderStyle]}>
             {renderHeader(scrollY, name)}
           </Animated.View>
-        ) : (
+        )}
+        {!renderHeader && !disableHeader && (
           <Animated.View style={[styles.header, animatedHeaderStyle]}>
             <CustomHeader scrollY={scrollY} name={name} isNameUnique={isNameUnique} />
           </Animated.View>
@@ -87,6 +89,7 @@ const CustomLayout = (props: LayoutProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 90,
   },
   header: {
     position: "absolute",

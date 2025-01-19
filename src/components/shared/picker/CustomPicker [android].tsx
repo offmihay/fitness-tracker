@@ -12,6 +12,7 @@ export type CustomPickerProps<T extends string> = {
   items: Array<PickerItemProps & { value: T }>;
   selectAnLabel?: string;
   isError?: boolean;
+  label?: string;
 };
 
 function CustomPicker<T extends string>({
@@ -20,6 +21,7 @@ function CustomPicker<T extends string>({
   items,
   selectAnLabel,
   isError,
+  label,
 }: CustomPickerProps<T>) {
   const theme = useCustomTheme();
   const [focused, setFocused] = React.useState(false);
@@ -50,8 +52,7 @@ function CustomPicker<T extends string>({
           color: theme.colors.text,
           width: "100%",
         }}
-        mode="dropdown" // for Android
-        style={{ padding: 0 }}
+        mode="dropdown"
       >
         {selectAnLabel && (
           <Picker.Item label={selectAnLabel} value="" color={theme.colors.textTertiary} />
@@ -60,6 +61,13 @@ function CustomPicker<T extends string>({
           <Picker.Item key={index} {...item} />
         ))}
       </Picker>
+      {label && !!selectedValue && (
+        <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+          <Animated.Text style={[styles.label, { backgroundColor: theme.colors.background }]}>
+            {label}
+          </Animated.Text>
+        </View>
+      )}
     </Animated.View>
   );
 }
@@ -68,12 +76,21 @@ export default CustomPicker;
 
 const styles = StyleSheet.create({
   pickerContainer: {
+    position: "relative",
     borderWidth: 1,
     borderRadius: 10,
-    overflow: "hidden",
-    height: 50,
+    height: 45,
     paddingLeft: 10,
     display: "flex",
     justifyContent: "center",
+    marginVertical: 6,
+  },
+
+  label: {
+    position: "absolute",
+    paddingHorizontal: 5,
+    top: -11,
+    fontSize: 10,
+    left: 14,
   },
 });

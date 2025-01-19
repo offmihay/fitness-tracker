@@ -55,6 +55,7 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
             <>
               <CustomAnimatedView>
                 <CustomPicker
+                  label={label}
                   selectedValue={value}
                   isError={!!error}
                   onValueChange={(itemValue, itemIndex) => {
