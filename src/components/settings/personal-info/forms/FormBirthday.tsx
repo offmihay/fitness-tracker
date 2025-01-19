@@ -22,7 +22,6 @@ const FormBirthday = (props: Props) => {
   const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();
-  const router = useRouter();
 
   const methods = useForm<ChangeBirthdayFormData>({
     mode: "onChange",

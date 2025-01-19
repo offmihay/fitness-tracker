@@ -32,13 +32,14 @@ const CustomListItem = ({
       <List.Item
         style={{
           paddingVertical: 5,
-          minHeight: 55,
+          minHeight: 60,
           display: "flex",
           justifyContent: "center",
           paddingHorizontal: 0,
+          backgroundColor: theme.colors.surface,
         }}
         titleStyle={[{ color: theme.colors.text }]}
-        descriptionStyle={{ color: theme.colors.primary }}
+        descriptionStyle={{ color: theme.colors.primary, top: 3 }}
         right={(props) => (
           <View style={styles.listView}>
             {nodeContentRight}
@@ -60,7 +61,7 @@ const CustomListItem = ({
                 name={iconName}
                 size={24}
                 color={theme.colors.primary}
-                style={[props.style, iconStyle]}
+                style={[props.style, iconStyle, { top: 5 }]}
               />
             ) : null}
           </View>

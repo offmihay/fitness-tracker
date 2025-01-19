@@ -1,14 +1,12 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-
 import DropdownCheckbox, {
   DropdownItem,
 } from "../../../components/shared/dropdown/DropdownCheckbox";
-
 import CustomListItem from "../../../components/shared/list/CustomListItem";
 import CustomListSection from "../../../components/shared/list/CustomListSection";
 import { getDropdownItems, getSettingsList } from "../../../components/settings/SettingsHelper";
-import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
+import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 
 type Props = {};
 
@@ -17,7 +15,7 @@ const settings = ({}: Props) => {
   const settingsList = getSettingsList();
 
   return (
-    <LayoutStatic name="settings">
+    <LayoutScrollView name="settings" alwaysBounceVertical={false}>
       <View style={styles.wrapper}>
         <CustomListSection>
           {settingsList.map((item, index) => {
@@ -47,7 +45,7 @@ const settings = ({}: Props) => {
           })}
         </CustomListSection>
       </View>
-    </LayoutStatic>
+    </LayoutScrollView>
   );
 };
 
@@ -55,6 +53,7 @@ export default settings;
 
 const styles = StyleSheet.create({
   wrapper: {
+    flex: 1,
     paddingHorizontal: 20,
     paddingTop: 20,
   },

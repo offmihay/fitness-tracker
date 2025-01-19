@@ -26,7 +26,6 @@ const DropdownCheckbox = ({ children, items }: Props) => {
       <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
       <DropdownMenuContent defaultChecked>
         {items.map((item) => (
-          // @ts-ignore
           <DropdownMenuCheckboxItem
             key={item.key}
             value={item.isSelected ? "on" : "off"}

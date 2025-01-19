@@ -17,6 +17,7 @@ import {
 import { useRouter } from "expo-router";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
+import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
 
 const changeName = () => {
   const { t } = useTranslation();
@@ -63,34 +64,36 @@ const changeName = () => {
   return (
     <>
       <LayoutStatic name="changeName">
-        <FormProvider {...methods}>
-          <View style={styles.wrapper}>
-            <RHFormInput
-              name="firstName"
-              label={t("settings.personalInfo.firstName")}
-              control={control}
-              rules={{
-                required: { message: "required" },
-              }}
-              inputProps={{
-                useClearButton: true,
-                returnKeyType: "done",
-              }}
-            />
-            <RHFormInput
-              name="lastName"
-              label={t("settings.personalInfo.lastName")}
-              control={control}
-              rules={{
-                required: true,
-              }}
-              inputProps={{
-                useClearButton: true,
-                returnKeyType: "done",
-              }}
-            />
-          </View>
-        </FormProvider>
+        <DismissKeyboardView>
+          <FormProvider {...methods}>
+            <View style={styles.wrapper}>
+              <RHFormInput
+                name="firstName"
+                label={t("settings.personalInfo.firstName")}
+                control={control}
+                rules={{
+                  required: { message: "required" },
+                }}
+                inputProps={{
+                  useClearButton: true,
+                  returnKeyType: "done",
+                }}
+              />
+              <RHFormInput
+                name="lastName"
+                label={t("settings.personalInfo.lastName")}
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                inputProps={{
+                  useClearButton: true,
+                  returnKeyType: "done",
+                }}
+              />
+            </View>
+          </FormProvider>
+        </DismissKeyboardView>
       </LayoutStatic>
       <StickyFooterView offset={{ closed: 0, opened: 80 }}>
         <View style={styles.buttonWrapper}>

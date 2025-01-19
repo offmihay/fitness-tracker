@@ -3,11 +3,10 @@ import React from "react";
 import CustomText from "../../shared/text/CustomText";
 import CustomIcon from "../../shared/icon/CustomIcon";
 import { Feather } from "@expo/vector-icons";
-import { Divider } from "react-native-paper";
 
 type Props = {
   label: string;
-  value: string;
+  value?: string;
   icon: React.ReactNode;
   disabled?: boolean;
   onPress?: () => void;
@@ -39,13 +38,12 @@ const PersonalInfoList = (props: Props) => {
               <CustomText type="predefault" style={{ opacity: 0.8 }}>
                 {label}
               </CustomText>
-              <CustomText className="mt-1">{value}</CustomText>
+              {value && <CustomText className="mt-1">{value}</CustomText>}
             </View>
           </View>
         </View>
         {renderButton ? renderButton() : <DefaultButton />}
       </View>
-      <Divider />
     </>
   );
 };
@@ -56,11 +54,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    minHeight: 70,
   },
 
   textWrapper: {
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 10,
     display: "flex",
     flexDirection: "row",
     gap: 16,
@@ -68,11 +67,12 @@ const styles = StyleSheet.create({
   },
 
   btnWrapper: {
+    paddingRight: 20,
     width: 70,
     height: "100%",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
 });
 

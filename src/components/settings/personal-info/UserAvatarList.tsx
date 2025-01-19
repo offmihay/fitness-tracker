@@ -91,7 +91,6 @@ const UserAvatarList = () => {
           </View>
         </TouchableOpacity>
       </View>
-      <Divider />
       <ChooseCameraModal
         ref={bottomSheetRef}
         onGallery={() => handleGalleryImagePick()}
@@ -110,8 +109,8 @@ const styles = StyleSheet.create({
   },
 
   avatar: {
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     borderRadius: 100,
     display: "flex",
     justifyContent: "center",
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
 
   contentWrapper: {
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 10,
     display: "flex",
     flexDirection: "row",
     gap: 24,
@@ -140,11 +139,12 @@ const styles = StyleSheet.create({
   },
 
   btnWrapper: {
+    paddingRight: 20,
     width: 70,
     height: "100%",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
 });
 

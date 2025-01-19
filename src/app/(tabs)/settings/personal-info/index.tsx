@@ -23,45 +23,51 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
 
   return (
     <LayoutScrollView name="personalInfo" alwaysBounceVertical={false}>
-      <UserAvatarList />
-      <PersonalInfoList
-        label={t("settings.personalInfo.email")}
-        value={user?.primaryEmailAddress?.emailAddress || "Not specified"}
-        onPress={() => void 0}
-        icon={<Entypo name="mail" size={20} color={theme.colors.primary} />}
-        disabled
-      />
-      <PersonalInfoList
-        label={t("settings.personalInfo.name")}
-        value={
-          `${user?.firstName} ${user?.lastName}`.trim().length !== 0 && !!user?.firstName
-            ? !!user.lastName
-              ? `${user?.firstName} ${user?.lastName}`
-              : user?.firstName
-            : "Not specified"
-        }
-        onPress={() => router.navigate({ pathname: "settings/personal-info/change-name" })}
-        icon={<Feather name="user" size={20} color={theme.colors.primary} />}
-      />
-
-      <FormBirthday
-        renderTrigger={(onPress, value) => (
+      <View style={styles.wrapper}>
+        <View style={[{ backgroundColor: theme.colors.surface, borderRadius: 10 }]}>
+          <UserAvatarList />
+          <Divider />
           <PersonalInfoList
-            label={t("settings.personalInfo.birthday")}
-            value={value || "Not specified"}
-            onPress={onPress}
-            icon={<FontAwesome name="birthday-cake" size={20} color={theme.colors.primary} />}
+            label={t("settings.personalInfo.email")}
+            value={user?.primaryEmailAddress?.emailAddress || "Not specified"}
+            onPress={() => void 0}
+            icon={<Entypo name="mail" size={20} color={theme.colors.primary} />}
+            disabled
           />
-        )}
-      />
-      <View style={{ paddingHorizontal: 10, paddingBottom: 20 }}>
-        <ButtonDefault
-          onPress={() => signOut()}
-          title={t("settings.personalInfo.signOut")}
-          nodeLeft={(color) => <Octicons name="sign-out" size={20} color={color} />}
-          type="white"
-          className="mt-6"
-        />
+          <Divider />
+          <PersonalInfoList
+            label={t("settings.personalInfo.name")}
+            value={
+              `${user?.firstName} ${user?.lastName}`.trim().length !== 0 && !!user?.firstName
+                ? !!user.lastName
+                  ? `${user?.firstName} ${user?.lastName}`
+                  : user?.firstName
+                : "Not specified"
+            }
+            onPress={() => router.navigate({ pathname: "settings/personal-info/change-name" })}
+            icon={<Feather name="user" size={20} color={theme.colors.primary} />}
+          />
+          <Divider />
+          <FormBirthday
+            renderTrigger={(onPress, value) => (
+              <PersonalInfoList
+                label={t("settings.personalInfo.birthday")}
+                value={value || "Not specified"}
+                onPress={onPress}
+                icon={<FontAwesome name="birthday-cake" size={20} color={theme.colors.primary} />}
+              />
+            )}
+          />
+        </View>
+        <View style={{ paddingHorizontal: 10, paddingBottom: 20 }}>
+          <ButtonDefault
+            onPress={() => signOut()}
+            title={t("settings.personalInfo.signOut")}
+            nodeLeft={(color) => <Octicons name="sign-out" size={20} color={color} />}
+            type="white"
+            className="mt-6"
+          />
+        </View>
       </View>
     </LayoutScrollView>
   );
@@ -69,7 +75,9 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    // flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    overflow: "hidden",
   },
 });
 
