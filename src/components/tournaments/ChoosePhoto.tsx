@@ -58,23 +58,16 @@ const ChoosePhoto = (props: Props) => {
 
   const handleCameraImagePick = async () => {
     const result = await pickCameraImage({ aspect: [3, 4] });
-    result && handleUploadImage(result);
+    result && handleUploadImage({ ...result, uniqueID: `${result.assetId}${Date.now()}` });
   };
 
   const handleUploadImage = (imagePickerAsset: UploadedImageAsset) => {
     if (!imagePickerAsset) return;
 
     const isExisted = images.some((img) => img.uniqueID === imagePickerAsset.uniqueID);
+    if (isExisted) return;
 
-    if (!isExisted) {
-      setImages((prev) => [...prev, { ...imagePickerAsset, isError: false }]);
-    } else {
-      setImages((prev) =>
-        prev.map((img) =>
-          img.assetId === imagePickerAsset.assetId ? { ...img, isError: false } : img
-        )
-      );
-    }
+    setImages((prev) => [...prev, { ...imagePickerAsset, isError: false }]);
     uploadImage.mutate(imagePickerAsset, {
       onSuccess: (data) => {
         setImages((prev) =>
@@ -139,9 +132,7 @@ const ChoosePhoto = (props: Props) => {
                         width: 45,
                         height: 45,
                         overflow: "hidden",
-                      },
-                      isError && {
-                        borderColor: theme.colors.error,
+                        borderColor: isError ? theme.colors.error : theme.colors.textTertiary,
                       },
                     ]}
                   >
