@@ -1,20 +1,14 @@
-import { AccessibilityState, GestureResponderEvent, StyleSheet, View, Text } from "react-native";
+import { AccessibilityState, GestureResponderEvent, StyleSheet, View } from "react-native";
 import React, { useEffect } from "react";
 import { PlatformPressable } from "@react-navigation/elements";
 import Animated, {
-  FadeInDown,
-  FadeOutDown,
-  FadeOutUp,
   interpolate,
-  LinearTransition,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-  withTiming,
 } from "react-native-reanimated";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 type Props = {
   href?: string | undefined;
@@ -52,13 +46,13 @@ const TabBarButton = (props: Props) => {
   const scale = useSharedValue(0);
   useEffect(() => {
     scale.value = withSpring(typeof isFocused === "boolean" ? (isFocused ? 1 : 0) : isFocused, {
-      duration: 300,
+      duration: 400,
     });
   }, [scale, isFocused]);
 
   const animatedTextStyle = useAnimatedStyle(() => {
-    const opacity = interpolate(scale.value, [0, 1], [1, 0]);
-    const bottom = interpolate(scale.value, [0, 1], [0, -30]);
+    const opacity = interpolate(scale.value, [0, 1], [1, 1]);
+    const bottom = interpolate(scale.value, [0, 1], [-1, -30]);
     return {
       opacity,
       bottom,
@@ -66,8 +60,8 @@ const TabBarButton = (props: Props) => {
   });
 
   const animatedViewStyle = useAnimatedStyle(() => {
-    const scaleValue = interpolate(scale.value, [0, 1], [1, 1.3]);
-    const top = interpolate(scale.value, [0, 1], [0, 7]);
+    const scaleValue = interpolate(scale.value, [0, 1], [1, 1.5]);
+    const top = interpolate(scale.value, [0, 1], [0, 5]);
     return {
       transform: [{ scale: scaleValue }],
       top,
@@ -83,6 +77,11 @@ const TabBarButton = (props: Props) => {
       onPress={onPress}
       onLongPress={onLongPress}
       style={{ flex: 1, overflow: "hidden" }}
+      android_ripple={{
+        color: theme.colors.surfaceLight,
+        borderless: true,
+        radius: 30,
+      }}
     >
       <View style={styles.button}>
         <Animated.View style={animatedViewStyle}>

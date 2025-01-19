@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
 
   buttonWrapper: {
     paddingTop: 10,
-    paddingBottom: 30,
+    paddingBottom: 120,
     paddingHorizontal: 20,
   },
 });

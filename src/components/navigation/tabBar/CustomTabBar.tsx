@@ -1,31 +1,32 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { useLinkBuilder } from "@react-navigation/native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import TabBarButton from "./TabBarButton";
-import { BlurView } from "expo-blur";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { opacity } from "react-native-reanimated/lib/typescript/Colors";
+import { useTranslation } from "react-i18next";
 
 const CustomTabBar = (props: BottomTabBarProps) => {
   const { state, descriptors, navigation } = props;
   const { buildHref } = useLinkBuilder();
   const theme = useCustomTheme();
+  const { t } = useTranslation();
+
+  const bottomGap = Platform.OS === "android" ? 20 : 30;
 
   return (
     <View
       style={[
         styles.tabbarWrapper,
-        { backgroundColor: theme.colors.background, borderColor: theme.colors.surfaceLight },
+        {
+          backgroundColor: theme.colors.background,
+          borderColor: theme.colors.surfaceLight,
+          paddingBottom: bottomGap,
+        },
       ]}
     >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
+        const label = t(`title.${route.name}`);
 
         const isFocused = state.index === index;
 
@@ -75,12 +76,10 @@ const CustomTabBar = (props: BottomTabBarProps) => {
 const styles = StyleSheet.create({
   tabbarWrapper: {
     position: "absolute",
-    minHeight: 90,
     bottom: 0,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 25,
     paddingTop: 10,
     paddingHorizontal: 50,
     borderTopWidth: 0.5,

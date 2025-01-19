@@ -35,6 +35,12 @@ function CustomPicker<T extends string>({
     ),
   }));
 
+  const animatedLabelStyle = useAnimatedStyle(() => ({
+    color: withTiming(focused ? theme.colors.link : theme.colors.border, {
+      duration: 500,
+    }),
+  }));
+
   return (
     <Animated.View
       style={[
@@ -63,7 +69,15 @@ function CustomPicker<T extends string>({
       </Picker>
       {label && !!selectedValue && (
         <View pointerEvents="none" style={StyleSheet.absoluteFill}>
-          <Animated.Text style={[styles.label, { backgroundColor: theme.colors.background }]}>
+          <Animated.Text
+            style={[
+              styles.label,
+              {
+                backgroundColor: theme.colors.background,
+              },
+              animatedLabelStyle,
+            ]}
+          >
             {label}
           </Animated.Text>
         </View>
