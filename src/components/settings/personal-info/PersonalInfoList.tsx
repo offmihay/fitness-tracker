@@ -10,11 +10,24 @@ type Props = {
   value: string;
   icon: React.ReactNode;
   disabled?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
+  renderButton?: () => React.ReactNode;
 };
 
 const PersonalInfoList = (props: Props) => {
-  const { icon, label, value, onPress, disabled } = props;
+  const { icon, label, value, onPress, disabled, renderButton } = props;
+
+  const DefaultButton = () => (
+    <TouchableOpacity onPress={onPress} activeOpacity={disabled ? 1 : 0.3}>
+      <View style={styles.btnWrapper}>
+        <CustomIcon
+          render={(color) => (
+            <Feather name="edit" size={24} color={color} style={{ opacity: disabled ? 0.3 : 1 }} />
+          )}
+        />
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <>
@@ -30,20 +43,7 @@ const PersonalInfoList = (props: Props) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity onPress={onPress} activeOpacity={disabled ? 1 : 0.3}>
-          <View style={styles.btnWrapper}>
-            <CustomIcon
-              render={(color) => (
-                <Feather
-                  name="edit"
-                  size={24}
-                  color={color}
-                  style={{ opacity: disabled ? 0.3 : 1 }}
-                />
-              )}
-            />
-          </View>
-        </TouchableOpacity>
+        {renderButton ? renderButton() : <DefaultButton />}
       </View>
       <Divider />
     </>

@@ -25,7 +25,7 @@ export default CustomListSection;
 
 const styles = StyleSheet.create({
   sectionWrapper: {
-    borderRadius: 12,
+    borderRadius: 10,
     overflow: "hidden",
   },
   listSection: {

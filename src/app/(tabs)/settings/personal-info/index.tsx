@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import React, { useRef, useState } from "react";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useTranslation } from "react-i18next";
@@ -25,6 +25,13 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
     <LayoutScrollView name="personalInfo" alwaysBounceVertical={false}>
       <UserAvatarList />
       <PersonalInfoList
+        label={t("settings.personalInfo.email")}
+        value={user?.primaryEmailAddress?.emailAddress || "Not specified"}
+        onPress={() => void 0}
+        icon={<Entypo name="mail" size={20} color={theme.colors.primary} />}
+        disabled
+      />
+      <PersonalInfoList
         label={t("settings.personalInfo.name")}
         value={
           `${user?.firstName} ${user?.lastName}`.trim().length !== 0 && !!user?.firstName
@@ -36,13 +43,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
         onPress={() => router.navigate({ pathname: "settings/personal-info/change-name" })}
         icon={<Feather name="user" size={20} color={theme.colors.primary} />}
       />
-      <PersonalInfoList
-        label={t("settings.personalInfo.email")}
-        value={user?.primaryEmailAddress?.emailAddress || "Not specified"}
-        onPress={() => void 0}
-        icon={<Entypo name="mail" size={20} color={theme.colors.primary} />}
-        disabled
-      />
+
       <FormBirthday
         renderTrigger={(onPress, value) => (
           <PersonalInfoList

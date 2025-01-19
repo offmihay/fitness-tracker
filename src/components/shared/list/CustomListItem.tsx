@@ -31,7 +31,7 @@ const CustomListItem = ({
     <View className="relative">
       <List.Item
         style={{
-          paddingVertical: 7,
+          paddingVertical: 5,
           minHeight: 55,
           display: "flex",
           justifyContent: "center",

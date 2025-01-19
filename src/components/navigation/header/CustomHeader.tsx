@@ -25,7 +25,7 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
     const fontSize = interpolate(
       scrollY.value,
       [0, Scroll_Distance],
-      [26, 16],
+      [28, 16],
       Extrapolation.CLAMP
     );
 
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
     width: "100%",
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
   },
 
   titleContainer: {

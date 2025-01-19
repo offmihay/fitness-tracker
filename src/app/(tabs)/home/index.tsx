@@ -10,6 +10,7 @@ import HomeHeader from "@/src/components/home/HomeHeader";
 import SortModal from "@/src/components/home/sort/SortModal";
 import FilterModal from "@/src/components/home/filter/FilterModal";
 import { TournamentRequest } from "@/src/types/tournament";
+import { FlashList } from "@shopify/flash-list";
 
 const ListHeader = memo(() => (
   <View style={styles.headerContainer}>
@@ -47,7 +48,7 @@ const HomePage = ({}: HomePageProps) => {
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
 
-    const delayPromise = new Promise((resolve) => setTimeout(resolve, 1000));
+    const delayPromise = new Promise((resolve) => setTimeout(resolve, 0));
 
     Promise.all([refetch(), delayPromise]).then(() => {
       setIsRefreshing(false);
@@ -56,21 +57,23 @@ const HomePage = ({}: HomePageProps) => {
 
   const renderItem = useCallback(
     ({ item }: { item: TournamentRequest }) => (
-      <TournamentCard
-        handleOpenDetails={() => handleOpenDetails(item.id)}
-        handleRegister={() => handleRegister(item.title)}
-        imageSource={item.images && item.images[0].secureUrl}
-        title={item.title}
-        location={item.location}
-        dateTime={formatDateRange(item.dateStart, item.dateEnd, settings.language)}
-        participants={
-          item.currentParticipants && item.currentParticipants.count && item.maxParticipants
-            ? `${item.currentParticipants.count}/${item.maxParticipants}`
-            : "-"
-        }
-        prizePool={item.prizePool ? `${item.prizePool.toString()} UAH` : "-"}
-        entryFee={item.entryFee ? `${item.entryFee.toString()} UAH` : "-"}
-      />
+      <View style={{ paddingVertical: 10 }}>
+        <TournamentCard
+          handleOpenDetails={() => handleOpenDetails(item.id)}
+          handleRegister={() => handleRegister(item.title)}
+          imageSource={item.images && item.images[0].secureUrl}
+          title={item.title}
+          location={item.location}
+          dateTime={formatDateRange(item.dateStart, item.dateEnd, settings.language)}
+          participants={
+            item.currentParticipants && item.currentParticipants.count && item.maxParticipants
+              ? `${item.currentParticipants.count}/${item.maxParticipants}`
+              : "-"
+          }
+          prizePool={item.prizePool ? `${item.prizePool.toString()} UAH` : "-"}
+          entryFee={item.entryFee ? `${item.entryFee.toString()} UAH` : "-"}
+        />
+      </View>
     ),
     [handleOpenDetails, handleRegister, settings.language]
   );
@@ -80,22 +83,14 @@ const HomePage = ({}: HomePageProps) => {
   return (
     <View style={{ flex: 1 }}>
       <HomeHeader />
-      <FlatList
+      <FlashList
         ListHeaderComponent={ListHeader}
         data={data}
         contentContainerStyle={styles.wrapper}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        initialNumToRender={5}
-        maxToRenderPerBatch={5}
-        windowSize={10}
-        updateCellsBatchingPeriod={50}
-        getItemLayout={(_, index) => ({
-          length: ITEM_HEIGHT,
-          offset: ITEM_HEIGHT * index,
-          index,
-        })}
+        estimatedItemSize={420}
       />
     </View>
   );
@@ -108,9 +103,7 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 50,
-    display: "flex",
-    gap: 16,
+    paddingBottom: 100,
   },
   headerContainer: {
     flexDirection: "row",

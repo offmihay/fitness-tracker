@@ -5,6 +5,7 @@ import SortModal from "./sort/SortModal";
 import FilterModal from "./filter/FilterModal";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { Divider } from "react-native-paper";
 
 type Props = {};
 
@@ -27,6 +28,7 @@ const HomeHeader = (props: Props) => {
           />
         </View>
       </View>
+      <Divider />
     </DismissKeyboardView>
   );
 };
