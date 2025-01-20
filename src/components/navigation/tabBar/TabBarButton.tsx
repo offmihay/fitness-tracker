@@ -9,6 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { routeIcon } from "../options";
 
 type Props = {
   href?: string | undefined;
@@ -20,12 +21,6 @@ type Props = {
   isFocused: boolean;
   routeName: string;
   label: string;
-};
-
-const icon: Record<string, (color: string) => React.ReactNode> = {
-  home: (color: string) => <Feather name="home" size={24} color={color} style={{ bottom: 1 }} />,
-  tournaments: (color: string) => <MaterialIcons name="sports-tennis" size={24} color={color} />,
-  settings: (color: string) => <Feather name="settings" size={24} color={color} />,
 };
 
 const TabBarButton = (props: Props) => {
@@ -85,7 +80,7 @@ const TabBarButton = (props: Props) => {
     >
       <View style={styles.button}>
         <Animated.View style={animatedViewStyle}>
-          {icon[routeName](isFocused ? theme.colors.primary : theme.colors.text)}
+          {routeIcon[routeName](isFocused ? theme.colors.primary : theme.colors.text)}
         </Animated.View>
         <Animated.Text
           style={[

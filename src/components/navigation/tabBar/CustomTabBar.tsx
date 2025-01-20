@@ -11,7 +11,7 @@ const CustomTabBar = (props: BottomTabBarProps) => {
   const theme = useCustomTheme();
   const { t } = useTranslation();
 
-  const bottomGap = Platform.OS === "android" ? 20 : 30;
+  const bottomGap = Platform.OS === "android" ? 5 : 30;
 
   return (
     <View

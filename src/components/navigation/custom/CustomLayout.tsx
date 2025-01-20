@@ -1,9 +1,10 @@
-import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from "react-native";
-import React from "react";
+import { NativeScrollEvent, NativeSyntheticEvent, StatusBar, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
 import Animated, {
   Extrapolation,
   interpolate,
   interpolateColor,
+  runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -66,6 +67,10 @@ const CustomLayout = (props: LayoutProps) => {
 
   return (
     <>
+      <StatusBar
+        backgroundColor={theme.colors.background}
+        barStyle={theme.dark ? "light-content" : "dark-content"}
+      />
       <View style={styles.container}>
         {renderHeader && !disableHeader && (
           <Animated.View style={[styles.header, animatedHeaderStyle]}>

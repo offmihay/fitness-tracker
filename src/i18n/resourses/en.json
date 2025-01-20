@@ -194,6 +194,7 @@
     "settings": "Settings",
     "createTournament": "Create Tournament",
     "personalInfo": "Personal Info",
-    "changeName": "Change Name"
+    "changeName": "Change Name",
+    "rules": "Rules"
   }
 }

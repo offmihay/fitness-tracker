@@ -11,6 +11,7 @@ import SortModal from "@/src/components/home/sort/SortModal";
 import FilterModal from "@/src/components/home/filter/FilterModal";
 import { TournamentRequest } from "@/src/types/tournament";
 import { FlashList } from "@shopify/flash-list";
+import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 
 const ListHeader = memo(() => (
   <View style={styles.headerContainer}>
@@ -81,24 +82,26 @@ const HomePage = ({}: HomePageProps) => {
   const keyExtractor = useCallback((item: TournamentRequest) => item.id.toString(), []);
 
   return (
-    <View style={{ flex: 1 }}>
-      <HomeHeader />
-      <FlashList
-        ListHeaderComponent={ListHeader}
-        data={data}
-        contentContainerStyle={styles.wrapper}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        estimatedItemSize={420}
-      />
-    </View>
+    <LayoutStatic name="home" disableHeader={true}>
+      <View style={{ flex: 1 }}>
+        <HomeHeader />
+        <FlashList
+          ListHeaderComponent={ListHeader}
+          data={data}
+          contentContainerStyle={styles.wrapper}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          estimatedItemSize={ITEM_HEIGHT}
+        />
+      </View>
+    </LayoutStatic>
   );
 };
 
 export default HomePage;
 
-const ITEM_HEIGHT = 400;
+const ITEM_HEIGHT = 420;
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,

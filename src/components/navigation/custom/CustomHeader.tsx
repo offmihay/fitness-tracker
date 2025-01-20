@@ -1,13 +1,14 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 import Animated, { useAnimatedStyle, interpolate, Extrapolation } from "react-native-reanimated";
 import type { SharedValue } from "react-native-reanimated";
 
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { usePathname } from "expo-router";
+import { usePathname, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
+import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT, routeNames } from "../options";
+import { Entypo, Feather } from "@expo/vector-icons";
 
 interface MyCustomHeaderProps {
   scrollY: SharedValue<number>;
@@ -20,9 +21,11 @@ const minHeight = HEADER_MIN_HEIGHT;
 const Scroll_Distance = maxHeight - minHeight;
 
 const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUnique }) => {
-  const theme = useCustomTheme();
   const insets = useSafeAreaInsets();
+
+  const theme = useCustomTheme();
   const { t } = useTranslation();
+  const router = useRouter();
 
   const animatedTextStyle = useAnimatedStyle(() => {
     const fontSize = interpolate(
@@ -31,23 +34,61 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
       [28, 16],
       Extrapolation.CLAMP
     );
-
-    const bottom = interpolate(scrollY.value, [0, Scroll_Distance], [20, 10], Extrapolation.CLAMP);
-
     return {
       fontSize,
+    };
+  });
+
+  const animatedTitleStyle = useAnimatedStyle(() => {
+    const bottom = interpolate(scrollY.value, [0, Scroll_Distance], [10, 6], Extrapolation.CLAMP);
+    const left = interpolate(scrollY.value, [0, Scroll_Distance], [0, 30], Extrapolation.CLAMP);
+
+    return {
       bottom,
+      left,
+    };
+  });
+
+  const animatedBackStyle = useAnimatedStyle(() => {
+    const bottom = interpolate(scrollY.value, [0, Scroll_Distance], [75, 8], Extrapolation.CLAMP);
+    const left = interpolate(scrollY.value, [0, Scroll_Distance], [-15, -15], Extrapolation.CLAMP);
+    const scaleValue = interpolate(
+      scrollY.value,
+      [0, Scroll_Distance],
+      [1, 0.8],
+      Extrapolation.CLAMP
+    );
+    return {
+      bottom,
+      left,
+      transform: [{ scale: scaleValue }],
     };
   });
 
   return (
-    <View style={[styles.wrapper, { borderColor: theme.colors.surfaceLight }]}>
-      <View style={styles.titleContainer}>
-        <Animated.Text style={[{ color: theme.colors.text }, styles.title, animatedTextStyle]}>
-          {isNameUnique ? name : t(`title.${name}`)}
-        </Animated.Text>
+    <>
+      <View
+        style={[styles.wrapper, { borderColor: theme.colors.surfaceLight, paddingTop: insets.top }]}
+      >
+        <View style={[styles.titleContainer]}>
+          {!routeNames.includes(name) && (
+            <Animated.View style={[{ position: "absolute" }, animatedBackStyle]}>
+              <TouchableOpacity onPress={() => router.back()}>
+                <Feather name="chevron-left" size={45} color={theme.colors.link} />
+              </TouchableOpacity>
+            </Animated.View>
+          )}
+          <Animated.View style={[styles.title, animatedTitleStyle]}>
+            <Animated.Text
+              style={[{ color: theme.colors.text, fontWeight: 600 }, animatedTextStyle]}
+              numberOfLines={2}
+            >
+              {isNameUnique ? name : t(`title.${name}`)}
+            </Animated.Text>
+          </Animated.View>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -59,15 +100,17 @@ const styles = StyleSheet.create({
   },
 
   titleContainer: {
-    width: "100%",
     height: "100%",
     position: "relative",
+    width: "95%",
   },
 
   title: {
     position: "absolute",
-    fontWeight: 700,
     left: 0,
+    minHeight: 50,
+    display: "flex",
+    justifyContent: "center",
   },
 });
 

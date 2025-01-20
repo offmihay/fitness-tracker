@@ -9,16 +9,20 @@ type Props = Omit<React.ComponentProps<typeof CustomLayout>, "renderContent"> & 
 };
 
 const LayoutStatic = (props: Props) => {
-  const { children, renderHeader, headerConfig, name, isNameUnique } = props;
+  const { children, renderHeader, headerConfig, name, isNameUnique, disableHeader, ...rest } =
+    props;
   return (
     <CustomLayout
       isNameUnique={isNameUnique}
       name={name}
       renderContent={({ maxHeight }) => (
-        <View style={{ paddingTop: maxHeight, paddingBottom: 200 }}>{children}</View>
+        <View style={{ flex: 1, paddingTop: disableHeader ? 0 : maxHeight }} {...rest}>
+          {children}
+        </View>
       )}
       renderHeader={renderHeader}
       headerConfig={headerConfig}
+      disableHeader={disableHeader}
     />
   );
 };
