@@ -6,8 +6,9 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT, routeNames } from "../options";
+import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
 import { Feather } from "@expo/vector-icons";
+import { routeNames } from "../tabBar/TabBarButton";
 
 interface MyCustomHeaderProps {
   scrollY: SharedValue<number>;
@@ -49,7 +50,7 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
   });
 
   const animatedBackStyle = useAnimatedStyle(() => {
-    const bottom = interpolate(scrollY.value, [0, Scroll_Distance], [78, 8], Extrapolation.CLAMP);
+    const bottom = interpolate(scrollY.value, [0, Scroll_Distance], [82, 8], Extrapolation.CLAMP);
     const left = interpolate(scrollY.value, [0, Scroll_Distance], [-15, -15], Extrapolation.CLAMP);
     const scaleValue = interpolate(
       scrollY.value,

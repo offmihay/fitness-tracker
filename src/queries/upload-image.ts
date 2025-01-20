@@ -2,6 +2,7 @@ import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/rea
 import { ImagePickerAsset } from "expo-image-picker";
 import FormData from "form-data";
 import fetchApi from "../api/fetchApi";
+import Toast from "react-native-toast-message";
 
 export type ImageUploadResponse = {
   api_key: string;
@@ -48,6 +49,12 @@ export const useUploadImage = () => {
       });
 
       return response.data;
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "errorToast",
+        props: { text: error.message },
+      });
     },
   });
 };

@@ -43,7 +43,7 @@ const UserAvatarList = () => {
     Keyboard.dismiss();
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: [t("common.cancel"), t("modal.openGallery"), t("modal.openCamera")],
+        options: [t("common.cancel"), t("common.openGallery"), t("common.openCamera")],
         cancelButtonIndex: 0,
       },
       (buttonIndex) => {

@@ -8,7 +8,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { routeIcon } from "../options";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 type Props = {
   href?: string | undefined;
@@ -21,6 +21,14 @@ type Props = {
   routeName: string;
   label: string;
 };
+
+export const routeIcon: Record<string, (color: string) => React.ReactNode> = {
+  home: (color: string) => <Feather name="home" size={24} color={color} style={{ bottom: 1 }} />,
+  tournaments: (color: string) => <MaterialIcons name="sports-tennis" size={24} color={color} />,
+  settings: (color: string) => <Feather name="settings" size={24} color={color} />,
+};
+
+export const routeNames = Object.keys(routeIcon);
 
 const TabBarButton = (props: Props) => {
   const {

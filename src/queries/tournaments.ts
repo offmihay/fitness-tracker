@@ -2,6 +2,7 @@ import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { TournamentRequest } from "../types/tournament";
 import fetchApi from "../api/fetchApi";
 import { TournamentFormData } from "../components/tournaments/create/schema";
+import Toast from "react-native-toast-message";
 
 export const useAllTournaments = () => {
   return useQuery({
@@ -34,6 +35,12 @@ export const useTournamentMutation = () => {
         body: data,
       });
       return response.data;
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "errorToast",
+        props: { text: error.message },
+      });
     },
   });
 };

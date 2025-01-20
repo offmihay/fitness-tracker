@@ -103,8 +103,7 @@ const ITEM_HEIGHT = 420;
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 100,
+    paddingVertical: 20,
   },
   headerContainer: {
     flexDirection: "row",

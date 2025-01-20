@@ -53,8 +53,8 @@ const ChooseCameraModal = forwardRef<Ref, Props>(({ onCamera, onGallery }, ref) 
       <ThemeProvider theme={theme}>
         <BottomSheetView style={styles.contentContainer}>
           <ButtonAction.Group>
-            <ButtonAction onPress={handleOnGallery} title={t("modal.openGallery")} />
-            <ButtonAction onPress={handleOnCamera} title={t("modal.openCamera")} />
+            <ButtonAction onPress={handleOnGallery} title={t("common.openGallery")} />
+            <ButtonAction onPress={handleOnCamera} title={t("common.openCamera")} />
           </ButtonAction.Group>
           <ButtonAction.Group>
             <ButtonAction onPress={handleDismiss} title={t("common.cancel")} weight="bold" />

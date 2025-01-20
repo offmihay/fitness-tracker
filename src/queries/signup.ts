@@ -1,5 +1,6 @@
 import { useSignUp } from "@clerk/clerk-expo";
 import { useMutation } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
 
 export const useSignUpMutation = () => {
   const { isLoaded, signUp } = useSignUp();
@@ -39,6 +40,12 @@ export const useSignUpPasswordMutation = () => {
         }
       }
     },
+    onError: (error) => {
+      Toast.show({
+        type: "errorToast",
+        props: { text: error.message },
+      });
+    },
   });
 
   return signUpPasswordMutation;
@@ -52,6 +59,12 @@ export const useResendVerificationCodeMutation = () => {
       if (isLoaded) {
         await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       }
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "errorToast",
+        props: { text: error.message },
+      });
     },
   });
 };
@@ -67,6 +80,12 @@ export const useVerifyEmailCodeMutation = () => {
           await setActive({ session: signUp.createdSessionId });
         }
       }
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "errorToast",
+        props: { text: error.message },
+      });
     },
   });
 };

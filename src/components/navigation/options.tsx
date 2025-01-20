@@ -26,11 +26,3 @@ export const stackProps = {
 
 export const HEADER_MAX_HEIGHT = Platform.OS === "ios" ? 180 : 120;
 export const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 100 : 70;
-
-export const routeIcon: Record<string, (color: string) => React.ReactNode> = {
-  home: (color: string) => <Feather name="home" size={24} color={color} style={{ bottom: 1 }} />,
-  tournaments: (color: string) => <MaterialIcons name="sports-tennis" size={24} color={color} />,
-  settings: (color: string) => <Feather name="settings" size={24} color={color} />,
-};
-
-export const routeNames = Object.keys(routeIcon);

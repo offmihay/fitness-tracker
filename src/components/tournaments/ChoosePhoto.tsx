@@ -63,11 +63,17 @@ const ChoosePhoto = (props: Props) => {
 
   const handleUploadImage = (imagePickerAsset: UploadedImageAsset) => {
     if (!imagePickerAsset) return;
-
     const isExisted = images.some((img) => img.uniqueID === imagePickerAsset.uniqueID);
-    if (isExisted) return;
 
-    setImages((prev) => [...prev, { ...imagePickerAsset, isError: false }]);
+    if (!isExisted) {
+      setImages((prev) => [...prev, { ...imagePickerAsset, isError: false }]);
+    } else {
+      setImages((prev) =>
+        prev.map((img) =>
+          img.assetId === imagePickerAsset.assetId ? { ...img, isError: false } : img
+        )
+      );
+    }
     uploadImage.mutate(imagePickerAsset, {
       onSuccess: (data) => {
         setImages((prev) =>
