@@ -6,32 +6,30 @@ import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
+import { TournamentRequest } from "@/src/types/tournament";
+import { formatDateRange } from "@/src/utils/formatDateString";
+import { useSettings } from "@/src/hooks/useSettings";
 
 type Props = {
-  title: string;
-  imageSource: string;
-  location: string;
-  dateTime: string;
-  participants: string;
-  entryFee: string;
-  prizePool: string;
   handleRegister: () => void;
   handleOpenDetails: () => void;
+  data: TournamentRequest;
 };
 
-const TournamentCard = ({
-  title,
-  location,
-  dateTime,
-  participants,
-  entryFee,
-  prizePool,
-  imageSource,
-  handleRegister,
-  handleOpenDetails,
-}: Props) => {
+const TournamentCard = ({ data, handleRegister, handleOpenDetails }: Props) => {
   const theme = useCustomTheme();
   const { t } = useTranslation();
+  const { settings } = useSettings();
+
+  const { title, location, dateStart, dateEnd, currentParticipants, maxParticipants, images } =
+    data;
+
+  const participants =
+    currentParticipants && currentParticipants.count && maxParticipants
+      ? `${currentParticipants.count}/${maxParticipants}`
+      : "-";
+  const prizePool = data.prizePool ? `${data.prizePool.toString()} UAH` : "-";
+  const entryFee = data.entryFee ? `${data.entryFee.toString()} UAH` : "-";
 
   return (
     <TouchableOpacity onPress={handleOpenDetails} activeOpacity={0.8}>
@@ -49,7 +47,7 @@ const TournamentCard = ({
           <FastImage
             style={{ width: "100%", height: "100%" }}
             source={{
-              uri: imageSource,
+              uri: images && images[0].secureUrl,
               priority: FastImage.priority.normal,
             }}
             resizeMode={FastImage.resizeMode.cover}
@@ -86,7 +84,7 @@ const TournamentCard = ({
                   ellipsizeMode="tail"
                   style={{ maxWidth: "80%" }}
                 >
-                  {dateTime}
+                  {formatDateRange(dateStart, dateEnd, settings.language)}
                 </CustomText>
               </View>
             </View>
@@ -122,20 +120,6 @@ const TournamentCard = ({
             </View>
           </View>
         </View>
-
-        {/* <View className="flex flex-row justify-between mt-4">
-          <TouchableBtn
-            title={t("home.tournament.register")}
-            style={{ width: "48%" }}
-            onPress={handleRegister}
-            nodeLeft={(color) => <></>}
-          />
-          <TouchableBtn
-            type="grey"
-            title={t("home.tournament.saveForLater")}
-            style={{ width: "48%" }}
-          />
-        </View> */}
       </View>
     </TouchableOpacity>
   );
@@ -145,7 +129,7 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 20,
     borderRadius: 10,
-    height: 400,
+    height: 390,
   },
 
   border: {

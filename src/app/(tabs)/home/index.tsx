@@ -60,17 +60,7 @@ const HomePage = ({}: HomePageProps) => {
         <TournamentCard
           handleOpenDetails={() => handleOpenDetails(item.id)}
           handleRegister={() => handleRegister(item.title)}
-          imageSource={item.images && item.images[0].secureUrl}
-          title={item.title}
-          location={item.location}
-          dateTime={formatDateRange(item.dateStart, item.dateEnd, settings.language)}
-          participants={
-            item.currentParticipants && item.currentParticipants.count && item.maxParticipants
-              ? `${item.currentParticipants.count}/${item.maxParticipants}`
-              : "-"
-          }
-          prizePool={item.prizePool ? `${item.prizePool.toString()} UAH` : "-"}
-          entryFee={item.entryFee ? `${item.entryFee.toString()} UAH` : "-"}
+          data={item}
         />
       </View>
     ),
@@ -99,7 +89,7 @@ const HomePage = ({}: HomePageProps) => {
 
 export default HomePage;
 
-const ITEM_HEIGHT = 420;
+const ITEM_HEIGHT = 410;
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
