@@ -17,7 +17,7 @@ const PersonalInfoList = (props: Props) => {
   const { icon, label, value, onPress, disabled, renderButton } = props;
 
   const DefaultButton = () => (
-    <TouchableOpacity onPress={onPress} activeOpacity={disabled ? 1 : 0.3}>
+    <TouchableOpacity onPress={onPress} activeOpacity={disabled ? 1 : 0.3} disabled={disabled}>
       <View style={styles.btnWrapper}>
         <CustomIcon
           render={(color) => (
@@ -29,50 +29,51 @@ const PersonalInfoList = (props: Props) => {
   );
 
   return (
-    <>
-      <View style={styles.wrapper}>
-        <View>
-          <View style={styles.textWrapper}>
-            {icon}
-            <View>
-              <CustomText type="predefault" style={{ opacity: 0.8 }}>
-                {label}
-              </CustomText>
-              {value && <CustomText className="mt-1">{value}</CustomText>}
-            </View>
-          </View>
+    <View style={styles.wrapper}>
+      <View style={styles.leftSide}>
+        <View>{icon}</View>
+        <View style={styles.textContainer}>
+          <CustomText type="predefault" style={{ opacity: 0.8 }}>
+            {label}
+          </CustomText>
+          {value && (
+            <CustomText
+              className="mt-1"
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={{ marginTop: 4 }}
+            >
+              {value}
+            </CustomText>
+          )}
         </View>
-        {renderButton ? renderButton() : <DefaultButton />}
       </View>
-    </>
+
+      {renderButton ? renderButton() : <DefaultButton />}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     minHeight: 70,
-  },
-
-  textWrapper: {
     paddingHorizontal: 20,
-    paddingVertical: 10,
-    display: "flex",
+  },
+  leftSide: {
+    flex: 1,
     flexDirection: "row",
-    gap: 16,
     alignItems: "center",
   },
-
+  textContainer: {
+    flex: 1,
+    marginLeft: 10,
+    marginRight: 10,
+  },
   btnWrapper: {
-    paddingRight: 20,
-    width: 70,
-    height: "100%",
-    display: "flex",
     justifyContent: "center",
-    alignItems: "flex-end",
   },
 });
 

@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
     gap: 8,
     marginHorizontal: 10,
     justifyContent: "flex-end",
-    paddingBottom: 50,
+    paddingBottom: 30,
   },
 });

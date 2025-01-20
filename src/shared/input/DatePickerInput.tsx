@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Pressable, View } from "react-native";
+import { Keyboard, Platform, Pressable, View } from "react-native";
 import CustomTextInput from "./CustomTextInput";
 import DatePickerModal from "../modal/DatePickerModal";
 
@@ -92,7 +92,7 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
 
     return (
       <View>
-        <Pressable onPress={showDatePicker}>
+        <Pressable onPress={Platform.OS === "android" ? showDatePicker : void 0}>
           {renderTrigger
             ? renderTrigger({ onPress: showDatePicker, value: formattedValue, label })
             : renderDefaultTrigger()}

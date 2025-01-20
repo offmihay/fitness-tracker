@@ -39,7 +39,7 @@ const Group: React.FC<GroupProps> = ({ children }) => {
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <View style={[styles.container, { borderRadius: Platform.OS === "ios" ? 15 : 8 }]}>
+    <View style={[styles.container, { borderRadius: 10 }]}>
       {childrenArray.map((child, index) => (
         <React.Fragment key={index}>
           {index > 0 && <Divider style={styles.divider} />}
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     backgroundColor: "transparent",
-    height: 1,
+    height: 0.5,
   },
 });
 

@@ -1,5 +1,13 @@
 import React, { useRef, useState } from "react";
-import { View, Pressable, TouchableOpacity, StyleSheet, Keyboard } from "react-native";
+import {
+  View,
+  Pressable,
+  TouchableOpacity,
+  StyleSheet,
+  Keyboard,
+  ActionSheetIOS,
+  Platform,
+} from "react-native";
 import { Entypo, Feather } from "@expo/vector-icons";
 import Loader from "../../../shared/loader/Loader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
@@ -12,6 +20,7 @@ import { pickCameraImage } from "@/src/services/pickCameraImage";
 import ChooseCameraModal from "../../../shared/modal/ChooseCameraModal";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
+import { useTranslation } from "react-i18next";
 
 const UserAvatarList = () => {
   const theme = useCustomTheme();
@@ -19,10 +28,33 @@ const UserAvatarList = () => {
   const [image, setImage] = useState<string | null>(user?.imageUrl || null);
   const [loadingImg, setLoadingImg] = useState(true);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const { t } = useTranslation();
 
   const handleOpenCameraModal = () => {
+    if (Platform.OS === "ios") {
+      openActionSheetIOS();
+    } else {
+      Keyboard.dismiss();
+      bottomSheetRef.current?.present();
+    }
+  };
+
+  const openActionSheetIOS = () => {
     Keyboard.dismiss();
-    bottomSheetRef.current?.present();
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: [t("common.cancel"), t("modal.openGallery"), t("modal.openCamera")],
+        cancelButtonIndex: 0,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+        } else if (buttonIndex === 1) {
+          handleGalleryImagePick();
+        } else if (buttonIndex === 2) {
+          handleCameraImagePick();
+        }
+      }
+    );
   };
 
   const setProfileImgMutation = useSetProfileImageMutation();
