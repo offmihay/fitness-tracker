@@ -1,7 +1,7 @@
 import { Slot, useRouter } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import { useEffect } from "react";
-import { View, ActivityIndicator, Appearance } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 
 const AuthGuard = () => {
   const { navigate } = useRouter();

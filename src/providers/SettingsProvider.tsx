@@ -1,5 +1,5 @@
 import { Appearance, ColorSchemeName } from "react-native";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
 import i18n from "i18next";

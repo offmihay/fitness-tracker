@@ -1,8 +1,8 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
-import CustomText from "@/src/components/shared/text/CustomText";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
+import CustomText from "@/src/shared/text/CustomText";
 
 type Props = {};
 

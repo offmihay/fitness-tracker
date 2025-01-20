@@ -1,14 +1,13 @@
 import React from "react";
-import { Platform, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Animated, { useAnimatedStyle, interpolate, Extrapolation } from "react-native-reanimated";
 import type { SharedValue } from "react-native-reanimated";
-
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { usePathname, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT, routeNames } from "../options";
-import { Entypo, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 interface MyCustomHeaderProps {
   scrollY: SharedValue<number>;
@@ -40,7 +39,7 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
   });
 
   const animatedTitleStyle = useAnimatedStyle(() => {
-    const bottom = interpolate(scrollY.value, [0, Scroll_Distance], [10, 6], Extrapolation.CLAMP);
+    const bottom = interpolate(scrollY.value, [0, Scroll_Distance], [10, 3], Extrapolation.CLAMP);
     const left = interpolate(scrollY.value, [0, Scroll_Distance], [0, 30], Extrapolation.CLAMP);
 
     return {
@@ -50,7 +49,7 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
   });
 
   const animatedBackStyle = useAnimatedStyle(() => {
-    const bottom = interpolate(scrollY.value, [0, Scroll_Distance], [75, 8], Extrapolation.CLAMP);
+    const bottom = interpolate(scrollY.value, [0, Scroll_Distance], [78, 8], Extrapolation.CLAMP);
     const left = interpolate(scrollY.value, [0, Scroll_Distance], [-15, -15], Extrapolation.CLAMP);
     const scaleValue = interpolate(
       scrollY.value,
@@ -74,7 +73,7 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
           {!routeNames.includes(name) && (
             <Animated.View style={[{ position: "absolute" }, animatedBackStyle]}>
               <TouchableOpacity onPress={() => router.back()}>
-                <Feather name="chevron-left" size={45} color={theme.colors.link} />
+                <Feather name="chevron-left" size={40} color={theme.colors.link} />
               </TouchableOpacity>
             </Animated.View>
           )}

@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, View } from "react-native";
 import React, { useState } from "react";
-import DismissKeyboardView from "../shared/view/DismissKeyboardView";
+import DismissKeyboardView from "../../shared/view/DismissKeyboardView";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Divider } from "react-native-paper";

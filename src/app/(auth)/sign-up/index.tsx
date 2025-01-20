@@ -1,21 +1,18 @@
-import { View, StyleSheet, TouchableOpacity, Keyboard, StatusBar } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { t } from "i18next";
-
-import CustomText from "../../../components/shared/text/CustomText";
-
-import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
-import ButtonBack from "@/src/components/shared/button/ButtonBack";
+import ButtonBack from "@/src/shared/button/ButtonBack";
 import { useSignUpMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
-import CustomKeyboardAvoidingView from "@/src/components/shared/view/CustomKeyboardAvoidingView";
-import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
-import RHFormInput from "@/src/components/shared/form/RHFormInput";
+import CustomKeyboardAvoidingView from "@/src/shared/view/CustomKeyboardAvoidingView";
+import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import RHFormInput from "@/src/shared/form/RHFormInput";
+import CustomText from "@/src/shared/text/CustomText";
 
 type EmailData = {
   email: string;

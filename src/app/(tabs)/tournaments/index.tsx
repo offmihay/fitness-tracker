@@ -1,10 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import { useRouter } from "expo-router";
-import { KeyboardProvider, KeyboardStickyView } from "react-native-keyboard-controller";
-import CustomTextInput from "@/src/components/shared/input/CustomTextInput";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
 
 type Props = {};
 

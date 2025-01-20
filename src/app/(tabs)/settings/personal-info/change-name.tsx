@@ -1,12 +1,9 @@
-import { Platform, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useUser } from "@clerk/clerk-expo";
-import RHFormInput from "@/src/components/shared/form/RHFormInput";
 import { useTranslation } from "react-i18next";
-import StickyFooterView from "@/src/components/shared/view/StickyFooterView";
-import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
-import CustomKeyboardAwareScrollView from "@/src/components/shared/view/CustomKeyboardAwareScrollView";
+import StickyFooterView from "@/src/shared/view/StickyFooterView";
 import clerkTransformData from "@/src/utils/clerkTransformData";
 import { useUpdateUserMutation } from "@/src/queries/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +14,9 @@ import {
 import { useRouter } from "expo-router";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
-import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
+import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import RHFormInput from "@/src/shared/form/RHFormInput";
 
 const changeName = () => {
   const { t } = useTranslation();

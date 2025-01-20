@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
+import { RefreshControl, StyleSheet, View } from "react-native";
 import React, { useCallback, useState, memo } from "react";
 
 import TournamentCard from "@/src/components/home/TournamentCard";
@@ -25,11 +25,9 @@ type HomePageProps = {};
 const HomePage = ({}: HomePageProps) => {
   const { settings } = useSettings();
   const router = useRouter();
-  const navigation = useNavigation();
 
   const { data, refetch } = useAllTournaments();
 
-  // Мемоизированные обработчики
   const handleOpenDetails = useCallback(
     (id: string) => {
       router.push({

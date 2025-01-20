@@ -1,10 +1,9 @@
 import { useMemo } from "react";
-
-import ButtonFilter from "../../shared/button/ButtonFilter";
 import { FontAwesome6 } from "@expo/vector-icons";
 import FilterContent from "./FilterContent";
-import ModalTrigger from "../../shared/modal/utils/ModalTrigger";
 import { Platform } from "react-native";
+import ButtonFilter from "@/src/shared/button/ButtonFilter";
+import ModalTrigger from "@/src/shared/modal/utils/ModalTrigger";
 
 const FilterModal = () => {
   const snapPoints = useMemo(() => ["90%"], []);

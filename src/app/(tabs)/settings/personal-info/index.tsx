@@ -1,5 +1,5 @@
-import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
-import React, { useRef, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import React from "react";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useTranslation } from "react-i18next";
 import UserAvatarList from "@/src/components/settings/personal-info/UserAvatarList";
@@ -8,9 +8,9 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Entypo, Feather, FontAwesome, Octicons } from "@expo/vector-icons";
 import { Divider } from "react-native-paper";
 import PersonalInfoList from "@/src/components/settings/personal-info/PersonalInfoList";
-import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import FormBirthday from "@/src/components/settings/personal-info/forms/FormBirthday";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
 
 type PersonalInfoProps = {};
 

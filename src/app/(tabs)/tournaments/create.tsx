@@ -4,21 +4,20 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 import { useTournamentMutation } from "@/src/queries/tournaments";
-import RHFormInput from "@/src/components/shared/form/RHFormInput";
-import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
-import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
-import RHFormDropdownInput from "@/src/components/shared/form/RHFormDropdownInput";
+import RHFormDatePicker from "@/src/shared/form/RHFormDatePicker";
 import ChoosePhoto, { ImageForm } from "@/src/components/tournaments/ChoosePhoto";
-import CustomText from "@/src/components/shared/text/CustomText";
 import { Divider } from "react-native-paper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import schemaCreateTournament, {
   TournamentFormData,
 } from "@/src/components/tournaments/create/schema";
 import DualInputSection from "@/src/components/tournaments/DualInputSection";
-import CustomAnimatedView from "@/src/components/shared/view/CustomAnimatedView";
-import CustomKeyboardAwareScrollView from "@/src/components/shared/view/CustomKeyboardAwareScrollView";
+import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
 import LayoutKeyboardScrollView from "@/src/components/navigation/layouts/LayoutKeyboardScrollView";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import RHFormDropdownInput from "@/src/shared/form/RHFormDropdownInput";
+import RHFormInput from "@/src/shared/form/RHFormInput";
+import CustomText from "@/src/shared/text/CustomText";
 
 const CreateTournament = () => {
   const { t } = useTranslation();

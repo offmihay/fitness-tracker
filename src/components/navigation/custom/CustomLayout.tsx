@@ -1,10 +1,9 @@
 import { NativeScrollEvent, NativeSyntheticEvent, StatusBar, StyleSheet, View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import Animated, {
   Extrapolation,
   interpolate,
   interpolateColor,
-  runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,

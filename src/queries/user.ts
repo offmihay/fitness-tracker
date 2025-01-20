@@ -1,4 +1,4 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-expo";
 import { UpdateUserClerkFormData } from "../utils/clerkTransformData";
 

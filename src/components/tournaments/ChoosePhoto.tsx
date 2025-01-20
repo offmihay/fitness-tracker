@@ -1,21 +1,21 @@
 import { Keyboard, ScrollView, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
-import Loader from "../shared/loader/Loader";
-import ChooseCameraModal from "../shared/modal/ChooseCameraModal";
+import Loader from "../../shared/loader/Loader";
+import ChooseCameraModal from "../../shared/modal/ChooseCameraModal";
 import { pickCameraImage } from "@/src/services/pickCameraImage";
 import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { ImagePickerAsset } from "expo-image-picker";
 import { useUploadImage } from "@/src/queries/upload-image";
-import CustomText from "../shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
-import ButtonInput from "../shared/button/ButtonInput";
-import CustomIcon from "../shared/icon/CustomIcon";
-import CustomAnimatedView from "../shared/view/CustomAnimatedView";
-import ErrorAnimatedView from "../shared/view/ErrorAnimatedView";
+import ButtonInput from "../../shared/button/ButtonInput";
+import CustomIcon from "../../shared/icon/CustomIcon";
+import CustomAnimatedView from "../../shared/view/CustomAnimatedView";
+import ErrorAnimatedView from "../../shared/view/ErrorAnimatedView";
 import FastImage from "@d11/react-native-fast-image";
+import CustomText from "@/src/shared/text/CustomText";
 
 export type ImageForm = {
   publicId: string;

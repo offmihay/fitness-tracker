@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, TextInput, Text, StyleSheet } from "react-native";
+import { useState, useRef, useEffect } from "react";
 
 const useFocusWithTimeout = (timeoutDuration = 100) => {
   const [isAnyInputFocused, setIsAnyInputFocused] = useState(false);

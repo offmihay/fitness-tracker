@@ -1,6 +1,6 @@
 import React from "react";
 import CustomLayout from "../custom/CustomLayout";
-import Animated, { SharedValue } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
 type AnimatedFlatListProps<T> = React.ComponentProps<typeof Animated.FlatList<T>>;
 

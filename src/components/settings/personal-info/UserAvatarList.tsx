@@ -1,18 +1,17 @@
 import React, { useRef, useState } from "react";
 import { View, Pressable, TouchableOpacity, StyleSheet, Keyboard } from "react-native";
 import { Entypo, Feather } from "@expo/vector-icons";
-import CustomText from "../../shared/text/CustomText";
-import Loader from "../../shared/loader/Loader";
+import Loader from "../../../shared/loader/Loader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import CustomIcon from "../../shared/icon/CustomIcon";
-import { Divider } from "react-native-paper";
+import CustomIcon from "../../../shared/icon/CustomIcon";
 import { useUser } from "@clerk/clerk-expo";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useSetProfileImageMutation } from "@/src/queries/user";
 import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import { pickCameraImage } from "@/src/services/pickCameraImage";
-import ChooseCameraModal from "../../shared/modal/ChooseCameraModal";
+import ChooseCameraModal from "../../../shared/modal/ChooseCameraModal";
 import FastImage from "@d11/react-native-fast-image";
+import CustomText from "@/src/shared/text/CustomText";
 
 const UserAvatarList = () => {
   const theme = useCustomTheme();

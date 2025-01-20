@@ -1,13 +1,13 @@
 import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Ionicons, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
-import CustomMap from "../shared/map/CustomMap";
-import CustomText from "../shared/text/CustomText";
-import ButtonDefault from "../shared/button/ButtonDefault";
 import { TournamentRequest } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 import FastImage from "@d11/react-native-fast-image";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import CustomMap from "@/src/shared/map/CustomMap";
+import CustomText from "@/src/shared/text/CustomText";
 
 type Props = {
   data: TournamentRequest;

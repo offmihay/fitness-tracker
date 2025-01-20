@@ -1,9 +1,8 @@
 import React from "react";
 import CustomLayout from "../custom/CustomLayout";
-import Animated, { SharedValue } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useScrollProps from "@/src/hooks/useScrollProps";
-import { boolean } from "zod";
 
 const AnimatedKeyboardAwareScrollView = Animated.createAnimatedComponent(KeyboardAwareScrollView);
 type AnimatedKeyboardScrollViewProps = React.ComponentProps<typeof AnimatedKeyboardAwareScrollView>;

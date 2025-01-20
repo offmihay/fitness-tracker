@@ -1,18 +1,21 @@
 import { Keyboard, Platform, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import CustomText from "../../shared/text/CustomText";
+
 import { Divider } from "react-native-paper";
-import ButtonDefault from "../../shared/button/ButtonDefault";
+
 import FilterItem from "./FilterItem";
-import DatePickerInput from "../../shared/input/DatePickerInput";
-import CustomTextInput from "../../shared/input/CustomTextInput";
+
 import { FilterGroup, FilterSingle, FilterRange, Range, Filter } from "./types";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useScrollProps from "@/src/hooks/useScrollProps";
 import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
-import StickyFooterView from "../../shared/view/StickyFooterView";
-import CustomKeyboardAwareScrollView from "../../shared/view/CustomKeyboardAwareScrollView";
+import StickyFooterView from "../../../shared/view/StickyFooterView";
+import CustomKeyboardAwareScrollView from "../../../shared/view/CustomKeyboardAwareScrollView";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import CustomTextInput from "@/src/shared/input/CustomTextInput";
+import DatePickerInput from "@/src/shared/input/DatePickerInput";
+import CustomText from "@/src/shared/text/CustomText";
 
 const FilterContent = () => {
   const { dismiss } = useBottomSheetModal();

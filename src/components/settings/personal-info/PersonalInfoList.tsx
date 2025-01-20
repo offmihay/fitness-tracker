@@ -1,8 +1,8 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import CustomText from "../../shared/text/CustomText";
-import CustomIcon from "../../shared/icon/CustomIcon";
+import CustomIcon from "../../../shared/icon/CustomIcon";
 import { Feather } from "@expo/vector-icons";
+import CustomText from "@/src/shared/text/CustomText";
 
 type Props = {
   label: string;

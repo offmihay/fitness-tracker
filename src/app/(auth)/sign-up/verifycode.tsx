@@ -2,10 +2,8 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { t } from "i18next";
-import CustomText from "../../../components/shared/text/CustomText";
-import Loader from "@/src/components/shared/loader/Loader";
-import ButtonBack from "@/src/components/shared/button/ButtonBack";
-import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
+import Loader from "@/src/shared/loader/Loader";
+import ButtonBack from "@/src/shared/button/ButtonBack";
 import useCountdown from "@/src/hooks/useCountdown";
 import {
   useResendVerificationCodeMutation,
@@ -13,11 +11,13 @@ import {
 } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { FormProvider, useForm } from "react-hook-form";
-import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
-import CustomKeyboardAvoidingView from "@/src/components/shared/view/CustomKeyboardAvoidingView";
+import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
+import CustomKeyboardAvoidingView from "@/src/shared/view/CustomKeyboardAvoidingView";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
-import RHFormInput from "@/src/components/shared/form/RHFormInput";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import RHFormInput from "@/src/shared/form/RHFormInput";
+import CustomText from "@/src/shared/text/CustomText";
 
 type VerificationCodeData = {
   code: string;

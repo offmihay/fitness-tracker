@@ -5,12 +5,11 @@ import { useTranslation } from "react-i18next";
 import clerkTransformData from "@/src/utils/clerkTransformData";
 import { useUpdateUserMutation } from "@/src/queries/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "expo-router";
 import {
   ChangeBirthdayFormData,
   schemaChangeBirthday,
 } from "@/src/components/settings/personal-info/forms/schema";
-import RHFormDatePicker from "@/src/components/shared/form/RHFormDatePicker";
+import RHFormDatePicker from "@/src/shared/form/RHFormDatePicker";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 
 type Props = {

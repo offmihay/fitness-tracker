@@ -1,4 +1,4 @@
-import { useOAuth, useSignIn } from "@clerk/clerk-expo";
+import { useOAuth } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import {
   View,
@@ -6,16 +6,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   StatusBar,
-  Appearance,
   Platform,
 } from "react-native";
-import CustomText from "../../components/shared/text/CustomText";
 import { Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
-import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
-import BackgroundImage from "@/src/components/shared/image/BackgroundImage";
+import BackgroundImage from "@/src/shared/image/BackgroundImage";
 import FastImage from "@d11/react-native-fast-image";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import CustomText from "@/src/shared/text/CustomText";
 
 const SignIn = () => {
   const { t } = useTranslation();

@@ -1,7 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import React from "react";
-import CustomHeader from "../custom/CustomHeader";
-import { SharedValue, useSharedValue } from "react-native-reanimated";
 import CustomLayout from "../custom/CustomLayout";
 
 type Props = Omit<React.ComponentProps<typeof CustomLayout>, "renderContent"> & {

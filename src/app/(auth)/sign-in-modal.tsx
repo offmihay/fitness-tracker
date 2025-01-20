@@ -1,16 +1,16 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect } from "react";
-import CustomText from "../../components/shared/text/CustomText";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
-import ButtonDefault from "@/src/components/shared/button/ButtonDefault";
 import { useSignInMutation } from "@/src/queries/signin";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { FormProvider, useForm } from "react-hook-form";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
-import DismissKeyboardView from "@/src/components/shared/view/DismissKeyboardView";
-import RHFormInput from "@/src/components/shared/form/RHFormInput";
+import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
+import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import RHFormInput from "@/src/shared/form/RHFormInput";
+import CustomText from "@/src/shared/text/CustomText";
 
 type Props = {};
 

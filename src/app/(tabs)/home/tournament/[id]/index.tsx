@@ -1,12 +1,10 @@
 import { StyleSheet, View } from "react-native";
-import React, { useEffect } from "react";
-import CustomText from "@/src/components/shared/text/CustomText";
-import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import React from "react";
+import { router, useLocalSearchParams } from "expo-router";
 import { useTournamentByID } from "@/src/queries/tournaments";
-import { ScrollView } from "react-native-gesture-handler";
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import TournamentDetails from "@/src/components/home/TournamentDetails";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
+import CustomText from "@/src/shared/text/CustomText";
 
 type Props = {};
 

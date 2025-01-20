@@ -1,10 +1,11 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useCallback, useEffect, useState, memo } from "react";
-import CustomText from "../shared/text/CustomText";
+import React, { memo } from "react";
+
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import FastImage from "@d11/react-native-fast-image";
+import CustomText from "@/src/shared/text/CustomText";
 
 type Props = {
   title: string;

@@ -7,7 +7,6 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { routeIcon } from "../options";
 
