@@ -26,7 +26,7 @@ const UserAvatarList = () => {
   const theme = useCustomTheme();
   const { user } = useUser();
   const [image, setImage] = useState<string | null>(user?.imageUrl || null);
-  const [loadingImg, setLoadingImg] = useState(true);
+  const [loadingImg, setLoadingImg] = useState(false);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const { t } = useTranslation();
 
@@ -63,12 +63,14 @@ const UserAvatarList = () => {
 
   const saveProfileImage = (uri: string | null) => {
     if (uri) {
+      const prevImage = image;
       setImage(uri);
       setProfileImgMutation.mutate(uri, {
         onError: (err) => {
-          setImage(user?.imageUrl || null);
+          setImage(prevImage);
           console.log("Error setting profile image:", JSON.stringify(err));
         },
+        onSettled: () => setProfileImgMutation.reset(),
       });
     }
   };
@@ -103,7 +105,7 @@ const UserAvatarList = () => {
                   resizeMode={FastImage.resizeMode.cover}
                   source={{ uri: image }}
                   onLoadStart={() => setLoadingImg(true)}
-                  onLoad={() => setLoadingImg(false)}
+                  onSettled={() => setLoadingImg(false)}
                 />
               )}
               {(isPending || loadingImg) && (
