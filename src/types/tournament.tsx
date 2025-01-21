@@ -85,3 +85,43 @@ export type Image = {
   tournamentId: string;
   url: string;
 };
+
+export const emptyTournamentRequest: TournamentRequest = {
+  ageRestrictions: {
+    minAge: 0,
+    maxAge: 0,
+  },
+  city: "",
+  createdAt: "",
+  currentParticipants: {
+    count: 0,
+    participants: [],
+  },
+  dateEnd: "",
+  dateStart: "",
+  description: "",
+  entryFee: 0,
+  geoCoordinates: {
+    latitude: 0,
+    longitude: 0,
+  },
+  id: "",
+  images: [],
+  location: "",
+  maxParticipants: 0,
+  organizer: {
+    id: "",
+    name: "",
+    contact: {
+      email: "",
+    },
+    verified: false,
+  },
+  prizePool: 0,
+  rules: "",
+  skillLevel: TournamentSkillLevel.Beginner,
+  format: TournamentFormat.Singles,
+  sportType: "",
+  status: TournamentStatus.Upcoming,
+  title: "",
+};

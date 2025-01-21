@@ -9,10 +9,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
 import { Feather } from "@expo/vector-icons";
 import { routeNames } from "../tabBar/TabBarButton";
+import Skeleton from "@/src/shared/skeleton/Skeleton";
 
 interface MyCustomHeaderProps {
   scrollY: SharedValue<number>;
-  name: string;
+  name?: string;
   isNameUnique?: boolean;
 }
 
@@ -71,7 +72,7 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
         style={[styles.wrapper, { borderColor: theme.colors.surfaceLight, paddingTop: insets.top }]}
       >
         <View style={[styles.titleContainer]}>
-          {!routeNames.includes(name) && (
+          {name && !routeNames.includes(name) && (
             <Animated.View style={[{ position: "absolute" }, animatedBackStyle]}>
               <TouchableOpacity onPress={() => router.back()}>
                 <Feather name="chevron-left" size={40} color={theme.colors.link} />
@@ -79,12 +80,16 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
             </Animated.View>
           )}
           <Animated.View style={[styles.title, animatedTitleStyle]}>
-            <Animated.Text
-              style={[{ color: theme.colors.text, fontWeight: 600 }, animatedTextStyle]}
-              numberOfLines={2}
-            >
-              {isNameUnique ? name : t(`title.${name}`)}
-            </Animated.Text>
+            {name ? (
+              <Animated.Text
+                style={[{ color: theme.colors.text, fontWeight: 600 }, animatedTextStyle]}
+                numberOfLines={2}
+              >
+                {isNameUnique ? name : t(`title.${name}`)}
+              </Animated.Text>
+            ) : (
+              <Skeleton height={40} width={220} wrapperStyle={{ borderRadius: 10 }} />
+            )}
           </Animated.View>
         </View>
       </View>

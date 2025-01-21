@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useTournamentByID } from "@/src/queries/tournaments";
 import TournamentDetails from "@/src/components/home/TournamentDetails";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
-import CustomText from "@/src/shared/text/CustomText";
+import TournamentDetailsSkeleton from "@/src/components/home/skeleton/TournamentDetailsSkeleton";
 
 type Props = {};
 
@@ -33,18 +33,21 @@ const TournamentDetailsScreen = ({}: Props) => {
     });
   };
 
+  const showSkeleton = isLoading || !data;
+
   return (
-    <LayoutScrollView name={data?.title || "Tournament"} isNameUnique>
+    <LayoutScrollView name={data?.title} isNameUnique>
       <View style={styles.wrapper}>
-        {!isLoading && data && (
+        {!showSkeleton ? (
           <TournamentDetails
             data={data}
             handleOpenRules={handleOpenRules}
             handleOpenParticipants={handleOpenParticipants}
             handleOpenOrganizer={handleOpenOrganizer}
           />
+        ) : (
+          <TournamentDetailsSkeleton />
         )}
-        {isLoading && <CustomText>loading...</CustomText>}
       </View>
     </LayoutScrollView>
   );

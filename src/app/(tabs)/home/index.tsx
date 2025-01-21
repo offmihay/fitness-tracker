@@ -1,17 +1,16 @@
 import { RefreshControl, StyleSheet, View } from "react-native";
-import React, { useCallback, useState, memo } from "react";
-
-import TournamentCard from "@/src/components/home/TournamentCard";
-import { formatDateRange } from "@/src/utils/formatDateString";
-import { useNavigation, useRouter } from "expo-router";
+import React, { useCallback, useState, memo, useEffect } from "react";
+import TournamentCard, { CARD_HEIGHT } from "@/src/components/home/TournamentCard";
+import { useRouter } from "expo-router";
 import { useAllTournaments } from "@/src/queries/tournaments";
 import { useSettings } from "@/src/hooks/useSettings";
 import HomeHeader from "@/src/components/home/HomeHeader";
 import SortModal from "@/src/components/home/sort/SortModal";
 import FilterModal from "@/src/components/home/filter/FilterModal";
-import { TournamentRequest } from "@/src/types/tournament";
+import { emptyTournamentRequest, TournamentRequest } from "@/src/types/tournament";
 import { FlashList } from "@shopify/flash-list";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
+import TournamentCardSkeleton from "@/src/components/home/skeleton/TournamentCardSkeleton";
 
 const ListHeader = memo(() => (
   <View style={styles.headerContainer}>
@@ -25,8 +24,12 @@ type HomePageProps = {};
 const HomePage = ({}: HomePageProps) => {
   const { settings } = useSettings();
   const router = useRouter();
+  const [data, setData] = useState<TournamentRequest[]>([]);
 
-  const { data, refetch } = useAllTournaments();
+  const { data: loadedData, refetch, isFetching } = useAllTournaments();
+  useEffect(() => {
+    setData(loadedData.reverse());
+  }, [loadedData]);
 
   const handleOpenDetails = useCallback(
     (id: string) => {
@@ -69,18 +72,36 @@ const HomePage = ({}: HomePageProps) => {
 
   const keyExtractor = useCallback((item: TournamentRequest) => item.id.toString(), []);
 
+  const skeletonData: TournamentRequest[] = [
+    { ...emptyTournamentRequest, id: "empty1" },
+    { ...emptyTournamentRequest, id: "empty2" },
+  ];
+  const renderSkeleton = useCallback(
+    () => (
+      <View style={{ paddingVertical: 10 }}>
+        <View>
+          <TournamentCardSkeleton />
+        </View>
+      </View>
+    ),
+    [handleOpenDetails, handleRegister, settings.language]
+  );
+
+  const showSkeleton = isFetching || data.length === 0;
+
   return (
     <LayoutStatic name="home" disableHeader={true}>
       <View style={{ flex: 1 }}>
         <HomeHeader />
         <FlashList
+          scrollEnabled={!showSkeleton}
           ListHeaderComponent={ListHeader}
-          data={data}
+          data={!showSkeleton ? data : skeletonData}
           contentContainerStyle={styles.wrapper}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          estimatedItemSize={ITEM_HEIGHT}
+          renderItem={!showSkeleton ? renderItem : renderSkeleton}
+          keyExtractor={!showSkeleton ? keyExtractor : (item) => item.id.toString()}
+          estimatedItemSize={CARD_HEIGHT + 20}
         />
       </View>
     </LayoutStatic>
@@ -89,7 +110,6 @@ const HomePage = ({}: HomePageProps) => {
 
 export default HomePage;
 
-const ITEM_HEIGHT = 410;
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,

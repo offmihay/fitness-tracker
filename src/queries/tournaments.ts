@@ -22,6 +22,7 @@ export const useTournamentByID = (id: string): UseQueryResult<TournamentRequest>
     queryKey: ["tournament", id],
     queryFn: async () => {
       const response = await fetchApi<any, TournamentRequest>(`/tournaments/${id}`);
+
       return response.data;
     },
   });

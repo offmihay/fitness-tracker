@@ -21,13 +21,13 @@ type renderContent = {
 
 export type LayoutProps = {
   renderContent: ({ onScroll, maxHeight }: renderContent) => React.ReactNode;
-  renderHeader?: (scrollY: SharedValue<number>, title: string) => React.ReactNode;
+  renderHeader?: (scrollY: SharedValue<number>, title?: string) => React.ReactNode;
   headerConfig?: {
     maxHeight: number;
     minHeight: number;
   };
   disableHeader?: boolean;
-  name: string;
+  name?: string;
   isNameUnique?: boolean;
 };
 

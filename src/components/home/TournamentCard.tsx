@@ -1,6 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { memo } from "react";
-
+import React, { memo, useState } from "react";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
@@ -9,6 +8,7 @@ import CustomText from "@/src/shared/text/CustomText";
 import { TournamentRequest } from "@/src/types/tournament";
 import { formatDateRange } from "@/src/utils/formatDateString";
 import { useSettings } from "@/src/hooks/useSettings";
+import Skeleton from "@/src/shared/skeleton/Skeleton";
 
 type Props = {
   handleRegister: () => void;
@@ -16,10 +16,13 @@ type Props = {
   data: TournamentRequest;
 };
 
-const TournamentCard = ({ data, handleRegister, handleOpenDetails }: Props) => {
+export const CARD_HEIGHT = 380;
+
+const TournamentCard = ({ data, handleOpenDetails }: Props) => {
   const theme = useCustomTheme();
   const { t } = useTranslation();
   const { settings } = useSettings();
+  const [isLoadedImg, setIsLoadedImg] = useState(false);
 
   const { title, location, dateStart, dateEnd, currentParticipants, maxParticipants, images } =
     data;
@@ -44,14 +47,19 @@ const TournamentCard = ({ data, handleRegister, handleOpenDetails }: Props) => {
           }}
           className="mb-4"
         >
-          <FastImage
-            style={{ width: "100%", height: "100%" }}
-            source={{
-              uri: images && images[0].secureUrl,
-              priority: FastImage.priority.normal,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
+          <Skeleton height={190} visible={isLoadedImg}>
+            <FastImage
+              style={{ width: "100%", height: "100%" }}
+              source={{
+                uri: images && images[0].secureUrl,
+                priority: FastImage.priority.normal,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+              onLoad={() => setIsLoadedImg(true)}
+              onLoadStart={() => setIsLoadedImg(false)}
+            />
+          </Skeleton>
+
           <View style={[styles.prizeBadge, { backgroundColor: theme.colors.surface }]}>
             <FontAwesome6 name="sack-dollar" size={18} color={theme.colors.text} />
             <CustomText style={{ fontWeight: 800 }}>{prizePool}</CustomText>
@@ -129,7 +137,7 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 20,
     borderRadius: 10,
-    height: 390,
+    height: CARD_HEIGHT,
   },
 
   border: {
