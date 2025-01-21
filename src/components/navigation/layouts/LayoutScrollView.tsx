@@ -27,7 +27,7 @@ const LayoutScrollView = (props: LayoutScrollViewProps) => {
           onScroll={onScroll}
           scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={[contentContainerStyle, { paddingTop: maxHeight }]}
+          contentContainerStyle={[contentContainerStyle]}
           {...rest}
         >
           {children}

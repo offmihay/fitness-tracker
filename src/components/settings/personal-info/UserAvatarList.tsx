@@ -22,6 +22,7 @@ import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
 import { useTranslation } from "react-i18next";
 import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
+import ExpandableImage from "@/src/shared/image/ExpandableImage";
 
 const UserAvatarList = () => {
   const theme = useCustomTheme();
@@ -77,12 +78,12 @@ const UserAvatarList = () => {
   };
 
   const handleGalleryImagePick = async () => {
-    const result = await pickGalleryImage({ base64: true });
+    const result = await pickGalleryImage({ base64: true, allowsEditing: true });
     result && saveProfileImage(`data:image/jpeg;base64,${result[0].base64}`);
   };
 
   const handleCameraImagePick = async () => {
-    const result = await pickCameraImage({ base64: true });
+    const result = await pickCameraImage({ base64: true, allowsEditing: true });
     result && saveProfileImage(`data:image/jpeg;base64,${result.base64}`);
   };
 
@@ -91,24 +92,30 @@ const UserAvatarList = () => {
       <View style={styles.wrapper}>
         <View style={styles.contentWrapper}>
           <DeleteContextMenu onDelete={() => saveProfileImage(null)} isDisabled={!image}>
-            <Pressable onPress={void 0}>
+            <TouchableOpacity onPress={handleOpenCameraModal} activeOpacity={0.7}>
               <View
                 style={[styles.avatar, { backgroundColor: theme.colors.surfaceLight }]}
                 className="relative"
               >
                 {!image && <Entypo name="camera" size={24} color={theme.colors.primary} />}
                 {image && (
-                  <FastImage
+                  <ExpandableImage
+                    width={50}
+                    height={50}
+                    source={{ uri: image }}
                     style={{
                       width: "100%",
                       height: "100%",
                       opacity: isPending || loadingImg ? 0.5 : 1,
                     }}
-                    resizeMode={FastImage.resizeMode.cover}
-                    source={{ uri: image }}
-                    onLoadStart={() => setLoadingImg(true)}
-                    onLoadEnd={() => setLoadingImg(false)}
-                    onError={() => setLoadingImg(false)}
+                    imageWrapper={{ borderRadius: 100 }}
+                    resizeMode={FastImage.resizeMode.contain}
+                    onDelete={() => saveProfileImage(null)}
+                    onlyBaseImageProps={{
+                      onLoadStart: () => setLoadingImg(true),
+                      onLoadEnd: () => setLoadingImg(false),
+                      onError: () => setLoadingImg(false),
+                    }}
                   />
                 )}
                 {(isPending || loadingImg) && (
@@ -117,11 +124,10 @@ const UserAvatarList = () => {
                   </View>
                 )}
               </View>
-            </Pressable>
+            </TouchableOpacity>
           </DeleteContextMenu>
-          <TouchableOpacity onPress={handleOpenCameraModal}>
-            <CustomText type="default">Profile photo</CustomText>
-          </TouchableOpacity>
+
+          <CustomText type="default">Profile photo</CustomText>
         </View>
         <TouchableOpacity onPress={handleOpenCameraModal}>
           <View style={styles.btnWrapper}>

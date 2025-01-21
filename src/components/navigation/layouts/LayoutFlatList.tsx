@@ -19,7 +19,7 @@ function LayoutFlatList<T>(props: LayoutFlatListProps<T>) {
           onScroll={onScroll}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}
-          contentContainerStyle={[{ paddingTop: maxHeight }, contentContainerStyle]}
+          contentContainerStyle={[contentContainerStyle]}
           {...rest}
         />
       )}

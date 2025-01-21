@@ -96,13 +96,11 @@ const styles = StyleSheet.create({
     paddingBottom: 90,
   },
   header: {
-    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     justifyContent: "center",
     alignItems: "center",
-    zIndex: 1,
   },
 });
 

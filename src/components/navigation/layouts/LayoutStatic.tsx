@@ -14,7 +14,7 @@ const LayoutStatic = (props: Props) => {
       isNameUnique={isNameUnique}
       name={name}
       renderContent={({ maxHeight }) => (
-        <View style={{ flex: 1, paddingTop: disableHeader ? 0 : maxHeight }} {...rest}>
+        <View style={{ flex: 1 }} {...rest}>
           {children}
         </View>
       )}

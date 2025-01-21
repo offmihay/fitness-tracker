@@ -11,7 +11,7 @@ const Tournaments = ({}: Props) => {
 
   return (
     <LayoutStatic name="tournaments">
-      <View style={styles.wrapper}>
+      <View style={[styles.wrapper]}>
         <ButtonDefault title="Create tournament" onPress={() => navigate("tournaments/create")} />
       </View>
     </LayoutStatic>

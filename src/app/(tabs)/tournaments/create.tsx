@@ -18,6 +18,7 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormDropdownInput from "@/src/shared/form/RHFormDropdownInput";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
+import ExpandableImage from "@/src/shared/image/ExpandableImage";
 
 const CreateTournament = () => {
   const { t } = useTranslation();

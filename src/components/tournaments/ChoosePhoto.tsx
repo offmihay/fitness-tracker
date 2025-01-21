@@ -17,6 +17,7 @@ import ErrorAnimatedView from "../../shared/view/ErrorAnimatedView";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
 import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
+import ExpandableImage from "@/src/shared/image/ExpandableImage";
 
 export type ImageForm = {
   publicId: string;
@@ -151,15 +152,19 @@ const ChoosePhoto = (props: Props) => {
                         },
                       ]}
                     >
-                      <FastImage
+                      <ExpandableImage
+                        width={45}
+                        height={45}
                         source={{ uri: image?.uri }}
                         style={{
                           width: "100%",
                           height: "100%",
                           opacity: isUploading || isError ? 0.7 : 1,
                         }}
-                        resizeMode={FastImage.resizeMode.cover}
+                        resizeMode={FastImage.resizeMode.contain}
+                        onDelete={handleDelete}
                       />
+
                       {isUploading && (
                         <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
                           <Loader style={{ width: 45, height: 45 }} />
