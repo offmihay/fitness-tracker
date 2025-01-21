@@ -105,7 +105,8 @@ const UserAvatarList = () => {
                   resizeMode={FastImage.resizeMode.cover}
                   source={{ uri: image }}
                   onLoadStart={() => setLoadingImg(true)}
-                  onSettled={() => setLoadingImg(false)}
+                  onLoadEnd={() => setLoadingImg(false)}
+                  onError={() => setLoadingImg(false)}
                 />
               )}
               {(isPending || loadingImg) && (

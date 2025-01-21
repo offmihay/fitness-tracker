@@ -47,18 +47,17 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
           }}
           className="mb-4"
         >
-          <Skeleton height={190} visible={isLoadedImg}>
-            <FastImage
-              style={{ width: "100%", height: "100%" }}
-              source={{
-                uri: images && images[0].secureUrl,
-                priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.cover}
-              onLoad={() => setIsLoadedImg(true)}
-              onLoadStart={() => setIsLoadedImg(false)}
-            />
-          </Skeleton>
+          <Skeleton height={190} visible={isLoadedImg} />
+          <FastImage
+            style={{ width: "100%", height: "100%" }}
+            source={{
+              uri: images && images[0].secureUrl,
+              priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
+            onLoadStart={() => setIsLoadedImg(false)}
+            onLoadEnd={() => setIsLoadedImg(true)}
+          />
 
           <View style={[styles.prizeBadge, { backgroundColor: theme.colors.surface }]}>
             <FontAwesome6 name="sack-dollar" size={18} color={theme.colors.text} />

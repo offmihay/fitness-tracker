@@ -1,6 +1,6 @@
 import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
-import React from "react";
-import { Ionicons, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import React, { useRef, useState } from "react";
+import { Ionicons, FontAwesome6, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { TournamentRequest } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,9 @@ import FastImage from "@d11/react-native-fast-image";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import CustomMap from "@/src/shared/map/CustomMap";
 import CustomText from "@/src/shared/text/CustomText";
+import PagerView from "react-native-pager-view";
+import Skeleton from "@/src/shared/skeleton/Skeleton";
+import CustomArrow from "@/src/shared/button/arrow/CustomArrow";
 
 type Props = {
   data: TournamentRequest;
@@ -25,10 +28,94 @@ const TournamentDetails = ({
   const theme = useCustomTheme();
   const { t } = useTranslation("");
 
+  const ref = useRef<PagerView>(null);
+  const [currIndex, setCurrIndex] = useState(0);
+
+  const handleImageScroll = (dir: "left" | "right") => {
+    switch (dir) {
+      case "left": {
+        setCurrIndex((prev) => {
+          if (prev > 0) {
+            ref.current?.setPage(prev - 1);
+            return prev - 1;
+          } else {
+            return prev;
+          }
+        });
+        break;
+      }
+      case "right": {
+        setCurrIndex((prev) => {
+          if (prev < data.images.length - 1) {
+            ref.current?.setPage(prev + 1);
+            return prev + 1;
+          } else {
+            return prev;
+          }
+        });
+        break;
+      }
+    }
+  };
+  const disabledArrowLeft = currIndex === 0;
+
+  const [imagesWithStatus, setImagesWithStatus] = useState<
+    (TournamentRequest["images"][number] & { isLoaded?: boolean })[]
+  >(data.images);
+
+  const handleSetImageStatus = ({
+    image,
+    key,
+    isLoaded,
+  }: {
+    image: TournamentRequest["images"][number];
+    key: number;
+    isLoaded: boolean;
+  }) => {
+    const updatedImage = { ...image, isLoaded };
+    setImagesWithStatus((prev) => {
+      const newImages = [...prev];
+      newImages[key] = updatedImage;
+      return newImages;
+    });
+  };
+
   return (
     <View className="flex flex-col gap-6">
-      <View style={{ width: "100%", borderRadius: 10, height: 250, overflow: "hidden" }}>
-        <FastImage source={{ uri: data?.images[0].secureUrl }} style={StyleSheet.absoluteFill} />
+      <View style={styles.imgWrapper}>
+        <PagerView
+          style={{ flex: 1 }}
+          initialPage={currIndex}
+          ref={ref}
+          scrollEnabled={true}
+          onPageSelected={(e) => setCurrIndex(e.nativeEvent.position)}
+        >
+          {imagesWithStatus.map((img, index) => {
+            return (
+              <View key={index} style={{ flex: 1 }}>
+                <Skeleton height={250} visible={imagesWithStatus[index].isLoaded} />
+                <FastImage
+                  source={{ uri: img.secureUrl }}
+                  style={StyleSheet.absoluteFill}
+                  onLoadStart={() =>
+                    handleSetImageStatus({ image: img, key: index, isLoaded: false })
+                  }
+                  onLoadEnd={() => handleSetImageStatus({ image: img, key: index, isLoaded: true })}
+                />
+              </View>
+            );
+          })}
+        </PagerView>
+        <CustomArrow
+          dir="left"
+          onPress={() => handleImageScroll("left")}
+          isDisabled={currIndex === 0}
+        />
+        <CustomArrow
+          dir="right"
+          onPress={() => handleImageScroll("right")}
+          isDisabled={currIndex === imagesWithStatus.length - 1}
+        />
       </View>
       <View className="flex flex-row justify-between">
         <ButtonDefault title={t("home.tournament.register")} style={{ width: "48%" }} />
@@ -172,6 +259,14 @@ const TournamentDetails = ({
 };
 
 const styles = StyleSheet.create({
+  imgWrapper: {
+    width: "100%",
+    borderRadius: 10,
+    height: 250,
+    overflow: "hidden",
+    position: "relative",
+  },
+
   infoBlock: {
     borderRadius: 10,
     paddingHorizontal: 20,

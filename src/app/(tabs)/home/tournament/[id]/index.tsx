@@ -33,12 +33,12 @@ const TournamentDetailsScreen = ({}: Props) => {
     });
   };
 
-  const showSkeleton = isLoading || !data;
+  const isLoaded = !isLoading && data;
 
   return (
     <LayoutScrollView name={data?.title} isNameUnique>
       <View style={styles.wrapper}>
-        {!showSkeleton ? (
+        {isLoaded ? (
           <TournamentDetails
             data={data}
             handleOpenRules={handleOpenRules}

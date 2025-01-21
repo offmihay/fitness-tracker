@@ -10,8 +10,6 @@ const useScrollProps = () => {
 
   const coordOffset = 0;
 
-  // console.log("Limit: ", limitCoord);
-
   useEffect(() => {
     setLimitCoord(scrollViewHeight - heightView + coordOffset);
   }, [scrollViewHeight, heightView]);

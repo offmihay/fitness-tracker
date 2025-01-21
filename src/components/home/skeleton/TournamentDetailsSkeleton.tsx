@@ -38,23 +38,6 @@ const TournamentDetailsSkeleton = ({}: Props) => {
         <Skeleton height={25} width={250} />
         <Skeleton height={25} width={150} />
       </View>
-      {/* <View className="flex flex-row justify-around">
-        <View className="flex flex-col items-center gap-2">
-          <TouchableOpacity style={[styles.btn]} activeOpacity={0.8}>
-            <Skeleton height={60} width={60} />
-          </TouchableOpacity>
-        </View>
-        <View className="flex flex-col items-center gap-2">
-          <TouchableOpacity style={[styles.btn]} activeOpacity={0.8}>
-            <Skeleton height={60} width={60} />
-          </TouchableOpacity>
-        </View>
-        <View className="flex flex-col items-center gap-2">
-          <TouchableOpacity style={[styles.btn]} activeOpacity={0.8}>
-            <Skeleton height={60} width={60} />
-          </TouchableOpacity>
-        </View>
-      </View> */}
       <View className="flex gap-4 mt-2">
         <Skeleton height={25} width={300} />
         <Skeleton height={25} width={250} />

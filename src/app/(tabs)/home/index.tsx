@@ -87,20 +87,20 @@ const HomePage = ({}: HomePageProps) => {
     [handleOpenDetails, handleRegister, settings.language]
   );
 
-  const showSkeleton = isFetching || data.length === 0;
+  const isLoaded = !isFetching && data.length !== 0;
 
   return (
     <LayoutStatic name="home" disableHeader={true}>
       <View style={{ flex: 1 }}>
         <HomeHeader />
         <FlashList
-          scrollEnabled={!showSkeleton}
+          scrollEnabled={isLoaded}
           ListHeaderComponent={ListHeader}
-          data={!showSkeleton ? data : skeletonData}
+          data={isLoaded ? data : skeletonData}
           contentContainerStyle={styles.wrapper}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-          renderItem={!showSkeleton ? renderItem : renderSkeleton}
-          keyExtractor={!showSkeleton ? keyExtractor : (item) => item.id.toString()}
+          renderItem={isLoaded ? renderItem : renderSkeleton}
+          keyExtractor={isLoaded ? keyExtractor : (item) => item.id.toString()}
           estimatedItemSize={CARD_HEIGHT + 20}
         />
       </View>

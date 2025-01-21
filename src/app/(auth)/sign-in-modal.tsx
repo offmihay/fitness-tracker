@@ -11,6 +11,7 @@ import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
+import ButtonBack from "@/src/shared/button/ButtonBack";
 
 type Props = {};
 
@@ -68,6 +69,7 @@ const SignInModal = ({}: Props) => {
   return (
     <FormProvider {...methods}>
       <DismissKeyboardView>
+        <ButtonBack />
         <View style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
           <View style={[styles.contentWrapper]}>
             <Animated.View layout={LinearTransition} className="mb-12">
