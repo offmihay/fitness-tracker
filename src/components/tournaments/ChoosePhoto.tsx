@@ -1,4 +1,11 @@
-import { Keyboard, ScrollView, TouchableOpacity, View } from "react-native";
+import {
+  ActionSheetIOS,
+  Keyboard,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Loader from "../../shared/loader/Loader";
@@ -41,15 +48,36 @@ const ChoosePhoto = (props: Props) => {
   const theme = useCustomTheme();
 
   const uploadImage = useUploadImage();
-
   const [images, setImages] = useState<UploadedImageAsset[]>([]);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const handleOpenCameraModal = () => {
+  const openActionSheetIOS = () => {
     Keyboard.dismiss();
-    bottomSheetRef.current?.present();
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: [t("common.cancel"), t("common.openGallery"), t("common.openCamera")],
+        cancelButtonIndex: 0,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+        } else if (buttonIndex === 1) {
+          handleGalleryImagePick();
+        } else if (buttonIndex === 2) {
+          handleCameraImagePick();
+        }
+      }
+    );
+  };
+
+  const handleOpenCameraModal = () => {
+    if (Platform.OS === "ios") {
+      openActionSheetIOS();
+    } else {
+      Keyboard.dismiss();
+      bottomSheetRef.current?.present();
+    }
   };
 
   const handleGalleryImagePick = async () => {
