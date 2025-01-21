@@ -6,10 +6,10 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuItemTitle,
   DropdownMenuItemIndicator,
-} from "./CustomDropdown";
+} from "./DropdownMenuComponents";
 
 export type DropdownItem = {
-  key: "dark" | "light" | "system";
+  key: string;
   title: string;
   isSelected: boolean;
   onPress: () => void;
@@ -20,9 +20,9 @@ type Props = {
   children: React.ReactNode;
 };
 
-const DropdownCheckbox = ({ children, items }: Props) => {
+const CheckboxDropdownMenu = ({ children, items }: Props) => {
   return (
-    <DropdownMenuRoot dir="ltr">
+    <DropdownMenuRoot dir="rtl">
       <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
       <DropdownMenuContent defaultChecked>
         {items.map((item) => (
@@ -40,4 +40,4 @@ const DropdownCheckbox = ({ children, items }: Props) => {
   );
 };
 
-export default DropdownCheckbox;
+export default CheckboxDropdownMenu;

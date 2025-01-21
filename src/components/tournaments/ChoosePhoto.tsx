@@ -16,6 +16,7 @@ import CustomAnimatedView from "../../shared/view/CustomAnimatedView";
 import ErrorAnimatedView from "../../shared/view/ErrorAnimatedView";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
+import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
 
 export type ImageForm = {
   publicId: string;
@@ -103,8 +104,11 @@ const ChoosePhoto = (props: Props) => {
     <CustomAnimatedView>
       <View className="flex flex-row gap-3 py-1">
         <View style={{ width: 160 }}>
-          <ButtonInput onPress={handleOpenCameraModal}>
-            <View className="flex flex-row gap-2 w-full justify-center">
+          <ButtonInput onPress={handleOpenCameraModal} disabled={uploadImage.isPending}>
+            <View
+              className="flex flex-row gap-2 w-full justify-center"
+              style={{ opacity: uploadImage.isPending ? 0.5 : 1 }}
+            >
               <CustomIcon
                 render={(color, size) => <FontAwesome name="image" size={size} color={color} />}
               />
@@ -115,6 +119,7 @@ const ChoosePhoto = (props: Props) => {
 
         {images && (
           <ScrollView
+            bounces={false}
             ref={scrollViewRef}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -127,43 +132,48 @@ const ChoosePhoto = (props: Props) => {
                 const isError = image.isError;
                 const isUploading = uploadImage.isPending && !image.publicId && !isError;
 
+                const handleDelete = () => {
+                  setImages((prev) => prev.filter((img) => img.uniqueID !== image.uniqueID));
+                };
+
                 return (
-                  <View
-                    className="relative"
-                    key={index}
-                    style={[
-                      {
-                        borderWidth: 1,
-                        borderRadius: 5,
-                        width: 45,
-                        height: 45,
-                        overflow: "hidden",
-                        borderColor: isError ? theme.colors.error : theme.colors.textTertiary,
-                      },
-                    ]}
-                  >
-                    <FastImage
-                      source={{ uri: image?.uri }}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        opacity: isUploading || isError ? 0.7 : 1,
-                      }}
-                      resizeMode={FastImage.resizeMode.cover}
-                    />
-                    {isUploading && (
-                      <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                        <Loader style={{ width: 45, height: 45 }} />
-                      </View>
-                    )}
-                    {isError && (
-                      <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                        <TouchableOpacity onPress={() => handleUploadImage(image)}>
-                          <FontAwesome6 name="arrow-rotate-right" size={18} color="white" />
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                  </View>
+                  <DeleteContextMenu onDelete={handleDelete} key={index} isDisabled={isUploading}>
+                    <View
+                      className="relative"
+                      style={[
+                        {
+                          borderWidth: 1,
+                          borderRadius: 5,
+                          width: 45,
+                          height: 45,
+                          overflow: "hidden",
+                          borderColor: isError ? theme.colors.error : theme.colors.surface,
+                        },
+                      ]}
+                    >
+                      <FastImage
+                        source={{ uri: image?.uri }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          opacity: isUploading || isError ? 0.7 : 1,
+                        }}
+                        resizeMode={FastImage.resizeMode.cover}
+                      />
+                      {isUploading && (
+                        <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                          <Loader style={{ width: 45, height: 45 }} />
+                        </View>
+                      )}
+                      {isError && (
+                        <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                          <TouchableOpacity onPress={() => handleUploadImage(image)}>
+                            <FontAwesome6 name="arrow-rotate-right" size={18} color="white" />
+                          </TouchableOpacity>
+                        </View>
+                      )}
+                    </View>
+                  </DeleteContextMenu>
                 );
               })}
             </View>

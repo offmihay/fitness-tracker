@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import DropdownCheckbox, { DropdownItem } from "../../../shared/dropdown/DropdownCheckbox";
+import CheckboxDropdownMenu, { DropdownItem } from "../../../shared/dropdown/CheckboxDropdownMenu";
 import { getDropdownItems, getSettingsList } from "../../../components/settings/SettingsHelper";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import CustomListItem from "@/src/shared/list/CustomListItem";
@@ -35,9 +35,9 @@ const settings = ({}: Props) => {
               return listItem;
             } else {
               return (
-                <DropdownCheckbox items={dropdowns[dropdown] as DropdownItem[]} key={item.key}>
+                <CheckboxDropdownMenu items={dropdowns[dropdown] as DropdownItem[]} key={item.key}>
                   {listItem}
-                </DropdownCheckbox>
+                </CheckboxDropdownMenu>
               );
             }
           })}

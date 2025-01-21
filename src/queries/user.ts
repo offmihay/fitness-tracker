@@ -6,7 +6,7 @@ import Toast from "react-native-toast-message";
 export const useSetProfileImageMutation = () => {
   const { user } = useUser();
   return useMutation({
-    mutationFn: (imgUrl: string) => {
+    mutationFn: (imgUrl: string | null) => {
       return user!.setProfileImage({ file: imgUrl });
     },
     onError: (error) => {

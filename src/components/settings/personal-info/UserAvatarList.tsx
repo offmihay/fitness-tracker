@@ -21,11 +21,12 @@ import ChooseCameraModal from "../../../shared/modal/ChooseCameraModal";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
 import { useTranslation } from "react-i18next";
+import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
 
 const UserAvatarList = () => {
   const theme = useCustomTheme();
   const { user } = useUser();
-  const [image, setImage] = useState<string | null>(user?.imageUrl || null);
+  const [image, setImage] = useState<string | null>((user?.hasImage && user?.imageUrl) || null);
   const [loadingImg, setLoadingImg] = useState(false);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const { t } = useTranslation();
@@ -62,17 +63,17 @@ const UserAvatarList = () => {
   const { isPending } = setProfileImgMutation;
 
   const saveProfileImage = (uri: string | null) => {
-    if (uri) {
-      const prevImage = image;
-      setImage(uri);
-      setProfileImgMutation.mutate(uri, {
-        onError: (err) => {
-          setImage(prevImage);
-          console.log("Error setting profile image:", JSON.stringify(err));
-        },
-        onSettled: () => setProfileImgMutation.reset(),
-      });
-    }
+    const prevImage = image;
+    !!uri && setImage(uri);
+    setProfileImgMutation.mutate(uri, {
+      onError: () => {
+        setImage(prevImage);
+      },
+      onSettled: () => {
+        setProfileImgMutation.reset();
+        !uri && setImage(null);
+      },
+    });
   };
 
   const handleGalleryImagePick = async () => {
@@ -89,33 +90,35 @@ const UserAvatarList = () => {
     <>
       <View style={styles.wrapper}>
         <View style={styles.contentWrapper}>
-          <Pressable onPress={void 0}>
-            <View
-              style={[styles.avatar, { backgroundColor: theme.colors.surfaceLight }]}
-              className="relative"
-            >
-              {!image && <Entypo name="camera" size={35} color={theme.colors.primary} />}
-              {image && (
-                <FastImage
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    opacity: isPending || loadingImg ? 0.5 : 1,
-                  }}
-                  resizeMode={FastImage.resizeMode.cover}
-                  source={{ uri: image }}
-                  onLoadStart={() => setLoadingImg(true)}
-                  onLoadEnd={() => setLoadingImg(false)}
-                  onError={() => setLoadingImg(false)}
-                />
-              )}
-              {(isPending || loadingImg) && (
-                <View style={styles.loader}>
-                  <Loader style={{ width: 50, height: 50 }} />
-                </View>
-              )}
-            </View>
-          </Pressable>
+          <DeleteContextMenu onDelete={() => saveProfileImage(null)} isDisabled={!image}>
+            <Pressable onPress={void 0}>
+              <View
+                style={[styles.avatar, { backgroundColor: theme.colors.surfaceLight }]}
+                className="relative"
+              >
+                {!image && <Entypo name="camera" size={24} color={theme.colors.primary} />}
+                {image && (
+                  <FastImage
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      opacity: isPending || loadingImg ? 0.5 : 1,
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                    source={{ uri: image }}
+                    onLoadStart={() => setLoadingImg(true)}
+                    onLoadEnd={() => setLoadingImg(false)}
+                    onError={() => setLoadingImg(false)}
+                  />
+                )}
+                {(isPending || loadingImg) && (
+                  <View style={styles.loader}>
+                    <Loader style={{ width: 50, height: 50 }} />
+                  </View>
+                )}
+              </View>
+            </Pressable>
+          </DeleteContextMenu>
           <TouchableOpacity onPress={handleOpenCameraModal}>
             <CustomText type="default">Profile photo</CustomText>
           </TouchableOpacity>
