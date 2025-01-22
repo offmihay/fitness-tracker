@@ -1,13 +1,13 @@
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import {
+  Alert,
   Dimensions,
-  Modal,
   Pressable,
   StyleSheet,
   TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
 import FastImage, { FastImageProps } from "@d11/react-native-fast-image";
 import Animated, {
   interpolate,
@@ -19,11 +19,13 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
-import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
+import { Feather, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
+import Modal from "react-native-modal";
+import * as Haptics from "expo-haptics";
 
 type Props = {
-  width: ViewStyle["width"];
-  height: ViewStyle["height"];
+  width: number;
+  height: number;
   imageWrapper?: ViewStyle;
   onDelete?: () => void;
   onlyBaseImageProps?: FastImageProps;
@@ -32,8 +34,8 @@ type Props = {
 
 const ExpandableImage = (props: Props) => {
   const {
-    width,
-    height,
+    width: imgWidth,
+    height: imgHeight,
     style,
     imageWrapper,
     onDelete,
@@ -41,50 +43,50 @@ const ExpandableImage = (props: Props) => {
     onlyExpandedImageProps,
     ...rest
   } = props;
+
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
-  const END_POSITION_X = 100;
-  const END_POSITION_Y = 150;
-
   const scale = useSharedValue(0);
-
   const position = useSharedValue([0, 0]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [shouldDelete, setShouldDelete] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      setIsModalVisible(true);
-    } else {
-      setTimeout(() => {
-        setIsModalVisible(false);
-      }, 250);
-    }
-  }, [isOpen]);
-
-  const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0, top: 0, left: 0 });
+  const [imgDimensions, setImgDimensions] = useState({ top: 0, left: 0 });
 
   const viewRef = useRef<View>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (viewRef.current) {
-      viewRef.current.measure((x, y, width, height, pageX, pageY) => {
-        setImgDimensions({ left: pageX, top: pageY, width, height });
+      viewRef.current.measure((x, y, w, h, pageX, pageY) => {
+        setImgDimensions({ left: pageX, top: pageY });
       });
     }
   }, [viewRef.current]);
 
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
   useEffect(() => {
-    scale.value = withTiming(isOpen ? 1 : 0, {
-      duration: 250,
-    });
+    scale.value = withTiming(
+      isOpen ? 1 : 0,
+      {
+        duration: 250,
+      },
+      (finished) => {
+        if (!isOpen && finished) {
+          runOnJS(handleCloseModal)();
+        }
+      }
+    );
   }, [isOpen, scale]);
 
   const animatedViewStyle = useAnimatedStyle(() => {
-    const width = interpolate(scale.value, [0, 1], [imgDimensions.width, windowWidth]);
-    const height = interpolate(scale.value, [0, 1], [imgDimensions.height, windowHeight]);
+    const width = interpolate(scale.value, [0, 1], [imgWidth, windowWidth]);
+    const height = interpolate(scale.value, [0, 1], [imgHeight, windowHeight]);
 
     const top = interpolate(scale.value, [0, 1], [imgDimensions.top, 0]);
     const left = interpolate(scale.value, [0, 1], [imgDimensions.left, 0]);
@@ -118,11 +120,12 @@ const ExpandableImage = (props: Props) => {
 
   const handleOpen = () => {
     if (viewRef.current) {
-      viewRef.current.measure((x, y, width, height, pageX, pageY) => {
-        setImgDimensions({ left: pageX, top: pageY, width, height });
+      viewRef.current.measure((x, y, w, h, pageX, pageY) => {
+        setImgDimensions({ left: pageX, top: pageY });
       });
     }
     setIsOpen(true);
+    setIsModalVisible(true);
   };
 
   const handleClose = () => {
@@ -131,17 +134,25 @@ const ExpandableImage = (props: Props) => {
 
   const handleDelete = () => {
     setIsOpen(false);
-    setTimeout(() => {
-      onDelete?.();
-    }, 300);
+    setShouldDelete(true);
   };
+
+  const deleteImage = () => {
+    if (!isModalVisible && shouldDelete) {
+      setShouldDelete(false);
+      onDelete?.();
+    }
+  };
+
+  const END_POSITION_X = 100;
+  const END_POSITION_Y = 100;
 
   const panGesture = Gesture.Pan()
     .onStart((e) => {
       position.value = [0, 0];
     })
     .onUpdate((e) => {
-      position.value = [0, e.translationY];
+      position.value = [0, e.translationY * 1.2];
     })
     .onEnd((e) => {
       if (
@@ -159,35 +170,43 @@ const ExpandableImage = (props: Props) => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Animated.View style={{ opacity: isModalVisible ? 0 : 1, width: width, height: height }}>
+      <Animated.View
+        style={{ opacity: isModalVisible ? 0 : 1, width: imgWidth, height: imgHeight }}
+      >
         <Pressable
-          style={{ width: width, height: height }}
+          style={{ width: imgWidth, height: imgHeight }}
           onPress={handleOpen}
           ref={viewRef}
           disabled={isModalVisible}
+          onLongPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)}
         >
           <FastImage
-            style={[
-              style,
-              {
-                width: "100%",
-                height: "100%",
-              },
-            ]}
+            style={[style, { width: "100%", height: "100%" }]}
             {...rest}
             {...onlyBaseImageProps}
           />
         </Pressable>
       </Animated.View>
 
-      <Modal transparent={true} animationType="fade" visible={isModalVisible}>
+      <Modal
+        isVisible={isModalVisible}
+        backdropOpacity={0}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        onBackdropPress={handleClose}
+        onBackButtonPress={handleClose}
+        style={{ margin: 0 }}
+        animationInTiming={30}
+        animationOutTiming={30}
+        onModalHide={deleteImage}
+      >
         <Animated.View style={[styles.backBtn, animatedContentStyle]}>
           <TouchableOpacity onPress={handleClose}>
-            <FontAwesome6 name="arrow-left-long" size={24} color="white" />
+            <Feather name="chevron-left" size={40} color="white" />
           </TouchableOpacity>
         </Animated.View>
         <Animated.View style={[styles.deleteBtn, animatedContentStyle]}>
-          <TouchableOpacity onPress={handleDelete}>
+          <TouchableOpacity onPress={() => deleteConfirmationAlert(handleDelete)}>
             <FontAwesome name="trash-o" size={24} color="white" />
           </TouchableOpacity>
         </Animated.View>
@@ -196,13 +215,7 @@ const ExpandableImage = (props: Props) => {
           <Animated.View style={[styles.modalWrapper, animatedWrapperStyle]}>
             <Animated.View style={[styles.imageWrapper, imageWrapper, animatedViewStyle]}>
               <FastImage
-                style={[
-                  style,
-                  {
-                    width: "100%",
-                    height: "100%",
-                  },
-                ]}
+                style={[style, { width: "100%", height: "100%" }]}
                 {...rest}
                 {...onlyExpandedImageProps}
               />
@@ -231,22 +244,33 @@ const styles = StyleSheet.create({
     position: "absolute",
     paddingLeft: 20,
     paddingTop: 30,
-    top: 50,
-    left: 0,
+    top: 28,
+    left: -15,
     zIndex: 10,
-    width: 100,
-    height: 80,
   },
 
   deleteBtn: {
     position: "absolute",
+    paddingRight: 20,
     paddingTop: 30,
-    top: 50,
+    top: 35,
     right: 0,
     zIndex: 10,
-    width: 50,
-    height: 80,
   },
 });
 
 export default ExpandableImage;
+
+const deleteConfirmationAlert = (onPress: () => void) => {
+  Alert.alert("Are you sure you want to delete this image?", "", [
+    {
+      text: "Delete",
+      onPress: onPress,
+      style: "destructive",
+    },
+    {
+      text: "Cancel",
+      style: "cancel",
+    },
+  ]);
+};

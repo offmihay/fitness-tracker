@@ -7,6 +7,7 @@ import {
   Keyboard,
   ActionSheetIOS,
   Platform,
+  Alert,
 } from "react-native";
 import { Entypo, Feather } from "@expo/vector-icons";
 import Loader from "../../../shared/loader/Loader";
@@ -65,10 +66,13 @@ const UserAvatarList = () => {
 
   const saveProfileImage = (uri: string | null) => {
     const prevImage = image;
-    !!uri && setImage(uri);
+
     setProfileImgMutation.mutate(uri, {
       onError: () => {
         setImage(prevImage);
+      },
+      onSuccess: (data) => {
+        setImage(data.publicUrl);
       },
       onSettled: () => {
         setProfileImgMutation.reset();
@@ -100,6 +104,7 @@ const UserAvatarList = () => {
                 {!image && <Entypo name="camera" size={24} color={theme.colors.primary} />}
                 {image && (
                   <ExpandableImage
+                    key={`image-${image}`}
                     width={50}
                     height={50}
                     source={{ uri: image }}

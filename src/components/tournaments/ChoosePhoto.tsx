@@ -168,43 +168,49 @@ const ChoosePhoto = (props: Props) => {
                 return (
                   <DeleteContextMenu onDelete={handleDelete} key={index} isDisabled={isUploading}>
                     <View
-                      className="relative"
-                      style={[
-                        {
-                          borderWidth: 1,
-                          borderRadius: 5,
-                          width: 45,
-                          height: 45,
-                          overflow: "hidden",
-                          borderColor: isError ? theme.colors.error : theme.colors.surface,
-                        },
-                      ]}
+                      style={{
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderColor: isError ? theme.colors.error : theme.colors.surface,
+                        overflow: "hidden",
+                      }}
                     >
-                      <ExpandableImage
-                        width={45}
-                        height={45}
-                        source={{ uri: image?.uri }}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          opacity: isUploading || isError ? 0.7 : 1,
-                        }}
-                        resizeMode={FastImage.resizeMode.contain}
-                        onDelete={handleDelete}
-                      />
+                      <View
+                        className="relative"
+                        style={[
+                          {
+                            width: 45,
+                            height: 45,
+                          },
+                        ]}
+                      >
+                        <ExpandableImage
+                          width={45}
+                          height={45}
+                          source={{ uri: image?.uri }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            opacity: isUploading || isError ? 0.7 : 1,
+                          }}
+                          resizeMode={FastImage.resizeMode.contain}
+                          onDelete={handleDelete}
+                          onlyExpandedImageProps={{ style: { flex: 1, borderRadius: 5 } }}
+                        />
 
-                      {isUploading && (
-                        <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                          <Loader style={{ width: 45, height: 45 }} />
-                        </View>
-                      )}
-                      {isError && (
-                        <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                          <TouchableOpacity onPress={() => handleUploadImage(image)}>
-                            <FontAwesome6 name="arrow-rotate-right" size={18} color="white" />
-                          </TouchableOpacity>
-                        </View>
-                      )}
+                        {isUploading && (
+                          <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                            <Loader style={{ width: 45, height: 45 }} />
+                          </View>
+                        )}
+                        {isError && (
+                          <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                            <TouchableOpacity onPress={() => handleUploadImage(image)}>
+                              <FontAwesome6 name="arrow-rotate-right" size={18} color="white" />
+                            </TouchableOpacity>
+                          </View>
+                        )}
+                      </View>
                     </View>
                   </DeleteContextMenu>
                 );

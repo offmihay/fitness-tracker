@@ -69,6 +69,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-keyboard-controller": "^1.15.2",
     "react-native-maps": "1.18.0",
+    "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-pager-view": "6.5.1",
     "react-native-paper": "^5.12.5",
