@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect, Children } from "react";
 import {
   Alert,
   Dimensions,
@@ -8,7 +8,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import FastImage, { FastImageProps } from "@d11/react-native-fast-image";
+import FastImage, { FastImageProps, Source } from "@d11/react-native-fast-image";
 import Animated, {
   interpolate,
   interpolateColor,
@@ -22,27 +22,20 @@ import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-g
 import { Feather, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import * as Haptics from "expo-haptics";
+import PagerView from "react-native-pager-view";
+import Carousel from "../Carousel";
 
-type Props = {
-  width: number;
-  height: number;
-  imageWrapper?: ViewStyle;
-  onDelete?: () => void;
-  onlyBaseImageProps?: FastImageProps;
-  onlyExpandedImageProps?: FastImageProps;
-} & FastImageProps;
+export type ExpandableGroupImagesProps<T extends Object> = {
+  expadedImageWrapperStyle?: ViewStyle;
+  onDelete?: (index: number) => void;
+  images: Array<T & { width: number; height: number; isError: boolean } & FastImageProps>;
+  renderItem: (image: T, index: number) => React.ReactNode;
+};
 
-const ExpandableImage = (props: Props) => {
-  const {
-    width: imgWidth,
-    height: imgHeight,
-    style,
-    imageWrapper,
-    onDelete,
-    onlyBaseImageProps,
-    onlyExpandedImageProps,
-    ...rest
-  } = props;
+const ExpandableGroupImages = <T extends Object>(props: ExpandableGroupImagesProps<T>) => {
+  const { expadedImageWrapperStyle, onDelete, images, renderItem } = props;
+
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
@@ -52,19 +45,22 @@ const ExpandableImage = (props: Props) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [shouldDelete, setShouldDelete] = useState(false);
+  const [indexToDelete, setIndexToDelete] = useState<number | null>(null);
 
-  const [imgDimensions, setImgDimensions] = useState({ top: 0, left: 0 });
+  const [imgCoordinates, setImgCoordinates] = useState({ top: 0, left: 0 });
 
-  const viewRef = useRef<View>(null);
+  const imageRefs = useRef<React.RefObject<View>[]>([]);
 
-  useLayoutEffect(() => {
-    if (viewRef.current) {
-      viewRef.current.measure((x, y, w, h, pageX, pageY) => {
-        setImgDimensions({ left: pageX, top: pageY });
-      });
-    }
-  }, [viewRef.current]);
+  const [choosenImageIndex, setChoosenImageIndex] = useState(0);
+
+  useEffect(() => {
+    imageRefs.current = imageRefs.current.slice(0, images.length);
+    images.forEach((_, index) => {
+      if (!imageRefs.current[index]) {
+        imageRefs.current[index] = React.createRef<View>();
+      }
+    });
+  }, [images]);
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
@@ -82,14 +78,22 @@ const ExpandableImage = (props: Props) => {
         }
       }
     );
-  }, [isOpen, scale]);
+  }, [isOpen, scale, activeImageIndex]);
 
   const animatedViewStyle = useAnimatedStyle(() => {
-    const width = interpolate(scale.value, [0, 1], [imgWidth, windowWidth]);
-    const height = interpolate(scale.value, [0, 1], [imgHeight, windowHeight]);
+    const width = interpolate(
+      scale.value,
+      [0, 1],
+      [(images.length > 0 && images[activeImageIndex].width) || 0, windowWidth]
+    );
+    const height = interpolate(
+      scale.value,
+      [0, 1],
+      [(images.length > 0 && images[activeImageIndex].height) || 0, windowHeight]
+    );
 
-    const top = interpolate(scale.value, [0, 1], [imgDimensions.top, 0]);
-    const left = interpolate(scale.value, [0, 1], [imgDimensions.left, 0]);
+    const top = interpolate(scale.value, [0, 1], [imgCoordinates.top, 0]);
+    const left = interpolate(scale.value, [0, 1], [imgCoordinates.left, 0]);
 
     return {
       width,
@@ -118,29 +122,35 @@ const ExpandableImage = (props: Props) => {
     };
   });
 
-  const handleOpen = () => {
-    if (viewRef.current) {
-      viewRef.current.measure((x, y, w, h, pageX, pageY) => {
-        setImgDimensions({ left: pageX, top: pageY });
+  const handleOpen = (index: number) => {
+    setChoosenImageIndex(index);
+    if (imageRefs.current[index]) {
+      imageRefs.current[index].current?.measure((x, y, w, h, pageX, pageY) => {
+        setImgCoordinates({ left: pageX, top: pageY });
       });
     }
     setIsOpen(true);
     setIsModalVisible(true);
   };
-
   const handleClose = () => {
+    const index = activeImageIndex;
+    if (imageRefs.current[index]) {
+      imageRefs.current[index].current?.measure((x, y, w, h, pageX, pageY) => {
+        setImgCoordinates({ left: pageX, top: pageY });
+      });
+    }
     setIsOpen(false);
   };
 
   const handleDelete = () => {
     setIsOpen(false);
-    setShouldDelete(true);
+    setIndexToDelete(activeImageIndex);
   };
 
   const deleteImage = () => {
-    if (!isModalVisible && shouldDelete) {
-      setShouldDelete(false);
-      onDelete?.();
+    if (!isModalVisible && typeof indexToDelete === "number") {
+      setIndexToDelete(null);
+      onDelete?.(indexToDelete);
     }
   };
 
@@ -152,7 +162,7 @@ const ExpandableImage = (props: Props) => {
       position.value = [0, 0];
     })
     .onUpdate((e) => {
-      position.value = [e.translationX * 1.2, e.translationY * 1.2];
+      position.value = [0, e.translationY * 1.2];
     })
     .onEnd((e) => {
       if (
@@ -168,32 +178,32 @@ const ExpandableImage = (props: Props) => {
       }
     });
 
+  const filteredImages = images.filter((image) => !image.isError);
+  const imagesSources = filteredImages.map((image) => image.source) as Source[];
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Animated.View
-        style={{ opacity: isModalVisible ? 0 : 1, width: imgWidth, height: imgHeight }}
-      >
-        <Pressable
-          style={{ width: imgWidth, height: imgHeight }}
-          onPress={handleOpen}
-          ref={viewRef}
-          disabled={isModalVisible}
-          onLongPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)}
-        >
-          <FastImage
-            style={[style, { width: "100%", height: "100%" }]}
-            {...rest}
-            {...onlyBaseImageProps}
-          />
-        </Pressable>
-      </Animated.View>
+    <>
+      {images.map((image, index) => {
+        return (
+          <Animated.View key={index} style={{ width: image.width, height: image.height }}>
+            <Pressable
+              style={{ width: image.width, height: image.height }}
+              onPress={() => handleOpen(index)}
+              ref={imageRefs.current[index]}
+              disabled={isModalVisible || !!image.isError}
+              onLongPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)}
+            >
+              {renderItem(image, index)}
+            </Pressable>
+          </Animated.View>
+        );
+      })}
 
       <Modal
         isVisible={isModalVisible}
         backdropOpacity={0}
         animationIn="fadeIn"
         animationOut="fadeOut"
-        onBackdropPress={handleClose}
         onBackButtonPress={handleClose}
         style={{ margin: 0 }}
         animationInTiming={30}
@@ -210,20 +220,28 @@ const ExpandableImage = (props: Props) => {
             <FontAwesome name="trash-o" size={24} color="white" />
           </TouchableOpacity>
         </Animated.View>
-
-        <GestureDetector gesture={panGesture}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
           <Animated.View style={[styles.modalWrapper, animatedWrapperStyle]}>
-            <Animated.View style={[styles.imageWrapper, imageWrapper, animatedViewStyle]}>
-              <FastImage
-                style={[style, { width: "100%", height: "100%" }]}
-                {...rest}
-                {...onlyExpandedImageProps}
-              />
+            <Animated.View
+              style={[styles.imageWrapper, animatedViewStyle, expadedImageWrapperStyle]}
+            >
+              <GestureDetector gesture={panGesture}>
+                <Carousel
+                  images={imagesSources.map(({ uri }) => ({ imageUri: uri! }))}
+                  onSwipe={(index) => {
+                    setActiveImageIndex(index);
+                  }}
+                  choosenIndex={choosenImageIndex}
+                  imageProps={{
+                    resizeMode: FastImage.resizeMode.contain,
+                  }}
+                />
+              </GestureDetector>
             </Animated.View>
           </Animated.View>
-        </GestureDetector>
+        </GestureHandlerRootView>
       </Modal>
-    </GestureHandlerRootView>
+    </>
   );
 };
 
@@ -259,7 +277,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExpandableImage;
+export default ExpandableGroupImages;
 
 const deleteConfirmationAlert = (onPress: () => void) => {
   Alert.alert("Are you sure you want to delete this image?", "", [

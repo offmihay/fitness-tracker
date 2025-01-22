@@ -11,6 +11,7 @@ import CustomText from "@/src/shared/text/CustomText";
 import PagerView from "react-native-pager-view";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 import CustomArrow from "@/src/shared/button/arrow/CustomArrow";
+import Carousel from "@/src/shared/Carousel";
 
 type Props = {
   data: TournamentRequest;
@@ -28,93 +29,12 @@ const TournamentDetails = ({
   const theme = useCustomTheme();
   const { t } = useTranslation("");
 
-  const ref = useRef<PagerView>(null);
-  const [currIndex, setCurrIndex] = useState(0);
-
-  const handleImageScroll = (dir: "left" | "right") => {
-    switch (dir) {
-      case "left": {
-        setCurrIndex((prev) => {
-          if (prev > 0) {
-            ref.current?.setPage(prev - 1);
-            return prev - 1;
-          } else {
-            return prev;
-          }
-        });
-        break;
-      }
-      case "right": {
-        setCurrIndex((prev) => {
-          if (prev < data.images.length - 1) {
-            ref.current?.setPage(prev + 1);
-            return prev + 1;
-          } else {
-            return prev;
-          }
-        });
-        break;
-      }
-    }
-  };
-  const disabledArrowLeft = currIndex === 0;
-
-  const [imagesWithStatus, setImagesWithStatus] = useState<
-    (TournamentRequest["images"][number] & { isLoaded?: boolean })[]
-  >(data.images);
-
-  const handleSetImageStatus = ({
-    image,
-    key,
-    isLoaded,
-  }: {
-    image: TournamentRequest["images"][number];
-    key: number;
-    isLoaded: boolean;
-  }) => {
-    const updatedImage = { ...image, isLoaded };
-    setImagesWithStatus((prev) => {
-      const newImages = [...prev];
-      newImages[key] = updatedImage;
-      return newImages;
-    });
-  };
-
   return (
     <View className="flex flex-col gap-6">
       <View style={styles.imgWrapper}>
-        <PagerView
-          style={{ flex: 1 }}
-          initialPage={currIndex}
-          ref={ref}
-          scrollEnabled={true}
-          onPageSelected={(e) => setCurrIndex(e.nativeEvent.position)}
-        >
-          {imagesWithStatus.map((img, index) => {
-            return (
-              <View key={index} style={{ flex: 1 }}>
-                <Skeleton height={250} visible={imagesWithStatus[index].isLoaded} />
-                <FastImage
-                  source={{ uri: img.secureUrl }}
-                  style={StyleSheet.absoluteFill}
-                  onLoadStart={() =>
-                    handleSetImageStatus({ image: img, key: index, isLoaded: false })
-                  }
-                  onLoadEnd={() => handleSetImageStatus({ image: img, key: index, isLoaded: true })}
-                />
-              </View>
-            );
-          })}
-        </PagerView>
-        <CustomArrow
-          dir="left"
-          onPress={() => handleImageScroll("left")}
-          isDisabled={currIndex === 0}
-        />
-        <CustomArrow
-          dir="right"
-          onPress={() => handleImageScroll("right")}
-          isDisabled={currIndex === imagesWithStatus.length - 1}
+        <Carousel
+          images={data.images.map(({ secureUrl }) => ({ imageUri: secureUrl }))}
+          useArrows
         />
       </View>
       <View className="flex flex-row justify-between">

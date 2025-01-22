@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 type Props = {
-  height: number;
+  height?: number;
   width?: number;
   wrapperStyle?: ViewStyle;
 } & ShimmerPlaceholderProps;
@@ -23,7 +23,7 @@ const Skeleton = (props: Props) => {
       <ShimmerPlaceHolder
         LinearGradient={LinearGradient}
         width={400}
-        height={height}
+        height={height || "100%"}
         {...rest}
         shimmerColors={shimmerColors}
       >

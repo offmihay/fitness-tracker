@@ -36,7 +36,7 @@ const TournamentDetailsScreen = ({}: Props) => {
   const isLoaded = !isLoading && data;
 
   return (
-    <LayoutScrollView name={data?.title} isNameUnique>
+    <LayoutScrollView name={data?.title} isNameUnique scrollEnabled={!!isLoaded}>
       <View style={styles.wrapper}>
         {isLoaded ? (
           <TournamentDetails

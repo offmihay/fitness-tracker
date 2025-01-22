@@ -25,6 +25,7 @@ import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
 import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
+import ExpandableGroupImages from "@/src/shared/image/ExpandableGroupImages";
 
 export type ImageForm = {
   publicId: string;
@@ -108,9 +109,12 @@ const ChoosePhoto = (props: Props) => {
       onSuccess: (data) => {
         setImages((prev) =>
           prev.map((img) =>
-            img.assetId === imagePickerAsset.assetId ? { ...img, publicId: data.public_id } : img
+            img.assetId === imagePickerAsset.assetId
+              ? { ...img, publicId: data.public_id, secure_url: data.secure_url }
+              : img
           )
         );
+        FastImage.preload([{ uri: data.secure_url }]);
       },
       onError: (error) => {
         setImages((prev) =>
@@ -120,6 +124,10 @@ const ChoosePhoto = (props: Props) => {
         );
       },
     });
+  };
+
+  const handleDelete = (image: UploadedImageAsset) => {
+    setImages((prev) => prev.filter((img) => img.uniqueID !== image.uniqueID));
   };
 
   useEffect(() => {
@@ -157,45 +165,43 @@ const ChoosePhoto = (props: Props) => {
             }}
           >
             <View className="flex flex-row gap-2 flex-wrap">
-              {images.map((image, index) => {
-                const isError = image.isError;
-                const isUploading = uploadImage.isPending && !image.publicId && !isError;
+              <ExpandableGroupImages
+                key={images.map((img) => img.uniqueID).join(",")}
+                images={images.map((img) => ({
+                  ...img,
+                  source: { uri: img.secure_url },
+                  width: 45,
+                  height: 45,
+                  isError: img.isError || false,
+                }))}
+                expadedImageWrapperStyle={{ borderRadius: 5 }}
+                onDelete={(index) => handleDelete(images[index])}
+                renderItem={(image, index) => {
+                  const isError = image.isError;
+                  const isUploading = uploadImage.isPending && !image.publicId && !isError;
 
-                const handleDelete = () => {
-                  setImages((prev) => prev.filter((img) => img.uniqueID !== image.uniqueID));
-                };
-
-                return (
-                  <DeleteContextMenu onDelete={handleDelete} key={index} isDisabled={isUploading}>
-                    <View
-                      style={{
-                        borderWidth: 1,
-                        borderRadius: 5,
-                        borderColor: isError ? theme.colors.error : theme.colors.surface,
-                        overflow: "hidden",
-                      }}
+                  return (
+                    <DeleteContextMenu
+                      onDelete={() => handleDelete(image)}
+                      key={index}
+                      isDisabled={isUploading}
                     >
                       <View
-                        className="relative"
-                        style={[
-                          {
-                            width: 45,
-                            height: 45,
-                          },
-                        ]}
+                        style={{
+                          borderWidth: 1,
+                          borderRadius: 5,
+                          borderColor: isError ? theme.colors.error : theme.colors.surface,
+                          overflow: "hidden",
+                        }}
                       >
-                        <ExpandableImage
-                          width={45}
-                          height={45}
-                          source={{ uri: image?.uri }}
+                        <FastImage
+                          source={{ uri: image?.uri, priority: FastImage.priority.high }}
                           style={{
                             width: "100%",
                             height: "100%",
                             opacity: isUploading || isError ? 0.7 : 1,
                           }}
                           resizeMode={FastImage.resizeMode.contain}
-                          onDelete={handleDelete}
-                          onlyExpandedImageProps={{ style: { flex: 1, borderRadius: 5 } }}
                         />
 
                         {isUploading && (
@@ -211,10 +217,10 @@ const ChoosePhoto = (props: Props) => {
                           </View>
                         )}
                       </View>
-                    </View>
-                  </DeleteContextMenu>
-                );
-              })}
+                    </DeleteContextMenu>
+                  );
+                }}
+              />
             </View>
           </ScrollView>
         )}

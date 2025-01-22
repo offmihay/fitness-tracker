@@ -13,6 +13,10 @@ const Tournaments = ({}: Props) => {
     <LayoutStatic name="tournaments">
       <View style={[styles.wrapper]}>
         <ButtonDefault title="Create tournament" onPress={() => navigate("tournaments/create")} />
+
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          {/* <ExpandableGroupImages images={images} onDelete={(index) => console.log(index)} /> */}
+        </View>
       </View>
     </LayoutStatic>
   );

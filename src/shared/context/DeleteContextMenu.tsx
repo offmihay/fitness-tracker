@@ -21,7 +21,7 @@ type Props = {
 const DeleteContextMenu = ({ children, onDelete, isDisabled }: Props) => {
   const { t } = useTranslation();
   return (
-    <ContextMenuRoot dir="ltr" onOpenChange={(open) => console.log("asd", open)}>
+    <ContextMenuRoot dir="ltr">
       {/* @ts-ignore */}
       <ContextMenuTrigger action="longPress">{children}</ContextMenuTrigger>
       <ContextMenuContent defaultChecked>
