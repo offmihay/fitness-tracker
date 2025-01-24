@@ -1,7 +1,7 @@
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import React, { useRef } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
-import MapView, { Callout, Marker } from "react-native-maps";
+import MapView, { Callout, MapPressEvent, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import CustomText from "../text/CustomText";
 
@@ -18,7 +18,14 @@ const CustomMap = ({ geoCoordinates, description }: Props) => {
   const theme = useCustomTheme();
 
   const onMapReady = () => {
-    mapRef.current?.animateCamera({ center: geoCoordinates, altitude: 1000 }, { duration: 1000 });
+    mapRef.current?.animateCamera(
+      { center: geoCoordinates, altitude: 1000, zoom: 10 },
+      { duration: 1000 }
+    );
+  };
+
+  const onLocationSelect = (event: MapPressEvent) => {
+    console.log(event.nativeEvent.coordinate);
   };
 
   return (
@@ -29,25 +36,14 @@ const CustomMap = ({ geoCoordinates, description }: Props) => {
         showsMyLocationButton
         ref={mapRef}
         onMapReady={onMapReady}
+        provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
+        onPress={onLocationSelect}
       >
         {geoCoordinates && (
           <Marker coordinate={geoCoordinates}>
             <View style={[styles.marker]}>
               <FontAwesome6 name="location-dot" size={40} color="red" />
             </View>
-            <Callout
-              style={{
-                backgroundColor: theme.colors.surface,
-                minWidth: 200,
-                padding: 10,
-                borderRadius: 10,
-              }}
-              tooltip
-            >
-              <CustomText center type="predefault">
-                {description}
-              </CustomText>
-            </Callout>
           </Marker>
         )}
       </MapView>

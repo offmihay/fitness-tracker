@@ -25,7 +25,7 @@
         ]
       },
       "config": {
-        "googleMapsApiKey": "AIzaSyCkhR1xIWtdhAX90hs2-PgutDzplyz8z6o"
+        "googleMapsApiKey": "AIzaSyBwt7b5kiKy5-WCs4GvNrGDynYBHTSC_1k"
       }
     },
     "android": {
@@ -33,7 +33,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.offmihay.fitnesstracker"
+      "package": "com.offmihay.fitnesstracker",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBwt7b5kiKy5-WCs4GvNrGDynYBHTSC_1k"
+        }
+      }
     },
     "web": {
       "bundler": "metro"

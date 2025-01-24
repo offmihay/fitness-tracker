@@ -221,7 +221,7 @@ const CreateTournament = () => {
               onPress={() => setIsOpenedAdditional((prev) => !prev)}
               className="mb-2"
             >
-              <CustomText color={theme.colors.link}>Open additional parameters</CustomText>
+              <CustomText color={theme.colors.link}>Additional parameters</CustomText>
             </TouchableOpacity>
             {isOpenedAdditional && (
               <>

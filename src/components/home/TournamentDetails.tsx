@@ -90,14 +90,14 @@ const TournamentDetails = ({
             <MaterialIcons name="sports-tennis" size={24} color={theme.colors.primary} />
             <CustomText>
               <CustomText weight="bold">{t("tournament.sportType.title")}: </CustomText>
-              {data?.sportType}
+              {t(`tournament.sportType.${data.sportType}`)}
             </CustomText>
           </View>
           <View className="flex flex-row gap-4 items-center">
             <MaterialIcons name="fitness-center" size={24} color={theme.colors.primary} />
             <CustomText>
               <CustomText weight="bold">{t("tournament.skillLevel.title")}: </CustomText>
-              {data?.skillLevel}
+              {t(`tournament.skillLevel.${data.skillLevel}`)}
             </CustomText>
           </View>
           <View className="flex flex-row gap-4 items-center">
@@ -120,7 +120,7 @@ const TournamentDetails = ({
               <Ionicons name="information-circle" size={24} color={theme.colors.primary} />
               <CustomText>
                 <CustomText weight="bold">{t("tournament.format.title")}: </CustomText>
-                {data?.format}
+                {t(`tournament.format.${data.format}`)}
               </CustomText>
             </View>
           </View>
@@ -156,9 +156,7 @@ const TournamentDetails = ({
           </CustomText>
         </View>
         <View style={{ width: "100%", height: 250 }}>
-          {Platform.OS === "ios" ? (
-            <CustomMap geoCoordinates={data?.geoCoordinates} description={data?.location} />
-          ) : null}
+          <CustomMap geoCoordinates={data?.geoCoordinates} description={data?.location} />
         </View>
       </View>
       {data.organizer && (
