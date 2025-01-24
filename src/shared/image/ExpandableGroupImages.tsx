@@ -47,7 +47,10 @@ const ExpandableGroupImages = <T extends Object>(props: ExpandableGroupImagesPro
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [indexToDelete, setIndexToDelete] = useState<number | null>(null);
 
-  const [imgCoordinates, setImgCoordinates] = useState({ top: 0, left: 0 });
+  const [imgCoordinates, setImgCoordinates] = useState({
+    top: windowHeight / 2,
+    left: windowWidth / 2,
+  });
 
   const imageRefs = useRef<React.RefObject<View>[]>([]);
 

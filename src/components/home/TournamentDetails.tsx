@@ -93,13 +93,6 @@ const TournamentDetails = ({
               {data?.sportType}
             </CustomText>
           </View>
-          {/* <View className="flex flex-row gap-4 items-center">
-            <Ionicons name="information-circle" size={24} color={theme.colors.primary} />
-            <CustomText>
-              <CustomText weight="bold">{t("home.tournament.format")}: </CustomText>
-              {data?.format}
-            </CustomText>
-          </View> */}
           <View className="flex flex-row gap-4 items-center">
             <MaterialIcons name="fitness-center" size={24} color={theme.colors.primary} />
             <CustomText>
@@ -120,6 +113,19 @@ const TournamentDetails = ({
           </View>
         </View>
       </View>
+      {data.format && (
+        <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
+          <View className="flex flex-col gap-3">
+            <View className="flex flex-row gap-4 items-center">
+              <Ionicons name="information-circle" size={24} color={theme.colors.primary} />
+              <CustomText>
+                <CustomText weight="bold">{t("tournament.format.title")}: </CustomText>
+                {data?.format}
+              </CustomText>
+            </View>
+          </View>
+        </View>
+      )}
       <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
         <View className="flex flex-col gap-3">
           <View className="flex flex-row gap-4 items-center">

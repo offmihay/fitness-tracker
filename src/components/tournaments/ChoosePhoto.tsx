@@ -139,7 +139,7 @@ const ChoosePhoto = (props: Props) => {
 
   return (
     <CustomAnimatedView>
-      <View className="flex flex-row gap-3 py-1">
+      <View className="flex flex-row flex-wrap gap-3 py-1">
         <View style={{ width: 160 }}>
           <ButtonInput onPress={handleOpenCameraModal} disabled={uploadImage.isPending}>
             <View
@@ -155,74 +155,62 @@ const ChoosePhoto = (props: Props) => {
         </View>
 
         {images && (
-          <ScrollView
-            bounces={false}
-            ref={scrollViewRef}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            onContentSizeChange={() => {
-              scrollViewRef.current?.scrollToEnd({ animated: true });
-            }}
-          >
-            <View className="flex flex-row gap-2 flex-wrap">
-              <ExpandableGroupImages
-                key={images.map((img) => img.uniqueID).join(",")}
-                images={images.map((img) => ({
-                  ...img,
-                  source: { uri: img.secure_url },
-                  width: 45,
-                  height: 45,
-                  isError: img.isError || false,
-                }))}
-                expadedImageWrapperStyle={{ borderRadius: 5 }}
-                onDelete={(index) => handleDelete(images[index])}
-                renderItem={(image, index) => {
-                  const isError = image.isError;
-                  const isUploading = uploadImage.isPending && !image.publicId && !isError;
+          <ExpandableGroupImages
+            key={images.map((img) => img.uniqueID).join(",")}
+            images={images.map((img) => ({
+              ...img,
+              source: { uri: img.secure_url },
+              width: 45,
+              height: 45,
+              isError: img.isError || false,
+            }))}
+            expadedImageWrapperStyle={{ borderRadius: 5 }}
+            onDelete={(index) => handleDelete(images[index])}
+            renderItem={(image, index) => {
+              const isError = image.isError;
+              const isUploading = uploadImage.isPending && !image.publicId && !isError;
 
-                  return (
-                    <DeleteContextMenu
-                      onDelete={() => handleDelete(image)}
-                      key={index}
-                      isDisabled={isUploading}
-                    >
-                      <View
-                        style={{
-                          borderWidth: 1,
-                          borderRadius: 5,
-                          borderColor: isError ? theme.colors.error : theme.colors.surface,
-                          overflow: "hidden",
-                        }}
-                      >
-                        <FastImage
-                          source={{ uri: image?.uri, priority: FastImage.priority.high }}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            opacity: isUploading || isError ? 0.7 : 1,
-                          }}
-                          resizeMode={FastImage.resizeMode.contain}
-                        />
+              return (
+                <DeleteContextMenu
+                  onDelete={() => handleDelete(image)}
+                  key={index}
+                  isDisabled={isUploading}
+                >
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      borderColor: isError ? theme.colors.error : theme.colors.surface,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <FastImage
+                      source={{ uri: image?.uri, priority: FastImage.priority.high }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        opacity: isUploading || isError ? 0.7 : 1,
+                      }}
+                      resizeMode={FastImage.resizeMode.contain}
+                    />
 
-                        {isUploading && (
-                          <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                            <Loader style={{ width: 45, height: 45 }} />
-                          </View>
-                        )}
-                        {isError && (
-                          <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
-                            <TouchableOpacity onPress={() => handleUploadImage(image)}>
-                              <FontAwesome6 name="arrow-rotate-right" size={18} color="white" />
-                            </TouchableOpacity>
-                          </View>
-                        )}
+                    {isUploading && (
+                      <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                        <Loader style={{ width: 45, height: 45 }} />
                       </View>
-                    </DeleteContextMenu>
-                  );
-                }}
-              />
-            </View>
-          </ScrollView>
+                    )}
+                    {isError && (
+                      <View className="absolute left-0 top-0 w-full h-full flex items-center justify-center">
+                        <TouchableOpacity onPress={() => handleUploadImage(image)}>
+                          <FontAwesome6 name="arrow-rotate-right" size={18} color="white" />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+                </DeleteContextMenu>
+              );
+            }}
+          />
         )}
 
         <ChooseCameraModal

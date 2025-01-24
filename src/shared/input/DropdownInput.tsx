@@ -52,6 +52,7 @@ const DropdownInput = forwardRef<InputRef, DropdownInputProps<any>>(
         disabled
         value={value}
         isForceFocused={!!isOpen}
+        useClearButton={true}
         {...inputProps}
       />
     );

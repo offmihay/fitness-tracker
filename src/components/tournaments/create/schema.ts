@@ -1,4 +1,4 @@
-import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
+import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 import { z } from "zod";
 
 const dateSchema = z
@@ -38,7 +38,7 @@ const restSchema = z.object({
       })
     )
     .refine((images) => images.length > 0, { message: "At least one image is required" }),
-  // format: z.string(),
+  format: z.nativeEnum(TournamentFormat, { message: "Invalid format" }).optional(),
   // geoCoordinates: z.object({
   //   latitude: z.number({
   //     required_error: "Latitude is required",

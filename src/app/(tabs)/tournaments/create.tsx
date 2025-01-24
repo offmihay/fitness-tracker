@@ -1,8 +1,8 @@
-import { Platform, StyleSheet, View } from "react-native";
-import React from "react";
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
+import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 import { useTournamentMutation } from "@/src/queries/tournaments";
 import RHFormDatePicker from "@/src/shared/form/RHFormDatePicker";
 import ChoosePhoto, { ImageForm } from "@/src/components/tournaments/ChoosePhoto";
@@ -18,10 +18,13 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormDropdownInput from "@/src/shared/form/RHFormDropdownInput";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
-import ExpandableImage from "@/src/shared/image/ExpandableImage";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 const CreateTournament = () => {
   const { t } = useTranslation();
+  const [isOpenedAdditional, setIsOpenedAdditional] = useState(false);
+  const theme = useCustomTheme();
+
   const createTournamentMutation = useTournamentMutation();
   const methods = useForm<TournamentFormData>({
     defaultValues: {},
@@ -83,7 +86,7 @@ const CreateTournament = () => {
               }}
               dropdownProps={{
                 selectedValue: watch("sportType"),
-                onValueChange: (itemValue) => setValue("sportType", itemValue),
+                onValueChange: (itemValue) => setValue("sportType", itemValue || undefined),
                 items: [
                   { label: t("tournament.sportType.tennis"), value: TournamentSport.Tennis },
                   {
@@ -196,7 +199,7 @@ const CreateTournament = () => {
               }}
               dropdownProps={{
                 selectedValue: watch("skillLevel"),
-                onValueChange: (itemValue) => setValue("skillLevel", itemValue),
+                onValueChange: (itemValue) => setValue("skillLevel", itemValue || undefined),
                 items: [
                   {
                     label: t("tournament.skillLevel.amateur"),
@@ -214,8 +217,63 @@ const CreateTournament = () => {
                 selectAnLabel: t("tournament.skillLevel.label"),
               }}
             />
+            <TouchableOpacity
+              onPress={() => setIsOpenedAdditional((prev) => !prev)}
+              className="mb-2"
+            >
+              <CustomText color={theme.colors.link}>Open additional parameters</CustomText>
+            </TouchableOpacity>
+            {isOpenedAdditional && (
+              <>
+                <RHFormDropdownInput
+                  control={control}
+                  name="format"
+                  label={t("tournament.format.title")}
+                  inputProps={{
+                    value: watch("format") && t(`tournament.format.${watch("format")}`),
+                  }}
+                  dropdownProps={{
+                    selectedValue: watch("format")!,
+                    onValueChange: (itemValue) => setValue("format", itemValue || undefined),
+                    items: [
+                      {
+                        label: t("tournament.format.singles"),
+                        value: TournamentFormat.Singles,
+                      },
+                      {
+                        label: t("tournament.format.doubles"),
+                        value: TournamentFormat.Doubles,
+                      },
+                      {
+                        label: t("tournament.format.squad"),
+                        value: TournamentFormat.Squad,
+                      },
+                    ],
+                    selectAnLabel: t("tournament.format.label"),
+                  }}
+                />
+                <RHFormInput
+                  name="rules"
+                  label={t("tournament.rules")}
+                  inputProps={{
+                    style: {
+                      height: 100,
+                    },
+                    styleWrapper: {
+                      height: 110,
+                    },
+                    multiline: true,
+                    textAlignVertical: "top",
+                    returnKeyType: "default",
+                    useClearButton: false,
+                  }}
+                  control={control}
+                />
+              </>
+            )}
+
             <CustomAnimatedView>
-              <Divider className="mt-4" />
+              <Divider className="mt-2" />
               <CustomText type="subtitle" className="ml-1 my-3">
                 Location & Date
               </CustomText>
