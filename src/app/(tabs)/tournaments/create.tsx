@@ -1,11 +1,11 @@
-import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Platform, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 import { useTournamentMutation } from "@/src/queries/tournaments";
 import RHFormDatePicker from "@/src/shared/form/RHFormDatePicker";
-import ChoosePhoto, { ImageForm } from "@/src/components/tournaments/ChoosePhoto";
+import ChoosePhoto, { ImageForm } from "@/src/components/tournaments/create/ChoosePhoto";
 import { Divider } from "react-native-paper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import schemaCreateTournament, {
@@ -19,6 +19,8 @@ import RHFormDropdownInput from "@/src/shared/form/RHFormDropdownInput";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import MapPointModal from "@/src/components/tournaments/create/mapPoint/MapPointModal";
+import { LocationObject } from "@/src/components/tournaments/create/mapPoint/MapPointContent";
 
 const CreateTournament = () => {
   const { t } = useTranslation();
@@ -41,14 +43,10 @@ const CreateTournament = () => {
     setValue,
     formState: { errors: formErrors },
   } = methods;
-
+  console.log(watch("images"));
   const handleFormSubmit = (data: TournamentFormData) => {
     const dataAdd = {
       ...data,
-      geoCoordinates: {
-        latitude: 50.4501,
-        longitude: 30.5234,
-      },
       status: "upcoming",
     };
     createTournamentMutation.mutate(dataAdd, {
@@ -65,10 +63,14 @@ const CreateTournament = () => {
     setValue("images", images);
   };
 
+  const updateGeoCoordinated = (geoCoordinates: LocationObject) => {
+    setValue("geoCoordinates", geoCoordinates);
+  };
+
   return (
     <LayoutKeyboardScrollView
       name="createTournament"
-      extraScrollHeight={Platform.OS === "android" ? 80 : -75}
+      extraScrollHeight={Platform.OS === "android" ? 80 : -55}
       useScrollFeature
     >
       <FormProvider {...methods}>
@@ -217,12 +219,13 @@ const CreateTournament = () => {
                 selectAnLabel: t("tournament.skillLevel.label"),
               }}
             />
-            <TouchableOpacity
+            <Pressable
               onPress={() => setIsOpenedAdditional((prev) => !prev)}
               className="mb-2"
+              style={{ width: 180 }}
             >
               <CustomText color={theme.colors.link}>Additional parameters</CustomText>
-            </TouchableOpacity>
+            </Pressable>
             {isOpenedAdditional && (
               <>
                 <RHFormDropdownInput
@@ -312,6 +315,10 @@ const CreateTournament = () => {
               label={t("tournament.city")}
               control={control}
               onSubmitEditing={() => void 0}
+            />
+            <MapPointModal
+              onChoose={updateGeoCoordinated}
+              geoCoordinates={watch("geoCoordinates")}
             />
 
             <CustomAnimatedView className="my-5">

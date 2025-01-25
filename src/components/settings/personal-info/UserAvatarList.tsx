@@ -34,16 +34,15 @@ const UserAvatarList = () => {
   const { t } = useTranslation();
 
   const handleOpenCameraModal = () => {
+    Keyboard.dismiss();
     if (Platform.OS === "ios") {
       openActionSheetIOS();
     } else {
-      Keyboard.dismiss();
       bottomSheetRef.current?.present();
     }
   };
 
   const openActionSheetIOS = () => {
-    Keyboard.dismiss();
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options: [t("common.cancel"), t("common.openGallery"), t("common.openCamera")],
@@ -83,11 +82,13 @@ const UserAvatarList = () => {
 
   const handleGalleryImagePick = async () => {
     const result = await pickGalleryImage({ base64: true, allowsEditing: true });
+    Keyboard.dismiss();
     result && saveProfileImage(`data:image/jpeg;base64,${result[0].base64}`);
   };
 
   const handleCameraImagePick = async () => {
     const result = await pickCameraImage({ base64: true, allowsEditing: true });
+    Keyboard.dismiss();
     result && saveProfileImage(`data:image/jpeg;base64,${result.base64}`);
   };
 

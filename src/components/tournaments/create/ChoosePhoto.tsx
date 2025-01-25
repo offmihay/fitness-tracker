@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
-import Loader from "../../shared/loader/Loader";
-import ChooseCameraModal from "../../shared/modal/ChooseCameraModal";
+import Loader from "../../../shared/loader/Loader";
+import ChooseCameraModal from "../../../shared/modal/ChooseCameraModal";
 import { pickCameraImage } from "@/src/services/pickCameraImage";
 import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
@@ -17,10 +17,10 @@ import { ImagePickerAsset } from "expo-image-picker";
 import { useUploadImage } from "@/src/queries/upload-image";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
-import ButtonInput from "../../shared/button/ButtonInput";
-import CustomIcon from "../../shared/icon/CustomIcon";
-import CustomAnimatedView from "../../shared/view/CustomAnimatedView";
-import ErrorAnimatedView from "../../shared/view/ErrorAnimatedView";
+import ButtonInput from "../../../shared/button/ButtonInput";
+import CustomIcon from "../../../shared/icon/CustomIcon";
+import CustomAnimatedView from "../../../shared/view/CustomAnimatedView";
+import ErrorAnimatedView from "../../../shared/view/ErrorAnimatedView";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
 import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
@@ -52,10 +52,8 @@ const ChoosePhoto = (props: Props) => {
   const [images, setImages] = useState<UploadedImageAsset[]>([]);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const scrollViewRef = useRef<ScrollView>(null);
 
   const openActionSheetIOS = () => {
-    Keyboard.dismiss();
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options: [t("common.cancel"), t("common.openGallery"), t("common.openCamera")],
@@ -73,22 +71,23 @@ const ChoosePhoto = (props: Props) => {
   };
 
   const handleOpenCameraModal = () => {
+    Keyboard.dismiss();
     if (Platform.OS === "ios") {
       openActionSheetIOS();
     } else {
-      Keyboard.dismiss();
       bottomSheetRef.current?.present();
     }
   };
 
   const handleGalleryImagePick = async () => {
     const result = await pickGalleryImage({ allowsEditing: true });
-
+    Keyboard.dismiss();
     result && handleUploadImage({ ...result[0], uniqueID: `${result[0].assetId}${Date.now()}` });
   };
 
   const handleCameraImagePick = async () => {
     const result = await pickCameraImage({ aspect: [3, 4] });
+    Keyboard.dismiss();
     result && handleUploadImage({ ...result, uniqueID: `${result.assetId}${Date.now()}` });
   };
 
@@ -140,7 +139,7 @@ const ChoosePhoto = (props: Props) => {
   return (
     <CustomAnimatedView>
       <View className="flex flex-row flex-wrap gap-3 py-1">
-        <View style={{ width: 160 }}>
+        <View className="w-full">
           <ButtonInput onPress={handleOpenCameraModal} disabled={uploadImage.isPending}>
             <View
               className="flex flex-row gap-2 w-full justify-center"

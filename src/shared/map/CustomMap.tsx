@@ -3,7 +3,6 @@ import React, { useRef } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import MapView, { Callout, MapPressEvent, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import CustomText from "../text/CustomText";
 
 type Props = {
   geoCoordinates?: {
@@ -24,10 +23,6 @@ const CustomMap = ({ geoCoordinates, description }: Props) => {
     );
   };
 
-  const onLocationSelect = (event: MapPressEvent) => {
-    console.log(event.nativeEvent.coordinate);
-  };
-
   return (
     <>
       <MapView
@@ -37,7 +32,6 @@ const CustomMap = ({ geoCoordinates, description }: Props) => {
         ref={mapRef}
         onMapReady={onMapReady}
         provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
-        onPress={onLocationSelect}
       >
         {geoCoordinates && (
           <Marker coordinate={geoCoordinates}>
@@ -57,12 +51,6 @@ const styles = StyleSheet.create({
     height: "100%",
     flex: 1,
   },
-  // button: {
-  //   flex: 3,
-  //   position: "absolute",
-  //   left: 100,
-  //   top: 100,
-  // },
   marker: {
     justifyContent: "center",
     alignItems: "center",

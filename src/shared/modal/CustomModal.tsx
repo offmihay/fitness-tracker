@@ -75,7 +75,10 @@ const CustomModal = (props: Props) => {
     >
       <ThemeProvider theme={theme}>
         <BottomSheetView style={styles.contentContainer}>
-          <TouchableOpacity style={styles.closeIcon} onPress={() => handleDismiss()}>
+          <TouchableOpacity
+            style={[styles.closeIcon, { backgroundColor: theme.colors.background }]}
+            onPress={() => handleDismiss()}
+          >
             <AntDesign name="close" size={24} color={theme.colors.textSecondary} />
           </TouchableOpacity>
           <View style={{ width: "100%", height: "100%" }}>{children}</View>
@@ -98,10 +101,11 @@ const styles = StyleSheet.create({
     right: 5,
     top: 5,
     zIndex: 1000,
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 100,
   },
 });

@@ -39,16 +39,12 @@ const restSchema = z.object({
     )
     .refine((images) => images.length > 0, { message: "At least one image is required" }),
   format: z.nativeEnum(TournamentFormat, { message: "Invalid format" }).optional(),
-  // geoCoordinates: z.object({
-  //   latitude: z.number({
-  //     required_error: "Latitude is required",
-  //     invalid_type_error: "Latitude must be a number",
-  //   }),
-  //   longitude: z.number({
-  //     required_error: "Longitude is required",
-  //     invalid_type_error: "Longitude must be a number",
-  //   }),
-  // }),
+  geoCoordinates: z
+    .object({
+      latitude: z.number({}),
+      longitude: z.number({}),
+    })
+    .optional(),
   ageRestrictions: z
     .object({
       minAge: z.coerce.number({ message: "Min age is required" }).min(1),
