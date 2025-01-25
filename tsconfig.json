@@ -7,5 +7,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "app.config.js", "nativewind-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "app.config.ts", "nativewind-env.d.ts"]
 }

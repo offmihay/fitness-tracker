@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "fitness-tracker",
-    "scheme": "fitness-tracker",
-    "slug": "fitness-tracker",
+    "name": "",
+    "scheme": "",
+    "slug": "",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,39 +12,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.offmihay.fitnesstracker",
-      "infoPlist": {
-        "CFBundleURLTypes": [
-          {
-            "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.1017780084148-f9qpidfc4si6f18uum2jqbpn5ne4hkk4"
-            ]
-          }
-        ]
-      },
-      "config": {
-        "googleMapsApiKey": "AIzaSyBwt7b5kiKy5-WCs4GvNrGDynYBHTSC_1k"
-      }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.offmihay.fitnesstracker",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyBwt7b5kiKy5-WCs4GvNrGDynYBHTSC_1k"
-        }
-      }
-    },
-    "web": {
-      "bundler": "metro"
-    },
+    "ios": {},
+    "android": {},
+    "web": {},
     "plugins": [
       "expo-router",
+      "expo-localization",
+      "expo-font",
+      "expo-secure-store",
       [
         "expo-image-picker",
         {
@@ -58,9 +33,6 @@
           "supportsPictureInPicture": true
         }
       ],
-      "expo-localization",
-      "expo-font",
-      "expo-secure-store",
       [
         "expo-location",
         {
@@ -68,11 +40,7 @@
         }
       ]
     ],
-    "extra": {
-      "eas": {
-        "projectId": "cb003851-fdf1-42d5-85a8-1b8129f1d36e"
-      }
-    },
+    "extra": {},
     "runtimeVersion": {
       "policy": "appVersion"
     }
