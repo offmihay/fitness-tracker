@@ -40,7 +40,11 @@
         }
       ]
     ],
-    "extra": {},
+    "extra": {
+      "eas": {
+        "projectId": "cb003851-fdf1-42d5-85a8-1b8129f1d36e"
+      }
+    },
     "runtimeVersion": {
       "policy": "appVersion"
     }

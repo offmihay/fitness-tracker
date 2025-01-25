@@ -38,9 +38,4 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   web: {
     bundler: "metro",
   },
-  extra: {
-    eas: {
-      projectId: process.env.EAS_PROJECT_ID,
-    },
-  },
 });

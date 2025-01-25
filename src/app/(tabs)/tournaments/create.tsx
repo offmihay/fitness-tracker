@@ -43,7 +43,7 @@ const CreateTournament = () => {
     setValue,
     formState: { errors: formErrors },
   } = methods;
-  console.log(watch("images"));
+
   const handleFormSubmit = (data: TournamentFormData) => {
     const dataAdd = {
       ...data,
