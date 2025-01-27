@@ -151,9 +151,7 @@ const TournamentDetails = ({
           <CustomText type="subtitle" className="mb-4">
             {t("home.tournament.location")}
           </CustomText>
-          <CustomText className="mb-2">
-            {data?.city}, {data?.location}
-          </CustomText>
+          <CustomText className="mb-2">{data?.location}</CustomText>
         </View>
         <View style={{ width: "100%", height: 250 }}>
           <CustomMap geoCoordinates={data?.geoCoordinates} description={data?.location} />

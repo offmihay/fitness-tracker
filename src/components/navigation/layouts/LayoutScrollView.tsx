@@ -15,6 +15,7 @@ const LayoutScrollView = (props: LayoutScrollViewProps) => {
     renderHeader,
     name,
     isNameUnique,
+    isDefaultCompressed,
     ...rest
   } = props;
 
@@ -35,6 +36,7 @@ const LayoutScrollView = (props: LayoutScrollViewProps) => {
       )}
       renderHeader={renderHeader}
       headerConfig={headerConfig}
+      isDefaultCompressed={isDefaultCompressed}
     />
   );
 };

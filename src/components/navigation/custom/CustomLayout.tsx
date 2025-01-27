@@ -22,17 +22,27 @@ type renderContent = {
 export type LayoutProps = {
   renderContent: ({ onScroll, maxHeight }: renderContent) => React.ReactNode;
   renderHeader?: (scrollY: SharedValue<number>, title?: string) => React.ReactNode;
-  headerConfig?: {
+  headerConfig?: Partial<{
     maxHeight: number;
     minHeight: number;
-  };
+    nodeHeader: () => React.ReactNode;
+  }>;
   disableHeader?: boolean;
   name?: string;
   isNameUnique?: boolean;
+  isDefaultCompressed?: boolean;
 };
 
 const CustomLayout = (props: LayoutProps) => {
-  const { renderContent, renderHeader, headerConfig, disableHeader, name, isNameUnique } = props;
+  const {
+    renderContent,
+    renderHeader,
+    headerConfig,
+    disableHeader,
+    name,
+    isNameUnique,
+    isDefaultCompressed,
+  } = props;
 
   const theme = useCustomTheme();
 
@@ -40,7 +50,7 @@ const CustomLayout = (props: LayoutProps) => {
   const minHeight = headerConfig?.minHeight || HEADER_MIN_HEIGHT;
   const Scroll_Distance = maxHeight - minHeight;
 
-  const scrollY = useSharedValue(0);
+  const scrollY = useSharedValue(isDefaultCompressed ? 100 : 0);
 
   const scrollHandler = useAnimatedScrollHandler((event: any) => {
     scrollY.value = event.contentOffset.y;
@@ -78,12 +88,17 @@ const CustomLayout = (props: LayoutProps) => {
         )}
         {!renderHeader && !disableHeader && (
           <Animated.View style={[styles.header, animatedHeaderStyle]}>
-            <CustomHeader scrollY={scrollY} name={name} isNameUnique={isNameUnique} />
+            <CustomHeader
+              scrollY={scrollY}
+              name={name}
+              isNameUnique={isNameUnique}
+              node={headerConfig?.nodeHeader}
+            />
           </Animated.View>
         )}
         {renderContent({
           onScroll: scrollHandler,
-          maxHeight: !disableHeader ? maxHeight : 0,
+          maxHeight: !disableHeader ? (isDefaultCompressed ? minHeight : maxHeight) : 0,
         })}
       </View>
     </>

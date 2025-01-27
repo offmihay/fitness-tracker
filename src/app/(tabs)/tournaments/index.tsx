@@ -3,7 +3,6 @@ import React from "react";
 import { useRouter } from "expo-router";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
-import CustomMap from "@/src/shared/map/CustomMap";
 
 type Props = {};
 
@@ -14,10 +13,6 @@ const Tournaments = ({}: Props) => {
     <LayoutStatic name="tournaments">
       <View style={[styles.wrapper]}>
         <ButtonDefault title="Create tournament" onPress={() => navigate("tournaments/create")} />
-
-        <View style={{ display: "flex", flexDirection: "row" }}>
-          <CustomMap></CustomMap>
-        </View>
       </View>
     </LayoutStatic>
   );

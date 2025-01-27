@@ -3,6 +3,7 @@ import "../i18n/config";
 import "../styles/global.css";
 import AppProviders from "../providers/AppProviders";
 import AuthGuard from "../components/auth/AuthGuard";
+import "react-native-get-random-values";
 
 if (process.env.NODE_ENV === "development") {
   const originalWarn = console.warn;

@@ -5,7 +5,7 @@ export default function Layout() {
   return (
     <Stack {...stackProps}>
       <Stack.Screen name="index" />
-      <Stack.Screen name="create" />
+      <Stack.Screen name="choose-location" />
     </Stack>
   );
 }

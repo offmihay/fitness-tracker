@@ -1,5 +1,5 @@
 import { Platform, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
@@ -19,13 +19,25 @@ import RHFormDropdownInput from "@/src/shared/form/RHFormDropdownInput";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import MapPointModal from "@/src/components/tournaments/create/mapPoint/MapPointModal";
 import { LocationObject } from "@/src/components/tournaments/create/mapPoint/MapPointContent";
+import { router, useLocalSearchParams } from "expo-router";
+import MapPointModal from "@/src/components/tournaments/create/mapPoint/MapPointModal";
+
+export type CreateTournamentPageQuery = {
+  place_id?: string;
+  name?: string;
+  address: string;
+  latitude?: string;
+  longitude?: string;
+  url?: string;
+};
 
 const CreateTournament = () => {
   const { t } = useTranslation();
   const [isOpenedAdditional, setIsOpenedAdditional] = useState(false);
   const theme = useCustomTheme();
+
+  const pageQuery = useLocalSearchParams<CreateTournamentPageQuery>();
 
   const createTournamentMutation = useTournamentMutation();
   const methods = useForm<TournamentFormData>({
@@ -63,9 +75,13 @@ const CreateTournament = () => {
     setValue("images", images);
   };
 
-  const updateGeoCoordinated = (geoCoordinates: LocationObject) => {
-    setValue("geoCoordinates", geoCoordinates);
-  };
+  useEffect(() => {
+    if (pageQuery.latitude && pageQuery.longitude && pageQuery.address) {
+      setValue("geoCoordinates.latitude", Number(pageQuery.latitude));
+      setValue("geoCoordinates.longitude", Number(pageQuery.longitude));
+      setValue("location", `${pageQuery.address}`);
+    }
+  }, [pageQuery.latitude, pageQuery.longitude, pageQuery.address]);
 
   return (
     <LayoutKeyboardScrollView
@@ -282,6 +298,24 @@ const CreateTournament = () => {
               </CustomText>
             </CustomAnimatedView>
 
+            <RHFormInput name="city" label={t("tournament.city")} control={control} />
+            <RHFormInput
+              name="location"
+              label={t("tournament.location")}
+              control={control}
+              inputProps={{
+                disabled: true,
+                onPress: () =>
+                  router.navigate({
+                    pathname: "tournaments/create/choose-location",
+                    params: {
+                      address: watch("location"),
+                      latitude: watch("geoCoordinates.latitude"),
+                      longitude: watch("geoCoordinates.longitude"),
+                    },
+                  }),
+              }}
+            />
             <DualInputSection>
               <RHFormDatePicker
                 name="dateStart"
@@ -303,23 +337,10 @@ const CreateTournament = () => {
               />
             </DualInputSection>
 
-            <RHFormInput
-              name="location"
-              label={t("tournament.location")}
-              control={control}
-              onSubmitEditing={() => setFocus("city")}
-            />
-
-            <RHFormInput
-              name="city"
-              label={t("tournament.city")}
-              control={control}
-              onSubmitEditing={() => void 0}
-            />
-            <MapPointModal
+            {/* <MapPointModal
               onChoose={updateGeoCoordinated}
               geoCoordinates={watch("geoCoordinates")}
-            />
+            /> */}
 
             <CustomAnimatedView className="my-5">
               <ButtonDefault

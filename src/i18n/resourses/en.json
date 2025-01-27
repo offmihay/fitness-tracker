@@ -166,6 +166,7 @@
     "createTournament": "Create Tournament",
     "personalInfo": "Personal Info",
     "changeName": "Change Name",
-    "rules": "Rules"
+    "rules": "Rules",
+    "choose-location": "Choose Location"
   }
 }

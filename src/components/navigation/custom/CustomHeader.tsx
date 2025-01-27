@@ -15,13 +15,14 @@ interface MyCustomHeaderProps {
   scrollY: SharedValue<number>;
   name?: string;
   isNameUnique?: boolean;
+  node?: () => React.ReactNode;
 }
 
 const maxHeight = HEADER_MAX_HEIGHT;
 const minHeight = HEADER_MIN_HEIGHT;
 const Scroll_Distance = maxHeight - minHeight;
 
-const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUnique }) => {
+const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUnique, node }) => {
   const insets = useSafeAreaInsets();
 
   const theme = useCustomTheme();
@@ -91,6 +92,11 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
               <Skeleton height={40} width={220} wrapperStyle={{ borderRadius: 10 }} />
             )}
           </Animated.View>
+          {node && (
+            <View pointerEvents="box-none" style={{ width: "100%", height: "100%" }}>
+              {node()}
+            </View>
+          )}
         </View>
       </View>
     </>
@@ -107,7 +113,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     height: "100%",
     position: "relative",
-    width: "95%",
   },
 
   title: {

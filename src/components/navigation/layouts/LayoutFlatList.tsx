@@ -8,7 +8,15 @@ type LayoutFlatListProps<T> = AnimatedFlatListProps<T> &
   Omit<React.ComponentProps<typeof CustomLayout>, "renderContent">;
 
 function LayoutFlatList<T>(props: LayoutFlatListProps<T>) {
-  const { contentContainerStyle, headerConfig, renderHeader, name, isNameUnique, ...rest } = props;
+  const {
+    contentContainerStyle,
+    headerConfig,
+    renderHeader,
+    name,
+    isNameUnique,
+    isDefaultCompressed,
+    ...rest
+  } = props;
 
   return (
     <CustomLayout
@@ -25,6 +33,7 @@ function LayoutFlatList<T>(props: LayoutFlatListProps<T>) {
       )}
       renderHeader={renderHeader}
       headerConfig={headerConfig}
+      isDefaultCompressed={isDefaultCompressed}
     />
   );
 }
