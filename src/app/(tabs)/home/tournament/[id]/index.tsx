@@ -56,7 +56,8 @@ const TournamentDetailsScreen = ({}: Props) => {
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingTop: 20,
+    paddingBottom: 40,
   },
 });
 

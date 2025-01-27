@@ -5,30 +5,38 @@ import { useRouter } from "expo-router";
 import { useAllTournaments } from "@/src/queries/tournaments";
 import { useSettings } from "@/src/hooks/useSettings";
 import HomeHeader from "@/src/components/home/HomeHeader";
-import SortModal from "@/src/components/home/sort/SortModal";
+import SortDropdown, { SortValueHome } from "@/src/components/home/sort/SortDropdown";
 import FilterModal from "@/src/components/home/filter/FilterModal";
 import { emptyTournamentRequest, TournamentRequest } from "@/src/types/tournament";
 import { FlashList } from "@shopify/flash-list";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import TournamentCardSkeleton from "@/src/components/home/skeleton/TournamentCardSkeleton";
-
-const ListHeader = memo(() => (
-  <View style={styles.headerContainer}>
-    <SortModal />
-    <FilterModal />
-  </View>
-));
+import { FilterHome } from "@/src/components/home/filter/types";
+import _ from "lodash";
 
 type HomePageProps = {};
+
+const emptyFilter: FilterHome = {
+  sportType: [],
+  skillLevel: [],
+  date: "",
+  prizePool: {},
+  entryFee: {},
+};
 
 const HomePage = ({}: HomePageProps) => {
   const { settings } = useSettings();
   const router = useRouter();
   const [data, setData] = useState<TournamentRequest[]>([]);
 
+  const [filter, setFilter] = useState<FilterHome | null>();
+  const [sortBy, setSortBy] = useState<SortValueHome | null>();
+
   const { data: loadedData, refetch, isFetching } = useAllTournaments();
+
   useEffect(() => {
-    setData(loadedData.reverse());
+    const cloneData = _.cloneDeep(loadedData);
+    setData(cloneData.reverse());
   }, [loadedData]);
 
   const handleOpenDetails = useCallback(
@@ -46,7 +54,6 @@ const HomePage = ({}: HomePageProps) => {
   }, []);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
-
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
 
@@ -95,7 +102,15 @@ const HomePage = ({}: HomePageProps) => {
         <HomeHeader />
         <FlashList
           scrollEnabled={isLoaded}
-          ListHeaderComponent={ListHeader}
+          ListHeaderComponent={
+            <View style={styles.headerContainer}>
+              <SortDropdown onConfirm={setSortBy} />
+              <FilterModal
+                onConfirm={setFilter}
+                isMutated={!_.isEqual(JSON.parse(JSON.stringify(filter)), emptyFilter) && !!filter}
+              />
+            </View>
+          }
           data={isLoaded ? data : skeletonData}
           contentContainerStyle={styles.wrapper}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}

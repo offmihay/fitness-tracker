@@ -337,11 +337,6 @@ const CreateTournament = () => {
               />
             </DualInputSection>
 
-            {/* <MapPointModal
-              onChoose={updateGeoCoordinated}
-              geoCoordinates={watch("geoCoordinates")}
-            /> */}
-
             <CustomAnimatedView className="my-5">
               <ButtonDefault
                 title={t("tournaments.create.createButton")}

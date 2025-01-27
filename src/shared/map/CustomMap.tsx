@@ -33,13 +33,7 @@ const CustomMap = ({ geoCoordinates, description }: Props) => {
         onMapReady={onMapReady}
         provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
       >
-        {geoCoordinates && (
-          <Marker coordinate={geoCoordinates}>
-            <View style={[styles.marker]}>
-              <FontAwesome6 name="location-dot" size={40} color="red" />
-            </View>
-          </Marker>
-        )}
+        {geoCoordinates && <Marker coordinate={geoCoordinates} />}
       </MapView>
     </>
   );

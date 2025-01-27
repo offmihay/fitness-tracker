@@ -8,10 +8,11 @@ type Props = {
   onPress?: () => void;
   label: string;
   renderIcon?: (color: string, size: number) => React.ReactElement;
-};
+  textColor?: string;
+} & React.ComponentProps<typeof TouchableOpacity>;
 
 const ButtonFilter = (props: Props) => {
-  const { onPress, label, renderIcon } = props;
+  const { onPress, label, renderIcon, style, textColor, ...rest } = props;
   const theme = useCustomTheme();
 
   const iconSize = 18;
@@ -19,13 +20,16 @@ const ButtonFilter = (props: Props) => {
   return (
     <View>
       <TouchableOpacity
-        style={[styles.btnWrapper, { backgroundColor: theme.colors.surface }]}
+        style={[styles.btnWrapper, { backgroundColor: theme.colors.surface }, style]}
         onPress={onPress}
         activeOpacity={0.5}
+        {...rest}
       >
         <View className="flex flex-row gap-3 items-center justify-center">
-          <CustomText>{label}</CustomText>
-          {renderIcon && <CustomIcon render={(color) => renderIcon(color, iconSize)} />}
+          <CustomText color={textColor}>{label}</CustomText>
+          {renderIcon && (
+            <CustomIcon render={(color) => renderIcon(textColor || color, iconSize)} />
+          )}
         </View>
       </TouchableOpacity>
     </View>

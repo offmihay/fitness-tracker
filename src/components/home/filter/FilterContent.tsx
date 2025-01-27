@@ -1,14 +1,10 @@
 import { Keyboard, Platform, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-
 import { Divider } from "react-native-paper";
-
 import FilterItem from "./FilterItem";
-
-import { FilterGroup, FilterSingle, FilterRange, Range, Filter } from "./types";
+import { FilterGroup, FilterSingle, FilterRange, Range, FilterHome } from "./types";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import useScrollProps from "@/src/hooks/useScrollProps";
 import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 import StickyFooterView from "../../../shared/view/StickyFooterView";
 import CustomKeyboardAwareScrollView from "../../../shared/view/CustomKeyboardAwareScrollView";
@@ -16,11 +12,18 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import CustomTextInput from "@/src/shared/input/CustomTextInput";
 import DatePickerInput from "@/src/shared/input/DatePickerInput";
 import CustomText from "@/src/shared/text/CustomText";
+import Toast from "react-native-toast-message";
+import _ from "lodash";
 
-const FilterContent = () => {
+type Props = {
+  onConfirm?: (filter: FilterHome) => void;
+};
+
+const FilterContent = (props: Props) => {
+  const { onConfirm } = props;
   const { dismiss } = useBottomSheetModal();
 
-  const emptyFilter: Filter = {
+  const emptyFilter: FilterHome = {
     sportType: [],
     skillLevel: [],
     date: "",
@@ -28,19 +31,20 @@ const FilterContent = () => {
     entryFee: {},
   };
 
-  const [filter, setFilter] = useState<Filter>(emptyFilter);
+  const [filter, setFilter] = useState<FilterHome>(emptyFilter);
 
   const iosBottomBias = Platform.OS === "ios" ? 30 : 0;
 
   useEffect(() => {
     const fetchStoredFilter = async () => {
-      const storedData = await AsyncStorage.getItem("filter-tournaments");
-      const result = storedData ? (JSON.parse(storedData) as Filter) : null;
+      const storedData = await AsyncStorage.getItem("filter-home");
+      const result = storedData ? (JSON.parse(storedData) as FilterHome) : null;
       return result ?? emptyFilter;
     };
 
     fetchStoredFilter().then((filterStorage) => {
       setFilter(filterStorage);
+      onConfirm?.(filterStorage);
     });
   }, []);
 
@@ -55,9 +59,9 @@ const FilterContent = () => {
       if (isToggled) {
         newFilter[filterType] = newFilter[filterType].filter(
           (item) => item !== filterValue
-        ) as Filter[T];
+        ) as FilterHome[T];
       } else {
-        newFilter[filterType] = [...newFilter[filterType], filterValue] as Filter[T];
+        newFilter[filterType] = [...newFilter[filterType], filterValue] as FilterHome[T];
       }
       return newFilter;
     });
@@ -79,11 +83,16 @@ const FilterContent = () => {
     });
   };
 
-  const handleShowResults = async () => {
+  const handleShowResults = async (filterManual?: FilterHome) => {
+    const res = filterManual || filter;
     try {
-      await AsyncStorage.setItem("filter-tournaments", JSON.stringify(filter));
+      await AsyncStorage.setItem("filter-home", JSON.stringify(res));
+      filter && onConfirm?.(res);
     } catch (e) {
-      console.error("Failed to save filter settings", e);
+      Toast.show({
+        type: "errorToast",
+        props: { text: "Failed to save filter settings" },
+      });
     }
     Keyboard.dismiss();
     dismiss("filter-modal");
@@ -220,7 +229,23 @@ const FilterContent = () => {
         offset={{ closed: 10 - iosBottomBias, opened: 30 }}
       >
         <View style={[styles.buttonWrapper]}>
-          <ButtonDefault title="Show results" onPress={handleShowResults} />
+          <View style={{ width: "70%" }}>
+            <ButtonDefault
+              title="Show results"
+              onPress={() => handleShowResults()}
+              disabled={_.isEqual(JSON.parse(JSON.stringify(filter)), emptyFilter) || !filter}
+            />
+          </View>
+          <View style={{ width: "27%" }}>
+            <ButtonDefault
+              title="Reset"
+              type="white"
+              onPress={() => {
+                setFilter(emptyFilter);
+                handleShowResults(emptyFilter);
+              }}
+            />
+          </View>
         </View>
       </StickyFooterView>
     </View>
@@ -249,6 +274,9 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     paddingTop: 15,
     paddingBottom: 40,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 

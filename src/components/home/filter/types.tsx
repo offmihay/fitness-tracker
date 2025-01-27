@@ -5,7 +5,7 @@ export type Range = {
   max?: number;
 };
 
-export type Filter = {
+export type FilterHome = {
   sportType: TournamentSport[];
   skillLevel: TournamentSkillLevel[];
   date: Date | string;
@@ -13,6 +13,6 @@ export type Filter = {
   entryFee: Range;
 };
 
-export type FilterGroup = Pick<Filter, "sportType" | "skillLevel">;
-export type FilterSingle = Pick<Filter, "date">;
-export type FilterRange = Pick<Filter, "prizePool" | "entryFee">;
+export type FilterGroup = Pick<FilterHome, "sportType" | "skillLevel">;
+export type FilterSingle = Pick<FilterHome, "date">;
+export type FilterRange = Pick<FilterHome, "prizePool" | "entryFee">;

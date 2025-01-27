@@ -42,6 +42,13 @@
       "organizedBy": "Organized by {{name}}",
       "unknown": "Unknown",
       "contactUs": "Contact us"
+    },
+    "filter": {},
+    "sort": {
+      "title": "Sort by",
+      "newest": "Newest",
+      "prizePool": "Prize pool",
+      "distance": "Distance"
     }
   },
   "tournaments": {
