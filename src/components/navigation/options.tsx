@@ -5,7 +5,6 @@ import {
 } from "@react-navigation/bottom-tabs/src/types";
 import CustomTabBar from "./tabBar/CustomTabBar";
 import { Platform } from "react-native";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 const tabScreenOptions: BottomTabNavigationOptions = {
   headerShown: false,

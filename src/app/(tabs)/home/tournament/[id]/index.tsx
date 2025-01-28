@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { useTournamentByID } from "@/src/queries/tournaments";
-import TournamentDetails from "@/src/components/home/TournamentDetails";
+import TournamentDetails from "@/src/components/home/tournament [id]/TournamentDetails";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import TournamentDetailsSkeleton from "@/src/components/home/skeleton/TournamentDetailsSkeleton";
 

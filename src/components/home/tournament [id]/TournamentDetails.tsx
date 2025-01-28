@@ -11,7 +11,7 @@ import CustomText from "@/src/shared/text/CustomText";
 import PagerView from "react-native-pager-view";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 import CustomArrow from "@/src/shared/button/arrow/CustomArrow";
-import Carousel from "@/src/shared/Carousel";
+import Carousel from "@/src/shared/carousel/Carousel";
 
 type Props = {
   data: TournamentRequest;

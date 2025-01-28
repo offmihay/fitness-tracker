@@ -2,7 +2,7 @@ import { Keyboard, Platform, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Divider } from "react-native-paper";
 import FilterItem from "./FilterItem";
-import { FilterGroup, FilterSingle, FilterRange, Range, FilterHome } from "./types";
+import { FilterGroup, FilterSingle, FilterRange, Range, FilterHome } from "../types";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
@@ -14,39 +14,20 @@ import DatePickerInput from "@/src/shared/input/DatePickerInput";
 import CustomText from "@/src/shared/text/CustomText";
 import Toast from "react-native-toast-message";
 import _ from "lodash";
+import { emptyFilter } from "../storedSettings";
 
 type Props = {
+  filterValues: FilterHome;
   onConfirm?: (filter: FilterHome) => void;
 };
 
 const FilterContent = (props: Props) => {
-  const { onConfirm } = props;
+  const { onConfirm, filterValues } = props;
   const { dismiss } = useBottomSheetModal();
 
-  const emptyFilter: FilterHome = {
-    sportType: [],
-    skillLevel: [],
-    date: "",
-    prizePool: {},
-    entryFee: {},
-  };
-
-  const [filter, setFilter] = useState<FilterHome>(emptyFilter);
+  const [filter, setFilter] = useState<FilterHome>(filterValues);
 
   const iosBottomBias = Platform.OS === "ios" ? 30 : 0;
-
-  useEffect(() => {
-    const fetchStoredFilter = async () => {
-      const storedData = await AsyncStorage.getItem("filter-home");
-      const result = storedData ? (JSON.parse(storedData) as FilterHome) : null;
-      return result ?? emptyFilter;
-    };
-
-    fetchStoredFilter().then((filterStorage) => {
-      setFilter(filterStorage);
-      onConfirm?.(filterStorage);
-    });
-  }, []);
 
   const handleChangeGroup = <T extends keyof FilterGroup>(
     filterType: T,
@@ -233,7 +214,7 @@ const FilterContent = (props: Props) => {
             <ButtonDefault
               title="Show results"
               onPress={() => handleShowResults()}
-              disabled={_.isEqual(JSON.parse(JSON.stringify(filter)), emptyFilter) || !filter}
+              disabled={_.isEqual(filter, filterValues)}
             />
           </View>
           <View style={{ width: "27%" }}>
@@ -244,6 +225,7 @@ const FilterContent = (props: Props) => {
                 setFilter(emptyFilter);
                 handleShowResults(emptyFilter);
               }}
+              disabled={!filter || _.isEqual(JSON.parse(JSON.stringify(filter)), emptyFilter)}
             />
           </View>
         </View>

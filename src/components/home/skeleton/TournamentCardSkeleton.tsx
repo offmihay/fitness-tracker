@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React, { memo } from "react";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { CARD_HEIGHT } from "../TournamentCard";
+import { CARD_HEIGHT } from "../tournament [id]/TournamentCard";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 
 const TournamentCardSkeleton = () => {

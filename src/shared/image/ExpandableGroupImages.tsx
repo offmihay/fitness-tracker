@@ -23,7 +23,7 @@ import { Feather, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import * as Haptics from "expo-haptics";
 import PagerView from "react-native-pager-view";
-import Carousel from "../Carousel";
+import Carousel from "../carousel/Carousel";
 
 export type ExpandableGroupImagesProps<T extends Object> = {
   expadedImageWrapperStyle?: ViewStyle;

@@ -1,38 +1,45 @@
 import { RefreshControl, StyleSheet, View } from "react-native";
 import React, { useCallback, useState, memo, useEffect } from "react";
-import TournamentCard, { CARD_HEIGHT } from "@/src/components/home/TournamentCard";
+import TournamentCard, { CARD_HEIGHT } from "@/src/components/home/tournament [id]/TournamentCard";
 import { useRouter } from "expo-router";
 import { useAllTournaments } from "@/src/queries/tournaments";
 import { useSettings } from "@/src/hooks/useSettings";
 import HomeHeader from "@/src/components/home/HomeHeader";
-import SortDropdown, { SortValueHome } from "@/src/components/home/sort/SortDropdown";
+import SortDropdown from "@/src/components/home/sort/SortDropdown";
 import FilterModal from "@/src/components/home/filter/FilterModal";
 import { emptyTournamentRequest, TournamentRequest } from "@/src/types/tournament";
 import { FlashList } from "@shopify/flash-list";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import TournamentCardSkeleton from "@/src/components/home/skeleton/TournamentCardSkeleton";
-import { FilterHome } from "@/src/components/home/filter/types";
+import { FilterHome, SortValueHome } from "@/src/components/home/types";
 import _ from "lodash";
+import {
+  emptyFilter,
+  fetchStoredFilter,
+  fetchStoredSortBy,
+} from "@/src/components/home/storedSettings";
 
 type HomePageProps = {};
-
-const emptyFilter: FilterHome = {
-  sportType: [],
-  skillLevel: [],
-  date: "",
-  prizePool: {},
-  entryFee: {},
-};
 
 const HomePage = ({}: HomePageProps) => {
   const { settings } = useSettings();
   const router = useRouter();
   const [data, setData] = useState<TournamentRequest[]>([]);
 
-  const [filter, setFilter] = useState<FilterHome | null>();
-  const [sortBy, setSortBy] = useState<SortValueHome | null>();
+  const [filter, setFilter] = useState<FilterHome>(emptyFilter);
+  const [sortBy, setSortBy] = useState<SortValueHome | null>(null);
 
   const { data: loadedData, refetch, isFetching } = useAllTournaments();
+
+  useEffect(() => {
+    const fetchStored = async () => {
+      const storedFilter = await fetchStoredFilter();
+      const storedSortBy = await fetchStoredSortBy();
+      setFilter(storedFilter);
+      setSortBy(storedSortBy);
+    };
+    fetchStored();
+  }, []);
 
   useEffect(() => {
     const cloneData = _.cloneDeep(loadedData);
@@ -104,10 +111,11 @@ const HomePage = ({}: HomePageProps) => {
           scrollEnabled={isLoaded}
           ListHeaderComponent={
             <View style={styles.headerContainer}>
-              <SortDropdown onConfirm={setSortBy} />
+              <SortDropdown value={sortBy} onConfirm={setSortBy} />
               <FilterModal
+                filterValues={filter}
                 onConfirm={setFilter}
-                isMutated={!_.isEqual(JSON.parse(JSON.stringify(filter)), emptyFilter) && !!filter}
+                isMutated={!!filter && !_.isEqual(JSON.parse(JSON.stringify(filter)), emptyFilter)}
               />
             </View>
           }

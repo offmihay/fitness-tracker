@@ -7,7 +7,7 @@ import ModalTrigger from "@/src/shared/modal/utils/ModalTrigger";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import _ from "lodash";
-import { FilterHome } from "./types";
+import { FilterHome } from "../types";
 
 type Props = { isMutated: boolean } & React.ComponentProps<typeof FilterContent>;
 

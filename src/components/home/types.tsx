@@ -16,3 +16,9 @@ export type FilterHome = {
 export type FilterGroup = Pick<FilterHome, "sportType" | "skillLevel">;
 export type FilterSingle = Pick<FilterHome, "date">;
 export type FilterRange = Pick<FilterHome, "prizePool" | "entryFee">;
+
+export enum SortValueHome {
+  Newest = "newest",
+  PrizePool = "prizePool",
+  Distance = "distance",
+}

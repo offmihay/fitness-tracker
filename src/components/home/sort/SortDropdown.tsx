@@ -6,40 +6,22 @@ import CheckboxDropdownMenu from "@/src/shared/dropdown/CheckboxDropdownMenu";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
+import { fetchStoredFilter } from "../storedSettings";
+import { SortValueHome } from "../types";
 
 type Props = {
+  value: SortValueHome | null;
   onConfirm?: (value: SortValueHome | null) => void;
 };
-
-export enum SortValueHome {
-  Newest = "newest",
-  PrizePool = "prizePool",
-  Distance = "distance",
-}
-
 const SortDropdown = (props: Props) => {
-  const { onConfirm } = props;
-  const [sortValue, setSortValue] = useState<SortValueHome | null>(null);
+  const { value, onConfirm } = props;
+
   const { t } = useTranslation("", { keyPrefix: "home.sort" });
 
   const theme = useCustomTheme();
 
-  useEffect(() => {
-    const fetchStoredFilter = async () => {
-      const storedData = await AsyncStorage.getItem("sort-home");
-      const result = storedData ? (JSON.parse(storedData) as SortValueHome) : null;
-      return result;
-    };
-
-    fetchStoredFilter().then((sortValue) => {
-      setSortValue(sortValue);
-      onConfirm?.(sortValue);
-    });
-  }, []);
-
   const handleChoose = async (value: SortValueHome) => {
-    setSortValue(value);
-    await AsyncStorage.setItem("sort-home", value);
+    await AsyncStorage.setItem("sortby-home", value);
     onConfirm?.(value);
   };
 
@@ -47,19 +29,19 @@ const SortDropdown = (props: Props) => {
     {
       key: SortValueHome.Newest,
       title: t(SortValueHome.Newest),
-      isSelected: sortValue === SortValueHome.Newest,
+      isSelected: value === SortValueHome.Newest,
       onPress: () => handleChoose(SortValueHome.Newest),
     },
     {
       key: SortValueHome.PrizePool,
       title: t(SortValueHome.PrizePool),
-      isSelected: sortValue === SortValueHome.PrizePool,
+      isSelected: value === SortValueHome.PrizePool,
       onPress: () => handleChoose(SortValueHome.PrizePool),
     },
     {
       key: SortValueHome.Distance,
       title: t(SortValueHome.Distance),
-      isSelected: sortValue === SortValueHome.Distance,
+      isSelected: value === SortValueHome.Distance,
       onPress: () => handleChoose(SortValueHome.Distance),
     },
   ];
@@ -67,12 +49,12 @@ const SortDropdown = (props: Props) => {
   return (
     <CheckboxDropdownMenu items={dropdownItems}>
       <ButtonFilter
-        label={(sortValue && t(sortValue)) || "Sort by"}
+        label={(value && t(value)) || "Sort by"}
         renderIcon={(color, size) => (
           <Ionicons name="chevron-down-outline" size={size} color={color} style={{ bottom: -1 }} />
         )}
-        style={{ backgroundColor: sortValue ? theme.colors.primary : theme.colors.surface }}
-        textColor={sortValue ? "white" : theme.colors.text}
+        style={{ backgroundColor: value ? theme.colors.primary : theme.colors.surface }}
+        textColor={value ? "white" : theme.colors.text}
       />
     </CheckboxDropdownMenu>
   );
