@@ -1,11 +1,4 @@
-import {
-  ActionSheetIOS,
-  Keyboard,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActionSheetIOS, Keyboard, Platform, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Loader from "../../../shared/loader/Loader";
@@ -24,7 +17,6 @@ import ErrorAnimatedView from "../../../shared/view/ErrorAnimatedView";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
 import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
-import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import ExpandableGroupImages from "@/src/shared/image/ExpandableGroupImages";
 
 export type ImageForm = {
