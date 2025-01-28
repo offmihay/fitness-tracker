@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Feather } from "@expo/vector-icons";
 import { Platform, View } from "react-native";
-import ModalTrigger from "@/src/shared/modal/utils/ModalTrigger";
+import ModalController from "@/src/shared/controllers/ModalController";
 import MapPointContent from "./MapPointContent";
 import ButtonInput from "@/src/shared/button/ButtonInput";
 import CustomIcon from "@/src/shared/icon/CustomIcon";
@@ -10,7 +10,7 @@ import CustomText from "@/src/shared/text/CustomText";
 const MapPointModal = (props: React.ComponentProps<typeof MapPointContent>) => {
   const snapPoints = useMemo(() => ["70%"], []);
   return (
-    <ModalTrigger
+    <ModalController
       name="map-point-modal"
       renderTrigger={(handleOpen) => (
         <ButtonInput onPress={handleOpen}>

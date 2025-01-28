@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BottomSheetModalProps } from "@gorhom/bottom-sheet";
-import CustomModal from "../CustomModal";
+import CustomModal from "../modal/CustomModal";
 
 type Props = {
   name: string;
@@ -9,7 +9,7 @@ type Props = {
   bottomSheetProps?: Omit<BottomSheetModalProps, "children">;
 };
 
-const ModalTrigger = (props: Props) => {
+const ModalController = (props: Props) => {
   const { name, renderTrigger, modalContent, bottomSheetProps } = props;
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,4 +36,4 @@ const ModalTrigger = (props: Props) => {
   );
 };
 
-export default ModalTrigger;
+export default ModalController;

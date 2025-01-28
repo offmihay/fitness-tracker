@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import { TournamentSport } from "@/src/types/tournament";
 import RHFormDropdownInput from "@/src/shared/form/RHFormDropdownInput";
 import RHFormInput from "@/src/shared/form/RHFormInput";
-import ChoosePhoto, { ImageForm } from "./ChoosePhoto";
+import { ImageForm } from "../../../../shared/controllers/ImagePickerController";
 import DualInputSection from "../DualInputSection";
 import { TournamentFormData } from "./schema";
 import CustomText from "@/src/shared/text/CustomText";
+import ChooseImageSection from "../ChooseImageSection";
 
 export const TournamentDetailsForm = () => {
   const { t } = useTranslation();
@@ -69,7 +70,10 @@ export const TournamentDetailsForm = () => {
         control={control}
       />
 
-      <ChoosePhoto onImageUploadSuccess={updateImages} errorMessage={errors.images?.message!} />
+      <ChooseImageSection
+        onImageUploadSuccess={updateImages}
+        errorMessage={errors.images?.message!}
+      />
 
       <DualInputSection>
         <RHFormInput

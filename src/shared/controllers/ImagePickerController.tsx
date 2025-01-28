@@ -1,0 +1,91 @@
+import { ActionSheetIOS, Keyboard, Platform, TouchableOpacity, View } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import ChooseCameraModal from "../modal/ChooseCameraModal";
+import { UploadedImageAsset, useImagePicker } from "@/src/hooks/useImagePicker";
+import { UseMutationResult } from "@tanstack/react-query";
+import { ImageUploadResponse } from "@/src/queries/upload-image";
+import { ImagePickerAsset } from "expo-image-picker";
+
+export type ImageForm = {
+  publicId: string;
+};
+
+type triggerProps = {
+  uploadImageMutation: UseMutationResult<ImageUploadResponse, Error, ImagePickerAsset, unknown>;
+  handleOpenCameraModal: () => void;
+  images: UploadedImageAsset[];
+  handleDelete: (image: UploadedImageAsset) => void;
+  handleUploadImage: (image: ImagePickerAsset) => void;
+};
+
+type Props = {
+  renderUI: (props: triggerProps) => React.ReactNode;
+  onImageUploadSuccess: (images: ImageForm[]) => void;
+};
+
+const ImagePickerController = (props: Props) => {
+  const { renderUI, onImageUploadSuccess } = props;
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const {
+    images,
+    pickFromGallery,
+    pickFromCamera,
+    removeImage,
+    handleUploadImage,
+    uploadImageMutation,
+  } = useImagePicker();
+
+  const openActionSheetIOS = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ["Cancel", "Open gallery", "Open camera"],
+        cancelButtonIndex: 0,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 1) {
+          pickFromGallery();
+        } else if (buttonIndex === 2) {
+          pickFromCamera();
+        }
+      }
+    );
+  };
+
+  const handleOpenCameraModal = () => {
+    Keyboard.dismiss();
+    if (Platform.OS === "ios") {
+      openActionSheetIOS();
+    } else {
+      bottomSheetRef.current?.present();
+    }
+  };
+
+  useEffect(() => {
+    const readyImages = images
+      .filter((img) => img.publicId && !img.isError)
+      .map((img) => ({ publicId: img.publicId! }));
+    onImageUploadSuccess(readyImages);
+  }, [images]);
+
+  return (
+    <>
+      {renderUI({
+        images: images,
+        uploadImageMutation: uploadImageMutation,
+        handleOpenCameraModal: handleOpenCameraModal,
+        handleDelete: removeImage,
+        handleUploadImage: handleUploadImage,
+      })}
+
+      <ChooseCameraModal
+        ref={bottomSheetRef}
+        onGallery={() => pickFromGallery()}
+        onCamera={() => pickFromCamera()}
+      />
+    </>
+  );
+};
+
+export default ImagePickerController;

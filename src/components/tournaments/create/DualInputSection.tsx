@@ -1,6 +1,6 @@
+import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
 import React from "react";
 import { View } from "react-native";
-import CustomAnimatedView from "../../shared/view/CustomAnimatedView";
 
 type Props = {
   children: [React.ReactNode, React.ReactNode];

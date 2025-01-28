@@ -2,13 +2,14 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import RHFormInput from "@/src/shared/form/RHFormInput";
-import DualInputSection from "../DualInputSection";
+
 import { TournamentFormData } from "./schema";
 import RHFormDatePicker from "@/src/shared/form/RHFormDatePicker";
 import { router } from "expo-router";
 import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
 import { Divider } from "react-native-paper";
 import CustomText from "@/src/shared/text/CustomText";
+import DualInputSection from "../DualInputSection";
 
 export const LocationDateForm = () => {
   const { t } = useTranslation();

@@ -3,7 +3,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import FilterContent from "./FilterContent";
 import { Platform } from "react-native";
 import ButtonFilter from "@/src/shared/button/ButtonFilter";
-import ModalTrigger from "@/src/shared/modal/utils/ModalTrigger";
+import ModalController from "@/src/shared/controllers/ModalController";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import _ from "lodash";
@@ -17,7 +17,7 @@ const FilterModal = (props: Props) => {
   const theme = useCustomTheme();
 
   return (
-    <ModalTrigger
+    <ModalController
       name="filter-modal"
       renderTrigger={(handleOpen) => (
         <ButtonFilter

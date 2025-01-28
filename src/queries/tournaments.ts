@@ -1,7 +1,7 @@
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { TournamentRequest } from "../types/tournament";
 import fetchApi from "../api/fetchApi";
-import { TournamentFormData } from "../components/tournaments/create/schema";
+import { TournamentFormData } from "../components/tournaments/create/form/schema";
 import Toast from "react-native-toast-message";
 
 export const useAllTournaments = () => {

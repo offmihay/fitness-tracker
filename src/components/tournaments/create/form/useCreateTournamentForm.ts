@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTournamentMutation } from "@/src/queries/tournaments";
 import schemaCreateTournament, {
   TournamentFormData,
-} from "@/src/components/tournaments/create/schema";
+} from "@/src/components/tournaments/create/form/schema";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { CreateTournamentPageQuery } from "@/src/app/(tabs)/tournaments/create";

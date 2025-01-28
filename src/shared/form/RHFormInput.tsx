@@ -19,7 +19,7 @@ const RHFormInput = <TFieldValues extends FieldValues>(props: Props<TFieldValues
   const { name, label, control, rules, onSubmitEditing, inputProps } = props;
   const theme = useCustomTheme();
 
-  const { formState } = useFormContext();
+  const { formState, watch } = useFormContext();
   const error = get(formState.errors, name);
 
   return (
@@ -41,11 +41,11 @@ const RHFormInput = <TFieldValues extends FieldValues>(props: Props<TFieldValues
                 returnKeyType="next"
                 onSubmitEditing={onSubmitEditing}
                 useClearButton={true}
-                isError={!!error}
+                isError={!!error && !value}
                 {...inputProps}
               />
             </CustomAnimatedView>
-            <ErrorAnimatedView message={error?.message?.toString()} />
+            <ErrorAnimatedView message={!value ? error?.message?.toString() : undefined} />
           </>
         );
       }}

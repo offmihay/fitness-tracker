@@ -6,10 +6,10 @@ import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
 import LayoutKeyboardScrollView from "@/src/components/navigation/layouts/LayoutKeyboardScrollView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { useLocalSearchParams } from "expo-router";
-import { useCreateTournamentForm } from "@/src/components/tournaments/create/useCreateTournamentForm";
-import { TournamentDetailsForm } from "@/src/components/tournaments/create/TounamentDetailsForm";
-import { RestrictionsForm } from "@/src/components/tournaments/create/RestrictionsForm";
-import { LocationDateForm } from "@/src/components/tournaments/create/LocationDateForm";
+import { useCreateTournamentForm } from "@/src/components/tournaments/create/form/useCreateTournamentForm";
+import { TournamentDetailsForm } from "@/src/components/tournaments/create/form/TounamentDetailsForm";
+import { RestrictionsForm } from "@/src/components/tournaments/create/form/RestrictionsForm";
+import { LocationDateForm } from "@/src/components/tournaments/create/form/LocationDateForm";
 
 export type CreateTournamentPageQuery = {
   place_id?: string;
@@ -47,12 +47,6 @@ const CreateTournament = () => {
                 className="mt-4"
                 onPress={handleSubmit(handleFormSubmit)}
                 loading={createTournamentMutation.isPending}
-                statusAnimation={{
-                  enabled: true,
-                  useOnlySuccess: true,
-                  isSuccess: createTournamentMutation.isSuccess,
-                  timeOut: 3000,
-                }}
               />
             </CustomAnimatedView>
           </View>
