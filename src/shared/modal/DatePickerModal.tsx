@@ -41,7 +41,7 @@ const DatePickerModal: React.FC<DatePickerModalProps> = ({
         </View>
       )}
       isVisible={isVisible}
-      mode="date"
+      mode="datetime"
       onConfirm={onConfirm}
       onCancel={onCancel}
       onHide={onHide}

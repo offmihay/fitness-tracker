@@ -76,6 +76,7 @@ export interface TournamentRequest {
   sportType: string;
   status: TournamentStatus;
   title: string;
+  updatedAt: string;
 }
 
 export type Image = {
@@ -124,4 +125,5 @@ export const emptyTournamentRequest: TournamentRequest = {
   sportType: "",
   status: TournamentStatus.Upcoming,
   title: "",
+  updatedAt: "",
 };

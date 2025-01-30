@@ -4,6 +4,7 @@ import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import { useUploadImage } from "@/src/queries/upload-image";
 import FastImage from "@d11/react-native-fast-image";
 import { ImagePickerAsset } from "expo-image-picker";
+import { Platform } from "react-native";
 
 export type UploadedImageAsset = ImagePickerAsset & {
   publicId?: string;
@@ -60,7 +61,9 @@ export function useImagePicker() {
   );
 
   const pickFromGallery = useCallback(async () => {
-    const result = await pickGalleryImage({ allowsEditing: true });
+    const result = await pickGalleryImage({
+      allowsEditing: Platform.OS === "android" ? true : false,
+    });
     if (!result || result.length === 0) return;
     const [picked] = result;
     handleUploadImage({
@@ -70,7 +73,10 @@ export function useImagePicker() {
   }, [handleUploadImage]);
 
   const pickFromCamera = useCallback(async () => {
-    const result = await pickCameraImage({ aspect: [3, 4] });
+    const result = await pickCameraImage({
+      aspect: [4, 3],
+      allowsEditing: Platform.OS === "android" ? true : false,
+    });
     if (!result) return;
     handleUploadImage({
       ...result,

@@ -38,11 +38,11 @@ const TournamentDetails = ({
         />
       </View>
       <View className="flex flex-row justify-between">
-        <ButtonDefault title={t("home.tournament.register")} style={{ width: "48%" }} />
+        <ButtonDefault title={t("home.tournament.register")} styleWrapper={{ width: "48%" }} />
         <ButtonDefault
           type="grey"
           title={t("home.tournament.saveForLater")}
-          style={{ width: "48%" }}
+          styleWrapper={{ width: "48%" }}
         />
       </View>
       <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>

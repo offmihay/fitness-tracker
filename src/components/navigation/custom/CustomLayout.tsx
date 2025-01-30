@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -20,6 +20,7 @@ import CustomHeader from "./CustomHeader";
 
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
+import { useSegments } from "expo-router";
 
 type renderContent = {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;

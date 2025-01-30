@@ -6,7 +6,6 @@ export const pickCameraImage = async (options?: ImagePickerOptions) => {
   const handleLaunchCamera = async () => {
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: "images",
-      allowsEditing: true,
       quality: 1,
       ...options,
     });

@@ -13,7 +13,7 @@ export type ImageForm = {
 
 type triggerProps = {
   uploadImageMutation: UseMutationResult<ImageUploadResponse, Error, ImagePickerAsset, unknown>;
-  handleOpenCameraModal: () => void;
+  handleOpenModal: () => void;
   images: UploadedImageAsset[];
   handleDelete: (image: UploadedImageAsset) => void;
   handleUploadImage: (image: ImagePickerAsset) => void;
@@ -53,7 +53,7 @@ const ImagePickerController = (props: Props) => {
     );
   };
 
-  const handleOpenCameraModal = () => {
+  const handleOpenModal = () => {
     Keyboard.dismiss();
     if (Platform.OS === "ios") {
       openActionSheetIOS();
@@ -72,11 +72,11 @@ const ImagePickerController = (props: Props) => {
   return (
     <>
       {renderUI({
-        images: images,
-        uploadImageMutation: uploadImageMutation,
-        handleOpenCameraModal: handleOpenCameraModal,
+        images,
+        uploadImageMutation,
+        handleOpenModal,
         handleDelete: removeImage,
-        handleUploadImage: handleUploadImage,
+        handleUploadImage,
       })}
 
       <ChooseCameraModal

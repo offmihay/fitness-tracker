@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
 import { TournamentRequest } from "@/src/types/tournament";
-import { formatDateRange } from "@/src/utils/formatDateString";
+import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 

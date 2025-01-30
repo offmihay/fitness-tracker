@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import FilterContent from "./FilterContent";
 import { Platform } from "react-native";
-import ButtonFilter from "@/src/shared/button/ButtonFilter";
+import ButtonSmall from "@/src/shared/button/ButtonSmall";
 import ModalController from "@/src/shared/controllers/ModalController";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
@@ -20,8 +20,8 @@ const FilterModal = (props: Props) => {
     <ModalController
       name="filter-modal"
       renderTrigger={(handleOpen) => (
-        <ButtonFilter
-          label="Filter"
+        <ButtonSmall
+          title="Filter"
           renderIcon={(color, size) => (
             <FontAwesome6 name="sliders" size={size - 2} color={color} />
           )}

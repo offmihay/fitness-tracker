@@ -28,16 +28,16 @@ const ChooseImageSection = (props: Props) => {
     <ImagePickerController
       onImageUploadSuccess={onImageUploadSuccess}
       renderUI={({
-        uploadImageMutation,
-        handleOpenCameraModal,
         images,
+        handleOpenModal,
+        uploadImageMutation,
         handleDelete,
         handleUploadImage,
       }) => (
         <CustomAnimatedView>
           <View className="flex flex-row flex-wrap gap-3 py-1">
             <View className="w-full">
-              <ButtonInput onPress={handleOpenCameraModal} disabled={uploadImageMutation.isPending}>
+              <ButtonInput onPress={handleOpenModal} disabled={uploadImageMutation.isPending}>
                 <View
                   className="flex flex-row gap-2 w-full justify-center"
                   style={{ opacity: uploadImageMutation.isPending ? 0.5 : 1 }}

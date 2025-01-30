@@ -84,7 +84,7 @@ const HomePage = ({}: HomePageProps) => {
         />
       </View>
     ),
-    [handleOpenDetails, handleRegister, settings.language]
+    [handleOpenDetails, handleRegister]
   );
 
   const keyExtractor = useCallback((item: TournamentRequest) => item.id.toString(), []);

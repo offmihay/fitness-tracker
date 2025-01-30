@@ -22,7 +22,6 @@ import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-g
 import { Feather, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import * as Haptics from "expo-haptics";
-import PagerView from "react-native-pager-view";
 import Carousel from "../carousel/Carousel";
 
 export type ExpandableGroupImagesProps<T extends Object> = {
@@ -48,22 +47,11 @@ const ExpandableGroupImages = <T extends Object>(props: ExpandableGroupImagesPro
   const [indexToDelete, setIndexToDelete] = useState<number | null>(null);
 
   const [imgCoordinates, setImgCoordinates] = useState({
-    top: windowHeight / 2,
+    top: windowHeight - 90,
     left: windowWidth / 2,
   });
 
-  const imageRefs = useRef<React.RefObject<View>[]>([]);
-
   const [choosenImageIndex, setChoosenImageIndex] = useState(0);
-
-  useEffect(() => {
-    imageRefs.current = imageRefs.current.slice(0, images.length);
-    images.forEach((_, index) => {
-      if (!imageRefs.current[index]) {
-        imageRefs.current[index] = React.createRef<View>();
-      }
-    });
-  }, [images]);
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
@@ -84,16 +72,8 @@ const ExpandableGroupImages = <T extends Object>(props: ExpandableGroupImagesPro
   }, [isOpen, scale, activeImageIndex]);
 
   const animatedViewStyle = useAnimatedStyle(() => {
-    const width = interpolate(
-      scale.value,
-      [0, 1],
-      [(images.length > 0 && images[activeImageIndex].width) || 0, windowWidth]
-    );
-    const height = interpolate(
-      scale.value,
-      [0, 1],
-      [(images.length > 0 && images[activeImageIndex].height) || 0, windowHeight]
-    );
+    const width = interpolate(scale.value, [0, 1], [0, windowWidth]);
+    const height = interpolate(scale.value, [0, 1], [0, windowHeight]);
 
     const top = interpolate(scale.value, [0, 1], [imgCoordinates.top, 0]);
     const left = interpolate(scale.value, [0, 1], [imgCoordinates.left, 0]);
@@ -127,21 +107,11 @@ const ExpandableGroupImages = <T extends Object>(props: ExpandableGroupImagesPro
 
   const handleOpen = (index: number) => {
     setChoosenImageIndex(index);
-    if (imageRefs.current[index]) {
-      imageRefs.current[index].current?.measure((x, y, w, h, pageX, pageY) => {
-        setImgCoordinates({ left: pageX, top: pageY });
-      });
-    }
     setIsOpen(true);
     setIsModalVisible(true);
   };
   const handleClose = () => {
     const index = activeImageIndex;
-    if (imageRefs.current[index]) {
-      imageRefs.current[index].current?.measure((x, y, w, h, pageX, pageY) => {
-        setImgCoordinates({ left: pageX, top: pageY });
-      });
-    }
     setIsOpen(false);
   };
 
@@ -192,7 +162,6 @@ const ExpandableGroupImages = <T extends Object>(props: ExpandableGroupImagesPro
             <Pressable
               style={{ width: image.width, height: image.height }}
               onPress={() => handleOpen(index)}
-              ref={imageRefs.current[index]}
               disabled={isModalVisible || !!image.isError}
               onLongPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)}
             >

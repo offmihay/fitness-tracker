@@ -24,12 +24,13 @@ import Modal from "react-native-modal";
 import * as Haptics from "expo-haptics";
 
 type Props = {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   imageWrapper?: ViewStyle;
   onDelete?: () => void;
   onlyBaseImageProps?: FastImageProps;
   onlyExpandedImageProps?: FastImageProps;
+  disableDelete?: boolean;
 } & FastImageProps;
 
 const ExpandableImage = (props: Props) => {
@@ -41,6 +42,7 @@ const ExpandableImage = (props: Props) => {
     onDelete,
     onlyBaseImageProps,
     onlyExpandedImageProps,
+    disableDelete,
     ...rest
   } = props;
 
@@ -54,14 +56,14 @@ const ExpandableImage = (props: Props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shouldDelete, setShouldDelete] = useState(false);
 
-  const [imgDimensions, setImgDimensions] = useState({ top: 0, left: 0 });
+  const [imgDimensions, setImgDimensions] = useState({ top: 0, left: 0, width: 0, height: 0 });
 
   const viewRef = useRef<View>(null);
 
   useLayoutEffect(() => {
     if (viewRef.current) {
       viewRef.current.measure((x, y, w, h, pageX, pageY) => {
-        setImgDimensions({ left: pageX, top: pageY });
+        setImgDimensions({ left: pageX, top: pageY, width: w, height: h });
       });
     }
   }, [viewRef.current]);
@@ -85,8 +87,12 @@ const ExpandableImage = (props: Props) => {
   }, [isOpen, scale]);
 
   const animatedViewStyle = useAnimatedStyle(() => {
-    const width = interpolate(scale.value, [0, 1], [imgWidth, windowWidth]);
-    const height = interpolate(scale.value, [0, 1], [imgHeight, windowHeight]);
+    const width = interpolate(scale.value, [0, 1], [imgWidth || imgDimensions.width, windowWidth]);
+    const height = interpolate(
+      scale.value,
+      [0, 1],
+      [imgHeight || imgDimensions.height, windowHeight]
+    );
 
     const top = interpolate(scale.value, [0, 1], [imgDimensions.top, 0]);
     const left = interpolate(scale.value, [0, 1], [imgDimensions.left, 0]);
@@ -121,7 +127,7 @@ const ExpandableImage = (props: Props) => {
   const handleOpen = () => {
     if (viewRef.current) {
       viewRef.current.measure((x, y, w, h, pageX, pageY) => {
-        setImgDimensions({ left: pageX, top: pageY });
+        setImgDimensions({ left: pageX, top: pageY, width: w, height: h });
       });
     }
     setIsOpen(true);
@@ -152,7 +158,7 @@ const ExpandableImage = (props: Props) => {
       position.value = [0, 0];
     })
     .onUpdate((e) => {
-      position.value = [e.translationX * 1.2, e.translationY * 1.2];
+      position.value = [0, e.translationY * 1.2];
     })
     .onEnd((e) => {
       if (
@@ -205,11 +211,13 @@ const ExpandableImage = (props: Props) => {
             <Feather name="chevron-left" size={40} color="white" />
           </TouchableOpacity>
         </Animated.View>
-        <Animated.View style={[styles.deleteBtn, animatedContentStyle]}>
-          <TouchableOpacity onPress={() => deleteConfirmationAlert(handleDelete)}>
-            <FontAwesome name="trash-o" size={24} color="white" />
-          </TouchableOpacity>
-        </Animated.View>
+        {!disableDelete && (
+          <Animated.View style={[styles.deleteBtn, animatedContentStyle]}>
+            <TouchableOpacity onPress={() => deleteConfirmationAlert(handleDelete)}>
+              <FontAwesome name="trash-o" size={24} color="white" />
+            </TouchableOpacity>
+          </Animated.View>
+        )}
 
         <GestureDetector gesture={panGesture}>
           <Animated.View style={[styles.modalWrapper, animatedWrapperStyle]}>

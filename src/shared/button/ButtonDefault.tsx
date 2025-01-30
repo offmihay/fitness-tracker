@@ -28,8 +28,9 @@ type Props = {
     | "transparent"
     | "grey"
     | "darkgrey"
-    | "lightgrey";
-  style?: StyleProp<ViewStyle>;
+    | "lightgrey"
+    | "dotted";
+  styleWrapper?: StyleProp<ViewStyle>;
   styleText?: StyleProp<ViewStyle>;
   nodeRight?: (color: string) => React.ReactNode;
   nodeLeft?: (color: string) => React.ReactNode;
@@ -44,7 +45,7 @@ type Props = {
 } & React.ComponentProps<typeof TouchableOpacity>;
 
 const ButtonDefault = ({
-  style,
+  styleWrapper: style,
   styleText,
   loading = false,
   disabled,
@@ -82,6 +83,8 @@ const ButtonDefault = ({
       ? "black"
       : (type === "grey" && !theme.dark) || type === "lightgrey"
       ? "black"
+      : type === "dotted"
+      ? theme.colors.text
       : "white";
   const opacityColor =
     disabled && !isCheckAnimated && theme.dark
@@ -107,6 +110,12 @@ const ButtonDefault = ({
       ? styles.dangerButton
       : type === "white"
       ? styles.whiteButton
+      : type === "dotted"
+      ? {
+          ...styles.dottedButton,
+          borderColor: theme.colors.textTertiary,
+          backgroundColor: theme.colors.surface,
+        }
       : (type === "grey" && theme.dark) || type === "darkgrey"
       ? styles.darkgreyButton
       : (type === "grey" && !theme.dark) || type === "lightgrey"
@@ -141,7 +150,7 @@ const ButtonDefault = ({
   return (
     <TouchableOpacity
       style={[styles.wrapper, style]}
-      activeOpacity={0.85}
+      activeOpacity={0.5}
       disabled={disabled || loading || isCheckAnimated}
       {...rest}
     >
@@ -155,6 +164,11 @@ const ButtonDefault = ({
           type === "success" && styles.successButton,
           type === "error" && styles.errorButton,
           type === "white" && styles.whiteButton,
+          type === "dotted" && {
+            ...styles.dottedButton,
+            borderColor: theme.colors.text,
+            backgroundColor: theme.colors.surface,
+          },
           (type === "grey" || type === "darkgrey" || (disabled && theme.dark)) &&
             styles.darkgreyButton,
           (type === "grey" || type === "lightgrey" || (disabled && !theme.dark)) &&
@@ -262,6 +276,11 @@ const styles = StyleSheet.create({
 
   lightgreyButton: {
     backgroundColor: "#dedede",
+  },
+
+  dottedButton: {
+    borderWidth: 0.8,
+    borderStyle: "dashed",
   },
 });
 

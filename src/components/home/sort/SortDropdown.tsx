@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import ButtonFilter from "@/src/shared/button/ButtonFilter";
+import ButtonSmall from "@/src/shared/button/ButtonSmall";
 import { Ionicons } from "@expo/vector-icons";
 import CheckboxDropdownMenu from "@/src/shared/dropdown/CheckboxDropdownMenu";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
@@ -48,8 +48,8 @@ const SortDropdown = (props: Props) => {
 
   return (
     <CheckboxDropdownMenu items={dropdownItems}>
-      <ButtonFilter
-        label={(value && t(value)) || "Sort by"}
+      <ButtonSmall
+        title={(value && t(value)) || "Sort by"}
         renderIcon={(color, size) => (
           <Ionicons name="chevron-down-outline" size={size} color={color} style={{ bottom: -1 }} />
         )}

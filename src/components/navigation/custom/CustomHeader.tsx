@@ -92,13 +92,16 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
               <Skeleton height={40} width={220} wrapperStyle={{ borderRadius: 10 }} />
             )}
           </Animated.View>
-          {node && (
-            <View pointerEvents="box-none" style={{ width: "100%", height: "100%" }}>
-              {node()}
-            </View>
-          )}
         </View>
       </View>
+      {node && (
+        <View
+          pointerEvents="box-none"
+          style={{ width: "100%", height: "100%", position: "absolute", paddingTop: insets.top }}
+        >
+          <View>{node()}</View>
+        </View>
+      )}
     </>
   );
 };
