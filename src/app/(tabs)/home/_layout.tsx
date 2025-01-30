@@ -6,19 +6,8 @@ export default function Layout() {
   const { t } = useTranslation();
   return (
     <Stack {...stackProps}>
-      <Stack.Screen
-        name="index"
-        options={{
-          title: t("home.title"),
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="tournament"
-        options={{
-          title: t("home.title"),
-        }}
-      />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="[id]" />
     </Stack>
   );
 }

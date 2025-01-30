@@ -64,8 +64,8 @@ const SignUpPasswordScreen = () => {
       { emailAddress: email as string, password: data.password },
       {
         onSuccess: () => {
-          router.navigate({
-            pathname: "/sign-up/verifycode",
+          router.push({
+            pathname: "./verifycode",
           });
         },
         onError: (error: any) => {

@@ -44,7 +44,9 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
                   : user?.firstName
                 : "Not specified"
             }
-            onPress={() => router.navigate({ pathname: "settings/personal-info/change-name" })}
+            onPress={() =>
+              router.push({ pathname: "./change-name" }, { relativeToDirectory: true })
+            }
             icon={<Feather name="user" size={20} color={theme.colors.primary} />}
           />
           <Divider />

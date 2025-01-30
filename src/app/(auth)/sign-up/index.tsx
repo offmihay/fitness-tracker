@@ -45,10 +45,13 @@ export default function SignUpEmailScreen() {
   const onCheckUpEmail = (data: EmailData) => {
     signUpMutation.mutate(data.email, {
       onSuccess: () => {
-        router.navigate({
-          pathname: "/sign-up/password",
-          params: { email: watch("email") },
-        });
+        router.push(
+          {
+            pathname: "./password",
+            params: { email: watch("email") },
+          },
+          { relativeToDirectory: true }
+        );
       },
       onError: (error: any) => {
         console.log(error);
@@ -99,7 +102,7 @@ export default function SignUpEmailScreen() {
                   <TouchableOpacity
                     onPress={() =>
                       router.navigate({
-                        pathname: "/sign-in-modal",
+                        pathname: "/sign-in",
                       })
                     }
                   >

@@ -1,128 +1,157 @@
-import { useOAuth } from "@clerk/clerk-expo";
-import { useRouter } from "expo-router";
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  StatusBar,
-  Platform,
-} from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useMutation } from "@tanstack/react-query";
-import BackgroundImage from "@/src/shared/image/BackgroundImage";
-import FastImage from "@d11/react-native-fast-image";
+import { useRouter } from "expo-router";
+import { useSignInMutation } from "@/src/queries/signin";
+import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { FormProvider, useForm } from "react-hook-form";
+import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
+import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
+import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
+import ButtonBack from "@/src/shared/button/ButtonBack";
 
-const SignIn = () => {
+type Props = {};
+
+type SignInData = {
+  email: string;
+  password: string;
+};
+
+const SignInModal = ({}: Props) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const theme = useCustomTheme();
 
-  const googleOAuth = useOAuth({ strategy: "oauth_google" });
-  const appleOAuth = useOAuth({ strategy: "oauth_apple" });
-
-  const googleSignInMutation = useMutation({
-    mutationFn: async () => {
-      const oAuthFlow = await googleOAuth.startOAuthFlow();
-      oAuthFlow.setActive &&
-        oAuthFlow.authSessionResult?.type === "success" &&
-        (await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId }));
-    },
-    onSuccess: () => {
-      router.navigate({
-        pathname: "/",
-      });
-    },
-    onError: (err: any) => {},
+  const methods = useForm<SignInData>({
+    defaultValues: { email: "", password: "" },
+    mode: "onSubmit",
   });
 
-  const appleSignInMutation = useMutation({
-    mutationFn: async () => {
-      const oAuthFlow = await appleOAuth.startOAuthFlow();
-      oAuthFlow.setActive &&
-        oAuthFlow.authSessionResult?.type === "success" &&
-        (await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId }));
-    },
-    onSuccess: () => {
-      router.navigate({
-        pathname: "/",
-      });
-    },
-    onError: (err: any) => {},
-  });
+  const {
+    control,
+    watch,
+    handleSubmit,
+    formState: { errors: formErrors, isDirty },
+    clearErrors,
+    setError,
+  } = methods;
 
-  const googleSignIn = () => googleSignInMutation.mutate();
-  const appleSignIn = () => appleSignInMutation.mutate();
+  const { signInMutation } = useSignInMutation();
+
+  useEffect(() => {
+    clearErrors();
+  }, [watch("email"), watch("password")]);
+
+  const onSignInPress = (data: SignInData) => {
+    signInMutation.mutate(
+      { emailAddress: data.email, password: data.password },
+      {
+        onSuccess: () => {
+          router.replace("/home");
+        },
+        onError: (error: any) => {
+          const paramMapper = (paramName: string) => {
+            if (paramName === "identifier") return "email";
+            if (paramName === "password") return "password";
+            return "root.clerkError";
+          };
+          clerkHandleErrors(error, setError, t, paramMapper);
+        },
+      }
+    );
+  };
 
   return (
-    <BackgroundImage source={require("../../../assets/imgs/signin-background2.jpg")}>
-      {Platform.OS === "ios" && <StatusBar barStyle="light-content" />}
-      <SafeAreaView style={styles.wrapper}>
-        <View style={styles.content}>
-          <View className="flex flex-col gap-3">
-            <ButtonDefault
-              activeOpacity={0.85}
-              onPress={googleSignIn}
-              type="white"
-              nodeLeft={() => (
-                <FastImage
-                  source={require("../../../assets/imgs/google_icon.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-              )}
-              title={t("signin.continueGoogle")}
-            />
-            <ButtonDefault
-              activeOpacity={0.85}
-              onPress={appleSignIn}
-              type="white"
-              nodeLeft={() => (
-                <FastImage
-                  source={require("../../../assets/imgs/apple_icon.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-              )}
-              title={t("signin.continueApple")}
-            />
-            <ButtonDefault
-              type="darkgrey"
-              activeOpacity={0.85}
-              onPress={() => router.navigate("/sign-in-modal")}
-              nodeLeft={(color) => <Entypo name="mail" size={24} color={color} />}
-              title={t("signin.continueEmail")}
+    <FormProvider {...methods}>
+      <DismissKeyboardView>
+        <ButtonBack />
+        <View style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
+          <View style={[styles.contentWrapper]}>
+            <Animated.View layout={LinearTransition} className="mb-12">
+              <CustomText type="subtitle" style={{ textAlign: "center" }} color={theme.colors.text}>
+                {t("signin.modal.title")}
+              </CustomText>
+            </Animated.View>
+
+            <RHFormInput
+              name="email"
+              label={t("signin.email")}
+              control={control}
+              inputProps={{
+                useClearButton: true,
+                isError: !!formErrors.email,
+                textContentType: "oneTimeCode",
+              }}
             />
 
-            <TouchableOpacity onPress={() => router.navigate("/sign-up")}>
-              <CustomText color="white" type="link" style={{ textAlign: "center" }}>
-                {t("signin.signup")}
-              </CustomText>
-            </TouchableOpacity>
+            <RHFormInput
+              name="password"
+              label={t("signin.password")}
+              control={control}
+              inputProps={{
+                isPassword: true,
+                isError: !!formErrors.password,
+                textContentType: "password",
+              }}
+              rules={{
+                minLength: { value: 8, message: t("errors.password_too_short") },
+                maxLength: { value: 20, message: t("errors.password_too_long") },
+              }}
+            />
+
+            <Animated.View layout={LinearTransition} className="ml-2 w-[200] mt-2">
+              <TouchableOpacity onPress={void 0}>
+                <CustomText color="#0082FF" type="predefault">
+                  {t("signin.modal.forgotPassword")}
+                  {/* <Loader style={{ margin: 0, width: 25, height: 15 }} /> */}
+                </CustomText>
+              </TouchableOpacity>
+            </Animated.View>
+            {formErrors.root && (
+              <Animated.View
+                layout={LinearTransition}
+                className="ml-2 mt-1"
+                entering={FadeIn.duration(300)}
+                exiting={FadeOut.duration(300)}
+              >
+                {Object.values(formErrors.root).map((error, index) => (
+                  <CustomText color={theme.colors.error} type="predefault" key={index}>
+                    {(error as { message: string }).message}
+                  </CustomText>
+                ))}
+              </Animated.View>
+            )}
+            <Animated.View layout={LinearTransition} className="mt-6">
+              <ButtonDefault
+                activeOpacity={0.85}
+                onPress={handleSubmit(onSignInPress)}
+                loading={signInMutation.isPending}
+                title={t("signin.modal.signin")}
+                disabled={
+                  !watch("email") || !watch("password") || Object.keys(formErrors).length !== 0
+                }
+              />
+            </Animated.View>
           </View>
         </View>
-      </SafeAreaView>
-    </BackgroundImage>
+      </DismissKeyboardView>
+    </FormProvider>
   );
 };
 
-export default SignIn;
-
 const styles = StyleSheet.create({
   wrapper: {
-    position: "relative",
-    height: "100%",
-  },
-
-  content: {
-    position: "absolute",
-    bottom: 0,
-    backgroundColor: "black",
-    width: "100%",
+    flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 30,
-    paddingBottom: 50,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    marginBottom: 280,
+  },
+  contentWrapper: {
+    flex: 1,
+    justifyContent: "center",
   },
 });
+
+export default SignInModal;

@@ -48,10 +48,13 @@ const HomePage = ({}: HomePageProps) => {
 
   const handleOpenDetails = useCallback(
     (id: string) => {
-      router.push({
-        pathname: "/home/tournament/[id]",
-        params: { id },
-      });
+      router.push(
+        {
+          pathname: "./[id]",
+          params: { id },
+        },
+        { relativeToDirectory: true }
+      );
     },
     [router]
   );

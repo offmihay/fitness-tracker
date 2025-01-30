@@ -10,20 +10,10 @@ import toastConfig from "@/src/shared/toast/toastConfig";
 
 export default function TabLayout() {
   const theme = useCustomTheme();
-  const { isSignedIn } = useAuth();
-  if (!isSignedIn) {
-    return <Redirect href={"/sign-in"} />;
-  }
   Platform.OS === "android" && NavigationBar.setBackgroundColorAsync(theme.colors.background);
   return (
     <>
       <Tabs {...tabProps}>
-        <Tabs.Screen
-          name="index"
-          options={{
-            href: null,
-          }}
-        />
         <Tabs.Screen name="tournaments" />
         <Tabs.Screen name="home" />
         <Tabs.Screen name="settings" />

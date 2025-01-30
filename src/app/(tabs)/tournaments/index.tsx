@@ -7,12 +7,15 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 type Props = {};
 
 const Tournaments = ({}: Props) => {
-  const { navigate } = useRouter();
+  const { push } = useRouter();
 
   return (
     <LayoutStatic name="tournaments">
       <View style={[styles.wrapper]}>
-        <ButtonDefault title="Create tournament" onPress={() => navigate("tournaments/create")} />
+        <ButtonDefault
+          title="Create tournament"
+          onPress={() => push("./create", { relativeToDirectory: true })}
+        />
       </View>
     </LayoutStatic>
   );

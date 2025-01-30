@@ -13,24 +13,33 @@ const TournamentDetailsScreen = ({}: Props) => {
   const { data, isLoading, error } = useTournamentByID(id as string);
 
   const handleOpenRules = () => {
-    router.push({
-      pathname: "/home/tournament/[id]/rules",
-      params: { rules: data?.rules },
-    });
+    router.push(
+      {
+        pathname: "./rules",
+        params: { rules: data?.rules },
+      },
+      { relativeToDirectory: true }
+    );
   };
 
   const handleOpenParticipants = () => {
-    router.push({
-      pathname: "/home/tournament/[id]/rules",
-      params: {},
-    });
+    router.push(
+      {
+        pathname: "./rules",
+        params: {},
+      },
+      { relativeToDirectory: true }
+    );
   };
 
   const handleOpenOrganizer = () => {
-    router.push({
-      pathname: "/home/tournament/[id]/rules",
-      params: {},
-    });
+    router.push(
+      {
+        pathname: "./rules",
+        params: {},
+      },
+      { relativeToDirectory: true }
+    );
   };
 
   const isLoaded = !isLoading && data;

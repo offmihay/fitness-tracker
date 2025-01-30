@@ -69,7 +69,7 @@ const SignUpVerifyCodeScreen = () => {
   const onPressVerify = (data: VerificationCodeData) => {
     verifyCodeMutation.mutate(data.code, {
       onSuccess: () => {
-        router.replace("/");
+        router.replace("/home");
       },
       onError: (error: any) => {
         const paramMapper = (paramName: string) => {
