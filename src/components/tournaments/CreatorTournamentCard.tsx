@@ -5,7 +5,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
-import { Entypo, Feather, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
+import { Entypo, Feather, FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Divider } from "react-native-paper";
 import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
@@ -72,9 +72,16 @@ const CreatorTournamentCard = (props: Props) => {
             >
               <View className="flex-1">
                 <ButtonSmall
-                  title="Edit information"
+                  title="Edit"
                   style={{ backgroundColor: theme.colors.primary, width: "100%" }}
                   renderIcon={(color) => <Feather name="edit-3" size={20} color={color} />}
+                />
+              </View>
+              <View>
+                <ButtonSmall
+                  title="Users"
+                  style={{ backgroundColor: theme.colors.surfaceLight }}
+                  renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
                 />
               </View>
               <TouchableOpacity
@@ -151,6 +158,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    height: 40,
   },
 });
 

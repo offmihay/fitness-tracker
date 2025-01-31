@@ -68,7 +68,7 @@ const UserTournamentCard = (props: Props) => {
               </View>
               <View style={[styles.footerText]}>
                 <CustomText type="small" color={theme.colors.text} numberOfLines={1}>
-                  Entry fee: 100 UAH
+                  Entry fee: {data.entryFee} UAH
                 </CustomText>
               </View>
             </View>
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
   },
 
   footerBtn: {

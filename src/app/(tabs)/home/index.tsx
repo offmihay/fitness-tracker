@@ -31,15 +31,15 @@ const HomePage = ({}: HomePageProps) => {
 
   const { data: loadedData, refetch, isFetching } = useAllTournaments();
 
-  useEffect(() => {
-    const fetchStored = async () => {
-      const storedFilter = await fetchStoredFilter();
-      const storedSortBy = await fetchStoredSortBy();
-      setFilter(storedFilter);
-      setSortBy(storedSortBy);
-    };
-    fetchStored();
-  }, []);
+  // useEffect(() => {
+  //   const fetchStored = async () => {
+  //     const storedFilter = await fetchStoredFilter();
+  //     const storedSortBy = await fetchStoredSortBy();
+  //     setFilter(storedFilter);
+  //     setSortBy(storedSortBy);
+  //   };
+  //   fetchStored();
+  // }, []);
 
   useEffect(() => {
     const cloneData = _.cloneDeep(loadedData);

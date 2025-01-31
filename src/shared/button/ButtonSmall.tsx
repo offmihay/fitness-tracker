@@ -26,7 +26,7 @@ const ButtonSmall = (props: Props) => {
         activeOpacity={0.5}
         {...rest}
       >
-        <View className="flex flex-row gap-3 items-center justify-center">
+        <View className="flex-1 flex flex-row gap-3 items-center justify-center">
           {titleEnabled && <CustomText color={textColor}>{title}</CustomText>}
           {renderIcon && (
             <CustomIcon render={(color) => renderIcon(textColor || color, iconSize)} />
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 6,
     paddingHorizontal: 15,
+    height: 40,
   },
 
   btnContent: {

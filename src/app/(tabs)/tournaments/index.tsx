@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import { router, useRouter } from "expo-router";
+import { router, useNavigation, useRouter } from "expo-router";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import UserTournamentCard, {
   UserTournamentCard_HEIGHT,
@@ -36,11 +36,15 @@ const Tournaments = ({}: Props) => {
     setData2(cloneData2);
   }, [loadedData]);
 
+  const navigation = useNavigation();
+
   const handleOpenDetails = (id: string) => {
-    router.push({
-      pathname: "/home/[id]",
-      params: { id },
-    });
+    // router.push(
+    //   {
+    //     pathname: "/home/[id]",
+    //     params: { id },
+    //   }
+    // );
   };
 
   useEffect(() => {
