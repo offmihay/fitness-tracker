@@ -4,7 +4,7 @@ import fetchApi from "../api/fetchApi";
 import { TournamentFormData } from "../components/tournaments/create/form/schema";
 import Toast from "react-native-toast-message";
 
-export const useAllTournaments = () => {
+export const getTournaments = () => {
   return useQuery({
     queryKey: ["tournaments"],
     queryFn: async () => {
@@ -17,7 +17,7 @@ export const useAllTournaments = () => {
   });
 };
 
-export const useTournamentByID = (id: string): UseQueryResult<TournamentRequest> => {
+export const getTournamentByID = (id: string): UseQueryResult<TournamentRequest> => {
   return useQuery<TournamentRequest>({
     queryKey: ["tournament", id],
     queryFn: async () => {
@@ -28,7 +28,7 @@ export const useTournamentByID = (id: string): UseQueryResult<TournamentRequest>
   });
 };
 
-export const useTournamentMutation = () => {
+export const postTournament = () => {
   return useMutation({
     mutationFn: async (data: TournamentFormData) => {
       const response = await fetchApi<TournamentFormData, any>("/tournaments", {
@@ -36,6 +36,47 @@ export const useTournamentMutation = () => {
         body: data,
       });
       return response.data;
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "errorToast",
+        props: { text: error.message },
+      });
+    },
+  });
+};
+
+export const updateTournament = () => {
+  return useMutation({
+    mutationFn: async ({ data, id }: { data: TournamentFormData; id: string }) => {
+      const response = await fetchApi<TournamentFormData, any>(`/tournaments/${id}`, {
+        method: "PUT",
+        body: data,
+      });
+      return response.data;
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "errorToast",
+        props: { text: error.message },
+      });
+    },
+  });
+};
+
+export const deleteTournament = () => {
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await fetchApi<TournamentFormData, any>(`/tournaments/${id}`, {
+        method: "DELETE",
+      });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      Toast.show({
+        type: "successToast",
+        props: { text: data.message },
+      });
     },
     onError: (error) => {
       Toast.show({

@@ -7,9 +7,7 @@ import LayoutKeyboardScrollView from "@/src/components/navigation/layouts/Layout
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { useLocalSearchParams } from "expo-router";
 import { useCreateTournamentForm } from "@/src/components/tournaments/create/form/useCreateTournamentForm";
-import { TournamentDetailsForm } from "@/src/components/tournaments/create/form/TounamentDetailsForm";
-import { RestrictionsForm } from "@/src/components/tournaments/create/form/RestrictionsForm";
-import { LocationDateForm } from "@/src/components/tournaments/create/form/LocationDateForm";
+import { TournamentEditForm } from "@/src/components/tournaments/create/form/TournamentEditForm";
 
 export type CreateTournamentPageQuery = {
   place_id?: string;
@@ -35,23 +33,19 @@ const CreateTournament = () => {
       extraScrollHeight={Platform.OS === "android" ? 80 : -55}
       useScrollFeature
     >
-      <FormProvider {...methods}>
-        <View style={styles.wrapper}>
-          <View className="flex flex-col gap-1">
-            <TournamentDetailsForm />
-            <RestrictionsForm />
-            <LocationDateForm />
-            <CustomAnimatedView className="my-5">
-              <ButtonDefault
-                title={t("tournaments.create.createButton")}
-                className="mt-4"
-                onPress={handleSubmit(handleFormSubmit)}
-                loading={createTournamentMutation.isPending}
-              />
-            </CustomAnimatedView>
-          </View>
-        </View>
-      </FormProvider>
+      <View style={styles.wrapper}>
+        <FormProvider {...methods}>
+          <TournamentEditForm type="create" />
+          <CustomAnimatedView className="my-5">
+            <ButtonDefault
+              title={t("tournaments.create.createButton")}
+              className="mt-4"
+              onPress={handleSubmit(handleFormSubmit)}
+              loading={createTournamentMutation.isPending}
+            />
+          </CustomAnimatedView>
+        </FormProvider>
+      </View>
     </LayoutKeyboardScrollView>
   );
 };

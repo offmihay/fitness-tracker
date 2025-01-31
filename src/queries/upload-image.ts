@@ -3,6 +3,7 @@ import { ImagePickerAsset } from "expo-image-picker";
 import FormData from "form-data";
 import fetchApi from "../api/fetchApi";
 import Toast from "react-native-toast-message";
+import { UploadedImageAsset } from "../hooks/useImagePicker";
 
 export type ImageUploadResponse = {
   api_key: string;
@@ -31,7 +32,7 @@ export type ImageUploadResponse = {
 export const useUploadImage = () => {
   return useMutation({
     mutationKey: ["uploadImage"],
-    mutationFn: async (image: ImagePickerAsset) => {
+    mutationFn: async (image: UploadedImageAsset) => {
       const formData = new FormData();
 
       formData.append("file", {

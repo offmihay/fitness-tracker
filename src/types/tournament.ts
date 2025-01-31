@@ -73,7 +73,7 @@ export interface TournamentRequest {
   rules: string;
   skillLevel: TournamentSkillLevel;
   format: TournamentFormat;
-  sportType: string;
+  sportType: TournamentSport;
   status: TournamentStatus;
   title: string;
   updatedAt: string;
@@ -81,7 +81,7 @@ export interface TournamentRequest {
 
 export type Image = {
   id: string;
-  publicId: string | null;
+  publicId: string;
   secureUrl: string;
   tournamentId: string;
   url: string;
@@ -122,7 +122,7 @@ export const emptyTournamentRequest: TournamentRequest = {
   rules: "",
   skillLevel: TournamentSkillLevel.Beginner,
   format: TournamentFormat.Singles,
-  sportType: "",
+  sportType: TournamentSport.Badminton,
   status: TournamentStatus.Upcoming,
   title: "",
   updatedAt: "",

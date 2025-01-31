@@ -26,13 +26,10 @@ const GoogleAutoComplete = (props: Props) => {
 
   useEffect(() => {
     query.address &&
-      query.latitude &&
-      query.longitude &&
-      setLocation(() => {
+      setLocation((prev) => {
         return {
+          ...prev,
           address: query.address,
-          latitude: query.latitude,
-          longitude: query.longitude,
         };
       });
     setTimeout(() => {

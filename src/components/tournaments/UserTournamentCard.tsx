@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   footerText: {
-    paddingVertical: 2,
+    paddingVertical: 1,
     borderRadius: 5,
     overflow: "hidden",
     display: "flex",

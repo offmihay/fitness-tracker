@@ -12,21 +12,23 @@ import Loader from "@/src/shared/loader/Loader";
 import ErrorAnimatedView from "@/src/shared/view/ErrorAnimatedView";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ImagePickerController, {
-  ImageForm,
+  ImageResource,
 } from "../../../shared/controllers/ImagePickerController";
 
 type Props = {
   errorMessage: string;
-  onImageUploadSuccess: (images: ImageForm[]) => void;
+  onImageUploadSuccess: (images: ImageResource[]) => void;
+  defaultImages?: ImageResource[];
 };
 
 const ChooseImageSection = (props: Props) => {
   const theme = useCustomTheme();
-  const { errorMessage, onImageUploadSuccess } = props;
+  const { errorMessage, onImageUploadSuccess, defaultImages } = props;
 
   return (
     <ImagePickerController
       onImageUploadSuccess={onImageUploadSuccess}
+      defaultImages={defaultImages}
       renderUI={({
         images,
         handleOpenModal,
@@ -81,7 +83,10 @@ const ChooseImageSection = (props: Props) => {
                         }}
                       >
                         <FastImage
-                          source={{ uri: image?.uri, priority: FastImage.priority.high }}
+                          source={{
+                            uri: image.uri.length !== 0 ? image.uri : image.secure_url,
+                            priority: FastImage.priority.high,
+                          }}
                           style={{
                             width: "100%",
                             height: "100%",

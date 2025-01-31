@@ -4,16 +4,13 @@ import { Ionicons, FontAwesome6, MaterialIcons, AntDesign } from "@expo/vector-i
 import { TournamentRequest } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
-import FastImage from "@d11/react-native-fast-image";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import CustomMap from "@/src/shared/map/CustomMap";
 import CustomText from "@/src/shared/text/CustomText";
-import PagerView from "react-native-pager-view";
-import Skeleton from "@/src/shared/skeleton/Skeleton";
-import CustomArrow from "@/src/shared/button/arrow/CustomArrow";
 import Carousel from "@/src/shared/carousel/Carousel";
 
 type Props = {
+  isRegistred: boolean;
   data: TournamentRequest;
   handleOpenRules: () => void;
   handleOpenParticipants: () => void;
@@ -21,6 +18,7 @@ type Props = {
 };
 
 const TournamentDetails = ({
+  isRegistred,
   data,
   handleOpenRules,
   handleOpenParticipants,
@@ -37,14 +35,16 @@ const TournamentDetails = ({
           useArrows
         />
       </View>
-      <View className="flex flex-row justify-between">
-        <ButtonDefault title={t("home.tournament.register")} styleWrapper={{ width: "48%" }} />
-        <ButtonDefault
-          type="grey"
-          title={t("home.tournament.saveForLater")}
-          styleWrapper={{ width: "48%" }}
-        />
-      </View>
+      {!isRegistred && (
+        <View className="flex flex-row justify-between">
+          <ButtonDefault title={t("home.tournament.register")} styleWrapper={{ width: "48%" }} />
+          <ButtonDefault
+            type="grey"
+            title={t("home.tournament.saveForLater")}
+            styleWrapper={{ width: "48%" }}
+          />
+        </View>
+      )}
       <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
         <CustomText type="subtitle" className="mb-4">
           {t("home.tournament.description")}

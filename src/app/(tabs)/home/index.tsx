@@ -2,7 +2,7 @@ import { RefreshControl, StyleSheet, View } from "react-native";
 import React, { useCallback, useState, memo, useEffect } from "react";
 import TournamentCard, { CARD_HEIGHT } from "@/src/components/home/tournament [id]/TournamentCard";
 import { useRouter } from "expo-router";
-import { useAllTournaments } from "@/src/queries/tournaments";
+import { getTournaments } from "@/src/queries/tournaments";
 import { useSettings } from "@/src/hooks/useSettings";
 import HomeHeader from "@/src/components/home/HomeHeader";
 import SortDropdown from "@/src/components/home/sort/SortDropdown";
@@ -29,7 +29,7 @@ const HomePage = ({}: HomePageProps) => {
   const [filter, setFilter] = useState<FilterHome>(emptyFilter);
   const [sortBy, setSortBy] = useState<SortValueHome | null>(null);
 
-  const { data: loadedData, refetch, isFetching } = useAllTournaments();
+  const { data: loadedData, refetch, isFetching } = getTournaments();
 
   // useEffect(() => {
   //   const fetchStored = async () => {

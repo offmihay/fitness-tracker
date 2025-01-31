@@ -56,6 +56,11 @@
       "createButton": "Create",
       "successMessage": "Tournament created:",
       "errorMessage": "Failed to create tournament:"
+    },
+    "edit": {
+      "editButton": "Update",
+      "successMessage": "Tournament updated:",
+      "errorMessage": "Failed to update tournament:"
     }
   },
 
@@ -116,6 +121,7 @@
     "yes": "Yes",
     "no": "No",
     "delete": "Delete",
+    "deactivate": "Deactivate",
     "edit": "Edit",
     "back": "Back",
     "done": "Done",
@@ -171,6 +177,7 @@
     "tournaments": "Tournaments",
     "settings": "Settings",
     "createTournament": "Create Tournament",
+    "editTournament": "Edit Tournament",
     "personalInfo": "Personal Info",
     "changeName": "Change Name",
     "rules": "Rules",

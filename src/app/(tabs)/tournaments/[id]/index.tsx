@@ -6,7 +6,9 @@ import TournamentDetails from "@/src/components/home/tournament [id]/TournamentD
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import TournamentDetailsSkeleton from "@/src/components/home/skeleton/TournamentDetailsSkeleton";
 
-const TournamentDetailsScreen = () => {
+type Props = {};
+
+const TournamentDetailsScreen = ({}: Props) => {
   const { id } = useLocalSearchParams();
   const { data, isLoading, error } = getTournamentByID(id as string);
 
@@ -47,7 +49,7 @@ const TournamentDetailsScreen = () => {
       <View style={styles.wrapper}>
         {isLoaded ? (
           <TournamentDetails
-            isRegistred={false}
+            isRegistred={true}
             data={data}
             handleOpenRules={handleOpenRules}
             handleOpenParticipants={handleOpenParticipants}

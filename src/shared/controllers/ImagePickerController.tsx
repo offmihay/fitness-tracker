@@ -11,6 +11,18 @@ export type ImageForm = {
   publicId: string;
 };
 
+export type ImageResource = {
+  publicId: string;
+  secure_url?: string;
+};
+
+const emptyUpdoadedImage: UploadedImageAsset = {
+  uri: "",
+  width: 200,
+  height: 200,
+  isError: false,
+};
+
 type triggerProps = {
   uploadImageMutation: UseMutationResult<ImageUploadResponse, Error, ImagePickerAsset, unknown>;
   handleOpenModal: () => void;
@@ -22,10 +34,11 @@ type triggerProps = {
 type Props = {
   renderUI: (props: triggerProps) => React.ReactNode;
   onImageUploadSuccess: (images: ImageForm[]) => void;
+  defaultImages?: ImageResource[];
 };
 
 const ImagePickerController = (props: Props) => {
-  const { renderUI, onImageUploadSuccess } = props;
+  const { renderUI, onImageUploadSuccess, defaultImages } = props;
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   const {
@@ -35,7 +48,14 @@ const ImagePickerController = (props: Props) => {
     removeImage,
     handleUploadImage,
     uploadImageMutation,
-  } = useImagePicker();
+  } = useImagePicker(
+    defaultImages?.map((img, index) => ({
+      publicId: img.publicId,
+      secure_url: img.secure_url,
+      ...emptyUpdoadedImage,
+      uniqueID: `${img.publicId}_${index}_${Date.now()}`,
+    }))
+  );
 
   const openActionSheetIOS = () => {
     ActionSheetIOS.showActionSheetWithOptions(

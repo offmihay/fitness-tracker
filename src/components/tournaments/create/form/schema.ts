@@ -35,6 +35,7 @@ const restSchema = z.object({
     .array(
       z.object({
         publicId: z.string(),
+        secure_url: z.string().optional(),
       })
     )
     .refine((images) => images.length > 0, { message: "At least one image is required" }),

@@ -1,16 +1,18 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTournamentMutation } from "@/src/queries/tournaments";
+import { postTournament } from "@/src/queries/tournaments";
 import schemaCreateTournament, {
   TournamentFormData,
 } from "@/src/components/tournaments/create/form/schema";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { CreateTournamentPageQuery } from "@/src/app/(tabs)/tournaments/create";
+import Toast from "react-native-toast-message";
+import { router } from "expo-router";
 
 export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) => {
   const { t } = useTranslation();
-  const createTournamentMutation = useTournamentMutation();
+  const createTournamentMutation = postTournament();
 
   const methods = useForm<TournamentFormData>({
     defaultValues: {},
@@ -27,11 +29,18 @@ export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) =>
       status: "upcoming",
     };
     createTournamentMutation.mutate(dataAdd, {
-      onSuccess: (data) => {
-        console.log(t("tournaments.create.successMessage"), data);
+      onSuccess: () => {
+        Toast.show({
+          type: "successToast",
+          props: { text: t("tournaments.update.successMessage") },
+        });
+        router.back();
       },
-      onError: (error) => {
-        console.error(t("tournaments.create.errorMessage"), error);
+      onError: () => {
+        Toast.show({
+          type: "errorToast",
+          props: { text: t("tournaments.update.errorMessage") },
+        });
       },
     });
   };

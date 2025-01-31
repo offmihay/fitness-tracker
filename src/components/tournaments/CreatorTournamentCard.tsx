@@ -5,41 +5,51 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
-import { Entypo, Feather, FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { Entypo, Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Divider } from "react-native-paper";
-import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
 import { formatDateTime } from "@/src/utils/formatDateTime";
-import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import ButtonSmall from "@/src/shared/button/ButtonSmall";
 import { UserTournamentCard_HEIGHT } from "./UserTournamentCard";
+import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
+import * as Haptics from "expo-haptics";
+import TournamentOptionsContextMenu, { TournamentOptions } from "./TournamentOptionsContextMenu";
 
 type Props = {
   data: TournamentRequest;
   onCardPress?: () => void;
+  onEditPress?: () => void;
+  onAdditionalOptionsPress?: () => void;
+  onDeletePress?: () => void;
 };
 
 const CreatorTournamentCard = (props: Props) => {
-  const { data, onCardPress } = props;
+  const { data, onCardPress, onEditPress, onDeletePress } = props;
   const theme = useCustomTheme();
   const { settings } = useSettings();
 
+  const onSelectOption = (option: TournamentOptions) => {
+    if (option === "delete") {
+      onDeletePress?.();
+    }
+  };
+
   return (
-    <TouchableOpacity onPress={onCardPress} activeOpacity={0.8}>
-      <View style={[styles.wrapper, { backgroundColor: theme.colors.surface }]}>
-        <View style={styles.content}>
-          <View style={styles.contentHeader}>
-            <View className="flex flex-row gap-2 items-center">
-              <FontAwesome name="circle" size={10} color={theme.colors.success} />
-              <CustomText type="small">Ongoing</CustomText>
-            </View>
-            <View className="flex flex-row items-center">
-              <CustomText type="small">
-                {formatDateTime(data.createdAt, settings.language)}
-              </CustomText>
-            </View>
+    <View style={[styles.wrapper, { backgroundColor: theme.colors.surface }]}>
+      <View style={styles.content}>
+        <View style={styles.contentHeader}>
+          <View className="flex flex-row gap-2 items-center">
+            <FontAwesome name="circle" size={10} color={theme.colors.success} />
+            <CustomText type="small">Ongoing</CustomText>
           </View>
-          <Divider />
+          <View className="flex flex-row items-center">
+            <CustomText type="small">
+              {formatDateTime(data.createdAt, settings.language)}
+            </CustomText>
+          </View>
+        </View>
+        <Divider />
+        <TouchableOpacity onPress={onCardPress} activeOpacity={0.8}>
           <View style={styles.title}>
             <View style={[styles.imageWrapper, { backgroundColor: theme.colors.surfaceLight }]}>
               <ExpandableImage
@@ -55,47 +65,50 @@ const CreatorTournamentCard = (props: Props) => {
               />
             </View>
             <View className="flex flex-1 justify-center">
-              <CustomText numberOfLines={3} type="predefault">
+              <CustomText numberOfLines={3} type="default">
                 {data.title}
               </CustomText>
             </View>
           </View>
-          <View style={styles.footer}>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                flex: 1,
-                gap: 8,
-                justifyContent: "space-between",
-              }}
-            >
-              <View className="flex-1">
-                <ButtonSmall
-                  title="Edit"
-                  style={{ backgroundColor: theme.colors.primary, width: "100%" }}
-                  renderIcon={(color) => <Feather name="edit-3" size={20} color={color} />}
-                />
-              </View>
-              <View>
-                <ButtonSmall
-                  title="Users"
-                  style={{ backgroundColor: theme.colors.surfaceLight }}
-                  renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
-                />
-              </View>
+        </TouchableOpacity>
+        <View style={styles.footer}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              flex: 1,
+              gap: 8,
+              justifyContent: "space-between",
+            }}
+          >
+            <View className="flex-1">
+              <ButtonSmall
+                onPress={onEditPress}
+                title="Edit"
+                style={{ backgroundColor: theme.colors.primary, width: "100%" }}
+                renderIcon={(color) => <Feather name="edit-3" size={20} color="white" />}
+                textColor="white"
+              />
+            </View>
+            <View>
+              <ButtonSmall
+                title="Users"
+                style={{ backgroundColor: theme.colors.surfaceLight }}
+                renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
+              />
+            </View>
+            <TournamentOptionsContextMenu onSelect={onSelectOption}>
               <TouchableOpacity
                 style={[styles.footerBtn, { backgroundColor: theme.colors.surfaceLight }]}
-                //   onPress={onPress}
                 activeOpacity={0.5}
               >
-                <Entypo name="dots-three-horizontal" size={24} color="white" />
+                <Entypo name="dots-three-horizontal" size={24} color={theme.colors.text} />
               </TouchableOpacity>
-            </View>
+            </TournamentOptionsContextMenu>
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 

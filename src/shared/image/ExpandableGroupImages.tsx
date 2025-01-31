@@ -47,8 +47,8 @@ const ExpandableGroupImages = <T extends Object>(props: ExpandableGroupImagesPro
   const [indexToDelete, setIndexToDelete] = useState<number | null>(null);
 
   const [imgCoordinates, setImgCoordinates] = useState({
-    top: windowHeight - 90,
-    left: windowWidth / 2,
+    top: windowHeight / 2,
+    left: -100,
   });
 
   const [choosenImageIndex, setChoosenImageIndex] = useState(0);

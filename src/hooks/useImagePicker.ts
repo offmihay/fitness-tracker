@@ -6,17 +6,23 @@ import FastImage from "@d11/react-native-fast-image";
 import { ImagePickerAsset } from "expo-image-picker";
 import { Platform } from "react-native";
 
-export type UploadedImageAsset = ImagePickerAsset & {
+export type UploadedImageAsset = {
+  fileName?: string | null;
+  mimeType?: string;
+  assetId?: string | null;
+  uri: string;
   publicId?: string;
   isError?: boolean;
   uniqueID?: string;
   secure_url?: string;
+  width: number;
+  height: number;
 };
 
-export function useImagePicker() {
+export function useImagePicker(defaultImages?: UploadedImageAsset[]) {
   const uploadImage = useUploadImage();
 
-  const [images, setImages] = useState<UploadedImageAsset[]>([]);
+  const [images, setImages] = useState<UploadedImageAsset[]>(defaultImages || []);
 
   const handleUploadImage = useCallback(
     (img: UploadedImageAsset) => {
@@ -85,6 +91,7 @@ export function useImagePicker() {
   }, [handleUploadImage]);
 
   const removeImage = useCallback((image: UploadedImageAsset) => {
+    console.log(images);
     setImages((prev) => prev.filter((img) => img.uniqueID !== image.uniqueID));
   }, []);
 

@@ -8,22 +8,21 @@ import {
   ContextMenuRoot,
   ContextMenuTrigger,
 } from "./ContextMenuComponents";
-import { View } from "react-native";
-import { FontAwesome6 } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 
 type Props = {
+  action?: "longPress" | "press";
   children: React.ReactNode;
   onDelete?: () => void;
   isDisabled?: boolean;
 };
 
-const DeleteContextMenu = ({ children, onDelete, isDisabled }: Props) => {
+const DeleteContextMenu = ({ children, onDelete, isDisabled, action = "longPress" }: Props) => {
   const { t } = useTranslation();
   return (
     <ContextMenuRoot dir="ltr">
       {/* @ts-ignore */}
-      <ContextMenuTrigger action="longPress">{children}</ContextMenuTrigger>
+      <ContextMenuTrigger action={action}>{children}</ContextMenuTrigger>
       <ContextMenuContent defaultChecked>
         <ContextMenuItem key="delete" destructive onSelect={onDelete} disabled={isDisabled}>
           <ContextMenuItemIcon
