@@ -1,5 +1,5 @@
-import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
-import { TournamentRequest } from "../types/tournament";
+import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
+import { Tournament } from "../types/tournament";
 import fetchApi from "../api/fetchApi";
 import { TournamentFormData } from "../components/tournaments/create/form/schema";
 import Toast from "react-native-toast-message";
@@ -8,20 +8,18 @@ export const getTournaments = () => {
   return useQuery({
     queryKey: ["tournaments"],
     queryFn: async () => {
-      const response = await fetchApi<any, TournamentRequest[]>("/tournaments");
+      const response = await fetchApi<any, Tournament[]>("/tournaments");
       return response.data;
     },
     initialData: [],
-    retry: 3,
-    retryDelay: 1000,
   });
 };
 
-export const getTournamentByID = (id: string): UseQueryResult<TournamentRequest> => {
-  return useQuery<TournamentRequest>({
+export const getTournamentByID = (id: string): UseQueryResult<Tournament> => {
+  return useQuery<Tournament>({
     queryKey: ["tournament", id],
     queryFn: async () => {
-      const response = await fetchApi<any, TournamentRequest>(`/tournaments/${id}`);
+      const response = await fetchApi<any, Tournament>(`/tournaments/${id}`);
 
       return response.data;
     },
@@ -47,9 +45,11 @@ export const postTournament = () => {
 };
 
 export const updateTournament = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ data, id }: { data: TournamentFormData; id: string }) => {
-      const response = await fetchApi<TournamentFormData, any>(`/tournaments/${id}`, {
+      const response = await fetchApi<TournamentFormData, Tournament>(`/tournaments/${id}`, {
         method: "PUT",
         body: data,
       });
@@ -59,6 +59,27 @@ export const updateTournament = () => {
       Toast.show({
         type: "errorToast",
         props: { text: error.message },
+      });
+    },
+    onSuccess: (updatedTournament, { id }) => {
+      Toast.show({
+        type: "successToast",
+        props: { text: "Successfully updated tournament" },
+      });
+      // replace the updated tournament in the tournaments list cache
+      // queryClient.setQueryData(["tournaments"], (prevData: Tournament[]) => {
+      //   debugger;
+      //   const idx = prevData.findIndex((tournament) => tournament.id === id);
+      //   if (idx >= 0) {
+      //     prevData[idx] = updatedTournament;
+      //   }
+      //   return [...prevData];
+      // });
+      queryClient.invalidateQueries({
+        queryKey: ["tournaments"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["tournament", id],
       });
     },
   });

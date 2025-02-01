@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { TournamentRequest } from "@/src/types/tournament";
+import { Tournament } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import FastImage from "@d11/react-native-fast-image";
@@ -16,7 +16,7 @@ import * as Haptics from "expo-haptics";
 import TournamentOptionsContextMenu, { TournamentOptions } from "./TournamentOptionsContextMenu";
 
 type Props = {
-  data: TournamentRequest;
+  data: Tournament;
   onCardPress?: () => void;
   onEditPress?: () => void;
   onAdditionalOptionsPress?: () => void;

@@ -54,7 +54,7 @@ interface GeoCoordinates {
   longitude: number;
 }
 
-export interface TournamentRequest {
+export interface Tournament {
   ageRestrictions: AgeRestrictions;
   city: string;
   createdAt: string;
@@ -87,7 +87,7 @@ export type Image = {
   url: string;
 };
 
-export const emptyTournamentRequest: TournamentRequest = {
+export const emptyTournamentRequest: Tournament = {
   ageRestrictions: {
     minAge: 0,
     maxAge: 0,

@@ -21,7 +21,6 @@ export type UploadedImageAsset = {
 
 export function useImagePicker(defaultImages?: UploadedImageAsset[]) {
   const uploadImage = useUploadImage();
-
   const [images, setImages] = useState<UploadedImageAsset[]>(defaultImages || []);
 
   const handleUploadImage = useCallback(
@@ -91,7 +90,6 @@ export function useImagePicker(defaultImages?: UploadedImageAsset[]) {
   }, [handleUploadImage]);
 
   const removeImage = useCallback((image: UploadedImageAsset) => {
-    console.log(images);
     setImages((prev) => prev.filter((img) => img.uniqueID !== image.uniqueID));
   }, []);
 

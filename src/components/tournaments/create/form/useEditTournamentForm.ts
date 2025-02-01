@@ -1,20 +1,22 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getTournamentByID, updateTournament } from "@/src/queries/tournaments";
+import { getTournaments, updateTournament } from "@/src/queries/tournaments";
 import schemaCreateTournament, {
   TournamentFormData,
 } from "@/src/components/tournaments/create/form/schema";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { UpdateTournamentPageQuery } from "@/src/app/(tabs)/tournaments/edit";
-import { TournamentRequest } from "@/src/types/tournament";
+import { Tournament } from "@/src/types/tournament";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useUpdateTournamentForm = (pageQuery: UpdateTournamentPageQuery) => {
   const { t } = useTranslation();
 
   const updateTournamentMutation = updateTournament();
+
   const methods = useForm<TournamentFormData>({
     mode: "onSubmit",
     shouldFocusError: false,
@@ -22,15 +24,16 @@ export const useUpdateTournamentForm = (pageQuery: UpdateTournamentPageQuery) =>
   });
   const { setValue, reset } = methods;
 
-  const setInitialData = (initialData: TournamentRequest) => {
+  const setInitialData = (initialData: Tournament) => {
+    const images = initialData.images.map((image) => ({
+      publicId: image.publicId,
+      secure_url: image.secureUrl,
+    }));
     reset({
       sportType: initialData.sportType,
       title: initialData.title,
       description: initialData.description,
-      images: initialData.images.map((image) => ({
-        publicId: image.publicId,
-        secure_url: image.secureUrl,
-      })),
+      images,
       entryFee: initialData.entryFee,
       prizePool: initialData.prizePool,
       ageRestrictions: initialData.ageRestrictions,
@@ -56,17 +59,7 @@ export const useUpdateTournamentForm = (pageQuery: UpdateTournamentPageQuery) =>
       { data: dataAdd, id },
       {
         onSuccess: () => {
-          Toast.show({
-            type: "successToast",
-            props: { text: t("tournaments.edit.successMessage") },
-          });
           router.back();
-        },
-        onError: (error) => {
-          Toast.show({
-            type: "errorToast",
-            props: { text: t("tournaments.edit.errorMessage") },
-          });
         },
       }
     );

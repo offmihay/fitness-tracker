@@ -7,7 +7,7 @@ import { useSettings } from "@/src/hooks/useSettings";
 import HomeHeader from "@/src/components/home/HomeHeader";
 import SortDropdown from "@/src/components/home/sort/SortDropdown";
 import FilterModal from "@/src/components/home/filter/FilterModal";
-import { emptyTournamentRequest, TournamentRequest } from "@/src/types/tournament";
+import { emptyTournamentRequest, Tournament } from "@/src/types/tournament";
 import { FlashList } from "@shopify/flash-list";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import TournamentCardSkeleton from "@/src/components/home/skeleton/TournamentCardSkeleton";
@@ -24,7 +24,7 @@ type HomePageProps = {};
 const HomePage = ({}: HomePageProps) => {
   const { settings } = useSettings();
   const router = useRouter();
-  const [data, setData] = useState<TournamentRequest[]>([]);
+  const [data, setData] = useState<Tournament[]>([]);
 
   const [filter, setFilter] = useState<FilterHome>(emptyFilter);
   const [sortBy, setSortBy] = useState<SortValueHome | null>(null);
@@ -43,7 +43,7 @@ const HomePage = ({}: HomePageProps) => {
 
   useEffect(() => {
     const cloneData = _.cloneDeep(loadedData);
-    setData(cloneData.reverse());
+    setData(cloneData.sort((a, b) => a.createdAt.localeCompare(b.createdAt)));
   }, [loadedData]);
 
   const handleOpenDetails = useCallback(
@@ -75,7 +75,7 @@ const HomePage = ({}: HomePageProps) => {
   }, [refetch]);
 
   const renderItem = useCallback(
-    ({ item }: { item: TournamentRequest }) => (
+    ({ item }: { item: Tournament }) => (
       <View style={{ paddingVertical: 10 }}>
         <TournamentCard
           handleOpenDetails={() => handleOpenDetails(item.id)}
@@ -87,9 +87,9 @@ const HomePage = ({}: HomePageProps) => {
     [handleOpenDetails, handleRegister]
   );
 
-  const keyExtractor = useCallback((item: TournamentRequest) => item.id.toString(), []);
+  const keyExtractor = useCallback((item: Tournament) => item.id.toString(), []);
 
-  const skeletonData: TournamentRequest[] = [
+  const skeletonData: Tournament[] = [
     { ...emptyTournamentRequest, id: "empty1" },
     { ...emptyTournamentRequest, id: "empty2" },
   ];

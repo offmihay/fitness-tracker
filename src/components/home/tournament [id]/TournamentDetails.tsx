@@ -1,7 +1,7 @@
 import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { Ionicons, FontAwesome6, MaterialIcons, AntDesign } from "@expo/vector-icons";
-import { TournamentRequest } from "@/src/types/tournament";
+import { Tournament } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
@@ -11,7 +11,7 @@ import Carousel from "@/src/shared/carousel/Carousel";
 
 type Props = {
   isRegistred: boolean;
-  data: TournamentRequest;
+  data: Tournament;
   handleOpenRules: () => void;
   handleOpenParticipants: () => void;
   handleOpenOrganizer: () => void;

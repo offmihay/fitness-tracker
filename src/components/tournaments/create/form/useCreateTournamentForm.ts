@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { postTournament } from "@/src/queries/tournaments";
+import { getTournaments, postTournament } from "@/src/queries/tournaments";
 import schemaCreateTournament, {
   TournamentFormData,
 } from "@/src/components/tournaments/create/form/schema";
@@ -13,6 +13,7 @@ import { router } from "expo-router";
 export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) => {
   const { t } = useTranslation();
   const createTournamentMutation = postTournament();
+  const { refetch } = getTournaments();
 
   const methods = useForm<TournamentFormData>({
     defaultValues: {},
@@ -35,6 +36,7 @@ export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) =>
           props: { text: t("tournaments.update.successMessage") },
         });
         router.back();
+        refetch();
       },
       onError: () => {
         Toast.show({

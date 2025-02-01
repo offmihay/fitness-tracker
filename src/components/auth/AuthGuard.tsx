@@ -2,6 +2,7 @@ import { Slot, useRouter } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
+import CustomText from "@/src/shared/text/CustomText";
 
 const AuthGuard = () => {
   const { navigate } = useRouter();
@@ -16,7 +17,7 @@ const AuthGuard = () => {
   if (!isLoaded) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
+        <CustomText>NOT LOADED</CustomText>
       </View>
     );
   }

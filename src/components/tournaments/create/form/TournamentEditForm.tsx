@@ -23,6 +23,7 @@ export const TournamentEditForm = ({ type }: Props) => {
   const { t } = useTranslation();
   const [isOpenedAdditional, setIsOpenedAdditional] = useState(false);
   const theme = useCustomTheme();
+  // console.log(defaultImages);
   const {
     control,
     watch,
@@ -34,7 +35,6 @@ export const TournamentEditForm = ({ type }: Props) => {
   const updateImages = (images: ImageResource[]) => {
     setValue("images", images);
   };
-
   return (
     <View className="flex flex-col gap-1">
       <CustomText type="subtitle" className="ml-1 mb-3">

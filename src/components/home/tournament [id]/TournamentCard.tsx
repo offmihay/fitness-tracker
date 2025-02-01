@@ -5,7 +5,7 @@ import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
-import { TournamentRequest } from "@/src/types/tournament";
+import { Tournament } from "@/src/types/tournament";
 import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
@@ -13,7 +13,7 @@ import Skeleton from "@/src/shared/skeleton/Skeleton";
 type Props = {
   handleRegister: () => void;
   handleOpenDetails: () => void;
-  data: TournamentRequest;
+  data: Tournament;
 };
 
 export const CARD_HEIGHT = 380;

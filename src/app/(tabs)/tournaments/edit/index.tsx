@@ -31,7 +31,6 @@ const UpdateTournament = () => {
   const { handleSubmit } = methods;
 
   const { data: initialData, isLoading } = getTournamentByID(pageQuery.id);
-
   useEffect(() => {
     if (!isLoading && initialData) {
       setInitialData(initialData);

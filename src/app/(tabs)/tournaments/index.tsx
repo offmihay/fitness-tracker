@@ -1,5 +1,5 @@
 import { RefreshControl, StyleSheet, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { router, useNavigation, useRouter } from "expo-router";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import UserTournamentCard, {
@@ -7,7 +7,7 @@ import UserTournamentCard, {
 } from "@/src/components/tournaments/UserTournamentCard";
 import { deleteTournament, getTournaments } from "@/src/queries/tournaments";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
-import { TournamentRequest } from "@/src/types/tournament";
+import { Tournament } from "@/src/types/tournament";
 import CustomText from "@/src/shared/text/CustomText";
 import CustomSwitch from "@/src/shared/switch/Switch";
 import CreatorTournamentCard from "@/src/components/tournaments/CreatorTournamentCard";
@@ -17,7 +17,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 type Props = {};
 
 const Tournaments = ({}: Props) => {
-  const { data: loadedData, refetch, isFetching } = getTournaments();
+  const { data: loadedData, refetch } = getTournaments();
   const deleteTournamentMutation = deleteTournament();
   const [creatorMode, setCreatorMode] = useState(false);
   const { push } = useRouter();
@@ -33,14 +33,11 @@ const Tournaments = ({}: Props) => {
     });
   }, [refetch]);
 
-  const [data, setData] = useState<TournamentRequest[]>([]);
-  const [data2, setData2] = useState<TournamentRequest[]>([]);
-
-  useEffect(() => {
-    const cloneData = _.cloneDeep(loadedData);
-    const cloneData2 = _.cloneDeep(loadedData);
-    setData(cloneData.reverse());
-    setData2(cloneData2);
+  const { data, data2 } = useMemo(() => {
+    return {
+      data: _.cloneDeep(loadedData).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+      data2: _.cloneDeep(loadedData).sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
+    };
   }, [loadedData]);
 
   const handleOpenDetails = (id: string) => {
@@ -64,8 +61,11 @@ const Tournaments = ({}: Props) => {
   };
 
   const handleDelete = (id: string) => {
-    deleteTournamentMutation.mutate(id);
-    refetch();
+    deleteTournamentMutation.mutate(id, {
+      onSuccess: () => {
+        refetch();
+      },
+    });
   };
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const Tournaments = ({}: Props) => {
   }, [creatorMode]);
 
   const renderCard = useCallback(
-    ({ item }: { item: TournamentRequest }) => (
+    ({ item }: { item: Tournament }) => (
       <View style={{ paddingVertical: 10 }}>
         {!creatorMode ? (
           <UserTournamentCard data={item} onCardPress={() => handleOpenDetails(item.id)} />
@@ -91,7 +91,7 @@ const Tournaments = ({}: Props) => {
   );
 
   const keyExtractor = useCallback(
-    (item: TournamentRequest) => `${creatorMode ? "creator" : "user"}-${item.id}`,
+    (item: Tournament) => `${creatorMode ? "creator" : "user"}-${item.id}`,
     [creatorMode]
   );
 
