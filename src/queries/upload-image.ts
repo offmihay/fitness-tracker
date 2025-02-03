@@ -1,9 +1,8 @@
-import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ImagePickerAsset } from "expo-image-picker";
+import { useMutation } from "@tanstack/react-query";
 import FormData from "form-data";
-import fetchApi from "../api/fetchApi";
 import Toast from "react-native-toast-message";
 import { UploadedImageAsset } from "../hooks/useImagePicker";
+import useApi from "../api/useApi";
 
 export type ImageUploadResponse = {
   api_key: string;
@@ -30,6 +29,7 @@ export type ImageUploadResponse = {
 };
 
 export const useUploadImage = () => {
+  const { fetchData } = useApi();
   return useMutation({
     mutationKey: ["uploadImage"],
     mutationFn: async (image: UploadedImageAsset) => {
@@ -41,7 +41,7 @@ export const useUploadImage = () => {
         type: image.mimeType || "image/jpeg",
       });
 
-      const response = await fetchApi<any, ImageUploadResponse>("/files", {
+      const response = await fetchData<any, ImageUploadResponse>("/files", {
         body: formData,
         method: "POST",
         headers: {

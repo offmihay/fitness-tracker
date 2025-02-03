@@ -11,7 +11,6 @@ import { useSettings } from "@/src/hooks/useSettings";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 
 type Props = {
-  handleRegister: () => void;
   handleOpenDetails: () => void;
   data: Tournament;
 };
@@ -24,13 +23,13 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
   const { settings } = useSettings();
   const [isLoadedImg, setIsLoadedImg] = useState(false);
 
-  const { title, location, dateStart, dateEnd, currentParticipants, maxParticipants, images } =
-    data;
+  const { title, location, dateStart, dateEnd, participants, maxParticipants, images } = data;
 
-  const participants =
-    currentParticipants && currentParticipants.count && maxParticipants
-      ? `${currentParticipants.count}/${maxParticipants}`
+  const participantsText =
+    (!!participants || participants === 0) && maxParticipants
+      ? `${participants}/${maxParticipants}`
       : "-";
+
   const prizePool = data.prizePool ? `${data.prizePool.toString()} UAH` : "-";
   const entryFee = data.entryFee ? `${data.entryFee.toString()} UAH` : "-";
 
@@ -108,7 +107,7 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
                   ellipsizeMode="tail"
                   style={{ maxWidth: "75%" }}
                 >
-                  {participants}
+                  {participantsText}
                 </CustomText>
               </View>
               <View className="flex flex-row gap-2 items-center" style={{ height: 40 }}>

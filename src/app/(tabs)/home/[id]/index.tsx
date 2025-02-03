@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { getTournamentByID } from "@/src/queries/tournaments";
+import { getTournamentByID, registerTournament } from "@/src/queries/tournaments";
 import TournamentDetails from "@/src/components/home/tournament [id]/TournamentDetails";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import TournamentDetailsSkeleton from "@/src/components/home/skeleton/TournamentDetailsSkeleton";
@@ -9,6 +9,7 @@ import TournamentDetailsSkeleton from "@/src/components/home/skeleton/Tournament
 const TournamentDetailsScreen = () => {
   const { id } = useLocalSearchParams();
   const { data, isLoading, error } = getTournamentByID(id as string);
+  const registerMutation = registerTournament();
 
   const handleOpenRules = () => {
     router.push(
@@ -40,6 +41,10 @@ const TournamentDetailsScreen = () => {
     );
   };
 
+  const handleRegister = useCallback(() => {
+    registerMutation.mutate(id as string);
+  }, []);
+
   const isLoaded = !isLoading && data;
 
   return (
@@ -52,6 +57,7 @@ const TournamentDetailsScreen = () => {
             handleOpenRules={handleOpenRules}
             handleOpenParticipants={handleOpenParticipants}
             handleOpenOrganizer={handleOpenOrganizer}
+            handleRegister={handleRegister}
           />
         ) : (
           <TournamentDetailsSkeleton />

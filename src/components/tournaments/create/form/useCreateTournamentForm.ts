@@ -13,7 +13,6 @@ import { router } from "expo-router";
 export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) => {
   const { t } = useTranslation();
   const createTournamentMutation = postTournament();
-  const { refetch } = getTournaments();
 
   const methods = useForm<TournamentFormData>({
     defaultValues: {},
@@ -31,18 +30,7 @@ export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) =>
     };
     createTournamentMutation.mutate(dataAdd, {
       onSuccess: () => {
-        Toast.show({
-          type: "successToast",
-          props: { text: t("tournaments.update.successMessage") },
-        });
         router.back();
-        refetch();
-      },
-      onError: () => {
-        Toast.show({
-          type: "errorToast",
-          props: { text: t("tournaments.update.errorMessage") },
-        });
       },
     });
   };

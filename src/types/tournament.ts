@@ -22,27 +22,17 @@ export enum TournamentFormat {
   Squad = "squad",
 }
 
-interface Participant {
+type User = {
   id: string;
-  name: string;
-}
-
-interface CurrentParticipants {
-  count: number;
-  participants: Participant[];
-}
-
-interface OrganizerContact {
   email: string;
-  phone?: string;
-}
-
-interface Organizer {
-  id: string;
-  name: string;
-  contact: OrganizerContact;
-  verified: boolean;
-}
+  firstName?: string | null;
+  lastName?: string | null;
+  imageUrl?: string | null;
+  organizerName?: string | null;
+  organizerEmail?: string | null;
+  organizerPhone?: string | null;
+  isVerified: boolean;
+};
 
 interface AgeRestrictions {
   minAge: number;
@@ -58,7 +48,6 @@ export interface Tournament {
   ageRestrictions: AgeRestrictions;
   city: string;
   createdAt: string;
-  currentParticipants: CurrentParticipants;
   dateEnd: string;
   dateStart: string;
   description: string;
@@ -68,7 +57,8 @@ export interface Tournament {
   images: Image[];
   location: string;
   maxParticipants: number;
-  organizer: Organizer;
+  participants: number;
+  organizer: User;
   prizePool: number;
   rules: string;
   skillLevel: TournamentSkillLevel;
@@ -94,10 +84,7 @@ export const emptyTournamentRequest: Tournament = {
   },
   city: "",
   createdAt: "",
-  currentParticipants: {
-    count: 0,
-    participants: [],
-  },
+  participants: 0,
   dateEnd: "",
   dateStart: "",
   description: "",
@@ -112,11 +99,8 @@ export const emptyTournamentRequest: Tournament = {
   maxParticipants: 0,
   organizer: {
     id: "",
-    name: "",
-    contact: {
-      email: "",
-    },
-    verified: false,
+    email: "",
+    isVerified: false,
   },
   prizePool: 0,
   rules: "",

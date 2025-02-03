@@ -2,7 +2,7 @@ import { RefreshControl, StyleSheet, View } from "react-native";
 import React, { useCallback, useState, memo, useEffect } from "react";
 import TournamentCard, { CARD_HEIGHT } from "@/src/components/home/tournament [id]/TournamentCard";
 import { useRouter } from "expo-router";
-import { getTournaments } from "@/src/queries/tournaments";
+import { getTournaments, registerTournament } from "@/src/queries/tournaments";
 import { useSettings } from "@/src/hooks/useSettings";
 import HomeHeader from "@/src/components/home/HomeHeader";
 import SortDropdown from "@/src/components/home/sort/SortDropdown";
@@ -43,7 +43,7 @@ const HomePage = ({}: HomePageProps) => {
 
   useEffect(() => {
     const cloneData = _.cloneDeep(loadedData);
-    setData(cloneData.sort((a, b) => a.createdAt.localeCompare(b.createdAt)));
+    setData(cloneData.sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
   }, [loadedData]);
 
   const handleOpenDetails = useCallback(
@@ -59,10 +59,6 @@ const HomePage = ({}: HomePageProps) => {
     [router]
   );
 
-  const handleRegister = useCallback((title: string) => {
-    console.log("Register", title);
-  }, []);
-
   const [isRefreshing, setIsRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
@@ -77,14 +73,10 @@ const HomePage = ({}: HomePageProps) => {
   const renderItem = useCallback(
     ({ item }: { item: Tournament }) => (
       <View style={{ paddingVertical: 10 }}>
-        <TournamentCard
-          handleOpenDetails={() => handleOpenDetails(item.id)}
-          handleRegister={() => handleRegister(item.title)}
-          data={item}
-        />
+        <TournamentCard handleOpenDetails={() => handleOpenDetails(item.id)} data={item} />
       </View>
     ),
-    [handleOpenDetails, handleRegister]
+    [handleOpenDetails]
   );
 
   const keyExtractor = useCallback((item: Tournament) => item.id.toString(), []);
@@ -101,7 +93,7 @@ const HomePage = ({}: HomePageProps) => {
         </View>
       </View>
     ),
-    [handleOpenDetails, handleRegister, settings.language]
+    [handleOpenDetails, settings.language]
   );
 
   const isLoaded = !isFetching && data.length !== 0;

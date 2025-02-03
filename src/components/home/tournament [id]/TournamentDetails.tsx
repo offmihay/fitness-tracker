@@ -15,6 +15,7 @@ type Props = {
   handleOpenRules: () => void;
   handleOpenParticipants: () => void;
   handleOpenOrganizer: () => void;
+  handleRegister: () => void;
 };
 
 const TournamentDetails = ({
@@ -23,6 +24,7 @@ const TournamentDetails = ({
   handleOpenRules,
   handleOpenParticipants,
   handleOpenOrganizer,
+  handleRegister,
 }: Props) => {
   const theme = useCustomTheme();
   const { t } = useTranslation("");
@@ -37,7 +39,11 @@ const TournamentDetails = ({
       </View>
       {!isRegistred && (
         <View className="flex flex-row justify-between">
-          <ButtonDefault title={t("home.tournament.register")} styleWrapper={{ width: "48%" }} />
+          <ButtonDefault
+            title={t("home.tournament.register")}
+            styleWrapper={{ width: "48%" }}
+            onPress={handleRegister}
+          />
           <ButtonDefault
             type="grey"
             title={t("home.tournament.saveForLater")}
@@ -164,15 +170,15 @@ const TournamentDetails = ({
           </CustomText>
           <CustomText>
             {t("home.tournament.organizedBy", {
-              name: data?.organizer.name ?? t("home.tournament.unknown"),
+              name: data?.organizer.organizerName ?? t("home.tournament.unknown"),
             })}
           </CustomText>
           <CustomText>
             {t("home.tournament.contactUs")}:<CustomText> </CustomText>
-            <CustomText type="link">{data?.organizer.contact.email}.</CustomText>
+            <CustomText type="link">{data?.organizer.organizerEmail}</CustomText>
           </CustomText>
-          {data?.organizer.contact.phone && (
-            <CustomText>{data?.organizer.contact.phone}</CustomText>
+          {data?.organizer.organizerPhone && (
+            <CustomText>{data?.organizer.organizerPhone}</CustomText>
           )}
         </View>
       )}

@@ -5,7 +5,7 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import UserTournamentCard, {
   UserTournamentCard_HEIGHT,
 } from "@/src/components/tournaments/UserTournamentCard";
-import { deleteTournament, getTournaments } from "@/src/queries/tournaments";
+import { deleteTournament, getCreatedTournaments, getTournaments } from "@/src/queries/tournaments";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
 import { Tournament } from "@/src/types/tournament";
 import CustomText from "@/src/shared/text/CustomText";
@@ -17,7 +17,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 type Props = {};
 
 const Tournaments = ({}: Props) => {
-  const { data: loadedData, refetch } = getTournaments();
+  const { data: loadedData, refetch } = getCreatedTournaments();
   const deleteTournamentMutation = deleteTournament();
   const [creatorMode, setCreatorMode] = useState(false);
   const { push } = useRouter();
@@ -35,8 +35,8 @@ const Tournaments = ({}: Props) => {
 
   const { data, data2 } = useMemo(() => {
     return {
-      data: _.cloneDeep(loadedData).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
-      data2: _.cloneDeep(loadedData).sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
+      data: _.cloneDeep(loadedData).sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
+      data2: _.cloneDeep(loadedData).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
     };
   }, [loadedData]);
 
@@ -68,9 +68,9 @@ const Tournaments = ({}: Props) => {
     });
   };
 
-  useEffect(() => {
-    refetch();
-  }, [creatorMode]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [creatorMode]);
 
   const renderCard = useCallback(
     ({ item }: { item: Tournament }) => (
