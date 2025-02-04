@@ -13,7 +13,7 @@ const settings = ({}: Props) => {
   const settingsList = getSettingsList();
 
   return (
-    <LayoutScrollView name="settings" alwaysBounceVertical={false}>
+    <LayoutScrollView name="settings" alwaysBounceVertical={false} canGoBack={false}>
       <View style={styles.wrapper}>
         <CustomListSection>
           {settingsList.map((item, index) => {

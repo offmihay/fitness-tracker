@@ -7,38 +7,29 @@ import { View } from "react-native";
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 type AnimatedFlashListProps = React.ComponentProps<typeof AnimatedFlashList>;
 
-type LayoutFlashListProps<T> = FlashListProps<T> &
-  Omit<React.ComponentProps<typeof CustomLayout>, "renderContent"> & {
+type Props<T> = Omit<React.ComponentProps<typeof CustomLayout>, "renderContent"> & {
+  flashListProps: FlashListProps<T> & {
     contentContainerStyle?: ContentStyle;
   };
-
-function LayoutFlashList<T>(props: LayoutFlashListProps<T>) {
-  const {
-    contentContainerStyle,
-    headerConfig,
-    renderHeader,
-    name,
-    isNameUnique,
-    isDefaultCompressed,
-    ...rest
-  } = props;
+};
+function LayoutFlashList<T>(props: Props<T>) {
+  const { flashListProps, ...rest } = props;
+  const { contentContainerStyle, ...restFlashListProps } = flashListProps;
 
   return (
     <CustomLayout
-      name={name}
-      isNameUnique={isNameUnique}
-      renderContent={({ onScroll, maxHeight }) => (
-        // @ts-ignore
-        <AnimatedFlashList
-          onScroll={onScroll}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ ...contentContainerStyle, paddingTop: maxHeight }}
-          {...rest}
-        />
-      )}
-      renderHeader={renderHeader}
-      headerConfig={headerConfig}
-      isDefaultCompressed={isDefaultCompressed}
+      renderContent={({ onScroll, maxHeight }) => {
+        return (
+          // @ts-ignore
+          <AnimatedFlashList
+            onScroll={onScroll}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ ...contentContainerStyle, paddingVertical: maxHeight }}
+            {...restFlashListProps}
+          />
+        );
+      }}
+      {...rest}
     />
   );
 }

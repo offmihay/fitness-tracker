@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
+import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/types";
 import RHFormDropdownInput from "@/src/shared/form/RHFormDropdownInput";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import { ImageResource } from "../../../../shared/controllers/ImagePickerController";
@@ -18,12 +18,12 @@ import { Divider } from "react-native-paper";
 
 type Props = {
   type: "edit" | "create";
+  id?: string;
 };
-export const TournamentEditForm = ({ type }: Props) => {
+export const TournamentEditForm = ({ type, id }: Props) => {
   const { t } = useTranslation();
   const [isOpenedAdditional, setIsOpenedAdditional] = useState(false);
   const theme = useCustomTheme();
-  // console.log(defaultImages);
   const {
     control,
     watch,
@@ -35,6 +35,19 @@ export const TournamentEditForm = ({ type }: Props) => {
   const updateImages = (images: ImageResource[]) => {
     setValue("images", images);
   };
+
+  const goToLocationPage = () => {
+    router.navigate({
+      pathname: `tournaments/${type}/choose-location`,
+      params: {
+        id,
+        address: watch("location"),
+        latitude: watch("geoCoordinates.latitude"),
+        longitude: watch("geoCoordinates.longitude"),
+      },
+    });
+  };
+
   return (
     <View className="flex flex-col gap-1">
       <CustomText type="subtitle" className="ml-1 mb-3">
@@ -51,10 +64,22 @@ export const TournamentEditForm = ({ type }: Props) => {
           selectedValue: watch("sportType"),
           onValueChange: (itemValue) => setValue("sportType", itemValue || undefined),
           items: [
-            { label: t("tournament.sportType.tennis"), value: TournamentSport.Tennis },
-            { label: t("tournament.sportType.badminton"), value: TournamentSport.Badminton },
-            { label: t("tournament.sportType.squash"), value: TournamentSport.Squash },
-            { label: t("tournament.sportType.tableTennis"), value: TournamentSport.TableTennis },
+            {
+              label: t(`tournament.sportType.${TournamentSport.TENNIS}`),
+              value: TournamentSport.TENNIS,
+            },
+            {
+              label: t(`tournament.sportType.${TournamentSport.BADMINTON}`),
+              value: TournamentSport.BADMINTON,
+            },
+            {
+              label: t(`tournament.sportType.${TournamentSport.SQUASH}`),
+              value: TournamentSport.SQUASH,
+            },
+            {
+              label: t(`tournament.sportType.${TournamentSport.TABLE_TENNIS}`),
+              value: TournamentSport.TABLE_TENNIS,
+            },
           ],
           selectAnLabel: t("tournament.sportType.label"),
         }}
@@ -149,16 +174,16 @@ export const TournamentEditForm = ({ type }: Props) => {
           onValueChange: (itemValue) => setValue("skillLevel", itemValue || undefined),
           items: [
             {
-              label: t("tournament.skillLevel.amateur"),
-              value: TournamentSkillLevel.Amateur,
+              label: t(`tournament.skillLevel.${TournamentSkillLevel.AMATEUR}`),
+              value: TournamentSkillLevel.AMATEUR,
             },
             {
-              label: t("tournament.skillLevel.beginner"),
-              value: TournamentSkillLevel.Beginner,
+              label: t(`tournament.skillLevel.${TournamentSkillLevel.INTERMEDIATE}`),
+              value: TournamentSkillLevel.INTERMEDIATE,
             },
             {
-              label: t("tournament.skillLevel.professional"),
-              value: TournamentSkillLevel.Professional,
+              label: t(`tournament.skillLevel.${TournamentSkillLevel.PROFESSIONAL}`),
+              value: TournamentSkillLevel.PROFESSIONAL,
             },
           ],
           selectAnLabel: t("tournament.skillLevel.label"),
@@ -185,16 +210,16 @@ export const TournamentEditForm = ({ type }: Props) => {
               onValueChange: (itemValue) => setValue("format", itemValue || undefined),
               items: [
                 {
-                  label: t("tournament.format.singles"),
-                  value: TournamentFormat.Singles,
+                  label: t(`tournament.format.${TournamentFormat.SINGLES}`),
+                  value: TournamentFormat.SINGLES,
                 },
                 {
-                  label: t("tournament.format.doubles"),
-                  value: TournamentFormat.Doubles,
+                  label: t(`tournament.format.${TournamentFormat.DOUBLES}`),
+                  value: TournamentFormat.DOUBLES,
                 },
                 {
-                  label: t("tournament.format.squad"),
-                  value: TournamentFormat.Squad,
+                  label: t(`tournament.format.${TournamentFormat.SQUAD}`),
+                  value: TournamentFormat.SQUAD,
                 },
               ],
               selectAnLabel: t("tournament.format.label"),
@@ -226,23 +251,17 @@ export const TournamentEditForm = ({ type }: Props) => {
         </CustomText>
       </CustomAnimatedView>
       <RHFormInput name="city" label={t("tournament.city")} control={control} />
-      <RHFormInput
-        name="location"
-        label={t("tournament.location")}
-        control={control}
-        inputProps={{
-          disabled: true,
-          onPress: () =>
-            router.navigate({
-              pathname: `tournaments/${type}/choose-location`,
-              params: {
-                address: watch("location"),
-                latitude: watch("geoCoordinates.latitude"),
-                longitude: watch("geoCoordinates.longitude"),
-              },
-            }),
-        }}
-      />
+      <Pressable onPress={goToLocationPage}>
+        <RHFormInput
+          name="location"
+          label={t("tournament.location")}
+          control={control}
+          inputProps={{
+            disabled: true,
+            onPress: goToLocationPage,
+          }}
+        />
+      </Pressable>
       <DualInputSection>
         <RHFormDatePicker
           name="dateStart"

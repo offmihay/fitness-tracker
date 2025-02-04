@@ -3,6 +3,7 @@ import CustomLayout from "../custom/CustomLayout";
 import Animated from "react-native-reanimated";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import useScrollProps from "@/src/hooks/useScrollProps";
+import { View } from "react-native";
 
 const AnimatedKeyboardAwareScrollView = Animated.createAnimatedComponent(KeyboardAwareScrollView);
 type AnimatedKeyboardScrollViewProps = React.ComponentProps<typeof AnimatedKeyboardAwareScrollView>;
@@ -14,18 +15,8 @@ type LayoutKeyboardScrollViewProps = AnimatedKeyboardScrollViewProps &
   };
 
 const LayoutKeyboardScrollView = (props: LayoutKeyboardScrollViewProps) => {
-  const {
-    children,
-    contentContainerStyle,
-    headerConfig,
-    useScrollFeature,
-    renderHeader,
-    name,
-    isNameUnique,
-    isDefaultCompressed,
-    scrollToBottomOnStart,
-    ...rest
-  } = props;
+  const { children, contentContainerStyle, useScrollFeature, scrollToBottomOnStart, ...rest } =
+    props;
 
   const { scrollPropOnBlur, handleScroll, onContentSizeChange, onLayout } = useScrollProps();
 
@@ -43,35 +34,36 @@ const LayoutKeyboardScrollView = (props: LayoutKeyboardScrollViewProps) => {
 
   return (
     <CustomLayout
-      name={name}
-      isNameUnique={isNameUnique}
       renderContent={({ onScroll, maxHeight }) => {
         return (
-          <AnimatedKeyboardAwareScrollView
-            ref={ref}
-            bounces={false}
-            alwaysBounceVertical={false}
-            onMomentumScrollBegin={onScroll}
-            onScroll={handleScroll}
-            scrollEventThrottle={16}
-            contentContainerStyle={[{ flexGrow: 1, paddingTop: maxHeight }, contentContainerStyle]}
-            enableOnAndroid
-            scrollEnabled
-            keyboardShouldPersistTaps="handled"
-            keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
-            showsVerticalScrollIndicator={false}
-            {...(useScrollFeature && scrollPropOnBlur)}
-            onContentSizeChange={useScrollFeature ? onContentSizeChange : undefined}
-            onLayout={useScrollFeature ? onLayout : undefined}
-            {...rest}
-          >
-            {children}
-          </AnimatedKeyboardAwareScrollView>
+          <View style={{ flex: 1 }}>
+            <AnimatedKeyboardAwareScrollView
+              ref={ref}
+              bounces={false}
+              alwaysBounceVertical={false}
+              onMomentumScrollBegin={onScroll}
+              onScroll={handleScroll}
+              scrollEventThrottle={16}
+              contentContainerStyle={[
+                { flexGrow: 1, paddingTop: maxHeight },
+                contentContainerStyle,
+              ]}
+              enableOnAndroid
+              scrollEnabled
+              keyboardShouldPersistTaps="handled"
+              keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
+              showsVerticalScrollIndicator={false}
+              {...(useScrollFeature && scrollPropOnBlur)}
+              onContentSizeChange={useScrollFeature ? onContentSizeChange : undefined}
+              onLayout={useScrollFeature ? onLayout : undefined}
+              {...rest}
+            >
+              {children}
+            </AnimatedKeyboardAwareScrollView>
+          </View>
         );
       }}
-      renderHeader={renderHeader}
-      headerConfig={headerConfig}
-      isDefaultCompressed={isDefaultCompressed}
+      {...rest}
     />
   );
 };

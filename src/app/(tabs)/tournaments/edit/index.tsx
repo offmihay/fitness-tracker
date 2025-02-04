@@ -38,6 +38,8 @@ const UpdateTournament = () => {
     }
   }, [initialData]);
 
+  console.log(pageQuery.id);
+
   return (
     <LayoutKeyboardScrollView
       name="editTournament"
@@ -48,7 +50,7 @@ const UpdateTournament = () => {
       <View style={styles.wrapper}>
         {!!formReady ? (
           <FormProvider {...methods}>
-            <TournamentEditForm type="edit" />
+            <TournamentEditForm type="edit" id={pageQuery.id} />
             <CustomAnimatedView className="my-5">
               <ButtonDefault
                 title={t("tournaments.edit.editButton")}

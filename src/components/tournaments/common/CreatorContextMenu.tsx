@@ -11,15 +11,15 @@ import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-export type TournamentOptions = "delete" | "deactivate";
+export type CreatorContextOptions = "delete" | "deactivate";
 
 type Props = {
   children: React.ReactNode;
   isDisabled?: boolean;
-  onSelect?: (option: TournamentOptions) => void;
+  onSelect?: (option: CreatorContextOptions) => void;
 };
 
-const TournamentOptionsContextMenu = ({ children, onSelect, isDisabled }: Props) => {
+const CreatorContextMenu = ({ children, onSelect, isDisabled }: Props) => {
   const { t } = useTranslation();
   const theme = useCustomTheme();
   return (
@@ -64,4 +64,4 @@ const TournamentOptionsContextMenu = ({ children, onSelect, isDisabled }: Props)
   );
 };
 
-export default TournamentOptionsContextMenu;
+export default CreatorContextMenu;

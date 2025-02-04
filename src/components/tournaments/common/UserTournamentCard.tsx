@@ -1,36 +1,35 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Tournament } from "@/src/types/tournament";
+import { TournamentBase } from "@/src/types/types";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
-import { Entypo, Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Entypo, Feather, FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Divider } from "react-native-paper";
+import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
-import { formatDateTime } from "@/src/utils/formatDateTime";
+import UserContextMenu, { UserContextOptions } from "./UserContextMenu";
 import ButtonSmall from "@/src/shared/button/ButtonSmall";
-import { UserTournamentCard_HEIGHT } from "./UserTournamentCard";
-import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
-import * as Haptics from "expo-haptics";
-import TournamentOptionsContextMenu, { TournamentOptions } from "./TournamentOptionsContextMenu";
 
 type Props = {
-  data: Tournament;
+  data: TournamentBase;
   onCardPress?: () => void;
-  onEditPress?: () => void;
-  onAdditionalOptionsPress?: () => void;
-  onDeletePress?: () => void;
+  onLeavePress?: () => void;
 };
 
-const CreatorTournamentCard = (props: Props) => {
-  const { data, onCardPress, onEditPress, onDeletePress } = props;
+export const UserTournamentCard_HEIGHT = 170;
+
+const UserTournamentCard = (props: Props) => {
+  const { data, onCardPress, onLeavePress } = props;
   const theme = useCustomTheme();
   const { settings } = useSettings();
 
-  const onSelectOption = (option: TournamentOptions) => {
-    if (option === "delete") {
-      onDeletePress?.();
+  const onSelectOption = (option: UserContextOptions) => {
+    if (option === "leave") {
+      if (onLeavePress) {
+        leaveTournamentConfirmationAlert(onLeavePress);
+      }
     }
   };
 
@@ -40,11 +39,11 @@ const CreatorTournamentCard = (props: Props) => {
         <View style={styles.contentHeader}>
           <View className="flex flex-row gap-2 items-center">
             <FontAwesome name="circle" size={10} color={theme.colors.success} />
-            <CustomText type="small">Ongoing</CustomText>
+            <CustomText type="small">{data.status}</CustomText>
           </View>
           <View className="flex flex-row items-center">
             <CustomText type="small">
-              {formatDateTime(data.createdAt, settings.language)}
+              {formatDateRange(data.dateStart, data.dateEnd, settings.language)}
             </CustomText>
           </View>
         </View>
@@ -65,46 +64,42 @@ const CreatorTournamentCard = (props: Props) => {
               />
             </View>
             <View className="flex flex-1 justify-center">
-              <CustomText numberOfLines={3} type="default">
+              <CustomText numberOfLines={3} type="predefault">
                 {data.title}
               </CustomText>
             </View>
           </View>
         </TouchableOpacity>
+
         <View style={styles.footer}>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flex: 1,
-              gap: 8,
-              justifyContent: "space-between",
-            }}
-          >
-            <View className="flex-1">
-              <ButtonSmall
-                onPress={onEditPress}
-                title="Edit"
-                style={{ backgroundColor: theme.colors.primary, width: "100%" }}
-                renderIcon={(color) => <Feather name="edit-3" size={20} color="white" />}
-                textColor="white"
-              />
-            </View>
-            <View>
-              <ButtonSmall
-                title="Users"
-                style={{ backgroundColor: theme.colors.surfaceLight }}
-                renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
-              />
-            </View>
-            <TournamentOptionsContextMenu onSelect={onSelectOption}>
+          <View style={{ width: "50%", paddingRight: 10, display: "flex", gap: 5 }}>
+            <ButtonSmall
+              title="Users"
+              style={{ backgroundColor: theme.colors.surfaceLight, height: 45 }}
+              renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
+            />
+          </View>
+          <View className="flex flex-row gap-4">
+            <TouchableOpacity
+              style={[styles.footerBtn, { backgroundColor: theme.colors.primary }]}
+              activeOpacity={0.6}
+            >
+              <FontAwesome6 name="location-dot" size={16} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.footerBtn, { backgroundColor: theme.colors.primary }]}
+              activeOpacity={0.6}
+            >
+              <Feather name="phone" size={16} color="white" />
+            </TouchableOpacity>
+            <UserContextMenu onSelect={onSelectOption}>
               <TouchableOpacity
                 style={[styles.footerBtn, { backgroundColor: theme.colors.surfaceLight }]}
                 activeOpacity={0.5}
               >
                 <Entypo name="dots-three-horizontal" size={24} color={theme.colors.text} />
               </TouchableOpacity>
-            </TournamentOptionsContextMenu>
+            </UserContextMenu>
           </View>
         </View>
       </View>
@@ -145,6 +140,8 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: 10,
     gap: 20,
+    // borderWidth: 1,
+    // borderColor: "red",
   },
 
   footer: {
@@ -152,27 +149,43 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingTop: 15,
-    paddingBottom: 10,
+    paddingBottom: 5,
+    paddingTop: 10,
   },
   footerText: {
-    paddingVertical: 2,
+    paddingVertical: 1,
     borderRadius: 5,
     overflow: "hidden",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
   },
 
   footerBtn: {
-    borderRadius: 10,
-    paddingVertical: 6,
-    paddingHorizontal: 15,
+    width: 45,
+    height: 45,
+    backgroundColor: "white",
     display: "flex",
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    height: 40,
+    borderRadius: 10,
+    paddingVertical: 5,
   },
 });
 
-export default CreatorTournamentCard;
+export default UserTournamentCard;
+
+export const leaveTournamentConfirmationAlert = (onPress: () => void) => {
+  Alert.alert("Are you sure you want to leave this tournament?", "", [
+    {
+      text: "Leave",
+      onPress: onPress,
+      style: "destructive",
+    },
+    {
+      text: "Cancel",
+      style: "cancel",
+    },
+  ]);
+};

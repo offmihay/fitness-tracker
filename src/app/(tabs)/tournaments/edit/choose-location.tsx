@@ -8,6 +8,7 @@ import GoogleAutoComplete from "@/src/components/tournaments/choose-location/Goo
 import { UpdateTournamentPageQuery } from ".";
 
 export type ChooseLocationPageQuery = {
+  id: string;
   address: string;
   language: string;
   location: string;
@@ -41,6 +42,7 @@ const ChooseLocation = () => {
       pathname: "tournaments/edit",
       params: {
         ...location,
+        id: pageQuery.id,
       },
     });
   };
@@ -53,7 +55,14 @@ const ChooseLocation = () => {
         nodeHeader: () => (
           <View
             pointerEvents="box-none"
-            style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "flex-end" }}
+            style={{
+              flex: 1,
+              display: "flex",
+              justifyContent: "center",
+              height: "100%",
+              alignItems: "flex-end",
+              paddingRight: 20,
+            }}
           >
             <GoogleLogo />
           </View>

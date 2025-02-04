@@ -29,6 +29,19 @@ export const getSettingsList = () => {
       onPress: () => router.navigate("/settings/personal-info"),
     },
     {
+      key: "enable-notifications",
+      title: t("settings.notifications.title"),
+      icon: MaterialIcons,
+      iconName: "notifications-active",
+      nodeContentRight: (
+        <CustomSwitch
+          toggleSwitch={(isOn) => updateSettings({ notificationsEnabled: isOn })}
+          defaultValue={settings.notificationsEnabled}
+        />
+      ),
+      noRightChevron: true,
+    },
+    {
       key: "customize-theme",
       title: t("settings.theme.title"),
       icon: MaterialCommunityIcons,
@@ -49,14 +62,14 @@ export const getSettingsList = () => {
       onPress: () => void 0,
     },
     {
-      key: "enable-notifications",
-      title: t("settings.notifications.title"),
+      key: "creator-mode",
+      title: t("settings.creatorMode.title"),
       icon: MaterialIcons,
-      iconName: "notifications-active",
+      iconName: "mode",
       nodeContentRight: (
         <CustomSwitch
-          toggleSwitch={(isOn) => updateSettings({ notificationsEnabled: isOn })}
-          defaultValue={settings.notificationsEnabled}
+          toggleSwitch={(isOn) => updateSettings({ creatorMode: isOn })}
+          defaultValue={settings.creatorMode}
         />
       ),
       noRightChevron: true,

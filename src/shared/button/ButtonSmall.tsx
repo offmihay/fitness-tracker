@@ -10,13 +10,26 @@ type Props = {
   titleEnabled?: boolean;
   renderIcon?: (color: string, size: number) => React.ReactElement;
   textColor?: string;
+  disabled?: boolean;
 } & React.ComponentProps<typeof TouchableOpacity>;
 
 const ButtonSmall = (props: Props) => {
-  const { onPress, title, titleEnabled = true, renderIcon, style, textColor, ...rest } = props;
+  const {
+    onPress,
+    title,
+    titleEnabled = true,
+    renderIcon,
+    style,
+    textColor,
+    disabled,
+    ...rest
+  } = props;
   const theme = useCustomTheme();
 
   const iconSize = 18;
+
+  const colorOpacity =
+    disabled && theme.dark ? "grey" : disabled && !theme.dark ? "#929292" : textColor;
 
   return (
     <View>
@@ -24,12 +37,13 @@ const ButtonSmall = (props: Props) => {
         style={[styles.btnWrapper, { backgroundColor: theme.colors.surface }, style]}
         onPress={onPress}
         activeOpacity={0.5}
+        disabled={disabled}
         {...rest}
       >
         <View className="flex-1 flex flex-row gap-3 items-center justify-center">
-          {titleEnabled && <CustomText color={textColor}>{title}</CustomText>}
+          {titleEnabled && <CustomText color={colorOpacity}>{title}</CustomText>}
           {renderIcon && (
-            <CustomIcon render={(color) => renderIcon(textColor || color, iconSize)} />
+            <CustomIcon render={(color) => renderIcon(colorOpacity || color, iconSize)} />
           )}
         </View>
       </TouchableOpacity>

@@ -9,6 +9,7 @@ type Settings = {
   theme: ColorSchemeName;
   language: string | null;
   notificationsEnabled: boolean;
+  creatorMode: boolean;
 };
 
 type SettingsContextType = {
@@ -20,6 +21,7 @@ const defaultSettings: Settings = {
   theme: null,
   language: null,
   notificationsEnabled: true,
+  creatorMode: false,
 };
 
 export const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -60,7 +62,7 @@ export const SettingsProvider = ({ children }: Props) => {
     try {
       const storeSettings = { ...settings };
 
-      const { theme, language, notificationsEnabled } = newSettings;
+      const { theme, language, notificationsEnabled, creatorMode } = newSettings;
       if (theme || theme === null) {
         Appearance.setColorScheme(theme);
         storeSettings.theme = theme;
@@ -73,6 +75,10 @@ export const SettingsProvider = ({ children }: Props) => {
 
       if (typeof notificationsEnabled !== "undefined") {
         storeSettings.notificationsEnabled = notificationsEnabled;
+      }
+
+      if (typeof creatorMode !== "undefined") {
+        storeSettings.creatorMode = creatorMode;
       }
 
       setSettings(storeSettings);

@@ -6,6 +6,7 @@ import FastImage from "@d11/react-native-fast-image";
 import { router, useLocalSearchParams } from "expo-router";
 import GoogleAutoComplete from "@/src/components/tournaments/choose-location/GoogleAutocomplete";
 import { CreateTournamentPageQuery } from ".";
+import CustomText from "@/src/shared/text/CustomText";
 
 export type ChooseLocationPageQuery = {
   address: string;
@@ -53,7 +54,14 @@ const ChooseLocation = () => {
         nodeHeader: () => (
           <View
             pointerEvents="box-none"
-            style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "flex-end" }}
+            style={{
+              flex: 1,
+              display: "flex",
+              justifyContent: "center",
+              height: "100%",
+              alignItems: "flex-end",
+              paddingRight: 20,
+            }}
           >
             <GoogleLogo />
           </View>

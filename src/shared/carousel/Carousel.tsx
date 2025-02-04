@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import PagerView from "react-native-pager-view";
-import { Tournament } from "../../types/tournament";
+import { Tournament } from "../../types/types";
 import Skeleton from "../skeleton/Skeleton";
 import FastImage, { FastImageProps } from "@d11/react-native-fast-image";
 import CustomArrow from "../button/arrow/CustomArrow";

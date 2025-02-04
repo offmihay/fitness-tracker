@@ -21,6 +21,7 @@ import CustomHeader from "./CustomHeader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
 import { useSegments } from "expo-router";
+import { canGoBack } from "expo-router/build/global-state/routing";
 
 type renderContent = {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -39,6 +40,7 @@ export type LayoutProps = {
   name?: string;
   isNameUnique?: boolean;
   isDefaultCompressed?: boolean;
+  canGoBack?: boolean;
 };
 
 const CustomLayout = (props: LayoutProps) => {
@@ -50,6 +52,7 @@ const CustomLayout = (props: LayoutProps) => {
     name,
     isNameUnique,
     isDefaultCompressed,
+    canGoBack,
   } = props;
 
   const theme = useCustomTheme();
@@ -101,6 +104,7 @@ const CustomLayout = (props: LayoutProps) => {
               name={name}
               isNameUnique={isNameUnique}
               node={headerConfig?.nodeHeader}
+              canGoBack={canGoBack}
             />
           </Animated.View>
         )}

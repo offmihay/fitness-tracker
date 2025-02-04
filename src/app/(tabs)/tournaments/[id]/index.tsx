@@ -2,9 +2,9 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { getTournamentByID } from "@/src/queries/tournaments";
-import TournamentDetails from "@/src/components/home/tournament [id]/TournamentDetails";
+import TournamentDetails from "@/src/components/home/common/TournamentDetails";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
-import TournamentDetailsSkeleton from "@/src/components/home/skeleton/TournamentDetailsSkeleton";
+import TournamentDetailsSkeleton from "@/src/components/home/common/skeleton/TournamentDetailsSkeleton";
 
 type Props = {};
 

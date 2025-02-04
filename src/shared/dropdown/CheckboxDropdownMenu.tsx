@@ -12,6 +12,7 @@ export type DropdownItem = {
   key: string;
   title: string;
   isSelected: boolean;
+  disabled?: boolean;
   onPress: () => void;
 };
 
@@ -30,6 +31,7 @@ const CheckboxDropdownMenu = ({ children, items }: Props) => {
             key={item.key}
             value={item.isSelected ? "on" : "off"}
             onSelect={item.onPress}
+            disabled={item.disabled}
           >
             <DropdownMenuItemTitle>{item.title}</DropdownMenuItemTitle>
             <DropdownMenuItemIndicator />

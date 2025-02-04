@@ -5,7 +5,7 @@ import FilterItem from "./FilterItem";
 import { FilterGroup, FilterSingle, FilterRange, Range, FilterHome } from "../types";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
+import { TournamentSkillLevel, TournamentSport } from "@/src/types/types";
 import StickyFooterView from "../../../shared/view/StickyFooterView";
 import CustomKeyboardAwareScrollView from "../../../shared/view/CustomKeyboardAwareScrollView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
@@ -89,23 +89,23 @@ const FilterContent = (props: Props) => {
               <View style={styles.filterWrapperGroup} className="mt-4">
                 <FilterItem
                   label="Badminton"
-                  onPress={() => handleChangeGroup("sportType", TournamentSport.Badminton)}
-                  isSelected={filter.sportType.includes(TournamentSport.Badminton)}
+                  onPress={() => handleChangeGroup("sportType", TournamentSport.BADMINTON)}
+                  isSelected={filter.sportType.includes(TournamentSport.BADMINTON)}
                 />
                 <FilterItem
                   label="Squash"
-                  onPress={() => handleChangeGroup("sportType", TournamentSport.Squash)}
-                  isSelected={filter.sportType.includes(TournamentSport.Squash)}
+                  onPress={() => handleChangeGroup("sportType", TournamentSport.SQUASH)}
+                  isSelected={filter.sportType.includes(TournamentSport.SQUASH)}
                 />
                 <FilterItem
                   label="Tennis"
-                  onPress={() => handleChangeGroup("sportType", TournamentSport.Tennis)}
-                  isSelected={filter.sportType.includes(TournamentSport.Tennis)}
+                  onPress={() => handleChangeGroup("sportType", TournamentSport.TENNIS)}
+                  isSelected={filter.sportType.includes(TournamentSport.TENNIS)}
                 />
                 <FilterItem
                   label="Table Tennis"
-                  onPress={() => handleChangeGroup("sportType", TournamentSport.TableTennis)}
-                  isSelected={filter.sportType.includes(TournamentSport.TableTennis)}
+                  onPress={() => handleChangeGroup("sportType", TournamentSport.TABLE_TENNIS)}
+                  isSelected={filter.sportType.includes(TournamentSport.TABLE_TENNIS)}
                 />
               </View>
             </View>
@@ -115,18 +115,18 @@ const FilterContent = (props: Props) => {
               <View style={styles.filterWrapperGroup} className="mt-4">
                 <FilterItem
                   label="Amateur"
-                  onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.Amateur)}
-                  isSelected={filter.skillLevel.includes(TournamentSkillLevel.Amateur)}
+                  onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.AMATEUR)}
+                  isSelected={filter.skillLevel.includes(TournamentSkillLevel.AMATEUR)}
                 />
                 <FilterItem
-                  label="Beginner"
-                  onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.Beginner)}
-                  isSelected={filter.skillLevel.includes(TournamentSkillLevel.Beginner)}
+                  label="Intermediate"
+                  onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.INTERMEDIATE)}
+                  isSelected={filter.skillLevel.includes(TournamentSkillLevel.INTERMEDIATE)}
                 />
                 <FilterItem
                   label="Professional"
-                  onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.Professional)}
-                  isSelected={filter.skillLevel.includes(TournamentSkillLevel.Professional)}
+                  onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.PROFESSIONAL)}
+                  isSelected={filter.skillLevel.includes(TournamentSkillLevel.PROFESSIONAL)}
                 />
               </View>
             </View>

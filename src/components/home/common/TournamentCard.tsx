@@ -5,14 +5,14 @@ import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
-import { Tournament } from "@/src/types/tournament";
+import { TournamentBase } from "@/src/types/types";
 import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 
 type Props = {
   handleOpenDetails: () => void;
-  data: Tournament;
+  data: TournamentBase;
 };
 
 export const CARD_HEIGHT = 380;
@@ -26,9 +26,7 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
   const { title, location, dateStart, dateEnd, participants, maxParticipants, images } = data;
 
   const participantsText =
-    (!!participants || participants === 0) && maxParticipants
-      ? `${participants}/${maxParticipants}`
-      : "-";
+    participants && maxParticipants ? `${participants.length}/${maxParticipants}` : "-";
 
   const prizePool = data.prizePool ? `${data.prizePool.toString()} UAH` : "-";
   const entryFee = data.entryFee ? `${data.entryFee.toString()} UAH` : "-";

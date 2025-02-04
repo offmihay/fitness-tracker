@@ -26,6 +26,9 @@
     },
     "notifications": {
       "title": "Notifications"
+    },
+    "creatorMode": {
+      "title": "Creator Mode"
     }
   },
   "home": {
@@ -54,12 +57,12 @@
   "tournaments": {
     "create": {
       "createButton": "Create",
-      "successMessage": "Tournament created:",
+      "successMessage": "Tournament created!",
       "errorMessage": "Failed to create tournament:"
     },
     "edit": {
       "editButton": "Update",
-      "successMessage": "Tournament updated:",
+      "successMessage": "Tournament updated!",
       "errorMessage": "Failed to update tournament:"
     }
   },
@@ -126,7 +129,8 @@
     "back": "Back",
     "done": "Done",
     "openGallery": "Open Gallery",
-    "openCamera": "Open Camera"
+    "openCamera": "Open Camera",
+    "leave": "Leave"
   },
 
   "tournament": {
@@ -145,10 +149,10 @@
     "sportType": {
       "title": "Sport Type",
       "label": "Choose sport type",
-      "tennis": "Tennis",
-      "badminton": "Badminton",
-      "tableTennis": "Table Tennis",
-      "squash": "Squash",
+      "TENNIS": "Tennis",
+      "BADMINTON": "Badminton",
+      "TABLE_TENNIS": "Table Tennis",
+      "SQUASH": "Squash",
       "other": "Other"
     },
     "ageRestriction": {
@@ -159,22 +163,24 @@
     "skillLevel": {
       "title": "Skill Level",
       "label": "Choose skill level",
-      "amateur": "Amateur",
-      "beginner": "Beginner",
-      "professional": "Professional"
+      "AMATEUR": "Amateur",
+      "INTERMEDIATE": "Intermediate",
+      "PROFESSIONAL": "Professional"
     },
     "format": {
       "title": "Format",
       "label": "Choose format",
-      "singles": "Singles",
-      "doubles": "Doubles",
-      "squad": "Squad"
+      "SINGLES": "Singles",
+      "DOUBLES": "Doubles",
+      "SQUAD": "Squad"
     }
   },
 
   "title": {
     "home": "Home",
     "tournaments": "Tournaments",
+    "createdTournaments": "Created tournaments",
+    "youParticipate": "You participate",
     "settings": "Settings",
     "createTournament": "Create Tournament",
     "editTournament": "Edit Tournament",

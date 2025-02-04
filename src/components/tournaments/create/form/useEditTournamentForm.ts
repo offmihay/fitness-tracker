@@ -7,7 +7,7 @@ import schemaCreateTournament, {
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { UpdateTournamentPageQuery } from "@/src/app/(tabs)/tournaments/edit";
-import { Tournament } from "@/src/types/tournament";
+import { Tournament } from "@/src/types/types";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
@@ -51,12 +51,8 @@ export const useUpdateTournamentForm = (pageQuery: UpdateTournamentPageQuery) =>
   };
 
   const handleFormSubmit = (data: TournamentFormData, id: string) => {
-    const dataAdd = {
-      ...data,
-      status: "upcoming",
-    };
     updateTournamentMutation.mutate(
-      { data: dataAdd, id },
+      { data, id },
       {
         onSuccess: () => {
           router.back();

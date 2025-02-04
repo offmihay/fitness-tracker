@@ -10,19 +10,27 @@ import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
 import { Feather } from "@expo/vector-icons";
 import { routeNames } from "../tabBar/TabBarButton";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
+import CustomText from "@/src/shared/text/CustomText";
 
 interface MyCustomHeaderProps {
   scrollY: SharedValue<number>;
   name?: string;
   isNameUnique?: boolean;
   node?: () => React.ReactNode;
+  canGoBack?: boolean;
 }
 
 const maxHeight = HEADER_MAX_HEIGHT;
 const minHeight = HEADER_MIN_HEIGHT;
 const Scroll_Distance = maxHeight - minHeight;
 
-const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUnique, node }) => {
+const CustomHeader: React.FC<MyCustomHeaderProps> = ({
+  scrollY,
+  name,
+  isNameUnique,
+  node,
+  canGoBack = true,
+}) => {
   const insets = useSafeAreaInsets();
 
   const theme = useCustomTheme();
@@ -66,14 +74,13 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
       transform: [{ scale: scaleValue }],
     };
   });
-
   return (
     <>
       <View
         style={[styles.wrapper, { borderColor: theme.colors.surfaceLight, paddingTop: insets.top }]}
       >
         <View style={[styles.titleContainer]}>
-          {name && !routeNames.includes(name) && (
+          {name && canGoBack && (
             <Animated.View style={[{ position: "absolute" }, animatedBackStyle]}>
               <TouchableOpacity onPress={() => router.back()}>
                 <Feather name="chevron-left" size={40} color={theme.colors.link} />
@@ -99,7 +106,7 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({ scrollY, name, isNameUniq
           pointerEvents="box-none"
           style={{ width: "100%", height: "100%", position: "absolute", paddingTop: insets.top }}
         >
-          <View>{node()}</View>
+          <View style={{ flex: 1 }}>{node()}</View>
         </View>
       )}
     </>

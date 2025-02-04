@@ -9,10 +9,10 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import _ from "lodash";
 import { FilterHome } from "../types";
 
-type Props = { isMutated: boolean } & React.ComponentProps<typeof FilterContent>;
+type Props = { isMutated: boolean; disabled: boolean } & React.ComponentProps<typeof FilterContent>;
 
 const FilterModal = (props: Props) => {
-  const { isMutated } = props;
+  const { isMutated, disabled, ...rest } = props;
   const snapPoints = useMemo(() => ["90%"], []);
   const theme = useCustomTheme();
 
@@ -21,6 +21,7 @@ const FilterModal = (props: Props) => {
       name="filter-modal"
       renderTrigger={(handleOpen) => (
         <ButtonSmall
+          disabled={disabled}
           title="Filter"
           renderIcon={(color, size) => (
             <FontAwesome6 name="sliders" size={size - 2} color={color} />

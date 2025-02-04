@@ -1,25 +1,26 @@
 export enum TournamentSport {
-  Badminton = "badminton",
-  Tennis = "tennis",
-  Squash = "squash",
-  TableTennis = "tableTennis",
+  BADMINTON = "BADMINTON",
+  TENNIS = "TENNIS",
+  SQUASH = "SQUASH",
+  TABLE_TENNIS = "TABLE_TENNIS",
 }
 export enum TournamentSkillLevel {
-  Amateur = "amateur",
-  Beginner = "beginner",
-  Professional = "professional",
+  AMATEUR = "AMATEUR",
+  INTERMEDIATE = "INTERMEDIATE",
+  PROFESSIONAL = "PROFESSIONAL",
 }
 
 export enum TournamentStatus {
-  Upcoming = "upcoming",
-  Ongoing = "ongoing",
-  Finished = "finished",
+  UPCOMING = "UPCOMING",
+  ONGOING = "ONGOING",
+  FINISHED = "FINISHED",
+  DEACTIVATED = "DEACTIVATED",
 }
 
 export enum TournamentFormat {
-  Singles = "singles",
-  Doubles = "doubles",
-  Squad = "squad",
+  SINGLES = "SINGLES",
+  DOUBLES = "DOUBLES",
+  SQUAD = "SQUAD",
 }
 
 type User = {
@@ -44,6 +45,24 @@ interface GeoCoordinates {
   longitude: number;
 }
 
+export interface TournamentBase {
+  createdAt: string;
+  dateEnd: string;
+  dateStart: string;
+  description: string;
+  entryFee: number;
+  id: string;
+  images: Image[];
+  location: string;
+  maxParticipants: number;
+  participants: string[];
+  prizePool: number;
+  sportType: TournamentSport;
+  status: TournamentStatus;
+  title: string;
+  updatedAt: string;
+}
+
 export interface Tournament {
   ageRestrictions: AgeRestrictions;
   city: string;
@@ -57,7 +76,7 @@ export interface Tournament {
   images: Image[];
   location: string;
   maxParticipants: number;
-  participants: number;
+  participants: User[];
   organizer: User;
   prizePool: number;
   rules: string;
@@ -77,14 +96,14 @@ export type Image = {
   url: string;
 };
 
-export const emptyTournamentRequest: Tournament = {
+export const emptyTournament: Tournament = {
   ageRestrictions: {
     minAge: 0,
     maxAge: 0,
   },
   city: "",
   createdAt: "",
-  participants: 0,
+  participants: [],
   dateEnd: "",
   dateStart: "",
   description: "",
@@ -104,10 +123,28 @@ export const emptyTournamentRequest: Tournament = {
   },
   prizePool: 0,
   rules: "",
-  skillLevel: TournamentSkillLevel.Beginner,
-  format: TournamentFormat.Singles,
-  sportType: TournamentSport.Badminton,
-  status: TournamentStatus.Upcoming,
+  skillLevel: TournamentSkillLevel.AMATEUR,
+  format: TournamentFormat.SINGLES,
+  sportType: TournamentSport.BADMINTON,
+  status: TournamentStatus.UPCOMING,
+  title: "",
+  updatedAt: "",
+};
+
+export const emptyBaseTournament: TournamentBase = {
+  createdAt: "",
+  participants: [],
+  dateEnd: "",
+  dateStart: "",
+  description: "",
+  entryFee: 0,
+  id: "",
+  images: [],
+  location: "",
+  maxParticipants: 0,
+  prizePool: 0,
+  sportType: TournamentSport.BADMINTON,
+  status: TournamentStatus.UPCOMING,
   title: "",
   updatedAt: "",
 };

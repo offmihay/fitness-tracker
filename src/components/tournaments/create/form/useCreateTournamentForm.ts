@@ -24,11 +24,7 @@ export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) =>
   const { setValue } = methods;
 
   const handleFormSubmit = (data: TournamentFormData) => {
-    const dataAdd = {
-      ...data,
-      status: "upcoming",
-    };
-    createTournamentMutation.mutate(dataAdd, {
+    createTournamentMutation.mutate(data, {
       onSuccess: () => {
         router.back();
       },

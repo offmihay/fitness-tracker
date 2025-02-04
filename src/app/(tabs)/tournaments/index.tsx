@@ -1,44 +1,75 @@
 import { RefreshControl, StyleSheet, View } from "react-native";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { router, useNavigation, useRouter } from "expo-router";
+import React, { useCallback, useMemo, useState } from "react";
+import { router, useRouter } from "expo-router";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import UserTournamentCard, {
   UserTournamentCard_HEIGHT,
-} from "@/src/components/tournaments/UserTournamentCard";
-import { deleteTournament, getCreatedTournaments, getTournaments } from "@/src/queries/tournaments";
+} from "@/src/components/tournaments/common/UserTournamentCard";
+import {
+  deleteTournament,
+  getCreatedTournaments,
+  getParticipatedTournaments,
+  leaveTournament,
+} from "@/src/queries/tournaments";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
-import { Tournament } from "@/src/types/tournament";
-import CustomText from "@/src/shared/text/CustomText";
-import CustomSwitch from "@/src/shared/switch/Switch";
-import CreatorTournamentCard from "@/src/components/tournaments/CreatorTournamentCard";
+import { emptyBaseTournament, TournamentBase } from "@/src/types/types";
 import _ from "lodash";
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
+import { useSettings } from "@/src/hooks/useSettings";
+import CreatorTournamentCard from "@/src/components/tournaments/common/CreatorTournamentCard";
+import TournamentSkeleton from "@/src/components/tournaments/common/skeleton/TournamentSkeleton";
+import CustomText from "@/src/shared/text/CustomText";
 
 type Props = {};
 
 const Tournaments = ({}: Props) => {
-  const { data: loadedData, refetch } = getCreatedTournaments();
-  const deleteTournamentMutation = deleteTournament();
-  const [creatorMode, setCreatorMode] = useState(false);
-  const { push } = useRouter();
+  const { settings } = useSettings();
+  const { creatorMode } = settings;
 
+  const {
+    data: dataC,
+    refetch: refetchCreated,
+    isFetching: isCreatedFetching,
+  } = getCreatedTournaments();
+  const {
+    data: dataP,
+    refetch: refetchParticipated,
+    isFetching: isParticipatedFetching,
+  } = getParticipatedTournaments();
+  const isFetching = isCreatedFetching || isParticipatedFetching;
+
+  const refetchSelected = () => {
+    if (creatorMode) {
+      refetchCreated();
+    } else {
+      refetchParticipated();
+    }
+  };
+  const deleteTournamentMutation = deleteTournament();
+  const leaveTournamentMutation = leaveTournament();
+
+  const { push } = useRouter();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
 
     const delayPromise = new Promise((resolve) => setTimeout(resolve, 0));
 
-    Promise.all([refetch(), delayPromise]).then(() => {
+    Promise.all([refetchSelected(), delayPromise]).then(() => {
       setIsRefreshing(false);
     });
-  }, [refetch]);
+  }, [refetchSelected]);
 
-  const { data, data2 } = useMemo(() => {
+  const { dataCreated } = useMemo(() => {
     return {
-      data: _.cloneDeep(loadedData).sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
-      data2: _.cloneDeep(loadedData).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+      dataCreated: _.cloneDeep(dataC).sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
     };
-  }, [loadedData]);
+  }, [dataC]);
+
+  const { dataParticipated } = useMemo(() => {
+    return {
+      dataParticipated: _.cloneDeep(dataP).sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
+    };
+  }, [dataP]);
 
   const handleOpenDetails = (id: string) => {
     router.push(
@@ -63,20 +94,28 @@ const Tournaments = ({}: Props) => {
   const handleDelete = (id: string) => {
     deleteTournamentMutation.mutate(id, {
       onSuccess: () => {
-        refetch();
+        refetchSelected();
       },
     });
   };
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [creatorMode]);
+  const handleLeave = (id: string) => {
+    leaveTournamentMutation.mutate(id, {
+      onSuccess: () => {
+        refetchSelected();
+      },
+    });
+  };
 
   const renderCard = useCallback(
-    ({ item }: { item: Tournament }) => (
+    ({ item }: { item: TournamentBase }) => (
       <View style={{ paddingVertical: 10 }}>
         {!creatorMode ? (
-          <UserTournamentCard data={item} onCardPress={() => handleOpenDetails(item.id)} />
+          <UserTournamentCard
+            data={item}
+            onCardPress={() => handleOpenDetails(item.id)}
+            onLeavePress={() => handleLeave(item.id)}
+          />
         ) : (
           <CreatorTournamentCard
             data={item}
@@ -91,34 +130,52 @@ const Tournaments = ({}: Props) => {
   );
 
   const keyExtractor = useCallback(
-    (item: Tournament) => `${creatorMode ? "creator" : "user"}-${item.id}`,
+    (item: TournamentBase) => `${creatorMode ? "creator" : "user"}-${item.id}`,
     [creatorMode]
+  );
+
+  const skeletonData: TournamentBase[] = [
+    { ...emptyBaseTournament, id: "empty1" },
+    { ...emptyBaseTournament, id: "empty2" },
+    { ...emptyBaseTournament, id: "empty3" },
+    { ...emptyBaseTournament, id: "empty4" },
+  ];
+  const renderSkeleton = useCallback(
+    () => (
+      <View style={{ paddingVertical: 10 }}>
+        <View>
+          <TournamentSkeleton />
+        </View>
+      </View>
+    ),
+    [handleOpenDetails, settings.language]
   );
 
   return (
     <>
       <LayoutFlashList
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-        headerConfig={{
-          nodeHeader: () => (
-            <View className="flex h-full justify-end">
-              <View className="flex items-end justify-center h-[60]">
-                <View className="flex flex-row gap-4 items-center p-4">
-                  <CustomText weight="bold">Creator</CustomText>
-                  <CustomSwitch defaultValue={false} toggleSwitch={setCreatorMode} />
-                </View>
-              </View>
-            </View>
+        name={!creatorMode ? "youParticipate" : "createdTournaments"}
+        canGoBack={false}
+        flashListProps={{
+          scrollEnabled: !isFetching,
+          data: !isFetching ? (creatorMode ? dataCreated : dataParticipated) : skeletonData,
+          renderItem: !isFetching ? renderCard : renderSkeleton,
+          keyExtractor: !isFetching ? keyExtractor : (item) => item.id.toString(),
+          refreshControl: (
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+              progressViewOffset={180}
+            />
           ),
-        }}
-        name="tournaments"
-        data={!creatorMode ? data : data2}
-        renderItem={renderCard}
-        keyExtractor={keyExtractor}
-        estimatedItemSize={UserTournamentCard_HEIGHT + 20}
-        contentContainerStyle={styles.wrapper}
-        ListHeaderComponent={
-          creatorMode ? (
+          ListEmptyComponent: (
+            <CustomText>
+              {creatorMode
+                ? "You have not created tournament yet."
+                : "You are not participating in any tournament."}
+            </CustomText>
+          ),
+          ListHeaderComponent: creatorMode ? (
             <View style={{ paddingTop: 20, paddingBottom: 10 }}>
               <ButtonDefault
                 type="grey"
@@ -127,8 +184,12 @@ const Tournaments = ({}: Props) => {
                 onPress={() => push("./create", { relativeToDirectory: true })}
               />
             </View>
-          ) : null
-        }
+          ) : (
+            <View className="mb-4" />
+          ),
+          contentContainerStyle: styles.wrapper,
+          estimatedItemSize: UserTournamentCard_HEIGHT + 20,
+        }}
       />
     </>
   );
