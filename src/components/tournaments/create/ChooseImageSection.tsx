@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
 import ButtonInput from "@/src/shared/button/ButtonInput";
@@ -14,6 +14,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ImagePickerController, {
   ImageResource,
 } from "../../../shared/controllers/ImagePickerController";
+import ExpandableImage from "@/src/shared/image/ExpandableImage";
 
 type Props = {
   errorMessage: string;
@@ -52,22 +53,11 @@ const ChooseImageSection = (props: Props) => {
               </ButtonInput>
             </View>
 
-            {images && (
-              <ExpandableGroupImages
-                key={images.map((img) => img.uniqueID).join(",")}
-                images={images.map((img) => ({
-                  ...img,
-                  source: { uri: img.secure_url },
-                  width: 45,
-                  height: 45,
-                  isError: img.isError || false,
-                }))}
-                expadedImageWrapperStyle={{ borderRadius: 5 }}
-                onDelete={(index) => handleDelete(images[index])}
-                renderItem={(image, index) => {
+            <ScrollView horizontal contentContainerStyle={{ gap: 10 }}>
+              {images &&
+                images.map((image, index) => {
                   const isError = image.isError;
                   const isUploading = uploadImageMutation.isPending && !image.publicId && !isError;
-
                   return (
                     <DeleteContextMenu
                       onDelete={() => handleDelete(image)}
@@ -82,17 +72,19 @@ const ChooseImageSection = (props: Props) => {
                           overflow: "hidden",
                         }}
                       >
-                        <FastImage
-                          source={{
-                            uri: image.uri.length !== 0 ? image.uri : image.secure_url,
-                            priority: FastImage.priority.high,
-                          }}
+                        <ExpandableImage
+                          key={`image-${image}`}
+                          width={60}
+                          height={60}
+                          source={{ uri: image.uri.length !== 0 ? image.uri : image.secure_url }}
                           style={{
                             width: "100%",
                             height: "100%",
                             opacity: isUploading || isError ? 0.7 : 1,
                           }}
+                          imageWrapper={{ borderRadius: 5 }}
                           resizeMode={FastImage.resizeMode.contain}
+                          onDelete={() => handleDelete(images[index])}
                         />
 
                         {isUploading && (
@@ -110,9 +102,8 @@ const ChooseImageSection = (props: Props) => {
                       </View>
                     </DeleteContextMenu>
                   );
-                }}
-              />
-            )}
+                })}
+            </ScrollView>
           </View>
           <View className="mt-1">
             <ErrorAnimatedView

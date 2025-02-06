@@ -27,11 +27,10 @@ const useApi = () => {
 
       const token = await getToken(); // Ensure we get a fresh token
 
-      const url = new URL(endpoint, backendUrl);
+      const url = new URL(`/api${endpoint}`, backendUrl);
       Object.entries(queryParams).forEach(([key, value]) => {
         url.searchParams.append(key, value);
       });
-
       const requestHeaders = new Headers(headers);
       requestHeaders.set("Authorization", `Bearer ${token}`);
 

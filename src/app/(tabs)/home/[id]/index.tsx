@@ -9,7 +9,6 @@ import TournamentDetailsSkeleton from "@/src/components/home/common/skeleton/Tou
 const TournamentDetailsScreen = () => {
   const { id } = useLocalSearchParams();
   const { data, isLoading, error } = getTournamentByID(id as string);
-  const registerMutation = registerTournament();
 
   const handleOpenRules = () => {
     router.push(
@@ -42,7 +41,10 @@ const TournamentDetailsScreen = () => {
   };
 
   const handleRegister = useCallback(() => {
-    registerMutation.mutate(id as string);
+    router.push({
+      pathname: "/register",
+      params: { id },
+    });
   }, []);
 
   const isLoaded = !isLoading && data;

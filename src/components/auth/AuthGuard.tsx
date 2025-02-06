@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
 import CustomText from "@/src/shared/text/CustomText";
 
-const AuthGuard = () => {
+const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const { navigate } = useRouter();
   const { isLoaded, isSignedIn } = useAuth();
 
@@ -21,7 +21,7 @@ const AuthGuard = () => {
       </View>
     );
   }
-  return <Slot />;
+  return children;
 };
 
 export default AuthGuard;

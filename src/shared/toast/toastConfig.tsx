@@ -1,5 +1,4 @@
-import { View, Text, StyleSheet, Platform } from "react-native";
-import { BaseToast, BaseToastProps, ErrorToast, ToastProps } from "react-native-toast-message";
+import { View, Text, StyleSheet } from "react-native";
 import { CombinedLightTheme } from "@/src/theme/theme";
 import { AntDesign, Octicons } from "@expo/vector-icons";
 
@@ -52,6 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 40,
     width: "100%",
+    zIndex: 1000,
   },
   toast: {
     height: 45,

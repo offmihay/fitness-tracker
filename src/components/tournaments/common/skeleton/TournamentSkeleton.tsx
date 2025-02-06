@@ -12,7 +12,7 @@ const TournamentSkeleton = (props: Props) => {
     <View style={[styles.wrapper, { backgroundColor: theme.colors.surface }]}>
       <View className="flex gap-4">
         <Skeleton height={25} width={150} />
-        <Skeleton height={60} width={80} />
+        <Skeleton height={50} width={80} />
         <View className="flex flex-row gap-4">
           <Skeleton height={25} width={250} />
         </View>
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: UserTournamentCard_HEIGHT,
     paddingHorizontal: 10,
-    paddingTop: 15,
+    paddingTop: 20,
   },
 });
 

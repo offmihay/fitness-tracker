@@ -22,6 +22,8 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
 import { useSegments } from "expo-router";
 import { canGoBack } from "expo-router/build/global-state/routing";
+import Toast from "react-native-toast-message";
+import toastConfig from "@/src/shared/toast/toastConfig";
 
 type renderContent = {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -113,6 +115,7 @@ const CustomLayout = (props: LayoutProps) => {
           maxHeight: !disableHeader ? (isDefaultCompressed ? minHeight : maxHeight) : 0,
         })}
       </View>
+      <Toast config={toastConfig(theme)} topOffset={Platform.OS === "android" ? 20 : 65} />
     </>
   );
 };

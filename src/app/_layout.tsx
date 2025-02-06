@@ -4,6 +4,8 @@ import "../styles/global.css";
 import AppProviders from "../providers/AppProviders";
 import AuthGuard from "../components/auth/AuthGuard";
 import "react-native-get-random-values";
+import { Stack } from "expo-router";
+import { stackProps } from "../components/navigation/options";
 
 if (process.env.NODE_ENV === "development") {
   const originalWarn = console.warn;
@@ -16,7 +18,13 @@ if (process.env.NODE_ENV === "development") {
 
 const RootLayout = () => (
   <AppProviders>
-    <AuthGuard />
+    <AuthGuard>
+      <Stack {...stackProps}>
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="register" options={{ presentation: "modal" }} />
+      </Stack>
+    </AuthGuard>
   </AppProviders>
 );
 

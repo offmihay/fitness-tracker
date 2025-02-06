@@ -38,8 +38,6 @@ const UpdateTournament = () => {
     }
   }, [initialData]);
 
-  console.log(pageQuery.id);
-
   return (
     <LayoutKeyboardScrollView
       name="editTournament"
