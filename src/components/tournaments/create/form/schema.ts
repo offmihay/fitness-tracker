@@ -55,6 +55,13 @@ const restSchema = z.object({
       message: "Max age must be greater than Min age",
       path: ["maxAge"],
     }),
+
+  isOrganizerAdded: z
+    .boolean()
+    .refine((val) => val === true, {
+      message: "Required organization details",
+    })
+    .optional(),
 });
 
 const schemaCreateTournament = z.intersection(z.intersection(dateSchema, moneySchema), restSchema);

@@ -25,3 +25,5 @@ export const stackProps = {
 
 export const HEADER_MAX_HEIGHT = Platform.OS === "ios" ? 180 : 120;
 export const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 100 : 70;
+
+export const modalRoutes = ["/register", "/register/confirm", "/register/success"];

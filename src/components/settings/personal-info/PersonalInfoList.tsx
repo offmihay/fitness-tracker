@@ -31,7 +31,7 @@ const PersonalInfoList = (props: Props) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.leftSide}>
-        <View>{icon}</View>
+        <View style={styles.icon}>{icon}</View>
         <View style={styles.textContainer}>
           <CustomText type="predefault" style={{ opacity: 0.8 }}>
             {label}
@@ -74,6 +74,13 @@ const styles = StyleSheet.create({
   },
   btnWrapper: {
     justifyContent: "center",
+  },
+  icon: {
+    width: 40,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingRight: 10,
   },
 });
 

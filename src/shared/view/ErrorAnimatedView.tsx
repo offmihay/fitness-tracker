@@ -5,10 +5,10 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 type Props = {
   message?: string;
-};
+} & React.ComponentProps<typeof Animated.View>;
 
 const ErrorAnimatedView = (props: Props) => {
-  const { message } = props;
+  const { message, ...rest } = props;
   const theme = useCustomTheme();
 
   return (
@@ -18,6 +18,7 @@ const ErrorAnimatedView = (props: Props) => {
           layout={LinearTransition}
           entering={FadeIn.duration(300)}
           exiting={FadeOut.duration(300)}
+          {...rest}
         >
           <CustomText className="pl-1 pb-2" type="predefault" color={theme.colors.error}>
             {message}

@@ -6,6 +6,7 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
+      "phoneNumber": "Phone Number",
       "birthday": "Birthday",
       "photo": "Photo",
       "saveChanges": "Save Changes",
@@ -42,7 +43,7 @@
       "noAgeRestrictions": "No age restrictions",
       "location": "Location",
       "organizerDetails": "Organizer Details",
-      "organizedBy": "Organized by {{name}}",
+      "organizedBy": "Organized by",
       "unknown": "Unknown",
       "contactUs": "Contact us"
     },
@@ -139,7 +140,7 @@
     "dateStart": "Start date",
     "dateEnd": "End date",
     "city": "City",
-    "location": "Location / Address",
+    "location": "Address",
     "entryFee": "Entry Fee",
     "prizePool": "Prize Pool",
     "organizer": "Organizer",
@@ -176,6 +177,21 @@
     }
   },
 
+  "user": {
+    "name": "Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "birthday": "Birthday",
+    "imageUrl": "Image URL",
+    "organizerName": "Organization Name",
+    "organizerEmail": "Email",
+    "organizerPhone": "Work Phone",
+    "organizerDetails": "Organization Details",
+    "isVerified": "Is Verified"
+  },
+
   "title": {
     "home": "Home",
     "tournaments": "Tournaments",
@@ -188,6 +204,7 @@
     "changeName": "Change Name",
     "rules": "Rules",
     "choose-location": "Choose Location",
-    "registration": "Registration"
+    "registration": "Registration",
+    "organizerInfo": "Organizer Info"
   }
 }

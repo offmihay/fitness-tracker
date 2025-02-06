@@ -57,15 +57,15 @@ export const registerTournament = () => {
         props: { text: error.message },
       });
     },
-    onSuccess: () => {
-      Toast.show({
-        type: "successToast",
-        props: { text: "U SUCCESSFULLY REGISTRED" },
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["participated-tournaments"],
-      });
-    },
+    // onSuccess: () => {
+    //   Toast.show({
+    //     type: "successToast",
+    //     props: { text: "U SUCCESSFULLY REGISTRED" },
+    //   });
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["participated-tournaments"],
+    //   });
+    // },
   });
 };
 

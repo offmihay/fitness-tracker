@@ -29,7 +29,12 @@ const toastConfig = (theme: typeof CombinedLightTheme) => {
     ),
     errorToast: ({ props }: { props: Props }) => (
       <View style={[styles.toastContainer]}>
-        <View style={{ ...styles.toast, backgroundColor: theme.colors.deep }}>
+        <View
+          style={{
+            ...styles.toast,
+            backgroundColor: theme.dark ? theme.colors.surfaceLight : theme.colors.deep,
+          }}
+        >
           <View>
             <AntDesign name="closecircle" size={18} color={theme.colors.error} />
           </View>

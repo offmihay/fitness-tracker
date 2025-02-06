@@ -31,7 +31,7 @@ type Props = {
     | "lightgrey"
     | "dotted";
   styleWrapper?: StyleProp<ViewStyle>;
-  styleText?: StyleProp<ViewStyle>;
+  textColor?: string;
   nodeRight?: (color: string) => React.ReactNode;
   nodeLeft?: (color: string) => React.ReactNode;
   title?: string;
@@ -46,7 +46,7 @@ type Props = {
 
 const ButtonDefault = ({
   styleWrapper: style,
-  styleText,
+  textColor,
   loading = false,
   disabled,
   type = "primary",
@@ -78,14 +78,15 @@ const ButtonDefault = ({
     }
   }, [loading]);
 
-  const color =
-    type === "white"
+  const color = !textColor
+    ? type === "white"
       ? "black"
       : (type === "grey" && !theme.dark) || type === "lightgrey"
       ? "black"
       : type === "dotted"
       ? theme.colors.text
-      : "white";
+      : "white"
+    : textColor;
   const opacityColor =
     disabled && !isCheckAnimated && theme.dark
       ? "grey"
@@ -261,7 +262,7 @@ const styles = StyleSheet.create({
   },
 
   successButton: {
-    backgroundColor: "#00dc71",
+    backgroundColor: "#55da8b",
   },
 
   whiteButton: {

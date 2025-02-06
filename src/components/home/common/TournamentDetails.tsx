@@ -1,6 +1,13 @@
 import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useRef, useState } from "react";
-import { Ionicons, FontAwesome6, MaterialIcons, AntDesign } from "@expo/vector-icons";
+import {
+  Ionicons,
+  FontAwesome6,
+  MaterialIcons,
+  AntDesign,
+  FontAwesome,
+  FontAwesome5,
+} from "@expo/vector-icons";
 import { Tournament } from "@/src/types/types";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
@@ -8,6 +15,10 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import CustomMap from "@/src/shared/map/CustomMap";
 import CustomText from "@/src/shared/text/CustomText";
 import Carousel from "@/src/shared/carousel/Carousel";
+import { TournamentInfoBlock, TournamentInfoRow } from "./TournamentInfoBlock";
+import { formatDateTime } from "@/src/utils/formatDateTime";
+import { useSettings } from "@/src/hooks/useSettings";
+import SportLabel from "./SportLabel";
 
 type Props = {
   isRegistred: boolean;
@@ -15,7 +26,7 @@ type Props = {
   handleOpenRules: () => void;
   handleOpenParticipants: () => void;
   handleOpenOrganizer: () => void;
-  handleRegister: () => void;
+  handleRegister?: () => void;
 };
 
 const TournamentDetails = ({
@@ -28,9 +39,11 @@ const TournamentDetails = ({
 }: Props) => {
   const theme = useCustomTheme();
   const { t } = useTranslation("");
+  const { settings } = useSettings();
 
   return (
     <View className="flex flex-col gap-6">
+      <SportLabel type={data?.sportType} />
       <View style={styles.imgWrapper}>
         <Carousel
           images={data.images.map(({ secureUrl }) => ({ imageUri: secureUrl }))}
@@ -90,66 +103,62 @@ const TournamentDetails = ({
           <CustomText weight="semibold">{t("home.tournament.organizer")}</CustomText>
         </View>
       </View>
-      <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
-        <View className="flex flex-col gap-3">
-          <View className="flex flex-row gap-4 items-center">
-            <MaterialIcons name="sports-tennis" size={24} color={theme.colors.primary} />
-            <CustomText>
-              <CustomText weight="bold">{t("tournament.sportType.title")}: </CustomText>
-              {t(`tournament.sportType.${data.sportType}`)}
-            </CustomText>
-          </View>
-          <View className="flex flex-row gap-4 items-center">
-            <MaterialIcons name="fitness-center" size={24} color={theme.colors.primary} />
-            <CustomText>
-              <CustomText weight="bold">{t("tournament.skillLevel.title")}: </CustomText>
-              {t(`tournament.skillLevel.${data.skillLevel}`)}
-            </CustomText>
-          </View>
-          <View className="flex flex-row gap-4 items-center">
-            <MaterialIcons name="18-up-rating" size={24} color={theme.colors.primary} />
-            <CustomText>
-              <CustomText weight="bold">{t("tournament.ageRestriction.title")}: </CustomText>
-              {data?.ageRestrictions?.maxAge != null && data?.ageRestrictions?.minAge != null
-                ? `${data.ageRestrictions.minAge} - ${data.ageRestrictions.maxAge}`
-                : data?.ageRestrictions?.minAge != null
-                ? `${data.ageRestrictions.minAge}+`
-                : t("home.tournament.noAgeRestrictions")}
-            </CustomText>
-          </View>
-        </View>
-      </View>
+      <TournamentInfoBlock>
+        <TournamentInfoRow
+          renderIcon={(color) => <MaterialIcons name="sports-tennis" size={24} color={color} />}
+          label={t("tournament.sportType.title")}
+          value={t(`tournament.sportType.${data.sportType}`)}
+        />
+        <TournamentInfoRow
+          renderIcon={(color) => <MaterialIcons name="fitness-center" size={24} color={color} />}
+          label={t("tournament.skillLevel.title")}
+          value={t(`tournament.skillLevel.${data.skillLevel}`)}
+        />
+        <TournamentInfoRow
+          renderIcon={(color) => <MaterialIcons name="18-up-rating" size={24} color={color} />}
+          label={t("tournament.ageRestriction.title")}
+          value={
+            data?.ageRestrictions?.maxAge != null && data?.ageRestrictions?.minAge != null
+              ? `${data.ageRestrictions.minAge} - ${data.ageRestrictions.maxAge}`
+              : data?.ageRestrictions?.minAge != null
+              ? `${data.ageRestrictions.minAge}+`
+              : t("home.tournament.noAgeRestrictions")
+          }
+        />
+      </TournamentInfoBlock>
       {data.format && (
-        <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
-          <View className="flex flex-col gap-3">
-            <View className="flex flex-row gap-4 items-center">
-              <Ionicons name="information-circle" size={24} color={theme.colors.primary} />
-              <CustomText>
-                <CustomText weight="bold">{t("tournament.format.title")}: </CustomText>
-                {t(`tournament.format.${data.format}`)}
-              </CustomText>
-            </View>
-          </View>
-        </View>
+        <TournamentInfoBlock>
+          <TournamentInfoRow
+            renderIcon={(color) => <Ionicons name="information-circle" size={24} color={color} />}
+            label={t("tournament.format.title")}
+            value={t(`tournament.format.${data.format}`)}
+          />
+        </TournamentInfoBlock>
       )}
-      <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
-        <View className="flex flex-col gap-3">
-          <View className="flex flex-row gap-4 items-center">
-            <FontAwesome6 name="money-check" size={21} color={theme.colors.primary} />
-            <CustomText>
-              <CustomText weight="bold">{t("tournament.entryFee")}: </CustomText>
-              {data?.entryFee} UAH
-            </CustomText>
-          </View>
-          <View className="flex flex-row gap-4 items-center">
-            <FontAwesome6 name="sack-dollar" size={24} color={theme.colors.primary} />
-            <CustomText>
-              <CustomText weight="bold">{t("tournament.prizePool")}: </CustomText>
-              {data?.prizePool} UAH
-            </CustomText>
-          </View>
-        </View>
-      </View>
+      <TournamentInfoBlock>
+        <TournamentInfoRow
+          renderIcon={(color) => <FontAwesome6 name="money-check" size={21} color={color} />}
+          label={t("tournament.entryFee")}
+          value={`${data?.entryFee} UAH`}
+        />
+        <TournamentInfoRow
+          renderIcon={(color) => <FontAwesome6 name="sack-dollar" size={24} color={color} />}
+          label={t("tournament.prizePool")}
+          value={`${data?.prizePool} UAH`}
+        />
+      </TournamentInfoBlock>
+      <TournamentInfoBlock>
+        <TournamentInfoRow
+          renderIcon={(color) => <FontAwesome name="calendar-check-o" size={20} color={color} />}
+          label={t("tournament.dateStart")}
+          value={formatDateTime(data.dateStart, settings.language)}
+        />
+        <TournamentInfoRow
+          renderIcon={(color) => <FontAwesome name="calendar-times-o" size={20} color={color} />}
+          label={t("tournament.dateEnd")}
+          value={formatDateTime(data.dateEnd, settings.language)}
+        />
+      </TournamentInfoBlock>
       <View
         style={[{ backgroundColor: theme.colors.surface, borderRadius: 10, overflow: "hidden" }]}
       >
@@ -181,6 +190,29 @@ const TournamentDetails = ({
             <CustomText>{data?.organizer.organizerPhone}</CustomText>
           )}
         </View>
+      )}
+      {data.organizer && (
+        <TournamentInfoBlock title={t("home.tournament.organizerDetails")}>
+          <TournamentInfoRow
+            renderIcon={(color) => <FontAwesome5 name="house-user" size={20} color={color} />}
+            label={t("home.tournament.organizedBy")}
+            value={data?.organizer.organizerName ?? t("home.tournament.unknown")}
+          />
+          {data.organizer.organizerPhone && (
+            <TournamentInfoRow
+              renderIcon={(color) => <AntDesign name="phone" size={20} color={color} />}
+              label={t("user.phoneNumber")}
+              value={data.organizer.organizerPhone || t("home.tournament.unknown")}
+            />
+          )}
+          {data.organizer.organizerEmail && (
+            <TournamentInfoRow
+              renderIcon={(color) => <Ionicons name="mail" size={20} color={color} />}
+              label={t("home.tournament.contactUs")}
+              value={data.organizer.organizerEmail || t("home.tournament.unknown")}
+            />
+          )}
+        </TournamentInfoBlock>
       )}
     </View>
   );

@@ -31,7 +31,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             label={t("settings.personalInfo.email")}
             value={user?.primaryEmailAddress?.emailAddress || "Not specified"}
             onPress={() => void 0}
-            icon={<Entypo name="mail" size={20} color={theme.colors.primary} />}
+            icon={<Entypo name="mail" size={24} color={theme.colors.primary} />}
             disabled
           />
           <Divider />
@@ -47,7 +47,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             onPress={() =>
               router.push({ pathname: "./change-name" }, { relativeToDirectory: true })
             }
-            icon={<Feather name="user" size={20} color={theme.colors.primary} />}
+            icon={<Feather name="user" size={24} color={theme.colors.primary} />}
           />
           <Divider />
           <FormBirthday
@@ -65,7 +65,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           <ButtonDefault
             onPress={() => signOut()}
             title={t("settings.personalInfo.signOut")}
-            nodeLeft={(color) => <Octicons name="sign-out" size={20} color={color} />}
+            nodeLeft={(color) => <Octicons name="sign-out" size={24} color={color} />}
             type="white"
             className="mt-6"
           />

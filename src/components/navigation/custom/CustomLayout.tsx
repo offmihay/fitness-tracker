@@ -5,6 +5,7 @@ import {
   StatusBar,
   StyleSheet,
   View,
+  ViewStyle,
 } from "react-native";
 import React, { useEffect } from "react";
 import Animated, {
@@ -17,11 +18,9 @@ import Animated, {
 } from "react-native-reanimated";
 import type { SharedValue } from "react-native-reanimated";
 import CustomHeader from "./CustomHeader";
-
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
-import { useSegments } from "expo-router";
-import { canGoBack } from "expo-router/build/global-state/routing";
+import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT, modalRoutes } from "../options";
+import { usePathname } from "expo-router";
 import Toast from "react-native-toast-message";
 import toastConfig from "@/src/shared/toast/toastConfig";
 
@@ -37,12 +36,15 @@ export type LayoutProps = {
     maxHeight: number;
     minHeight: number;
     nodeHeader: () => React.ReactNode;
+    disableSafeInsets: boolean;
   }>;
   disableHeader?: boolean;
   name?: string;
   isNameUnique?: boolean;
   isDefaultCompressed?: boolean;
   canGoBack?: boolean;
+  disableTabBarInset?: boolean;
+  contentStyle?: ViewStyle;
 };
 
 const CustomLayout = (props: LayoutProps) => {
@@ -55,9 +57,16 @@ const CustomLayout = (props: LayoutProps) => {
     isNameUnique,
     isDefaultCompressed,
     canGoBack,
+    disableTabBarInset,
+    contentStyle,
   } = props;
 
   const theme = useCustomTheme();
+
+  const pathName = usePathname();
+
+  const modalOffset = modalRoutes.includes(pathName) ? -50 : 0;
+  const toastTopOffset = Platform.OS === "android" ? 20 : 65 + modalOffset;
 
   const maxHeight = headerConfig?.maxHeight || HEADER_MAX_HEIGHT;
   const minHeight = headerConfig?.minHeight || HEADER_MIN_HEIGHT;
@@ -93,7 +102,12 @@ const CustomLayout = (props: LayoutProps) => {
         backgroundColor={theme.colors.background}
         barStyle={theme.dark ? "light-content" : "dark-content"}
       />
-      <View style={[styles.container, { paddingBottom: Platform.OS === "android" ? 70 : 90 }]}>
+      <View
+        style={[
+          styles.container,
+          { paddingBottom: disableTabBarInset ? 0 : Platform.OS === "android" ? 70 : 90 },
+        ]}
+      >
         {renderHeader && !disableHeader && (
           <Animated.View style={[styles.header, animatedHeaderStyle]}>
             {renderHeader(scrollY, name)}
@@ -107,15 +121,18 @@ const CustomLayout = (props: LayoutProps) => {
               isNameUnique={isNameUnique}
               node={headerConfig?.nodeHeader}
               canGoBack={canGoBack}
+              disableSafeInsets={headerConfig?.disableSafeInsets}
             />
           </Animated.View>
         )}
-        {renderContent({
-          onScroll: scrollHandler,
-          maxHeight: !disableHeader ? (isDefaultCompressed ? minHeight : maxHeight) : 0,
-        })}
+        <View style={[{ flex: 1 }, contentStyle]}>
+          {renderContent({
+            onScroll: scrollHandler,
+            maxHeight: !disableHeader ? (isDefaultCompressed ? minHeight : maxHeight) : 0,
+          })}
+        </View>
       </View>
-      <Toast config={toastConfig(theme)} topOffset={Platform.OS === "android" ? 20 : 65} />
+      <Toast config={toastConfig(theme)} topOffset={toastTopOffset} />
     </>
   );
 };

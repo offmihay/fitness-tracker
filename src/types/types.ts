@@ -26,12 +26,13 @@ export enum TournamentFormat {
 type User = {
   id: string;
   email: string;
-  firstName?: string | null;
-  lastName?: string | null;
-  imageUrl?: string | null;
-  organizerName?: string | null;
-  organizerEmail?: string | null;
-  organizerPhone?: string | null;
+  firstName?: string;
+  lastName?: string;
+  imageUrl?: string;
+  organizerName?: string;
+  organizerEmail?: string;
+  organizerPhone?: string;
+  organizerDetails?: string;
   isVerified: boolean;
 };
 

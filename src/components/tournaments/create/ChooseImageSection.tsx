@@ -53,9 +53,9 @@ const ChooseImageSection = (props: Props) => {
               </ButtonInput>
             </View>
 
-            <ScrollView horizontal contentContainerStyle={{ gap: 10 }}>
-              {images &&
-                images.map((image, index) => {
+            {images.length > 0 && (
+              <ScrollView horizontal contentContainerStyle={{ gap: 10 }}>
+                {images.map((image, index) => {
                   const isError = image.isError;
                   const isUploading = uploadImageMutation.isPending && !image.publicId && !isError;
                   return (
@@ -103,7 +103,8 @@ const ChooseImageSection = (props: Props) => {
                     </DeleteContextMenu>
                   );
                 })}
-            </ScrollView>
+              </ScrollView>
+            )}
           </View>
           <View className="mt-1">
             <ErrorAnimatedView

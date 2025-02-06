@@ -51,8 +51,9 @@ export const useUpdateTournamentForm = (pageQuery: UpdateTournamentPageQuery) =>
   };
 
   const handleFormSubmit = (data: TournamentFormData, id: string) => {
+    const { isOrganizerAdded, ...formData } = data;
     updateTournamentMutation.mutate(
-      { data, id },
+      { data: formData, id },
       {
         onSuccess: () => {
           router.back();

@@ -5,6 +5,7 @@ import { getTournamentByID, registerTournament } from "@/src/queries/tournaments
 import TournamentDetails from "@/src/components/home/common/TournamentDetails";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import TournamentDetailsSkeleton from "@/src/components/home/common/skeleton/TournamentDetailsSkeleton";
+import SportLabel from "@/src/components/home/common/SportLabel";
 
 const TournamentDetailsScreen = () => {
   const { id } = useLocalSearchParams();

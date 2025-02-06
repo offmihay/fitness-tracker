@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/types";
 import RHFormDropdownInput from "@/src/shared/form/RHFormDropdownInput";
@@ -13,8 +13,12 @@ import RHFormDatePicker from "@/src/shared/form/RHFormDatePicker";
 import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { router } from "expo-router";
-import { Pressable, View } from "react-native";
+import { Pressable, TouchableOpacity, View } from "react-native";
 import { Divider } from "react-native-paper";
+import PersonalInfoList from "@/src/components/settings/personal-info/PersonalInfoList";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useUser } from "@clerk/clerk-expo";
+import ErrorAnimatedView from "@/src/shared/view/ErrorAnimatedView";
 
 type Props = {
   type: "edit" | "create";
@@ -23,6 +27,7 @@ type Props = {
 export const TournamentEditForm = ({ type, id }: Props) => {
   const { t } = useTranslation();
   const [isOpenedAdditional, setIsOpenedAdditional] = useState(false);
+  const { user } = useUser();
   const theme = useCustomTheme();
   const {
     control,
@@ -130,7 +135,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
       </DualInputSection>
       <CustomAnimatedView>
         <Divider className="mt-3" />
-        <CustomText type="subtitle" className="ml-1 my-3">
+        <CustomText type="subtitle" className="ml-1 mt-4 mb-2">
           Restrictions
         </CustomText>
       </CustomAnimatedView>
@@ -189,13 +194,13 @@ export const TournamentEditForm = ({ type, id }: Props) => {
           selectAnLabel: t("tournament.skillLevel.label"),
         }}
       />
-      <Pressable
+      <TouchableOpacity
         onPress={() => setIsOpenedAdditional((prev) => !prev)}
         className="mb-2"
         style={{ width: 180 }}
       >
         <CustomText color={theme.colors.link}>Additional parameters</CustomText>
-      </Pressable>
+      </TouchableOpacity>
       {isOpenedAdditional && (
         <>
           <RHFormDropdownInput
@@ -246,22 +251,24 @@ export const TournamentEditForm = ({ type, id }: Props) => {
       )}
       <CustomAnimatedView>
         <Divider className="mt-2" />
-        <CustomText type="subtitle" className="ml-1 my-3">
+        <CustomText type="subtitle" className="ml-1 mt-4 mb-2">
           Location & Date
         </CustomText>
       </CustomAnimatedView>
       <RHFormInput name="city" label={t("tournament.city")} control={control} />
-      <Pressable onPress={goToLocationPage}>
-        <RHFormInput
-          name="location"
-          label={t("tournament.location")}
-          control={control}
-          inputProps={{
-            disabled: true,
-            onPress: goToLocationPage,
-          }}
-        />
-      </Pressable>
+      <CustomAnimatedView>
+        <Pressable onPress={goToLocationPage}>
+          <RHFormInput
+            name="location"
+            label={t("tournament.location")}
+            control={control}
+            inputProps={{
+              disabled: true,
+              onPress: goToLocationPage,
+            }}
+          />
+        </Pressable>
+      </CustomAnimatedView>
       <DualInputSection>
         <RHFormDatePicker
           name="dateStart"
@@ -282,6 +289,40 @@ export const TournamentEditForm = ({ type, id }: Props) => {
           control={control}
         />
       </DualInputSection>
+      <Controller control={control} name="isOrganizerAdded" render={() => <></>} />
+      <CustomAnimatedView>
+        <Divider className="mt-2" />
+        <CustomText type="subtitle" className="ml-1 mt-3 mb-4 ">
+          Organizer Details
+        </CustomText>
+      </CustomAnimatedView>
+      <CustomAnimatedView
+        style={{
+          backgroundColor: theme.colors.surface,
+          borderRadius: 10,
+          borderWidth: 1,
+          borderColor:
+            errors.isOrganizerAdded?.message &&
+            (!user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail)
+              ? theme.colors.error
+              : undefined,
+        }}
+      >
+        <PersonalInfoList
+          label={"Organizer"}
+          value={(user?.unsafeMetadata.organizerName as string) || "Not specified"}
+          onPress={() => router.navigate("tournaments/create/organizer")}
+          icon={<FontAwesome5 name="house-user" size={24} color={theme.colors.text} />}
+        />
+      </CustomAnimatedView>
+      <ErrorAnimatedView
+        message={
+          !user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail
+            ? errors.isOrganizerAdded?.message
+            : undefined
+        }
+        className="mt-2"
+      />
     </View>
   );
 };

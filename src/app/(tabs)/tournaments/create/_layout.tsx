@@ -6,6 +6,7 @@ export default function Layout() {
     <Stack {...stackProps}>
       <Stack.Screen name="index" />
       <Stack.Screen name="choose-location" />
+      <Stack.Screen name="organizer" />
     </Stack>
   );
 }

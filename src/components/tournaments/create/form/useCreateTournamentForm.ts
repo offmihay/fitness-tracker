@@ -1,18 +1,19 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getTournaments, postTournament } from "@/src/queries/tournaments";
+import { postTournament } from "@/src/queries/tournaments";
 import schemaCreateTournament, {
   TournamentFormData,
 } from "@/src/components/tournaments/create/form/schema";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { CreateTournamentPageQuery } from "@/src/app/(tabs)/tournaments/create";
-import Toast from "react-native-toast-message";
 import { router } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
 
 export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) => {
   const { t } = useTranslation();
   const createTournamentMutation = postTournament();
+  const { user } = useUser();
 
   const methods = useForm<TournamentFormData>({
     defaultValues: {},
@@ -21,10 +22,14 @@ export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) =>
     resolver: zodResolver(schemaCreateTournament),
   });
 
-  const { setValue } = methods;
+  const {
+    setValue,
+    formState: { errors },
+  } = methods;
 
   const handleFormSubmit = (data: TournamentFormData) => {
-    createTournamentMutation.mutate(data, {
+    const { isOrganizerAdded, ...formData } = data;
+    createTournamentMutation.mutate(formData, {
       onSuccess: () => {
         router.back();
       },

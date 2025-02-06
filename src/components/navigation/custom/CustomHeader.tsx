@@ -18,6 +18,7 @@ interface MyCustomHeaderProps {
   isNameUnique?: boolean;
   node?: () => React.ReactNode;
   canGoBack?: boolean;
+  disableSafeInsets?: boolean;
 }
 
 const maxHeight = HEADER_MAX_HEIGHT;
@@ -29,6 +30,7 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({
   name,
   isNameUnique,
   node,
+  disableSafeInsets,
   canGoBack = true,
 }) => {
   const insets = useSafeAreaInsets();
@@ -77,7 +79,13 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({
   return (
     <>
       <View
-        style={[styles.wrapper, { borderColor: theme.colors.surfaceLight, paddingTop: insets.top }]}
+        style={[
+          styles.wrapper,
+          {
+            borderColor: theme.colors.surfaceLight,
+            paddingTop: insets.top,
+          },
+        ]}
       >
         <View style={[styles.titleContainer]}>
           {name && canGoBack && (
@@ -104,9 +112,16 @@ const CustomHeader: React.FC<MyCustomHeaderProps> = ({
       {node && (
         <View
           pointerEvents="box-none"
-          style={{ width: "100%", height: "100%", position: "absolute", paddingTop: insets.top }}
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            paddingTop: disableSafeInsets ? 0 : insets.top,
+          }}
         >
-          <View style={{ flex: 1 }}>{node()}</View>
+          <View pointerEvents="box-none" style={{ flex: 1 }}>
+            {node()}
+          </View>
         </View>
       )}
     </>

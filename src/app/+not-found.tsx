@@ -1,19 +1,27 @@
-import { Link, Stack, usePathname } from "expo-router";
+import { Link, router, Stack, usePathname } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import React from "react";
 import CustomText from "../shared/text/CustomText";
+import { Pressable } from "react-native-gesture-handler";
 
 export default function NotFoundScreen() {
   const pathname = usePathname();
+
+  const handlePress = () => {
+    router.push({
+      pathname: "/",
+    });
+  };
   return (
     <>
       <Stack.Screen options={{ title: "Oops!" }} />
       <View style={styles.container}>
         <CustomText style={styles.title}>404 - Page Not Found</CustomText>
         <CustomText style={styles.subtitle}>You tried to visit: {pathname}</CustomText>
-        <Link href="/">
+
+        <Pressable onPress={handlePress}>
           <CustomText type="link">Go to home screen!</CustomText>
-        </Link>
+        </Pressable>
       </View>
     </>
   );

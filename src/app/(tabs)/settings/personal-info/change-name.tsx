@@ -17,8 +17,9 @@ import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormInput from "@/src/shared/form/RHFormInput";
+import Toast from "react-native-toast-message";
 
-const changeName = () => {
+const ChangeNameScreen = () => {
   const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();
@@ -44,6 +45,10 @@ const changeName = () => {
     const formData = clerkTransformData(data);
     formDataMutation.mutate(formData, {
       onSuccess: () => {
+        Toast.show({
+          type: "successToast",
+          props: { text: "Successfully updated profile information" },
+        });
         router.back();
       },
       onError: (error: any) => {
@@ -63,36 +68,34 @@ const changeName = () => {
   return (
     <>
       <LayoutStatic name="changeName">
-        <DismissKeyboardView>
-          <FormProvider {...methods}>
-            <View style={styles.wrapper}>
-              <RHFormInput
-                name="firstName"
-                label={t("settings.personalInfo.firstName")}
-                control={control}
-                rules={{
-                  required: { message: "required" },
-                }}
-                inputProps={{
-                  useClearButton: true,
-                  returnKeyType: "done",
-                }}
-              />
-              <RHFormInput
-                name="lastName"
-                label={t("settings.personalInfo.lastName")}
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                inputProps={{
-                  useClearButton: true,
-                  returnKeyType: "done",
-                }}
-              />
-            </View>
-          </FormProvider>
-        </DismissKeyboardView>
+        <FormProvider {...methods}>
+          <View style={styles.wrapper}>
+            <RHFormInput
+              name="firstName"
+              label={t("settings.personalInfo.firstName")}
+              control={control}
+              rules={{
+                required: { message: "required" },
+              }}
+              inputProps={{
+                useClearButton: true,
+                returnKeyType: "done",
+              }}
+            />
+            <RHFormInput
+              name="lastName"
+              label={t("settings.personalInfo.lastName")}
+              control={control}
+              rules={{
+                required: true,
+              }}
+              inputProps={{
+                useClearButton: true,
+                returnKeyType: "done",
+              }}
+            />
+          </View>
+        </FormProvider>
       </LayoutStatic>
       <StickyFooterView offset={{ closed: 0, opened: 100 }}>
         <View style={styles.buttonWrapper}>
@@ -127,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default changeName;
+export default ChangeNameScreen;

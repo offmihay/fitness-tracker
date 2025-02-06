@@ -36,11 +36,5 @@ export const useUpdateUserMutation = () => {
         props: { text: error.message },
       });
     },
-    onSuccess: () => {
-      Toast.show({
-        type: "successToast",
-        props: { text: "Successfully updated profile information" },
-      });
-    },
   });
 };

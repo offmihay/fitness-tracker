@@ -24,7 +24,11 @@ function LayoutFlashList<T>(props: Props<T>) {
           <AnimatedFlashList
             onScroll={onScroll}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ ...contentContainerStyle, paddingVertical: maxHeight }}
+            contentContainerStyle={{
+              ...contentContainerStyle,
+              paddingVertical: maxHeight,
+              paddingBottom: -1,
+            }}
             {...restFlashListProps}
           />
         );

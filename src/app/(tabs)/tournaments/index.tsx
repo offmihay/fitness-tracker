@@ -61,13 +61,13 @@ const Tournaments = ({}: Props) => {
 
   const { dataCreated } = useMemo(() => {
     return {
-      dataCreated: _.cloneDeep(dataC).sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
+      dataCreated: _.cloneDeep(dataC).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
     };
   }, [dataC]);
 
   const { dataParticipated } = useMemo(() => {
     return {
-      dataParticipated: _.cloneDeep(dataP).sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
+      dataParticipated: _.cloneDeep(dataP).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
     };
   }, [dataP]);
 
@@ -187,6 +187,7 @@ const Tournaments = ({}: Props) => {
           ) : (
             <View className="mb-4" />
           ),
+          ListFooterComponent: <View style={{ height: 20 }} />,
           contentContainerStyle: styles.wrapper,
           estimatedItemSize: UserTournamentCard_HEIGHT + 20,
         }}
@@ -198,7 +199,6 @@ const Tournaments = ({}: Props) => {
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
-    paddingVertical: 10,
   },
 });
 

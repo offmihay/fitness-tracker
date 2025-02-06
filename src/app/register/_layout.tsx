@@ -5,6 +5,7 @@ export default function RegisterLayout() {
   return (
     <Stack {...stackProps}>
       <Stack.Screen name="index" />
+      <Stack.Screen name="confirm" />
     </Stack>
   );
 }

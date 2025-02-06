@@ -8,6 +8,7 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { useLocalSearchParams } from "expo-router";
 import { useCreateTournamentForm } from "@/src/components/tournaments/create/form/useCreateTournamentForm";
 import { TournamentEditForm } from "@/src/components/tournaments/create/form/TournamentEditForm";
+import { useUser } from "@clerk/clerk-expo";
 
 export type CreateTournamentPageQuery = {
   place_id?: string;
@@ -20,12 +21,22 @@ export type CreateTournamentPageQuery = {
 
 const CreateTournament = () => {
   const { t } = useTranslation();
+  const { user } = useUser();
 
   const pageQuery = useLocalSearchParams<CreateTournamentPageQuery>();
   const { methods, handleFormSubmit, createTournamentMutation } =
     useCreateTournamentForm(pageQuery);
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, setError, setValue } = methods;
+
+  const handlePress = () => {
+    if (!user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail) {
+      setValue("isOrganizerAdded", false);
+    } else {
+      setValue("isOrganizerAdded", true);
+    }
+    handleSubmit(handleFormSubmit)();
+  };
 
   return (
     <LayoutKeyboardScrollView
@@ -40,7 +51,7 @@ const CreateTournament = () => {
             <ButtonDefault
               title={t("tournaments.create.createButton")}
               className="mt-4"
-              onPress={handleSubmit(handleFormSubmit)}
+              onPress={handlePress}
               loading={createTournamentMutation.isPending}
             />
           </CustomAnimatedView>

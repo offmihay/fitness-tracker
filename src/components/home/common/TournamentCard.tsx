@@ -9,13 +9,14 @@ import { TournamentBase } from "@/src/types/types";
 import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
+import SportLabel from "./SportLabel";
 
 type Props = {
   handleOpenDetails: () => void;
   data: TournamentBase;
 };
 
-export const CARD_HEIGHT = 380;
+export const CARD_HEIGHT = 425;
 
 const TournamentCard = ({ data, handleOpenDetails }: Props) => {
   const theme = useCustomTheme();
@@ -62,7 +63,10 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
           </View>
         </View>
         <CustomText type="subtitle">{title}</CustomText>
-        <View className="flex flex-row mt-4">
+        <View className="mt-4">
+          <SportLabel type={data?.sportType} />
+        </View>
+        <View className="flex flex-row mt-2">
           <View style={{ width: "65%" }}>
             <View className="flex flex-col pr-1 gap-1">
               <View className="flex flex-row gap-2 items-center" style={{ height: 40 }}>

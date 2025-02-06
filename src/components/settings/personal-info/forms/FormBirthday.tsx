@@ -11,6 +11,7 @@ import {
 } from "@/src/components/settings/personal-info/forms/schema";
 import RHFormDatePicker from "@/src/shared/form/RHFormDatePicker";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
+import Toast from "react-native-toast-message";
 
 type Props = {
   renderTrigger: (onPress: () => void, value: string) => React.ReactNode;
@@ -37,7 +38,12 @@ const FormBirthday = (props: Props) => {
   const onSubmit = (data: ChangeBirthdayFormData) => {
     const formData = clerkTransformData(data);
     formDataMutation.mutate(formData, {
-      onSuccess: () => {},
+      onSuccess: () => {
+        Toast.show({
+          type: "successToast",
+          props: { text: "Successfully updated profile information" },
+        });
+      },
       onError: (error: any) => {
         clerkHandleErrors(error, setError, t);
       },
