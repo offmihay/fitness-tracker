@@ -22,12 +22,11 @@ const TournamentCardSkeleton = () => {
       >
         <Skeleton height={190} />
       </View>
-      <View className="mt-2 mb-6">
-        <Skeleton height={25} width={200} />
-      </View>
       <View className="flex gap-4">
+        <Skeleton height={25} width={200} />
         <Skeleton height={25} width={100} />
         <Skeleton height={25} width={140} />
+        <Skeleton height={25} width={250} />
       </View>
     </View>
   );
@@ -35,9 +34,9 @@ const TournamentCardSkeleton = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
+    height: CARD_HEIGHT,
     padding: 20,
     borderRadius: 10,
-    height: CARD_HEIGHT,
   },
 });
 

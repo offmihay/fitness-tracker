@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
-import { registerTournament } from "@/src/queries/tournaments";
+import { getTournamentByID, registerTournament } from "@/src/queries/tournaments";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { router, useLocalSearchParams } from "expo-router";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
@@ -19,9 +19,7 @@ type Props = {};
 const RegistrationConfirmScreen = (props: Props) => {
   const { id } = useLocalSearchParams();
 
-  const queryClient = useQueryClient();
-
-  const tournamentData = queryClient.getQueryData(["tournament", id]) as Tournament;
+  const { data: tournamentData } = getTournamentByID(id as string);
 
   const registerMutation = registerTournament();
 
@@ -61,7 +59,7 @@ const RegistrationConfirmScreen = (props: Props) => {
                 paddingRight: 20,
               }}
             >
-              <SportLabel type={tournamentData.sportType} />
+              <SportLabel type={tournamentData?.sportType} />
             </View>
           ),
           disableSafeInsets: true,
@@ -71,7 +69,7 @@ const RegistrationConfirmScreen = (props: Props) => {
         <View style={styles.wrapper}>
           <ScrollView contentContainerStyle={{ paddingVertical: 30 }}>
             <View style={{ paddingHorizontal: 20 }}>
-              <ConfirmTournamentDetails data={tournamentData} />
+              {tournamentData && <ConfirmTournamentDetails data={tournamentData} />}
             </View>
           </ScrollView>
         </View>

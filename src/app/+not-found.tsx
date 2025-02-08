@@ -8,9 +8,7 @@ export default function NotFoundScreen() {
   const pathname = usePathname();
 
   const handlePress = () => {
-    router.push({
-      pathname: "/",
-    });
+    router.back();
   };
   return (
     <>
@@ -20,7 +18,7 @@ export default function NotFoundScreen() {
         <CustomText style={styles.subtitle}>You tried to visit: {pathname}</CustomText>
 
         <Pressable onPress={handlePress}>
-          <CustomText type="link">Go to home screen!</CustomText>
+          <CustomText type="link">Go back!</CustomText>
         </Pressable>
       </View>
     </>

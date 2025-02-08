@@ -15,7 +15,6 @@ const TournamentDetailsScreen = () => {
     router.push(
       {
         pathname: "./rules",
-        params: { rules: data?.rules },
       },
       { relativeToDirectory: true }
     );
@@ -24,7 +23,7 @@ const TournamentDetailsScreen = () => {
   const handleOpenParticipants = () => {
     router.push(
       {
-        pathname: "./rules",
+        pathname: "./participants",
         params: {},
       },
       { relativeToDirectory: true }

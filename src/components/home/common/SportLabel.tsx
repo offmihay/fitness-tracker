@@ -5,6 +5,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { TournamentSport } from "@/src/types/types";
 import { FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import CustomLabel from "./CustomLabel";
 
 type Props = {
   type?: TournamentSport;
@@ -18,47 +19,35 @@ const SportLabel = (props: Props) => {
   switch (type) {
     case TournamentSport.TABLE_TENNIS:
       return (
-        <View className="flex flex-row">
-          <View style={[styles.wrapper, { backgroundColor: theme.colors.primary }]}>
-            <FontAwesome5 name="table-tennis" size={16} color="white" />
-            <CustomText type="predefault" numberOfLines={1}>
-              {t(`tournament.sportType.${type}`)}
-            </CustomText>
-          </View>
-        </View>
+        <CustomLabel
+          value={t(`tournament.sportType.${type}`)}
+          icon={<FontAwesome5 name="table-tennis" size={16} color="white" />}
+          color={theme.colors.secondary}
+        />
       );
     case TournamentSport.BADMINTON:
       return (
-        <View className="flex flex-row">
-          <View style={[styles.wrapper, { backgroundColor: theme.colors.secondary }]}>
-            <MaterialCommunityIcons name="badminton" size={16} color="white" />
-            <CustomText type="predefault" numberOfLines={1}>
-              {t(`tournament.sportType.${type}`)}
-            </CustomText>
-          </View>
-        </View>
+        <CustomLabel
+          value={t(`tournament.sportType.${type}`)}
+          icon={<MaterialCommunityIcons name="badminton" size={16} color="white" />}
+          color={theme.colors.info}
+        />
       );
     case TournamentSport.SQUASH:
       return (
-        <View className="flex flex-row">
-          <View style={[styles.wrapper, { backgroundColor: theme.colors.info }]}>
-            <Ionicons name="tennisball" size={16} color="white" />
-            <CustomText type="predefault" numberOfLines={1}>
-              {t(`tournament.sportType.${type}`)}
-            </CustomText>
-          </View>
-        </View>
+        <CustomLabel
+          value={t(`tournament.sportType.${type}`)}
+          icon={<Ionicons name="tennisball" size={16} color="white" />}
+          color={theme.colors.primaryLight}
+        />
       );
     case TournamentSport.TENNIS:
       return (
-        <View className="flex flex-row">
-          <View style={[styles.wrapper, { backgroundColor: theme.colors.notification }]}>
-            <MaterialIcons name="sports-tennis" size={16} color="white" />
-            <CustomText type="predefault" numberOfLines={1}>
-              {t(`tournament.sportType.${type}`)}
-            </CustomText>
-          </View>
-        </View>
+        <CustomLabel
+          value={t(`tournament.sportType.${type}`)}
+          icon={<MaterialIcons name="sports-tennis" size={16} color="white" />}
+          color={theme.colors.notification}
+        />
       );
   }
 };

@@ -7,6 +7,7 @@ export default function Layout() {
     <Stack {...stackProps}>
       <Stack.Screen name="index" />
       <Stack.Screen name="rules" />
+      <Stack.Screen name="participants" />
     </Stack>
   );
 }

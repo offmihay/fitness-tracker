@@ -24,18 +24,16 @@ type Props = {};
 const Tournaments = ({}: Props) => {
   const { settings } = useSettings();
   const { creatorMode } = settings;
-
   const {
     data: dataC,
     refetch: refetchCreated,
     isFetching: isCreatedFetching,
-  } = getCreatedTournaments();
+  } = getCreatedTournaments(creatorMode);
   const {
     data: dataP,
     refetch: refetchParticipated,
     isFetching: isParticipatedFetching,
-  } = getParticipatedTournaments();
-  const isFetching = isCreatedFetching || isParticipatedFetching;
+  } = getParticipatedTournaments(!creatorMode);
 
   const refetchSelected = () => {
     if (creatorMode) {
@@ -46,6 +44,12 @@ const Tournaments = ({}: Props) => {
   };
   const deleteTournamentMutation = deleteTournament();
   const leaveTournamentMutation = leaveTournament();
+
+  const isFetching =
+    isCreatedFetching ||
+    isParticipatedFetching ||
+    leaveTournamentMutation.isPending ||
+    deleteTournamentMutation.isPending;
 
   const { push } = useRouter();
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -92,19 +96,11 @@ const Tournaments = ({}: Props) => {
   };
 
   const handleDelete = (id: string) => {
-    deleteTournamentMutation.mutate(id, {
-      onSuccess: () => {
-        refetchSelected();
-      },
-    });
+    deleteTournamentMutation.mutate(id);
   };
 
   const handleLeave = (id: string) => {
-    leaveTournamentMutation.mutate(id, {
-      onSuccess: () => {
-        refetchSelected();
-      },
-    });
+    leaveTournamentMutation.mutate(id);
   };
 
   const renderCard = useCallback(

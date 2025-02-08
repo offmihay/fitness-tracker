@@ -173,25 +173,6 @@ const TournamentDetails = ({
         </View>
       </View>
       {data.organizer && (
-        <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
-          <CustomText type="subtitle" className="mb-4">
-            {t("home.tournament.organizerDetails")}
-          </CustomText>
-          <CustomText>
-            {t("home.tournament.organizedBy", {
-              name: data?.organizer.organizerName ?? t("home.tournament.unknown"),
-            })}
-          </CustomText>
-          <CustomText>
-            {t("home.tournament.contactUs")}:<CustomText> </CustomText>
-            <CustomText type="link">{data?.organizer.organizerEmail}</CustomText>
-          </CustomText>
-          {data?.organizer.organizerPhone && (
-            <CustomText>{data?.organizer.organizerPhone}</CustomText>
-          )}
-        </View>
-      )}
-      {data.organizer && (
         <TournamentInfoBlock title={t("home.tournament.organizerDetails")}>
           <TournamentInfoRow
             renderIcon={(color) => <FontAwesome5 name="house-user" size={20} color={color} />}
