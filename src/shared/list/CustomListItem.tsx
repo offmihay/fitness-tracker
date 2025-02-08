@@ -61,7 +61,7 @@ const CustomListItem = ({
                 name={iconName}
                 size={24}
                 color={theme.colors.primary}
-                style={[props.style, iconStyle, { top: 5 }]}
+                style={[props.style, { top: 5 }, iconStyle]}
               />
             ) : null}
           </View>

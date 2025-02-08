@@ -289,40 +289,44 @@ export const TournamentEditForm = ({ type, id }: Props) => {
           control={control}
         />
       </DualInputSection>
-      <Controller control={control} name="isOrganizerAdded" render={() => <></>} />
-      <CustomAnimatedView>
-        <Divider className="mt-2" />
-        <CustomText type="subtitle" className="ml-1 mt-3 mb-4 ">
-          Organizer Details
-        </CustomText>
-      </CustomAnimatedView>
-      <CustomAnimatedView
-        style={{
-          backgroundColor: theme.colors.surface,
-          borderRadius: 10,
-          borderWidth: 1,
-          borderColor:
-            errors.isOrganizerAdded?.message &&
-            (!user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail)
-              ? theme.colors.error
-              : undefined,
-        }}
-      >
-        <PersonalInfoList
-          label={"Organizer"}
-          value={(user?.unsafeMetadata.organizerName as string) || "Not specified"}
-          onPress={() => router.navigate("tournaments/create/organizer")}
-          icon={<FontAwesome5 name="house-user" size={24} color={theme.colors.text} />}
-        />
-      </CustomAnimatedView>
-      <ErrorAnimatedView
-        message={
-          !user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail
-            ? errors.isOrganizerAdded?.message
-            : undefined
-        }
-        className="mt-2"
-      />
+      {type === "create" && (
+        <>
+          <Controller control={control} name="isOrganizerAdded" render={() => <></>} />
+          <CustomAnimatedView>
+            <Divider className="mt-2" />
+            <CustomText type="subtitle" className="ml-1 mt-3 mb-4 ">
+              Organizer Details
+            </CustomText>
+          </CustomAnimatedView>
+          <CustomAnimatedView
+            style={{
+              backgroundColor: theme.colors.surface,
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor:
+                errors.isOrganizerAdded?.message &&
+                (!user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail)
+                  ? theme.colors.error
+                  : undefined,
+            }}
+          >
+            <PersonalInfoList
+              label={"Organizer"}
+              value={(user?.unsafeMetadata.organizerName as string) || "Not specified"}
+              onPress={() => router.navigate("tournaments/create/organizer")}
+              icon={<FontAwesome5 name="house-user" size={24} color={theme.colors.text} />}
+            />
+          </CustomAnimatedView>
+          <ErrorAnimatedView
+            message={
+              !user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail
+                ? errors.isOrganizerAdded?.message
+                : undefined
+            }
+            className="mt-2"
+          />
+        </>
+      )}
     </View>
   );
 };

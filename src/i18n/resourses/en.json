@@ -12,6 +12,9 @@
       "saveChanges": "Save Changes",
       "signOut": "Sign Out"
     },
+    "organizerInfo": {
+      "title": "Organizer Info"
+    },
     "theme": {
       "title": "Choose Theme",
       "system": "System",

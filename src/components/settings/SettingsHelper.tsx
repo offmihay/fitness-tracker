@@ -62,17 +62,12 @@ export const getSettingsList = () => {
       onPress: () => void 0,
     },
     {
-      key: "creator-mode",
-      title: t("settings.creatorMode.title"),
+      key: "organizer-info",
+      title: t("settings.organizerInfo.title"),
       icon: MaterialIcons,
+      iconStyle: { top: 0 },
       iconName: "mode",
-      nodeContentRight: (
-        <CustomSwitch
-          toggleSwitch={(isOn) => updateSettings({ creatorMode: isOn })}
-          defaultValue={settings.creatorMode}
-        />
-      ),
-      noRightChevron: true,
+      onPress: () => router.navigate("/settings/organizer-info"),
     },
   ];
 

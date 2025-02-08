@@ -47,6 +47,7 @@ export const useUpdateTournamentForm = (pageQuery: UpdateTournamentPageQuery) =>
       dateStart: initialData.dateStart ? new Date(initialData.dateStart) : undefined,
       dateEnd: initialData.dateEnd ? new Date(initialData.dateEnd) : undefined,
       geoCoordinates: initialData.geoCoordinates,
+      isOrganizerAdded: true,
     });
   };
 

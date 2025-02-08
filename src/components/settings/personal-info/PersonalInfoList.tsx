@@ -59,8 +59,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    minHeight: 70,
+    minHeight: 65,
     paddingHorizontal: 20,
+    paddingVertical: 12,
   },
   leftSide: {
     flex: 1,

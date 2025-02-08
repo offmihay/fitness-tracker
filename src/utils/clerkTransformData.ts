@@ -5,39 +5,30 @@ export type UpdateUserClerkFormData = {
   primaryPhoneNumberId: string;
   primaryWeb3WalletId: string;
   username: string;
-  unsafeMetadata: Record<string, any>;
+  unsafeMetadata: UserUnsafeMetadata;
 };
 
-const clerkTransformData = <T extends Record<string, any>>(
-  data: T
+const clerkTransformData = (
+  data: Partial<Omit<UpdateUserClerkFormData, "unsafeMetadata"> & UserUnsafeMetadata>,
+  unsafePrev?: Partial<UserUnsafeMetadata>
 ): Partial<UpdateUserClerkFormData> => {
-  const permittedKeys: (keyof UpdateUserClerkFormData)[] = [
-    "firstName",
-    "lastName",
-    "primaryEmailAddressId",
-    "primaryPhoneNumberId",
-    "primaryWeb3WalletId",
-    "unsafeMetadata",
-    "username",
+  const metadataKeys: (keyof UserUnsafeMetadata)[] = [
+    "birthday",
+    "organizerDetails",
+    "organizerEmail",
+    "organizerPhone",
+    "organizerName",
+    "phoneNumber",
   ];
 
-  const permittedData = Object.fromEntries(
-    Object.entries(data).filter(
-      ([key, value]) =>
-        permittedKeys.includes(key as keyof UpdateUserClerkFormData) && value !== undefined
-    )
+  const safeData = Object.fromEntries(
+    Object.entries(data).filter(([key]) => !metadataKeys.includes(key as keyof UserUnsafeMetadata))
+  );
+  const unsafeData = Object.fromEntries(
+    Object.entries(data).filter(([key]) => metadataKeys.includes(key as keyof UserUnsafeMetadata))
   );
 
-  const unpermittedData = Object.fromEntries(
-    Object.entries(data).filter(
-      ([key]) => !permittedKeys.includes(key as keyof UpdateUserClerkFormData)
-    )
-  );
-
-  const formData: Partial<UpdateUserClerkFormData> = {
-    ...permittedData,
-    unsafeMetadata: unpermittedData,
-  };
+  const formData = { ...safeData, unsafeMetadata: { ...unsafePrev, ...unsafeData } };
 
   return formData;
 };
