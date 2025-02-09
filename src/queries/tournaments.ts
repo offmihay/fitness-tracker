@@ -1,16 +1,17 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
-import { Tournament, TournamentBase } from "../types/types";
+import { Tournament, TournamentBase } from "../types/tournament";
 import { TournamentFormData } from "../components/tournaments/create/form/schema";
 import Toast from "react-native-toast-message";
 import useApi from "../api/useApi";
 import { useTranslation } from "react-i18next";
+import { TournamentQuery } from "../components/home/types";
 
-export const getTournaments = () => {
+export const getTournaments = (queryParams: Partial<TournamentQuery>) => {
   const { fetchData } = useApi();
   return useQuery({
-    queryKey: ["tournaments"],
+    queryKey: ["tournaments", queryParams],
     queryFn: async () => {
-      const response = await fetchData<any, TournamentBase[]>("/tournaments");
+      const response = await fetchData<any, TournamentBase[]>("/tournaments", { queryParams });
       return response.data;
     },
     initialData: [],
@@ -131,7 +132,7 @@ export const postTournament = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData<Tournament[]>(["tournaments"], (prev) => [...prev!, data]);
+      queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) => [...prev!, data]);
       Toast.show({
         type: "successToast",
         props: { text: t("tournaments.create.successMessage") },
@@ -201,6 +202,45 @@ export const deleteTournament = () => {
       queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) =>
         prev?.filter((t) => t.id !== id)
       );
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "errorToast",
+        props: { text: error.message },
+      });
+    },
+  });
+};
+
+export const removeUser = () => {
+  const { fetchData } = useApi();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      tournamentId,
+      participantId,
+    }: {
+      tournamentId: string;
+      participantId: string;
+    }) => {
+      const response = await fetchData<TournamentFormData, Tournament>(
+        `/tournaments/${tournamentId}`,
+        {
+          queryParams: {
+            participantId,
+          },
+          method: "PATCH",
+        }
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      Toast.show({
+        type: "successToast",
+        props: { text: "User was succesfully deleted." },
+      });
+      queryClient.setQueryData(["tournament", data.id], data);
     },
     onError: (error) => {
       Toast.show({

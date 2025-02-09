@@ -8,7 +8,7 @@ import {
   FontAwesome,
   FontAwesome5,
 } from "@expo/vector-icons";
-import { Tournament } from "@/src/types/types";
+import { Tournament } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";

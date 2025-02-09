@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React, { memo, useState } from "react";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { Tournament } from "@/src/types/types";
+import { Tournament } from "@/src/types/tournament";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 
 type Props = {

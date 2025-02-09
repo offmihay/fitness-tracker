@@ -11,7 +11,7 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import { Tournament } from "@/src/types/types";
+import { Tournament } from "@/src/types/tournament";
 import { TournamentInfoBlock, TournamentInfoRow } from "../home/common/TournamentInfoBlock";
 import { useSettings } from "@/src/hooks/useSettings";
 import { formatDateTime } from "@/src/utils/formatDateTime";

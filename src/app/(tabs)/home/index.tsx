@@ -1,5 +1,5 @@
 import { RefreshControl, StyleSheet, View } from "react-native";
-import React, { useCallback, useState, memo, useEffect } from "react";
+import React, { useCallback, useState, memo, useEffect, useMemo } from "react";
 import TournamentCard, { CARD_HEIGHT } from "@/src/components/home/common/TournamentCard";
 import { useRouter } from "expo-router";
 import { getTournaments, registerTournament } from "@/src/queries/tournaments";
@@ -7,30 +7,56 @@ import { useSettings } from "@/src/hooks/useSettings";
 import HomeHeader from "@/src/components/home/HomeHeader";
 import SortDropdown from "@/src/components/home/sort/SortDropdown";
 import FilterModal from "@/src/components/home/filter/FilterModal";
-import { emptyBaseTournament, TournamentBase } from "@/src/types/types";
+import { emptyBaseTournament, TournamentBase } from "@/src/types/tournament";
 import { FlashList } from "@shopify/flash-list";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import TournamentCardSkeleton from "@/src/components/home/common/skeleton/TournamentCardSkeleton";
-import { FilterHome, SortValueHome } from "@/src/components/home/types";
+import { FilterHome, SortValueHome, TournamentQuery } from "@/src/components/home/types";
 import _ from "lodash";
 import { emptyFilter } from "@/src/components/home/storedSettings";
 import CustomText from "@/src/shared/text/CustomText";
+import { useDebounce } from "@/src/hooks/useDebounce";
 
 type HomePageProps = {};
 
 const HomePage = ({}: HomePageProps) => {
   const { settings } = useSettings();
   const router = useRouter();
-  const [data, setData] = useState<TournamentBase[]>([]);
 
+  const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<FilterHome>(emptyFilter);
   const [sortBy, setSortBy] = useState<SortValueHome | null>(null);
 
-  const { data: loadedData, refetch, isFetching } = getTournaments();
+  const transformSortQuery = (sortBy: SortValueHome | null) => {
+    let sortQuery: Pick<TournamentQuery, "sortBy" | "sortOrder"> | {};
+    switch (sortBy) {
+      case SortValueHome.Newest:
+        sortQuery = { sortBy: "dateStart", sortOrder: "desc" };
+        break;
+      case SortValueHome.PrizePool:
+        sortQuery = { sortBy: "prizePool", sortOrder: "desc" };
+        break;
+      default:
+        sortQuery = {};
+        break;
+    }
+    return sortQuery;
+  };
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
+  const query = useMemo<Partial<TournamentQuery>>(() => {
+    return {
+      ...filter,
+      ...transformSortQuery(sortBy),
+      search: debouncedSearchQuery,
+    };
+  }, [filter, sortBy, debouncedSearchQuery]);
 
-  useEffect(() => {
-    const cloneData = _.cloneDeep(loadedData);
-    setData(cloneData.sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
+  const { data: loadedData, refetch, isFetching } = getTournaments(query);
+
+  const { data } = useMemo(() => {
+    return {
+      data: loadedData,
+    };
   }, [loadedData]);
 
   const handleOpenDetails = useCallback(
@@ -86,7 +112,7 @@ const HomePage = ({}: HomePageProps) => {
   return (
     <LayoutStatic name="home" disableHeader={true} canGoBack={false}>
       <View style={{ flex: 1 }}>
-        <HomeHeader />
+        <HomeHeader value={searchQuery} onChangeText={setSearchQuery} />
         <FlashList
           scrollEnabled={!isFetching}
           ListHeaderComponent={
@@ -96,11 +122,10 @@ const HomePage = ({}: HomePageProps) => {
                 filterValues={filter}
                 onConfirm={setFilter}
                 isMutated={!!filter && !_.isEqual(JSON.parse(JSON.stringify(filter)), emptyFilter)}
-                disabled={data.length === 0}
               />
             </View>
           }
-          ListEmptyComponent={<CustomText>There are no upcoming tournaments</CustomText>}
+          ListEmptyComponent={<CustomText>No tournaments found.</CustomText>}
           data={!isFetching ? data : skeletonData}
           contentContainerStyle={styles.wrapper}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}

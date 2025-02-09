@@ -5,15 +5,17 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Divider } from "react-native-paper";
 
-type Props = {};
+type Props = {
+  value: string;
+  onChangeText: (text: string) => void;
+};
 
 const HomeHeader = (props: Props) => {
-  const {} = props;
+  const { value, onChangeText } = props;
 
   const insets = useSafeAreaInsets();
 
   const theme = useCustomTheme();
-  const [value, setValue] = useState("");
   return (
     <DismissKeyboardView style={{ width: "100%", paddingTop: insets.top }}>
       <View style={[styles.wrapper]}>
@@ -23,7 +25,7 @@ const HomeHeader = (props: Props) => {
             placeholderTextColor={theme.colors.text}
             style={[styles.input, { color: theme.colors.text }]}
             value={value}
-            onChangeText={setValue}
+            onChangeText={onChangeText}
           />
         </View>
       </View>
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    height: 35,
+    height: 40,
     borderRadius: 10,
   },
 

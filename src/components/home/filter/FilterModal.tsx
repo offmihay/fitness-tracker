@@ -9,7 +9,9 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import _ from "lodash";
 import { FilterHome } from "../types";
 
-type Props = { isMutated: boolean; disabled: boolean } & React.ComponentProps<typeof FilterContent>;
+type Props = { isMutated: boolean; disabled?: boolean } & React.ComponentProps<
+  typeof FilterContent
+>;
 
 const FilterModal = (props: Props) => {
   const { isMutated, disabled, ...rest } = props;

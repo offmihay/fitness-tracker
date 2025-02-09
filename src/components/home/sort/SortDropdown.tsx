@@ -12,7 +12,7 @@ import { SortValueHome } from "../types";
 type Props = {
   value: SortValueHome | null;
   onConfirm?: (value: SortValueHome | null) => void;
-  disabled: boolean;
+  disabled?: boolean;
 };
 const SortDropdown = (props: Props) => {
   const { value, onConfirm, disabled } = props;
@@ -38,6 +38,13 @@ const SortDropdown = (props: Props) => {
       title: t(SortValueHome.Newest),
       isSelected: value === SortValueHome.Newest,
       onPress: () => handleChoose(SortValueHome.Newest),
+      disabled: disabled,
+    },
+    {
+      key: SortValueHome.Upcoming,
+      title: t(SortValueHome.Upcoming),
+      isSelected: value === SortValueHome.Upcoming,
+      onPress: () => handleChoose(SortValueHome.Upcoming),
       disabled: disabled,
     },
     {

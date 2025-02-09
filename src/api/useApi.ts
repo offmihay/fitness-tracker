@@ -7,7 +7,10 @@ type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 interface RequestOptions<T> {
   method?: HttpMethod;
-  queryParams?: Record<string, string>;
+  queryParams?: Record<
+    string,
+    string | number | Date | Array<string | number> | Record<string, string | number>
+  >;
   body?: T;
   headers?: Record<string, string>;
 }
@@ -25,12 +28,22 @@ const useApi = () => {
     async <T, U>(endpoint: string, options: RequestOptions<T> = {}): Promise<ApiResponse<U>> => {
       const { method = "GET", queryParams = {}, body, headers = {} } = options;
 
-      const token = await getToken(); // Ensure we get a fresh token
+      const token = await getToken();
 
       const url = new URL(`/api${endpoint}`, backendUrl);
+
       Object.entries(queryParams).forEach(([key, value]) => {
-        url.searchParams.append(key, value);
+        if (Array.isArray(value)) {
+          value.forEach((v) => url.searchParams.append(key, v.toString()));
+        } else if (typeof value === "object" && value !== null) {
+          Object.entries(value).forEach(([subKey, subValue]) => {
+            url.searchParams.append(`${key}[${subKey}]`, subValue.toString());
+          });
+        } else if (value) {
+          url.searchParams.append(key, value.toString());
+        }
       });
+
       const requestHeaders = new Headers(headers);
       requestHeaders.set("Authorization", `Bearer ${token}`);
 

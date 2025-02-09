@@ -7,7 +7,7 @@ import LayoutKeyboardScrollView from "@/src/components/navigation/layouts/Layout
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { useLocalSearchParams } from "expo-router";
 import { TournamentEditForm } from "@/src/components/tournaments/create/form/TournamentEditForm";
-import { useUpdateTournamentForm } from "@/src/components/tournaments/create/form/useEditTournamentForm";
+import { useUpdateTournamentForm } from "@/src/components/tournaments/create/form/useUpdateTournamentForm";
 import { getTournamentByID } from "@/src/queries/tournaments";
 import { FormSkeleton } from "@/src/components/tournaments/create/FormSkeleton";
 

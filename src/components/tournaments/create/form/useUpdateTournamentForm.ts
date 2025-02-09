@@ -1,20 +1,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getTournaments, updateTournament } from "@/src/queries/tournaments";
+import { updateTournament } from "@/src/queries/tournaments";
 import schemaCreateTournament, {
   TournamentFormData,
 } from "@/src/components/tournaments/create/form/schema";
-import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { UpdateTournamentPageQuery } from "@/src/app/(tabs)/tournaments/edit";
-import { Tournament } from "@/src/types/types";
-import Toast from "react-native-toast-message";
+import { Tournament } from "@/src/types/tournament";
 import { router } from "expo-router";
-import { useQueryClient } from "@tanstack/react-query";
 
 export const useUpdateTournamentForm = (pageQuery: UpdateTournamentPageQuery) => {
-  const { t } = useTranslation();
-
   const updateTournamentMutation = updateTournament();
 
   const methods = useForm<TournamentFormData>({

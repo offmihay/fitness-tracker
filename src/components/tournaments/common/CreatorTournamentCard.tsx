@@ -1,6 +1,6 @@
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Tournament, TournamentBase } from "@/src/types/types";
+import { Tournament, TournamentBase } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import FastImage from "@d11/react-native-fast-image";

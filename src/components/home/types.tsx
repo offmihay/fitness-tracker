@@ -1,4 +1,5 @@
-import { TournamentSport, TournamentSkillLevel } from "@/src/types/types";
+import { Query } from "@/src/types/query";
+import { TournamentSport, TournamentSkillLevel } from "@/src/types/tournament";
 
 export type Range = {
   min?: number;
@@ -8,7 +9,7 @@ export type Range = {
 export type FilterHome = {
   sportType: TournamentSport[];
   skillLevel: TournamentSkillLevel[];
-  date: Date | string;
+  date: string;
   prizePool: Range;
   entryFee: Range;
 };
@@ -19,6 +20,12 @@ export type FilterRange = Pick<FilterHome, "prizePool" | "entryFee">;
 
 export enum SortValueHome {
   Newest = "newest",
+  Upcoming = "upcoming",
   PrizePool = "prizePool",
   Distance = "distance",
 }
+
+export type TournamentQuery = Query &
+  FilterHome & {
+    sortBy: "dateStart" | "prizePool" | "dateCreated";
+  };

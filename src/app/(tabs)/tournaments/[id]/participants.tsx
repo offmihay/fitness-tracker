@@ -2,10 +2,10 @@ import { RefreshControl, StyleSheet, View } from "react-native";
 import React, { useCallback, useState } from "react";
 import CustomText from "@/src/shared/text/CustomText";
 import { useLocalSearchParams } from "expo-router";
-import { getTournamentByID } from "@/src/queries/tournaments";
+import { getTournamentByID, removeUser } from "@/src/queries/tournaments";
 import ParticipantCard from "@/src/components/home/common/ParticipantCard";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
-import { emptyBaseTournament, Tournament } from "@/src/types/types";
+import { emptyBaseTournament, Tournament } from "@/src/types/tournament";
 import ParticipantCardSkeleton from "@/src/components/home/common/skeleton/ParticipantCardSkeleton";
 
 type Props = {};
@@ -15,7 +15,13 @@ const ParticipantsPage = (props: Props) => {
   const { data, refetch, isFetching } = getTournamentByID(id as string);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const handleRemoveParticipant = (id: string) => {};
+  const removeUserMutation = removeUser();
+
+  const isLoading = removeUserMutation.isPending || isFetching;
+
+  const handleRemoveParticipant = (participantId: string) => {
+    removeUserMutation.mutate({ participantId, tournamentId: id as string });
+  };
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
@@ -60,10 +66,10 @@ const ParticipantsPage = (props: Props) => {
     <LayoutFlashList
       name="participants"
       flashListProps={{
-        scrollEnabled: !isFetching,
-        data: !isFetching ? data?.participants : skeletonData,
-        renderItem: !isFetching ? renderCard : renderSkeleton,
-        keyExtractor: !isFetching ? keyExtractor : (item) => item.id.toString(),
+        scrollEnabled: !isLoading,
+        data: !isLoading ? data?.participants : skeletonData,
+        renderItem: !isLoading ? renderCard : renderSkeleton,
+        keyExtractor: !isLoading ? keyExtractor : (item) => item.id.toString(),
         refreshControl: (
           <RefreshControl
             refreshing={isRefreshing}

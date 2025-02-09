@@ -12,7 +12,7 @@ import {
   leaveTournament,
 } from "@/src/queries/tournaments";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
-import { emptyBaseTournament, TournamentBase } from "@/src/types/types";
+import { emptyBaseTournament, TournamentBase } from "@/src/types/tournament";
 import _ from "lodash";
 import { useSettings } from "@/src/hooks/useSettings";
 import CreatorTournamentCard from "@/src/components/tournaments/common/CreatorTournamentCard";

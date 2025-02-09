@@ -5,7 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 import { getTournamentByID } from "@/src/queries/tournaments";
 import ParticipantCard from "@/src/components/home/common/ParticipantCard";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
-import { Tournament } from "@/src/types/types";
+import { Tournament } from "@/src/types/tournament";
 
 type Props = {};
 

@@ -1,4 +1,4 @@
-import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/types";
+import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 import { z } from "zod";
 
 const dateSchema = z

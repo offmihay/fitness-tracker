@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/types";
+import { TournamentFormat, TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 import RHFormDropdownInput from "@/src/shared/form/RHFormDropdownInput";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import { ImageResource } from "../../../../shared/controllers/ImagePickerController";
@@ -36,7 +36,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
     setFocus,
     formState: { errors },
   } = useFormContext<TournamentFormData>();
-
+  console.log(watch("images"));
   const updateImages = (images: ImageResource[]) => {
     setValue("images", images);
   };

@@ -5,7 +5,7 @@ import FilterItem from "./FilterItem";
 import { FilterGroup, FilterSingle, FilterRange, Range, FilterHome } from "../types";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TournamentSkillLevel, TournamentSport } from "@/src/types/types";
+import { TournamentSkillLevel, TournamentSport } from "@/src/types/tournament";
 import StickyFooterView from "../../../shared/view/StickyFooterView";
 import CustomKeyboardAwareScrollView from "../../../shared/view/CustomKeyboardAwareScrollView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
@@ -186,7 +186,7 @@ const FilterContent = (props: Props) => {
                 <DatePickerInput
                   label="Date"
                   value={filter.date}
-                  onChange={(value) => handleChangeSingle("date", value)}
+                  onChange={(value) => handleChangeSingle("date", value.toDateString())}
                   selectedDate={filter.date ? new Date(filter.date) : new Date()}
                   minimumDate={new Date()}
                   renderTrigger={({ onPress, value }) => (

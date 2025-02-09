@@ -54,6 +54,7 @@
     "sort": {
       "title": "Sort by",
       "newest": "Newest",
+      "upcoming": "Upcoming",
       "prizePool": "Prize pool",
       "distance": "Distance"
     }
