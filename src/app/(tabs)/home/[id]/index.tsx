@@ -33,7 +33,7 @@ const TournamentDetailsScreen = () => {
   const handleOpenOrganizer = () => {
     router.push(
       {
-        pathname: "./rules",
+        pathname: "./organizer-details",
         params: {},
       },
       { relativeToDirectory: true }

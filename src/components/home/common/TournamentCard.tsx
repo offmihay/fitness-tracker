@@ -61,10 +61,12 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
         <CustomText type="subtitle">{title}</CustomText>
         <View className="flex flex-row gap-4 mt-4">
           <SportLabel type={data?.sportType} />
-          <CustomLabel
-            icon={<FontAwesome6 name="money-check" size={20} color={theme.colors.text} />}
-            value={`${data.entryFee} UAH`}
-          />
+          {entryFee && (
+            <CustomLabel
+              icon={<FontAwesome6 name="money-check" size={20} color="white" />}
+              value={entryFee}
+            />
+          )}
         </View>
         <View className="flex flex-row mt-2">
           <View style={{ width: "65%" }}>

@@ -8,6 +8,7 @@ export default function Layout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="rules" />
       <Stack.Screen name="participants" />
+      <Stack.Screen name="organizer-details" />
     </Stack>
   );
 }

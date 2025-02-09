@@ -4,12 +4,6 @@ import { getTournamentByID, registerTournament } from "@/src/queries/tournaments
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { router, useLocalSearchParams } from "expo-router";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
-import { useQueryClient } from "@tanstack/react-query";
-import CustomText from "@/src/shared/text/CustomText";
-import { Tournament } from "@/src/types/types";
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { useTranslation } from "react-i18next";
-import { FontAwesome6, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import ConfirmTournamentDetails from "@/src/components/register/ConfirmTournamentDetails";
 import SportLabel from "@/src/components/home/common/SportLabel";
 import StickyFooterView from "@/src/shared/view/StickyFooterView";
