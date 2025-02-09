@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, Linking, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { TournamentBase } from "@/src/types/types";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
@@ -11,6 +11,7 @@ import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
 import UserContextMenu, { UserContextOptions } from "./UserContextMenu";
 import ButtonSmall from "@/src/shared/button/ButtonSmall";
+import { useRouter } from "expo-router";
 
 type Props = {
   data: TournamentBase;
@@ -22,6 +23,7 @@ export const UserTournamentCard_HEIGHT = 170;
 
 const UserTournamentCard = (props: Props) => {
   const { data, onCardPress, onLeavePress } = props;
+  const router = useRouter();
   const theme = useCustomTheme();
   const { settings } = useSettings();
 
@@ -31,6 +33,35 @@ const UserTournamentCard = (props: Props) => {
         leaveTournamentConfirmationAlert(onLeavePress);
       }
     }
+  };
+
+  const openMaps = () => {
+    const latitude = data.geoCoordinates.latitude;
+    const longitude = data.geoCoordinates.longitude;
+
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    const appleMapsUrl = `maps://?q=${latitude},${longitude}`;
+
+    const url = Platform.select({
+      ios: appleMapsUrl,
+      android: googleMapsUrl,
+    });
+
+    if (url) {
+      Linking.openURL(url).catch((err) => Alert.alert("Error", "Could not open maps"));
+    }
+  };
+
+  const openParticipants = () => {
+    router.navigate({
+      pathname: `/tournaments/${data.id}/participants`,
+    });
+  };
+
+  const openOrganizer = () => {
+    router.navigate({
+      pathname: `/tournaments/${data.id}/organizer-details`,
+    });
   };
 
   return (
@@ -77,27 +108,30 @@ const UserTournamentCard = (props: Props) => {
               title="Users"
               style={{ backgroundColor: theme.colors.surfaceLight, height: 45 }}
               renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
+              onPress={openParticipants}
             />
           </View>
           <View className="flex flex-row gap-4">
             <TouchableOpacity
               style={[styles.footerBtn, { backgroundColor: theme.colors.primary }]}
               activeOpacity={0.6}
+              onPress={openMaps}
             >
               <FontAwesome6 name="location-dot" size={16} color="white" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.footerBtn, { backgroundColor: theme.colors.primary }]}
               activeOpacity={0.6}
+              onPress={openOrganizer}
             >
               <Feather name="phone" size={16} color="white" />
             </TouchableOpacity>
             <UserContextMenu onSelect={onSelectOption}>
               <TouchableOpacity
-                style={[styles.footerBtn, { backgroundColor: theme.colors.surfaceLight }]}
+                style={[styles.footerBtn, { backgroundColor: theme.colors.primary }]}
                 activeOpacity={0.5}
               >
-                <Entypo name="dots-three-horizontal" size={24} color={theme.colors.text} />
+                <Entypo name="dots-three-horizontal" size={24} color="white" />
               </TouchableOpacity>
             </UserContextMenu>
           </View>

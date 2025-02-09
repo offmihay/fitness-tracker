@@ -18,11 +18,12 @@ import { useSettings } from "@/src/hooks/useSettings";
 import CreatorTournamentCard from "@/src/components/tournaments/common/CreatorTournamentCard";
 import TournamentSkeleton from "@/src/components/tournaments/common/skeleton/TournamentSkeleton";
 import CustomText from "@/src/shared/text/CustomText";
+import CustomSwitch from "@/src/shared/switch/Switch";
 
 type Props = {};
 
 const Tournaments = ({}: Props) => {
-  const { settings } = useSettings();
+  const { settings, updateSettings } = useSettings();
   const { creatorMode } = settings;
   const {
     data: dataC,
@@ -65,13 +66,15 @@ const Tournaments = ({}: Props) => {
 
   const { dataCreated } = useMemo(() => {
     return {
-      dataCreated: _.cloneDeep(dataC).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+      dataCreated:
+        dataC && _.cloneDeep(dataC).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
     };
   }, [dataC]);
 
   const { dataParticipated } = useMemo(() => {
     return {
-      dataParticipated: _.cloneDeep(dataP).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+      dataParticipated:
+        dataP && _.cloneDeep(dataP).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
     };
   }, [dataP]);
 
@@ -150,6 +153,23 @@ const Tournaments = ({}: Props) => {
   return (
     <>
       <LayoutFlashList
+        headerConfig={{
+          nodeHeader: () => (
+            <View className="flex h-full justify-end">
+              <View className="flex items-end justify-center h-[60]">
+                <View className="flex flex-row gap-4 items-center p-4">
+                  {/* <CustomText weight="bold" type="default">
+                    Creator
+                  </CustomText> */}
+                  <CustomSwitch
+                    value={creatorMode}
+                    toggleSwitch={(isOn) => updateSettings({ creatorMode: isOn })}
+                  />
+                </View>
+              </View>
+            </View>
+          ),
+        }}
         name={!creatorMode ? "youParticipate" : "createdTournaments"}
         canGoBack={false}
         flashListProps={{

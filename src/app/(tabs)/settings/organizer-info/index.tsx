@@ -29,7 +29,7 @@ const index = (props: Props) => {
             renderButton={() => (
               <CustomSwitch
                 toggleSwitch={(isOn) => updateSettings({ creatorMode: isOn })}
-                defaultValue={settings.creatorMode}
+                value={settings.creatorMode}
               />
             )}
           />

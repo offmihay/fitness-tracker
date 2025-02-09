@@ -33,7 +33,7 @@ type User = {
   organizerEmail?: string;
   organizerPhone?: string;
   organizerDetails?: string;
-  isVerified: boolean;
+  isVerified?: boolean;
 };
 
 interface AgeRestrictions {
@@ -61,6 +61,7 @@ export interface TournamentBase {
   sportType: TournamentSport;
   status: TournamentStatus;
   title: string;
+  geoCoordinates: GeoCoordinates;
   updatedAt: string;
 }
 
@@ -148,4 +149,8 @@ export const emptyBaseTournament: TournamentBase = {
   status: TournamentStatus.UPCOMING,
   title: "",
   updatedAt: "",
+  geoCoordinates: {
+    latitude: 0,
+    longitude: 0,
+  },
 };

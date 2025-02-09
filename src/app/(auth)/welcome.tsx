@@ -27,27 +27,35 @@ const SignIn = () => {
   const googleSignInMutation = useMutation({
     mutationFn: async () => {
       const oAuthFlow = await googleOAuth.startOAuthFlow();
-      oAuthFlow.setActive &&
-        oAuthFlow.authSessionResult?.type === "success" &&
-        (await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId }));
+      if (oAuthFlow.setActive && oAuthFlow.authSessionResult?.type === "success") {
+        await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId });
+      } else {
+        throw new Error("Failed to sign in with Google");
+      }
     },
     onSuccess: () => {
       router.replace("/home");
     },
-    onError: (err: any) => {},
+    onError: (err: any) => {
+      console.error(err);
+    },
   });
 
   const appleSignInMutation = useMutation({
     mutationFn: async () => {
       const oAuthFlow = await appleOAuth.startOAuthFlow();
-      oAuthFlow.setActive &&
-        oAuthFlow.authSessionResult?.type === "success" &&
-        (await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId }));
+      if (oAuthFlow.setActive && oAuthFlow.authSessionResult?.type === "success") {
+        await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId });
+      } else {
+        throw new Error("Failed to sign in with Apple");
+      }
     },
     onSuccess: () => {
       router.replace("/home");
     },
-    onError: (err: any) => {},
+    onError: (err: any) => {
+      console.error(err);
+    },
   });
 
   const googleSignIn = () => googleSignInMutation.mutate();

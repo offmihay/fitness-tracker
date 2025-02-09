@@ -25,7 +25,7 @@ const TournamentDetailsScreen = ({}: Props) => {
   const handleOpenParticipants = () => {
     router.push(
       {
-        pathname: "./rules",
+        pathname: "./participants",
         params: {},
       },
       { relativeToDirectory: true }
@@ -35,7 +35,7 @@ const TournamentDetailsScreen = ({}: Props) => {
   const handleOpenOrganizer = () => {
     router.push(
       {
-        pathname: "./rules",
+        pathname: "./organizer-details",
         params: {},
       },
       { relativeToDirectory: true }

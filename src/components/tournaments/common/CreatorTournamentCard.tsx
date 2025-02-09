@@ -12,6 +12,7 @@ import { formatDateTime } from "@/src/utils/formatDateTime";
 import ButtonSmall from "@/src/shared/button/ButtonSmall";
 import CreatorContextMenu, { CreatorContextOptions } from "./CreatorContextMenu";
 import { UserTournamentCard_HEIGHT } from "./UserTournamentCard";
+import { router } from "expo-router";
 
 type Props = {
   data: TournamentBase;
@@ -32,6 +33,15 @@ const CreatorTournamentCard = (props: Props) => {
         deleteTournamentConfirmationAlert(onDeletePress);
       }
     }
+  };
+
+  const openParticipants = () => {
+    router.navigate({
+      pathname: `/tournaments/${data.id}/participants`,
+      params: {
+        type: "creator",
+      },
+    });
   };
 
   return (
@@ -95,6 +105,7 @@ const CreatorTournamentCard = (props: Props) => {
                 title="Users"
                 style={{ backgroundColor: theme.colors.surfaceLight }}
                 renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
+                onPress={openParticipants}
               />
             </View>
             <CreatorContextMenu onSelect={onSelectOption}>

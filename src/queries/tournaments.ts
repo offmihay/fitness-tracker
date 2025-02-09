@@ -27,8 +27,7 @@ export const getCreatedTournaments = (enabled: boolean) => {
       const response = await fetchData<any, TournamentBase[]>("/tournaments/created");
       return response.data;
     },
-    initialData: [],
-    enabled: enabled && (!cachedData || cachedData.length === 0),
+    enabled: enabled && !cachedData,
     refetchOnWindowFocus: true,
   });
 };
@@ -45,8 +44,7 @@ export const getParticipatedTournaments = (enabled: boolean) => {
       const response = await fetchData<any, TournamentBase[]>("/tournaments/participated");
       return response.data;
     },
-    initialData: [],
-    enabled: enabled && (!cachedData || cachedData.length === 0),
+    enabled: enabled && !cachedData,
     refetchOnWindowFocus: true,
   });
 };
@@ -134,7 +132,6 @@ export const postTournament = () => {
     },
     onSuccess: (data) => {
       queryClient.setQueryData<Tournament[]>(["tournaments"], (prev) => [...prev!, data]);
-      queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) => [...prev!, data]);
       Toast.show({
         type: "successToast",
         props: { text: t("tournaments.create.successMessage") },
@@ -174,10 +171,6 @@ export const updateTournament = () => {
         props: { text: t("tournaments.edit.successMessage") },
       });
       queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) => {
-        const newData = prev?.filter((t) => t.id !== id);
-        return [data, ...newData!];
-      });
-      queryClient.setQueryData<Tournament[]>(["tournaments"], (prev) => {
         const newData = prev?.filter((t) => t.id !== id);
         return [data, ...newData!];
       });

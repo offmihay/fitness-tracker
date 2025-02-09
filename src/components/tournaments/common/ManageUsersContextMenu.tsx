@@ -11,41 +11,40 @@ import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-export type UserContextOptions = "leave";
+export type ManageUsersContextOptions = "remove";
 
 type Props = {
   children: React.ReactNode;
   isDisabled?: boolean;
-  onSelect?: (option: UserContextOptions) => void;
+  onSelect?: (option: ManageUsersContextOptions) => void;
 };
 
-const UserContextMenu = ({ children, onSelect, isDisabled }: Props) => {
+const ManageUsersContextMenu = ({ children, onSelect, isDisabled }: Props) => {
   const { t } = useTranslation();
-  const theme = useCustomTheme();
   return (
     <ContextMenuRoot dir="ltr">
       {/* @ts-ignore */}
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent defaultChecked>
         <ContextMenuItem
-          key="leave"
+          key="delete"
           destructive
-          onSelect={() => onSelect?.("leave")}
+          onSelect={() => onSelect?.("remove")}
           disabled={isDisabled}
         >
           <ContextMenuItemIcon
             ios={{
-              name: "rectangle.portrait.and.arrow.right", // required
+              name: "trash", // required
               weight: "semibold",
               scale: "default",
             }}
-            androidIconName="cloud.sleet.circle"
+            androidIconName="trash"
           ></ContextMenuItemIcon>
-          <ContextMenuItemTitle>{t("common.leave")}</ContextMenuItemTitle>
+          <ContextMenuItemTitle>{t("common.delete")}</ContextMenuItemTitle>
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenuRoot>
   );
 };
 
-export default UserContextMenu;
+export default ManageUsersContextMenu;

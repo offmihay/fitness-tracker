@@ -36,7 +36,7 @@ export const getSettingsList = () => {
       nodeContentRight: (
         <CustomSwitch
           toggleSwitch={(isOn) => updateSettings({ notificationsEnabled: isOn })}
-          defaultValue={settings.notificationsEnabled}
+          value={settings.notificationsEnabled}
         />
       ),
       noRightChevron: true,
