@@ -26,12 +26,6 @@ const SortDropdown = (props: Props) => {
     onConfirm?.(value);
   };
 
-  useEffect(() => {
-    if (disabled) {
-      onConfirm?.(null);
-    }
-  }, [disabled]);
-
   const dropdownItems = [
     {
       key: SortValueHome.Newest,
@@ -71,8 +65,10 @@ const SortDropdown = (props: Props) => {
         renderIcon={(color, size) => (
           <Ionicons name="chevron-down-outline" size={size} color={color} style={{ bottom: -1 }} />
         )}
-        style={{ backgroundColor: value ? theme.colors.primary : theme.colors.surface }}
-        textColor={value ? "white" : theme.colors.text}
+        style={{
+          backgroundColor: !disabled && value ? theme.colors.primary : theme.colors.surface,
+        }}
+        textColor={!disabled ? "white" : theme.colors.text}
       />
     </CheckboxDropdownMenu>
   );

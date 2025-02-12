@@ -130,6 +130,7 @@
     "no": "No",
     "delete": "Delete",
     "deactivate": "Deactivate",
+    "activate": "Activate",
     "edit": "Edit",
     "back": "Back",
     "done": "Done",
@@ -178,6 +179,13 @@
       "SINGLES": "Singles",
       "DOUBLES": "Doubles",
       "SQUAD": "Squad"
+    },
+    "status": {
+      "title": "Status",
+      "UPCOMING": "Upcoming",
+      "ONGOING": "Ongoing",
+      "FINISHED": "Finished",
+      "DEACTIVATED": "Deactivated"
     }
   },
 
@@ -199,7 +207,7 @@
   "title": {
     "home": "Home",
     "tournaments": "Tournaments",
-    "createdTournaments": "Created",
+    "createdTournaments": "My tournaments",
     "youParticipate": "You participate",
     "settings": "Settings",
     "createTournament": "Create Tournament",

@@ -30,8 +30,8 @@ const HomePage = ({}: HomePageProps) => {
   const transformSortQuery = (sortBy: SortValueHome | null) => {
     let sortQuery: Pick<TournamentQuery, "sortBy" | "sortOrder"> | {};
     switch (sortBy) {
-      case SortValueHome.Newest:
-        sortQuery = { sortBy: "dateStart", sortOrder: "desc" };
+      case SortValueHome.Upcoming:
+        sortQuery = { sortBy: "dateStart", sortOrder: "asc" };
         break;
       case SortValueHome.PrizePool:
         sortQuery = { sortBy: "prizePool", sortOrder: "desc" };

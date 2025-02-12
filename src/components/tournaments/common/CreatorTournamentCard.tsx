@@ -1,6 +1,6 @@
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Tournament, TournamentBase } from "@/src/types/tournament";
+import { Tournament, TournamentBase, TournamentStatus } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import FastImage from "@d11/react-native-fast-image";
@@ -13,6 +13,8 @@ import ButtonSmall from "@/src/shared/button/ButtonSmall";
 import CreatorContextMenu, { CreatorContextOptions } from "./CreatorContextMenu";
 import { UserTournamentCard_HEIGHT } from "./UserTournamentCard";
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
+import { getStatusColor } from "@/src/theme/colors";
 
 type Props = {
   data: TournamentBase;
@@ -20,18 +22,22 @@ type Props = {
   onEditPress?: () => void;
   onAdditionalOptionsPress?: () => void;
   onDeletePress?: () => void;
+  changeStatusPress?: (isActive: boolean) => void;
 };
 
 const CreatorTournamentCard = (props: Props) => {
-  const { data, onCardPress, onEditPress, onDeletePress } = props;
+  const { data, onCardPress, onEditPress, onDeletePress, changeStatusPress } = props;
   const theme = useCustomTheme();
   const { settings } = useSettings();
+  const { t } = useTranslation();
 
   const onSelectOption = (option: CreatorContextOptions) => {
     if (option === "delete") {
-      if (onDeletePress) {
-        deleteTournamentConfirmationAlert(onDeletePress);
-      }
+      onDeletePress && deleteTournamentConfirmationAlert(onDeletePress);
+    } else if (option === "deactivate") {
+      changeStatusPress && deactivateTournamentConfirmationAlert(() => changeStatusPress(false));
+    } else if (option === "activate") {
+      changeStatusPress && changeStatusPress(true);
     }
   };
 
@@ -49,8 +55,16 @@ const CreatorTournamentCard = (props: Props) => {
       <View style={styles.content}>
         <View style={styles.contentHeader}>
           <View className="flex flex-row gap-2 items-center">
-            <FontAwesome name="circle" size={10} color={theme.colors.success} />
-            <CustomText type="small">Ongoing</CustomText>
+            <FontAwesome
+              name="circle"
+              size={10}
+              color={getStatusColor(data.status, data.isActive)}
+            />
+            <CustomText type="small">
+              {data.isActive
+                ? t(`tournament.status.${data.status}`)
+                : t("tournament.status.DEACTIVATED")}
+            </CustomText>
           </View>
           <View className="flex flex-row items-center">
             <CustomText type="small">
@@ -108,7 +122,7 @@ const CreatorTournamentCard = (props: Props) => {
                 onPress={openParticipants}
               />
             </View>
-            <CreatorContextMenu onSelect={onSelectOption}>
+            <CreatorContextMenu onSelect={onSelectOption} isActive={data.isActive}>
               <TouchableOpacity
                 style={[styles.footerBtn, { backgroundColor: theme.colors.surfaceLight }]}
                 activeOpacity={0.5}
@@ -188,10 +202,24 @@ const styles = StyleSheet.create({
 
 export default CreatorTournamentCard;
 
-export const deleteTournamentConfirmationAlert = (onPress: () => void) => {
+const deleteTournamentConfirmationAlert = (onPress: () => void) => {
   Alert.alert("Are you sure you want to delete this tournament?", "", [
     {
       text: "Delete",
+      onPress: onPress,
+      style: "destructive",
+    },
+    {
+      text: "Cancel",
+      style: "cancel",
+    },
+  ]);
+};
+
+const deactivateTournamentConfirmationAlert = (onPress: () => void) => {
+  Alert.alert("Are you sure you want to deactivate this tournament?", "", [
+    {
+      text: "Deactivate",
       onPress: onPress,
       style: "destructive",
     },

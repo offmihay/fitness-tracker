@@ -10,6 +10,7 @@ import {
   getCreatedTournaments,
   getParticipatedTournaments,
   leaveTournament,
+  updateStatus,
 } from "@/src/queries/tournaments";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
 import { emptyBaseTournament, TournamentBase } from "@/src/types/tournament";
@@ -45,6 +46,7 @@ const Tournaments = ({}: Props) => {
   };
   const deleteTournamentMutation = deleteTournament();
   const leaveTournamentMutation = leaveTournament();
+  const updateStatusMutation = updateStatus();
 
   const isFetching =
     isCreatedFetching ||
@@ -106,6 +108,10 @@ const Tournaments = ({}: Props) => {
     leaveTournamentMutation.mutate(id);
   };
 
+  const handleChangeStatus = (id: string, isActive: boolean) => {
+    updateStatusMutation.mutate({ tournamentId: id, isActive });
+  };
+
   const renderCard = useCallback(
     ({ item }: { item: TournamentBase }) => (
       <View style={{ paddingVertical: 10 }}>
@@ -121,6 +127,7 @@ const Tournaments = ({}: Props) => {
             onCardPress={() => handleOpenDetails(item.id)}
             onEditPress={() => handleEdit(item.id)}
             onDeletePress={() => handleDelete(item.id)}
+            changeStatusPress={(isActive) => handleChangeStatus(item.id, isActive)}
           />
         )}
       </View>

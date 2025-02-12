@@ -62,10 +62,9 @@ export const registerTournament = () => {
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["tournament", data.id], data);
-      queryClient.setQueryData<Tournament[]>(["participated-tournaments"], (prev) => [
-        ...prev!,
-        data,
-      ]);
+      queryClient.setQueryData<Tournament[]>(["participated-tournaments"], (prev) =>
+        prev ? [...prev, data] : [data]
+      );
     },
     onError: (error) => {
       Toast.show({
@@ -98,8 +97,9 @@ export const leaveTournament = () => {
         props: { text: "U leaved this tournament" },
       });
       queryClient.setQueryData(["tournament", data.id], data);
-      queryClient.setQueryData<Tournament[]>(["participated-tournaments"], (prev) =>
-        prev?.filter((t) => t.id !== data.id)
+      queryClient.setQueryData<Tournament[]>(
+        ["participated-tournaments"],
+        (prev) => prev && prev.filter((t) => t.id !== data.id)
       );
     },
   });
@@ -132,7 +132,9 @@ export const postTournament = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) => [...prev!, data]);
+      queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) =>
+        prev ? [...prev, data] : [data]
+      );
       Toast.show({
         type: "successToast",
         props: { text: t("tournaments.create.successMessage") },
@@ -172,8 +174,8 @@ export const updateTournament = () => {
         props: { text: t("tournaments.edit.successMessage") },
       });
       queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) => {
-        const newData = prev?.filter((t) => t.id !== id);
-        return [data, ...newData!];
+        const newData = prev && prev.filter((t) => t.id !== id);
+        return newData ? [data, ...newData] : prev;
       });
       queryClient.setQueryData(["tournament", data.id], data);
     },
@@ -199,8 +201,9 @@ export const deleteTournament = () => {
         type: "successToast",
         props: { text: data.message },
       });
-      queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) =>
-        prev?.filter((t) => t.id !== id)
+      queryClient.setQueryData<Tournament[]>(
+        ["created-tournaments"],
+        (prev) => prev && prev.filter((t) => t.id !== id)
       );
     },
     onError: (error) => {
@@ -225,7 +228,7 @@ export const removeUser = () => {
       participantId: string;
     }) => {
       const response = await fetchData<TournamentFormData, Tournament>(
-        `/tournaments/${tournamentId}`,
+        `/tournaments/${tournamentId}/user`,
         {
           queryParams: {
             participantId,
@@ -241,6 +244,43 @@ export const removeUser = () => {
         props: { text: "User was succesfully deleted." },
       });
       queryClient.setQueryData(["tournament", data.id], data);
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "errorToast",
+        props: { text: error.message },
+      });
+    },
+  });
+};
+
+export const updateStatus = () => {
+  const { fetchData } = useApi();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ tournamentId, isActive }: { tournamentId: string; isActive: boolean }) => {
+      const response = await fetchData<TournamentFormData, Tournament>(
+        `/tournaments/${tournamentId}/status`,
+        {
+          queryParams: {
+            isActive: isActive,
+          },
+          method: "PATCH",
+        }
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      Toast.show({
+        type: "successToast",
+        props: { text: "Status was successfully updated" },
+      });
+      queryClient.setQueryData(["tournament", data.id], data);
+      queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) => {
+        const newData = prev && prev.filter((t) => t.id !== data.id);
+        return newData ? [data, ...newData] : prev;
+      });
     },
     onError: (error) => {
       Toast.show({

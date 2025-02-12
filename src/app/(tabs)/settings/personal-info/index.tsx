@@ -11,15 +11,22 @@ import PersonalInfoList from "@/src/components/settings/personal-info/PersonalIn
 import FormBirthday from "@/src/components/settings/personal-info/forms/FormBirthday";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import { useQueryClient } from "@tanstack/react-query";
 
 type PersonalInfoProps = {};
 
 const PersonalInfo = ({}: PersonalInfoProps) => {
+  const queryClient = useQueryClient();
   const { signOut } = useAuth();
   const { t } = useTranslation();
   const { user } = useUser();
   const theme = useCustomTheme();
   const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut();
+    queryClient.clear();
+  };
 
   return (
     <LayoutScrollView name="personalInfo" alwaysBounceVertical={false}>
@@ -63,7 +70,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
         </View>
         <View style={{ paddingHorizontal: 10, paddingBottom: 20 }}>
           <ButtonDefault
-            onPress={() => signOut()}
+            onPress={handleSignOut}
             title={t("settings.personalInfo.signOut")}
             nodeLeft={(color) => <Octicons name="sign-out" size={24} color={color} />}
             type="white"

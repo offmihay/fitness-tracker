@@ -9,7 +9,7 @@ interface RequestOptions<T> {
   method?: HttpMethod;
   queryParams?: Record<
     string,
-    string | number | Date | Array<string | number> | Record<string, string | number>
+    string | number | Date | boolean | Array<string | number> | Record<string, string | number>
   >;
   body?: T;
   headers?: Record<string, string>;
@@ -39,7 +39,7 @@ const useApi = () => {
           Object.entries(value).forEach(([subKey, subValue]) => {
             url.searchParams.append(`${key}[${subKey}]`, subValue.toString());
           });
-        } else if (value) {
+        } else if (value || typeof value === "boolean") {
           url.searchParams.append(key, value.toString());
         }
       });

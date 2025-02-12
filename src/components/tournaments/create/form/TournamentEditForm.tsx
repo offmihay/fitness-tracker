@@ -36,7 +36,6 @@ export const TournamentEditForm = ({ type, id }: Props) => {
     setFocus,
     formState: { errors },
   } = useFormContext<TournamentFormData>();
-  console.log(watch("images"));
   const updateImages = (images: ImageResource[]) => {
     setValue("images", images);
   };

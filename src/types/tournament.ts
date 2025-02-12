@@ -14,7 +14,6 @@ export enum TournamentStatus {
   UPCOMING = "UPCOMING",
   ONGOING = "ONGOING",
   FINISHED = "FINISHED",
-  DEACTIVATED = "DEACTIVATED",
 }
 
 export enum TournamentFormat {
@@ -60,6 +59,7 @@ export interface TournamentBase {
   prizePool: number;
   sportType: TournamentSport;
   status: TournamentStatus;
+  isActive: boolean;
   title: string;
   geoCoordinates: GeoCoordinates;
   updatedAt: string;
@@ -87,6 +87,7 @@ export interface Tournament {
   sportType: TournamentSport;
   status: TournamentStatus;
   title: string;
+  isActive: boolean;
   updatedAt: string;
 }
 
@@ -131,6 +132,7 @@ export const emptyTournament: Tournament = {
   status: TournamentStatus.UPCOMING,
   title: "",
   updatedAt: "",
+  isActive: true,
 };
 
 export const emptyBaseTournament: TournamentBase = {
@@ -153,4 +155,5 @@ export const emptyBaseTournament: TournamentBase = {
     latitude: 0,
     longitude: 0,
   },
+  isActive: true,
 };
