@@ -55,7 +55,7 @@ export interface TournamentBase {
   images: Image[];
   location: string;
   maxParticipants: number;
-  participants: string[];
+  participantsCount: number;
   prizePool: number;
   sportType: TournamentSport;
   status: TournamentStatus;
@@ -63,6 +63,8 @@ export interface TournamentBase {
   title: string;
   geoCoordinates: GeoCoordinates;
   updatedAt: string;
+  role: "participant" | "organizer" | null;
+  joinedCreatedAt: string;
 }
 
 export interface Tournament {
@@ -89,6 +91,9 @@ export interface Tournament {
   title: string;
   isActive: boolean;
   updatedAt: string;
+  participantsCount: number;
+  role: "participant" | "organizer" | null;
+  joinedCreatedAt: string;
 }
 
 export type Image = {
@@ -133,11 +138,14 @@ export const emptyTournament: Tournament = {
   title: "",
   updatedAt: "",
   isActive: true,
+  participantsCount: 0,
+  role: null,
+  joinedCreatedAt: "",
 };
 
 export const emptyBaseTournament: TournamentBase = {
   createdAt: "",
-  participants: [],
+  participantsCount: 0,
   dateEnd: "",
   dateStart: "",
   description: "",
@@ -156,4 +164,6 @@ export const emptyBaseTournament: TournamentBase = {
     longitude: 0,
   },
   isActive: true,
+  role: null,
+  joinedCreatedAt: "",
 };

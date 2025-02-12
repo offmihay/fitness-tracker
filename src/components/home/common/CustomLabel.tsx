@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
@@ -9,15 +9,16 @@ type Props = {
   icon: React.ReactNode;
   color?: string;
   textColor?: string;
+  style?: ViewStyle;
 };
 
 const CustomLabel = (props: Props) => {
-  const { value, icon, color, textColor } = props;
+  const { value, icon, color, textColor, style } = props;
   const theme = useCustomTheme();
 
   return (
     <View className="flex flex-row">
-      <View style={[styles.wrapper, { backgroundColor: color || theme.colors.primary }]}>
+      <View style={[styles.wrapper, { backgroundColor: color || theme.colors.primary }, style]}>
         {icon}
         <CustomText type="predefault" numberOfLines={1} color={textColor || "white"}>
           {value}
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    gap: 4,
+    gap: 5,
   },
 });
 

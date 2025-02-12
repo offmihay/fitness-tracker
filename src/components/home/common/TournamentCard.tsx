@@ -25,10 +25,9 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
   const { settings } = useSettings();
   const [isLoadedImg, setIsLoadedImg] = useState(false);
 
-  const { title, location, dateStart, dateEnd, participants, maxParticipants, images } = data;
+  const { title, location, dateStart, dateEnd, participantsCount, maxParticipants, images } = data;
 
-  const participantsText =
-    participants && maxParticipants ? `${participants.length}/${maxParticipants}` : "-";
+  const participantsText = `${participantsCount}/${maxParticipants}`;
 
   const prizePool = data.prizePool ? `${data.prizePool.toString()} UAH` : "-";
   const entryFee = data.entryFee ? `${data.entryFee.toString()} UAH` : "-";

@@ -14,7 +14,9 @@ import CreatorContextMenu, { CreatorContextOptions } from "./CreatorContextMenu"
 import { UserTournamentCard_HEIGHT } from "./UserTournamentCard";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { getStatusColor } from "@/src/theme/colors";
+import { formatDateRange } from "@/src/utils/formatDateRange";
+import CreatorFinishedContextMenu from "./CreatorFinishedContextMenu";
+import StatusLabel from "../../home/common/StatusLabel";
 
 type Props = {
   data: TournamentBase;
@@ -33,11 +35,22 @@ const CreatorTournamentCard = (props: Props) => {
 
   const onSelectOption = (option: CreatorContextOptions) => {
     if (option === "delete") {
-      onDeletePress && deleteTournamentConfirmationAlert(onDeletePress);
+      onDeletePress && deleteConfirmationAlert(onDeletePress);
     } else if (option === "deactivate") {
-      changeStatusPress && deactivateTournamentConfirmationAlert(() => changeStatusPress(false));
+      changeStatusPress && deactivateConfirmationAlert(() => changeStatusPress(false));
     } else if (option === "activate") {
-      changeStatusPress && changeStatusPress(true);
+      if (data.status === TournamentStatus.FINISHED) {
+        activateFinishedAlert(() => {
+          router.navigate({
+            pathname: `/tournaments/edit`,
+            params: {
+              id: data.id,
+            },
+          });
+        });
+      } else {
+        changeStatusPress && changeStatusPress(true);
+      }
     }
   };
 
@@ -55,20 +68,11 @@ const CreatorTournamentCard = (props: Props) => {
       <View style={styles.content}>
         <View style={styles.contentHeader}>
           <View className="flex flex-row gap-2 items-center">
-            <FontAwesome
-              name="circle"
-              size={10}
-              color={getStatusColor(data.status, data.isActive)}
-            />
-            <CustomText type="small">
-              {data.isActive
-                ? t(`tournament.status.${data.status}`)
-                : t("tournament.status.DEACTIVATED")}
-            </CustomText>
+            <StatusLabel type={data.isActive ? data.status : "DEACTIVATED"} />
           </View>
           <View className="flex flex-row items-center">
             <CustomText type="small">
-              {formatDateTime(data.createdAt, settings.language)}
+              {formatDateTime(data.joinedCreatedAt, settings.language)}
             </CustomText>
           </View>
         </View>
@@ -89,47 +93,57 @@ const CreatorTournamentCard = (props: Props) => {
               />
             </View>
             <View className="flex flex-1 justify-center">
-              <CustomText numberOfLines={3} type="default">
+              <CustomText numberOfLines={2} type="predefault" weight="bold">
                 {data.title}
               </CustomText>
+              <View className="flex flex-1 justify-end">
+                <CustomText type="small">
+                  {formatDateRange(data.dateStart, data.dateEnd, settings.language)}
+                </CustomText>
+              </View>
             </View>
           </View>
         </TouchableOpacity>
         <View style={styles.footer}>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              flex: 1,
-              gap: 8,
-              justifyContent: "space-between",
-            }}
-          >
-            <View className="flex-1">
-              <ButtonSmall
-                onPress={onEditPress}
-                title="Edit"
-                style={{ backgroundColor: theme.colors.primary, width: "100%" }}
-                renderIcon={(color) => <Feather name="edit-3" size={20} color="white" />}
-                textColor="white"
-              />
-            </View>
-            <View>
+          <View className="w-1/2 pr-3">
+            <ButtonSmall
+              onPress={onEditPress}
+              title="Edit"
+              style={{ backgroundColor: theme.colors.primary }}
+              renderIcon={(color) => <Feather name="edit-3" size={20} color="white" />}
+              textColor="white"
+            />
+          </View>
+
+          <View className="w-1/2">
+            <View className="flex flex-row gap-2">
               <ButtonSmall
                 title="Users"
                 style={{ backgroundColor: theme.colors.surfaceLight }}
                 renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
                 onPress={openParticipants}
               />
+
+              {data.status === TournamentStatus.FINISHED ? (
+                <CreatorFinishedContextMenu onSelect={onSelectOption}>
+                  <TouchableOpacity
+                    style={[styles.footerBtn, { backgroundColor: theme.colors.surfaceLight }]}
+                    activeOpacity={0.5}
+                  >
+                    <Entypo name="dots-three-horizontal" size={24} color={theme.colors.text} />
+                  </TouchableOpacity>
+                </CreatorFinishedContextMenu>
+              ) : (
+                <CreatorContextMenu onSelect={onSelectOption} isActive={data.isActive}>
+                  <TouchableOpacity
+                    style={[styles.footerBtn, { backgroundColor: theme.colors.surfaceLight }]}
+                    activeOpacity={0.5}
+                  >
+                    <Entypo name="dots-three-horizontal" size={24} color={theme.colors.text} />
+                  </TouchableOpacity>
+                </CreatorContextMenu>
+              )}
             </View>
-            <CreatorContextMenu onSelect={onSelectOption} isActive={data.isActive}>
-              <TouchableOpacity
-                style={[styles.footerBtn, { backgroundColor: theme.colors.surfaceLight }]}
-                activeOpacity={0.5}
-              >
-                <Entypo name="dots-three-horizontal" size={24} color={theme.colors.text} />
-              </TouchableOpacity>
-            </CreatorContextMenu>
           </View>
         </View>
       </View>
@@ -157,7 +171,7 @@ const styles = StyleSheet.create({
   },
 
   contentHeader: {
-    height: 35,
+    height: 45,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -180,14 +194,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 10,
   },
-  footerText: {
-    paddingVertical: 2,
-    borderRadius: 5,
-    overflow: "hidden",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
 
   footerBtn: {
     borderRadius: 10,
@@ -202,7 +208,7 @@ const styles = StyleSheet.create({
 
 export default CreatorTournamentCard;
 
-const deleteTournamentConfirmationAlert = (onPress: () => void) => {
+const deleteConfirmationAlert = (onPress: () => void) => {
   Alert.alert("Are you sure you want to delete this tournament?", "", [
     {
       text: "Delete",
@@ -216,7 +222,7 @@ const deleteTournamentConfirmationAlert = (onPress: () => void) => {
   ]);
 };
 
-const deactivateTournamentConfirmationAlert = (onPress: () => void) => {
+const deactivateConfirmationAlert = (onPress: () => void) => {
   Alert.alert("Are you sure you want to deactivate this tournament?", "", [
     {
       text: "Deactivate",
@@ -228,4 +234,21 @@ const deactivateTournamentConfirmationAlert = (onPress: () => void) => {
       style: "cancel",
     },
   ]);
+};
+
+const activateFinishedAlert = (onPress: () => void) => {
+  Alert.alert(
+    "Your tournament is finished and it will remain unaccessible. To enable it, go to Edit Page and change date of the tournament.",
+    "",
+    [
+      {
+        text: "Go to edit page",
+        onPress: onPress,
+      },
+      {
+        text: "Ok",
+        style: "default",
+      },
+    ]
+  );
 };

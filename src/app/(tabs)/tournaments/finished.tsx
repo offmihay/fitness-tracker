@@ -27,8 +27,9 @@ type Props = {};
 
 type Filter = "participant" | "organizer" | "all";
 
-const Tournaments = ({}: Props) => {
-  const { data: dataFetch, refetch, isFetching } = getMyTournaments();
+const FinishedTournaments = ({}: Props) => {
+  const { settings, updateSettings } = useSettings();
+  const { data: dataFetch, refetch, isFetching } = getMyTournaments(true);
   const theme = useCustomTheme();
   const deleteTournamentMutation = deleteTournament();
   const leaveTournamentMutation = leaveTournament();
@@ -59,41 +60,23 @@ const Tournaments = ({}: Props) => {
   }, [dataFetch, filter]);
 
   const handleOpenDetails = (id: string) => {
-    router.push(
-      {
-        pathname: "./[id]",
-        params: { id },
-      },
-      { relativeToDirectory: true }
-    );
+    router.push({
+      pathname: "./[id]",
+      params: { id },
+    });
   };
 
   const handleEdit = (id: string) => {
-    router.push(
-      {
-        pathname: "./edit",
-        params: { id },
-      },
-      { relativeToDirectory: true }
-    );
+    router.push({
+      pathname: "./edit",
+      params: { id },
+    });
   };
 
   const handleCreate = () => {
-    router.push(
-      {
-        pathname: "./create",
-      },
-      { relativeToDirectory: true }
-    );
-  };
-
-  const handleOpenFinished = () => {
-    router.push(
-      {
-        pathname: "./finished",
-      },
-      { relativeToDirectory: true }
-    );
+    router.push({
+      pathname: "./create",
+    });
   };
 
   const handleDelete = (id: string) => {
@@ -108,7 +91,9 @@ const Tournaments = ({}: Props) => {
     updateStatusMutation.mutate(
       { tournamentId: id, isActive },
       {
-        onSuccess: () => handleOpenFinished(),
+        onSuccess: () => {
+          router.back();
+        },
       }
     );
   };
@@ -153,7 +138,7 @@ const Tournaments = ({}: Props) => {
         </View>
       </View>
     ),
-    [handleOpenDetails]
+    [handleOpenDetails, settings.language]
   );
 
   return (
@@ -170,25 +155,12 @@ const Tournaments = ({}: Props) => {
                     <Feather name="filter" size={22} color={theme.colors.text} />
                   </TouchableOpacity>
                 </FilterDropdownMenu>
-
-                <TouchableOpacity
-                  style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
-                  onPress={handleOpenFinished}
-                >
-                  <MaterialIcons name="event-available" size={26} color={theme.colors.text} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
-                  onPress={handleCreate}
-                >
-                  <Feather name="file-plus" size={24} color={theme.colors.text} />
-                </TouchableOpacity>
               </View>
             </View>
           ),
         }}
-        name="tournaments"
-        canGoBack={false}
+        name="finished"
+        canGoBack={true}
         flashListProps={{
           scrollEnabled: !isFetching,
           data: !isFetching ? data : skeletonData,
@@ -227,4 +199,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Tournaments;
+export default FinishedTournaments;

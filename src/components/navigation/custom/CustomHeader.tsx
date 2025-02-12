@@ -8,9 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
 import { Feather } from "@expo/vector-icons";
-import { routeNames } from "../tabBar/TabBarButton";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
-import CustomText from "@/src/shared/text/CustomText";
 
 interface MyCustomHeaderProps {
   scrollY: SharedValue<number>;

@@ -60,6 +60,12 @@
     }
   },
   "tournaments": {
+    "filter": {
+      "title": "Filter",
+      "organizer": "Only created",
+      "participant": "Only participating",
+      "all": "All"
+    },
     "create": {
       "createButton": "Create",
       "successMessage": "Tournament created!",
@@ -207,8 +213,7 @@
   "title": {
     "home": "Home",
     "tournaments": "Tournaments",
-    "createdTournaments": "My tournaments",
-    "youParticipate": "You participate",
+    "finished": "Archive",
     "settings": "Settings",
     "createTournament": "Create Tournament",
     "editTournament": "Edit Tournament",

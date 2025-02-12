@@ -42,7 +42,7 @@ const ChangeNameScreen = () => {
   } = methods;
 
   const onSubmit = (data: ChangeUserFormData) => {
-    const formData = clerkTransformData(data);
+    const formData = clerkTransformData(data, user?.unsafeMetadata || null);
     formDataMutation.mutate(formData, {
       onSuccess: () => {
         Toast.show({

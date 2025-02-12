@@ -7,7 +7,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -21,8 +21,8 @@ import CustomHeader from "./CustomHeader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT, modalRoutes } from "../options";
 import { usePathname } from "expo-router";
-import Toast from "react-native-toast-message";
 import toastConfig from "@/src/shared/toast/toastConfig";
+import Toast from "react-native-toast-message";
 
 type renderContent = {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -64,9 +64,8 @@ const CustomLayout = (props: LayoutProps) => {
   const theme = useCustomTheme();
 
   const pathName = usePathname();
-
-  const modalOffset = modalRoutes.includes(pathName) ? -50 : 0;
-  const toastTopOffset = Platform.OS === "android" ? 20 : 65 + modalOffset;
+  const isModal = modalRoutes.includes(pathName);
+  const toastTopOffset = Platform.OS === "android" ? 20 : 15;
 
   const maxHeight = headerConfig?.maxHeight || HEADER_MAX_HEIGHT;
   const minHeight = headerConfig?.minHeight || HEADER_MIN_HEIGHT;
@@ -132,7 +131,7 @@ const CustomLayout = (props: LayoutProps) => {
           })}
         </View>
       </View>
-      <Toast config={toastConfig(theme)} topOffset={toastTopOffset} />
+      {isModal && <Toast config={toastConfig(theme)} topOffset={toastTopOffset} />}
     </>
   );
 };

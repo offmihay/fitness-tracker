@@ -5,7 +5,15 @@ import Animated from "react-native-reanimated";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 type Props = {
-  type?: "small" | "predefault" | "default" | "upperdefault" | "title" | "subtitle" | "link";
+  type?:
+    | "smaller"
+    | "small"
+    | "predefault"
+    | "default"
+    | "upperdefault"
+    | "title"
+    | "subtitle"
+    | "link";
   styling?: "link";
   weight?: "normal" | "semibold" | "bold" | "bolder";
   color?: string;
@@ -30,6 +38,7 @@ const CustomText = ({
     <Animated.Text
       style={[
         { color: colorText },
+        type === "smaller" && styles.smaller,
         type === "small" && styles.small,
         type === "predefault" && styles.predefault,
         type === "default" && styles.default,
@@ -53,6 +62,10 @@ const CustomText = ({
 };
 
 const styles = StyleSheet.create({
+  smaller: {
+    fontSize: 10,
+    lineHeight: 12,
+  },
   small: {
     fontSize: 12,
     lineHeight: 16,

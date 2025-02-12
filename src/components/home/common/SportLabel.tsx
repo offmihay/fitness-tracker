@@ -51,19 +51,4 @@ const SportLabel = (props: Props) => {
       );
   }
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    maxHeight: 30,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 4,
-  },
-});
-
 export default SportLabel;

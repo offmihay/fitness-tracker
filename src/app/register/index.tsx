@@ -48,7 +48,7 @@ const RegistrationFormScreen = (props: Props) => {
   } = methods;
 
   const onSubmit = (data: UserRegistrationFormData) => {
-    const formData = clerkTransformData(data, user?.unsafeMetadata);
+    const formData = clerkTransformData(data, user?.unsafeMetadata || null);
     formDataMutation.mutate(formData, {
       onSuccess: () => {
         Keyboard.dismiss();

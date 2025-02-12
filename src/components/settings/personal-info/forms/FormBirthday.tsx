@@ -36,7 +36,7 @@ const FormBirthday = (props: Props) => {
   const { control, handleSubmit, setError } = methods;
 
   const onSubmit = (data: ChangeBirthdayFormData) => {
-    const formData = clerkTransformData(data, user?.unsafeMetadata);
+    const formData = clerkTransformData(data, user?.unsafeMetadata || null);
     formDataMutation.mutate(formData, {
       onSuccess: () => {
         Toast.show({

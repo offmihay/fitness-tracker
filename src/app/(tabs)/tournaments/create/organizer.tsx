@@ -56,7 +56,7 @@ const OrganizerForm = () => {
   } = methods;
 
   const onSubmit = (data: OrganizerFormData) => {
-    const formData = clerkTransformData(data, user?.unsafeMetadata);
+    const formData = clerkTransformData(data, user?.unsafeMetadata || null);
     formDataMutation.mutate(formData, {
       onSuccess: () => {
         Toast.show({

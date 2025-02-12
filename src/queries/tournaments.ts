@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
-import { Tournament, TournamentBase } from "../types/tournament";
+import { Tournament, TournamentBase, TournamentStatus } from "../types/tournament";
 import { TournamentFormData } from "../components/tournaments/create/form/schema";
 import Toast from "react-native-toast-message";
 import useApi from "../api/useApi";
@@ -18,35 +18,23 @@ export const getTournaments = (queryParams: Partial<TournamentQuery>) => {
   });
 };
 
-export const getCreatedTournaments = (enabled: boolean) => {
+export const getMyTournaments = (isFinished: boolean = false) => {
   const { fetchData } = useApi();
   const queryClient = useQueryClient();
-  const cachedData = queryClient.getQueryData<TournamentBase[]>(["created-tournaments"]);
-  return useQuery({
-    queryKey: ["created-tournaments"],
-    queryFn: async () => {
-      const response = await fetchData<any, TournamentBase[]>("/tournaments/created");
-      return response.data;
-    },
-    enabled: enabled && !cachedData,
-    refetchOnWindowFocus: true,
-  });
-};
-
-export const getParticipatedTournaments = (enabled: boolean) => {
-  const { fetchData } = useApi();
-
-  const queryClient = useQueryClient();
-  const cachedData = queryClient.getQueryData<TournamentBase[]>(["participated-tournaments"]);
+  const cache = queryClient.getQueryData<TournamentBase[]>(["my-tournaments", isFinished]);
 
   return useQuery({
-    queryKey: ["participated-tournaments"],
+    queryKey: ["my-tournaments", isFinished],
     queryFn: async () => {
-      const response = await fetchData<any, TournamentBase[]>("/tournaments/participated");
+      const response = await fetchData<any, TournamentBase[]>("/tournaments/my", {
+        queryParams: {
+          finished: isFinished,
+        },
+      });
       return response.data;
     },
-    enabled: enabled && !cachedData,
     refetchOnWindowFocus: true,
+    enabled: !cache,
   });
 };
 
@@ -62,9 +50,17 @@ export const registerTournament = () => {
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["tournament", data.id], data);
-      queryClient.setQueryData<Tournament[]>(["participated-tournaments"], (prev) =>
-        prev ? [...prev, data] : [data]
-      );
+      queryClient.setQueryData<Tournament[]>(["my-tournaments", false], (prev) => {
+        if (prev) {
+          const index = prev.findIndex((t) => t.id === data.id);
+          if (index === -1) {
+            return [data, ...prev];
+          } else {
+            return [...prev.slice(0, index), data, ...prev.slice(index + 1)];
+          }
+        }
+        return [data];
+      });
     },
     onError: (error) => {
       Toast.show({
@@ -97,8 +93,8 @@ export const leaveTournament = () => {
         props: { text: "U leaved this tournament" },
       });
       queryClient.setQueryData(["tournament", data.id], data);
-      queryClient.setQueryData<Tournament[]>(
-        ["participated-tournaments"],
+      queryClient.setQueriesData<Tournament[]>(
+        { queryKey: ["my-tournaments"] },
         (prev) => prev && prev.filter((t) => t.id !== data.id)
       );
     },
@@ -132,8 +128,8 @@ export const postTournament = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) =>
-        prev ? [...prev, data] : [data]
+      queryClient.setQueryData<Tournament[]>(["my-tournaments", false], (prev) =>
+        prev ? [data, ...prev] : [data]
       );
       Toast.show({
         type: "successToast",
@@ -173,11 +169,25 @@ export const updateTournament = () => {
         type: "successToast",
         props: { text: t("tournaments.edit.successMessage") },
       });
-      queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) => {
-        const newData = prev && prev.filter((t) => t.id !== id);
-        return newData ? [data, ...newData] : prev;
-      });
+      const isFinished = !data.isActive || data.status === TournamentStatus.FINISHED;
       queryClient.setQueryData(["tournament", data.id], data);
+      queryClient.setQueryData<Tournament[]>(["my-tournaments", isFinished], (prev) => {
+        if (prev) {
+          const index = prev.findIndex((t) => t.id === data.id);
+          if (index === -1) {
+            return [data, ...prev];
+          } else {
+            return [...prev.slice(0, index), data, ...prev.slice(index + 1)];
+          }
+        }
+        return [data];
+      });
+      queryClient.setQueryData<Tournament[]>(["my-tournaments", !isFinished], (prev) => {
+        if (prev) {
+          return prev.filter((t) => t.id !== data.id);
+        }
+        return [];
+      });
     },
   });
 };
@@ -201,8 +211,8 @@ export const deleteTournament = () => {
         type: "successToast",
         props: { text: data.message },
       });
-      queryClient.setQueryData<Tournament[]>(
-        ["created-tournaments"],
+      queryClient.setQueriesData<Tournament[]>(
+        { queryKey: ["my-tournaments"] },
         (prev) => prev && prev.filter((t) => t.id !== id)
       );
     },
@@ -271,15 +281,28 @@ export const updateStatus = () => {
       );
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data, { isActive }) => {
       Toast.show({
         type: "successToast",
         props: { text: "Status was successfully updated" },
       });
       queryClient.setQueryData(["tournament", data.id], data);
-      queryClient.setQueryData<Tournament[]>(["created-tournaments"], (prev) => {
-        const newData = prev && prev.filter((t) => t.id !== data.id);
-        return newData ? [data, ...newData] : prev;
+      queryClient.setQueryData<Tournament[]>(["my-tournaments", !isActive], (prev) => {
+        if (prev) {
+          const index = prev.findIndex((t) => t.id === data.id);
+          if (index === -1) {
+            return [data, ...prev];
+          } else {
+            return [...prev.slice(0, index), data, ...prev.slice(index + 1)];
+          }
+        }
+        return [data];
+      });
+      queryClient.setQueryData<Tournament[]>(["my-tournaments", isActive], (prev) => {
+        if (prev) {
+          return prev.filter((t) => t.id !== data.id);
+        }
+        return [];
       });
     },
     onError: (error) => {

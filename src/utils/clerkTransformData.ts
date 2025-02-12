@@ -10,7 +10,7 @@ export type UpdateUserClerkFormData = {
 
 const clerkTransformData = (
   data: Partial<Omit<UpdateUserClerkFormData, "unsafeMetadata"> & UserUnsafeMetadata>,
-  unsafePrev?: Partial<UserUnsafeMetadata>
+  unsafePrev: Partial<UserUnsafeMetadata> | null
 ): Partial<UpdateUserClerkFormData> => {
   const metadataKeys: (keyof UserUnsafeMetadata)[] = [
     "birthday",

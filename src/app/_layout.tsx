@@ -4,8 +4,13 @@ import "../styles/global.css";
 import AppProviders from "../providers/AppProviders";
 import AuthGuard from "../components/auth/AuthGuard";
 import "react-native-get-random-values";
-import { Stack } from "expo-router";
-import { stackProps } from "../components/navigation/options";
+import { Stack, usePathname } from "expo-router";
+import { modalRoutes, stackProps } from "../components/navigation/options";
+import { useCustomTheme } from "../hooks/useCustomTheme";
+import { Platform } from "react-native";
+import Toast from "react-native-toast-message";
+import toastConfig from "../shared/toast/toastConfig";
+import React from "react";
 
 if (process.env.NODE_ENV === "development") {
   const originalWarn = console.warn;
@@ -16,14 +21,28 @@ if (process.env.NODE_ENV === "development") {
   };
 }
 
-const RootLayout = () => (
-  <AppProviders>
-    <AuthGuard>
+const Layout = () => {
+  const theme = useCustomTheme();
+  const pathName = usePathname();
+  const isModal = modalRoutes.includes(pathName);
+  const toastTopOffset = Platform.OS === "android" ? 20 : 65;
+
+  return (
+    <>
       <Stack {...stackProps}>
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="register" options={{ presentation: "modal" }} />
       </Stack>
+      {!isModal && <Toast config={toastConfig(theme)} topOffset={toastTopOffset} />}
+    </>
+  );
+};
+
+const RootLayout = () => (
+  <AppProviders>
+    <AuthGuard>
+      <Layout />
     </AuthGuard>
   </AppProviders>
 );

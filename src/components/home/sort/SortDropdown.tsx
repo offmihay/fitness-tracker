@@ -22,40 +22,23 @@ const SortDropdown = (props: Props) => {
   const theme = useCustomTheme();
 
   const handleChoose = async (value: SortValueHome) => {
-    await AsyncStorage.setItem("sortby-home", value);
     onConfirm?.(value);
   };
 
-  const dropdownItems = [
-    {
-      key: SortValueHome.Newest,
-      title: t(SortValueHome.Newest),
-      isSelected: value === SortValueHome.Newest,
-      onPress: () => handleChoose(SortValueHome.Newest),
-      disabled: disabled,
-    },
-    {
-      key: SortValueHome.Upcoming,
-      title: t(SortValueHome.Upcoming),
-      isSelected: value === SortValueHome.Upcoming,
-      onPress: () => handleChoose(SortValueHome.Upcoming),
-      disabled: disabled,
-    },
-    {
-      key: SortValueHome.PrizePool,
-      title: t(SortValueHome.PrizePool),
-      isSelected: value === SortValueHome.PrizePool,
-      onPress: () => handleChoose(SortValueHome.PrizePool),
-      disabled: disabled,
-    },
-    {
-      key: SortValueHome.Distance,
-      title: t(SortValueHome.Distance),
-      isSelected: value === SortValueHome.Distance,
-      onPress: () => handleChoose(SortValueHome.Distance),
-      disabled: disabled,
-    },
+  const sortOptions: SortValueHome[] = [
+    SortValueHome.Newest,
+    SortValueHome.Upcoming,
+    SortValueHome.PrizePool,
+    SortValueHome.Distance,
   ];
+
+  const dropdownItems = sortOptions.map((option) => ({
+    key: option,
+    title: t(option),
+    isSelected: value === option,
+    onPress: () => handleChoose(option),
+    disabled: disabled,
+  }));
 
   return (
     <CheckboxDropdownMenu items={dropdownItems}>
