@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
 
   contentHeader: {
-    height: 45,
+    height: 38,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",

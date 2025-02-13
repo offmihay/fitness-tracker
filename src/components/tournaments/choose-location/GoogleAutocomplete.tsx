@@ -95,8 +95,9 @@ const GoogleAutoComplete = (props: Props) => {
       query={{
         key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
         language: "uk",
-        location: "30.46283-50.38453",
+        // location: "30.46283-50.38453",
         components: "country:ua",
+        type: "establishment",
       }}
       styles={{
         textInputContainer: {

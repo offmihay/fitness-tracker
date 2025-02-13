@@ -1,4 +1,10 @@
-import { RefreshControl, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  RefreshControl,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useCallback, useMemo, useState } from "react";
 import { router, useRouter } from "expo-router";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
@@ -22,6 +28,7 @@ import CustomSwitch from "@/src/shared/switch/Switch";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import FilterDropdownMenu from "@/src/components/tournaments/common/FilterDropdownMenu";
+import LoadingModal from "@/src/shared/modal/LoadingModal";
 
 type Props = {};
 
@@ -33,6 +40,20 @@ const Tournaments = ({}: Props) => {
   const deleteTournamentMutation = deleteTournament();
   const leaveTournamentMutation = leaveTournament();
   const updateStatusMutation = updateStatus();
+
+  const { isMutationsPending } = useMemo(() => {
+    return {
+      isMutationsPending:
+        deleteTournamentMutation.isPending ||
+        leaveTournamentMutation.isPending ||
+        updateStatusMutation.isPending,
+    };
+  }, [
+    deleteTournamentMutation.isPending,
+    leaveTournamentMutation.isPending,
+    updateStatusMutation.isPending,
+  ]);
+
   const [filter, setFilter] = useState<Filter>("all");
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -159,6 +180,7 @@ const Tournaments = ({}: Props) => {
   return (
     <>
       <LayoutFlashList
+        loaderEnabled={isMutationsPending}
         headerConfig={{
           nodeHeader: () => (
             <View className="flex h-full justify-end items-end">

@@ -20,7 +20,7 @@ const CustomLabel = (props: Props) => {
     <View className="flex flex-row">
       <View style={[styles.wrapper, { backgroundColor: color || theme.colors.primary }, style]}>
         {icon}
-        <CustomText type="predefault" numberOfLines={1} color={textColor || "white"}>
+        <CustomText type="small" numberOfLines={1} color={textColor || "white"}>
           {value}
         </CustomText>
       </View>

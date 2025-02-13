@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import FormData from "form-data";
-import Toast from "react-native-toast-message";
 import { UploadedImageAsset } from "../hooks/useImagePicker";
 import useApi from "../api/useApi";
 
@@ -50,12 +49,6 @@ export const useUploadImage = () => {
       });
 
       return response.data;
-    },
-    onError: (error) => {
-      Toast.show({
-        type: "errorToast",
-        props: { text: error.message },
-      });
     },
   });
 };

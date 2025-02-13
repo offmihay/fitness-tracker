@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { SettingsProvider } from "./SettingsProvider";
 import { tokenCache } from "../services/secureStore";
@@ -11,6 +11,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useEffect, useState } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import Toast from "react-native-toast-message";
+import { useTranslation } from "react-i18next";
 
 const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { settings } = useSettings();
@@ -34,8 +36,6 @@ const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) =
   );
 };
 
-const queryClient = new QueryClient();
-
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
 if (!publishableKey) {
@@ -45,6 +45,38 @@ if (!publishableKey) {
 }
 
 const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { t } = useTranslation();
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onError: (error: any) => {
+        Toast.show({
+          type: "errorToast",
+          props: { text: error.message },
+        });
+      },
+    }),
+    mutationCache: new MutationCache({
+      onError: (error, variables, context, mutation) => {
+        if (mutation.meta?.disableGlobalErrorHandler) {
+          return;
+        }
+        Toast.show({
+          type: "errorToast",
+          props: { text: error.message },
+        });
+      },
+      onSuccess: (data, variables, context, mutation) => {
+        if (mutation.meta?.disableGlobalErrorHandler) {
+          return;
+        }
+        Toast.show({
+          type: "successToast",
+          props: { text: "Success" },
+        });
+      },
+    }),
+  });
+
   return (
     <QueryClientProvider client={queryClient}>
       <KeyboardProvider>

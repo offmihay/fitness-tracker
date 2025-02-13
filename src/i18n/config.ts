@@ -11,9 +11,13 @@ i18n.use(initReactI18next).init({
     ru: { translation: ru },
   },
   lng: "en",
-  fallbackLng: "ua",
+  fallbackLng: "en",
   interpolation: {
     escapeValue: false,
+  },
+  parseMissingKeyHandler: function (key) {
+    const segments = key.split(".");
+    return segments[segments.length - 1];
   },
 });
 

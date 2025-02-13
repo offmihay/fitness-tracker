@@ -34,6 +34,20 @@ const FinishedTournaments = ({}: Props) => {
   const deleteTournamentMutation = deleteTournament();
   const leaveTournamentMutation = leaveTournament();
   const updateStatusMutation = updateStatus();
+
+  const { isMutationsPending } = useMemo(() => {
+    return {
+      isMutationsPending:
+        deleteTournamentMutation.isPending ||
+        leaveTournamentMutation.isPending ||
+        updateStatusMutation.isPending,
+    };
+  }, [
+    deleteTournamentMutation.isPending,
+    leaveTournamentMutation.isPending,
+    updateStatusMutation.isPending,
+  ]);
+
   const [filter, setFilter] = useState<Filter>("all");
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -70,12 +84,6 @@ const FinishedTournaments = ({}: Props) => {
     router.push({
       pathname: "./edit",
       params: { id },
-    });
-  };
-
-  const handleCreate = () => {
-    router.push({
-      pathname: "./create",
     });
   };
 
@@ -144,6 +152,7 @@ const FinishedTournaments = ({}: Props) => {
   return (
     <>
       <LayoutFlashList
+        loaderEnabled={isMutationsPending}
         headerConfig={{
           nodeHeader: () => (
             <View className="flex h-full justify-end items-end">

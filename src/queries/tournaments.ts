@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { Tournament, TournamentBase, TournamentStatus } from "../types/tournament";
 import { TournamentFormData } from "../components/tournaments/create/form/schema";
-import Toast from "react-native-toast-message";
 import useApi from "../api/useApi";
 import { useTranslation } from "react-i18next";
 import { TournamentQuery } from "../components/home/types";
@@ -18,7 +17,7 @@ export const getTournaments = (queryParams: Partial<TournamentQuery>) => {
   });
 };
 
-export const getMyTournaments = (isFinished: boolean = false) => {
+export const getMyTournaments = (isFinished?: boolean) => {
   const { fetchData } = useApi();
   const queryClient = useQueryClient();
   const cache = queryClient.getQueryData<TournamentBase[]>(["my-tournaments", isFinished]);
@@ -26,9 +25,10 @@ export const getMyTournaments = (isFinished: boolean = false) => {
   return useQuery({
     queryKey: ["my-tournaments", isFinished],
     queryFn: async () => {
+      const queryParam = isFinished ? { finished: isFinished } : undefined;
       const response = await fetchData<any, TournamentBase[]>("/tournaments/my", {
         queryParams: {
-          finished: isFinished,
+          ...queryParam,
         },
       });
       return response.data;
@@ -62,12 +62,6 @@ export const registerTournament = () => {
         return [data];
       });
     },
-    onError: (error) => {
-      Toast.show({
-        type: "errorToast",
-        props: { text: error.message },
-      });
-    },
   });
 };
 
@@ -81,17 +75,7 @@ export const leaveTournament = () => {
       });
       return response.data;
     },
-    onError: (error) => {
-      Toast.show({
-        type: "errorToast",
-        props: { text: error.message },
-      });
-    },
     onSuccess: (data) => {
-      Toast.show({
-        type: "successToast",
-        props: { text: "U leaved this tournament" },
-      });
       queryClient.setQueryData(["tournament", data.id], data);
       queryClient.setQueriesData<Tournament[]>(
         { queryKey: ["my-tournaments"] },
@@ -108,7 +92,6 @@ export const getTournamentByID = (id: string): UseQueryResult<Tournament> => {
     queryKey: ["tournament", id],
     queryFn: async () => {
       const response = await fetchData<any, Tournament>(`/tournaments/${id}`);
-
       return response.data;
     },
     refetchOnMount: false,
@@ -127,21 +110,6 @@ export const postTournament = () => {
       });
       return response.data;
     },
-    onSuccess: (data) => {
-      queryClient.setQueryData<Tournament[]>(["my-tournaments", false], (prev) =>
-        prev ? [data, ...prev] : [data]
-      );
-      Toast.show({
-        type: "successToast",
-        props: { text: t("tournaments.create.successMessage") },
-      });
-    },
-    onError: (error) => {
-      Toast.show({
-        type: "errorToast",
-        props: { text: t("tournaments.create.errorMessage") },
-      });
-    },
   });
 };
 
@@ -158,17 +126,7 @@ export const updateTournament = () => {
       });
       return response.data;
     },
-    onError: () => {
-      Toast.show({
-        type: "errorToast",
-        props: { text: t("tournaments.edit.errorMessage") },
-      });
-    },
     onSuccess: (data, { id }) => {
-      Toast.show({
-        type: "successToast",
-        props: { text: t("tournaments.edit.successMessage") },
-      });
       const isFinished = !data.isActive || data.status === TournamentStatus.FINISHED;
       queryClient.setQueryData(["tournament", data.id], data);
       queryClient.setQueryData<Tournament[]>(["my-tournaments", isFinished], (prev) => {
@@ -207,20 +165,10 @@ export const deleteTournament = () => {
       return response.data;
     },
     onSuccess: (data, id) => {
-      Toast.show({
-        type: "successToast",
-        props: { text: data.message },
-      });
       queryClient.setQueriesData<Tournament[]>(
         { queryKey: ["my-tournaments"] },
         (prev) => prev && prev.filter((t) => t.id !== id)
       );
-    },
-    onError: (error) => {
-      Toast.show({
-        type: "errorToast",
-        props: { text: error.message },
-      });
     },
   });
 };
@@ -249,17 +197,7 @@ export const removeUser = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      Toast.show({
-        type: "successToast",
-        props: { text: "User was succesfully deleted." },
-      });
       queryClient.setQueryData(["tournament", data.id], data);
-    },
-    onError: (error) => {
-      Toast.show({
-        type: "errorToast",
-        props: { text: error.message },
-      });
     },
   });
 };
@@ -282,10 +220,6 @@ export const updateStatus = () => {
       return response.data;
     },
     onSuccess: (data, { isActive }) => {
-      Toast.show({
-        type: "successToast",
-        props: { text: "Status was successfully updated" },
-      });
       queryClient.setQueryData(["tournament", data.id], data);
       queryClient.setQueryData<Tournament[]>(["my-tournaments", !isActive], (prev) => {
         if (prev) {
@@ -303,12 +237,6 @@ export const updateStatus = () => {
           return prev.filter((t) => t.id !== data.id);
         }
         return [];
-      });
-    },
-    onError: (error) => {
-      Toast.show({
-        type: "errorToast",
-        props: { text: error.message },
       });
     },
   });

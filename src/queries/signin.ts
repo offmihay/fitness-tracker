@@ -1,6 +1,5 @@
 import { useSignIn } from "@clerk/clerk-expo";
 import { useMutation } from "@tanstack/react-query";
-import Toast from "react-native-toast-message";
 
 type SignInParams = {
   emailAddress: string;
@@ -22,12 +21,6 @@ export const useSignInMutation = () => {
           await setActive({ session: signInAttempt.createdSessionId });
         }
       }
-    },
-    onError: (error) => {
-      Toast.show({
-        type: "errorToast",
-        props: { text: error.message },
-      });
     },
   });
 
