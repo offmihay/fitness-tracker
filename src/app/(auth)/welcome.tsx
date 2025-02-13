@@ -36,9 +36,6 @@ const SignIn = () => {
     onSuccess: () => {
       router.replace("/home");
     },
-    onError: (err: any) => {
-      console.error(err);
-    },
   });
 
   const appleSignInMutation = useMutation({
@@ -52,9 +49,6 @@ const SignIn = () => {
     },
     onSuccess: () => {
       router.replace("/home");
-    },
-    onError: (err: any) => {
-      console.error(err);
     },
   });
 

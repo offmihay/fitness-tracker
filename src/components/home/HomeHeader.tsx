@@ -4,6 +4,7 @@ import DismissKeyboardView from "../../shared/view/DismissKeyboardView";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Divider } from "react-native-paper";
+import { t } from "i18next";
 
 type Props = {
   value: string;
@@ -21,7 +22,7 @@ const HomeHeader = (props: Props) => {
       <View style={[styles.wrapper]}>
         <View style={{ ...styles.inputContainer, backgroundColor: theme.colors.surface }}>
           <TextInput
-            placeholder="Search"
+            placeholder={t("common.search")}
             placeholderTextColor={theme.colors.text}
             style={[styles.input, { color: theme.colors.text }]}
             value={value}

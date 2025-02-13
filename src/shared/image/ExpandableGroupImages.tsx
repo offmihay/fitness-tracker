@@ -23,6 +23,8 @@ import { Feather, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import * as Haptics from "expo-haptics";
 import Carousel from "../carousel/Carousel";
+import { deleteImageConfirmationAlert } from "../alerts/alerts";
+import { t } from "i18next";
 
 export type ExpandableGroupImagesProps<T extends Object> = {
   expadedImageWrapperStyle?: ViewStyle;
@@ -188,7 +190,7 @@ const ExpandableGroupImages = <T extends Object>(props: ExpandableGroupImagesPro
           </TouchableOpacity>
         </Animated.View>
         <Animated.View style={[styles.deleteBtn, animatedContentStyle]}>
-          <TouchableOpacity onPress={() => deleteConfirmationAlert(handleDelete)}>
+          <TouchableOpacity onPress={() => deleteImageConfirmationAlert(handleDelete, t)}>
             <FontAwesome name="trash-o" size={24} color="white" />
           </TouchableOpacity>
         </Animated.View>
@@ -250,17 +252,3 @@ const styles = StyleSheet.create({
 });
 
 export default ExpandableGroupImages;
-
-const deleteConfirmationAlert = (onPress: () => void) => {
-  Alert.alert("Are you sure you want to delete this image?", "", [
-    {
-      text: "Delete",
-      onPress: onPress,
-      style: "destructive",
-    },
-    {
-      text: "Cancel",
-      style: "cancel",
-    },
-  ]);
-};

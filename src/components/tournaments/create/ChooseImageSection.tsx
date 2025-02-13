@@ -15,6 +15,7 @@ import ImagePickerController, {
   ImageResource,
 } from "../../../shared/controllers/ImagePickerController";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
+import { t } from "i18next";
 
 type Props = {
   errorMessage: string;
@@ -48,7 +49,7 @@ const ChooseImageSection = (props: Props) => {
                   <CustomIcon
                     render={(color, size) => <FontAwesome name="image" size={size} color={color} />}
                   />
-                  <CustomText>Add photo</CustomText>
+                  <CustomText>{t("common.addPhoto")}</CustomText>
                 </View>
               </ButtonInput>
             </View>

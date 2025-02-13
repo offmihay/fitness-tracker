@@ -9,6 +9,7 @@ import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollVi
 import { Divider } from "react-native-paper";
 import CustomSwitch from "@/src/shared/switch/Switch";
 import { useSettings } from "@/src/hooks/useSettings";
+import { t } from "i18next";
 
 type Props = {};
 
@@ -23,8 +24,7 @@ const index = (props: Props) => {
       <View style={styles.wrapper}>
         <View style={[{ backgroundColor: theme.colors.surface, borderRadius: 10 }]}>
           <PersonalInfoList
-            label={"Creator Mode"}
-            // value={(user?.unsafeMetadata.organizerName as string) || "Not specified"}
+            label={t("settings.organizerInfo.creatorMode")}
             icon={<MaterialIcons name="mode" size={24} color={theme.colors.text} />}
             renderButton={() => (
               <CustomSwitch
@@ -35,8 +35,8 @@ const index = (props: Props) => {
           />
           <Divider />
           <PersonalInfoList
-            label={"Edit organizer info"}
-            value={(user?.unsafeMetadata.organizerName as string) || "Not specified"}
+            label={t("settings.organizerInfo.editOrganizerInfo")}
+            value={(user?.unsafeMetadata.organizerName as string) || t("common.notSpecified")}
             onPress={() => router.navigate("./edit", { relativeToDirectory: true })}
             icon={<FontAwesome5 name="house-user" size={24} color={theme.colors.text} />}
           />

@@ -6,9 +6,6 @@ import { View } from "react-native";
 export const FormSkeleton = () => {
   return (
     <>
-      <CustomText type="subtitle" className="ml-1 mb-3">
-        Tournament Details
-      </CustomText>
       <View className="flex gap-8">
         <View className="flex gap-6 mt-8">
           <Skeleton height={35} width={250} />

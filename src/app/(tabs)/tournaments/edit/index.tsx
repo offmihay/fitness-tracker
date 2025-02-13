@@ -51,7 +51,7 @@ const UpdateTournament = () => {
             <TournamentEditForm type="edit" id={pageQuery.id} />
             <CustomAnimatedView className="my-5">
               <ButtonDefault
-                title={t("tournaments.edit.editButton")}
+                title={t("common.saveChanges")}
                 className="mt-4"
                 onPress={handleSubmit((data) => handleFormSubmit(data, pageQuery.id))}
                 loading={updateTournamentMutation.isPending}

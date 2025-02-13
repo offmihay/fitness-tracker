@@ -6,6 +6,7 @@ import { UploadedImageAsset, useImagePicker } from "@/src/hooks/useImagePicker";
 import { UseMutationResult } from "@tanstack/react-query";
 import { ImageUploadResponse } from "@/src/queries/upload-image";
 import { ImagePickerAsset } from "expo-image-picker";
+import { t } from "i18next";
 
 export type ImageForm = {
   publicId: string;
@@ -60,7 +61,7 @@ const ImagePickerController = (props: Props) => {
   const openActionSheetIOS = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ["Cancel", "Open gallery", "Open camera"],
+        options: [t("common.cancel"), t("common.openGallery"), t("common.openCamera")],
         cancelButtonIndex: 0,
       },
       (buttonIndex) => {

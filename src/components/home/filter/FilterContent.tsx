@@ -15,6 +15,7 @@ import CustomText from "@/src/shared/text/CustomText";
 import Toast from "react-native-toast-message";
 import _ from "lodash";
 import { emptyFilter } from "../storedSettings";
+import { t } from "i18next";
 
 type Props = {
   filterValues: FilterHome;
@@ -85,25 +86,25 @@ const FilterContent = (props: Props) => {
         <CustomKeyboardAwareScrollView useScrollFeature extraScrollHeight={10}>
           <View className="flex flex-col gap-6 pb-10">
             <View>
-              <CustomText type="subtitle">Sport type</CustomText>
+              <CustomText type="subtitle">{t("tournament.sportType.title")}</CustomText>
               <View style={styles.filterWrapperGroup} className="mt-4">
                 <FilterItem
-                  label="Badminton"
+                  label={t("tournament.sportType.BADMINTON")}
                   onPress={() => handleChangeGroup("sportType", TournamentSport.BADMINTON)}
                   isSelected={filter.sportType.includes(TournamentSport.BADMINTON)}
                 />
                 <FilterItem
-                  label="Squash"
+                  label={t("tournament.sportType.SQUASH")}
                   onPress={() => handleChangeGroup("sportType", TournamentSport.SQUASH)}
                   isSelected={filter.sportType.includes(TournamentSport.SQUASH)}
                 />
                 <FilterItem
-                  label="Tennis"
+                  label={t("tournament.sportType.TENNIS")}
                   onPress={() => handleChangeGroup("sportType", TournamentSport.TENNIS)}
                   isSelected={filter.sportType.includes(TournamentSport.TENNIS)}
                 />
                 <FilterItem
-                  label="Table Tennis"
+                  label={t("tournament.sportType.TABLE_TENNIS")}
                   onPress={() => handleChangeGroup("sportType", TournamentSport.TABLE_TENNIS)}
                   isSelected={filter.sportType.includes(TournamentSport.TABLE_TENNIS)}
                 />
@@ -111,20 +112,20 @@ const FilterContent = (props: Props) => {
             </View>
             <Divider />
             <View>
-              <CustomText type="subtitle">Skill Level</CustomText>
+              <CustomText type="subtitle">{t("tournament.skillLevel.title")}</CustomText>
               <View style={styles.filterWrapperGroup} className="mt-4">
                 <FilterItem
-                  label="Amateur"
+                  label={t("tournament.skillLevel.AMATEUR")}
                   onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.AMATEUR)}
                   isSelected={filter.skillLevel.includes(TournamentSkillLevel.AMATEUR)}
                 />
                 <FilterItem
-                  label="Intermediate"
+                  label={t("tournament.skillLevel.INTERMEDIATE")}
                   onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.INTERMEDIATE)}
                   isSelected={filter.skillLevel.includes(TournamentSkillLevel.INTERMEDIATE)}
                 />
                 <FilterItem
-                  label="Professional"
+                  label={t("tournament.skillLevel.PROFESSIONAL")}
                   onPress={() => handleChangeGroup("skillLevel", TournamentSkillLevel.PROFESSIONAL)}
                   isSelected={filter.skillLevel.includes(TournamentSkillLevel.PROFESSIONAL)}
                 />
@@ -132,11 +133,11 @@ const FilterContent = (props: Props) => {
             </View>
             <Divider />
             <View>
-              <CustomText type="subtitle">PrizePool</CustomText>
+              <CustomText type="subtitle">{t("tournament.prizePool")}</CustomText>
               <View style={styles.filterWrapperSingle} className="mt-4">
                 <View className="w-1/2 pr-2">
                   <CustomTextInput
-                    label="From"
+                    label={t("common.from")}
                     keyboardType="number-pad"
                     value={filter.prizePool?.min?.toString() ?? ""}
                     onChangeText={(value) => handleChangeRange("prizePool", "min", value)}
@@ -145,7 +146,7 @@ const FilterContent = (props: Props) => {
                 </View>
                 <View className="w-1/2 pl-2">
                   <CustomTextInput
-                    label="To"
+                    label={t("common.to")}
                     keyboardType="number-pad"
                     value={filter.prizePool?.max?.toString() ?? ""}
                     onChangeText={(value) => handleChangeRange("prizePool", "max", value)}
@@ -156,11 +157,11 @@ const FilterContent = (props: Props) => {
             </View>
             <Divider />
             <View>
-              <CustomText type="subtitle">Entry fee</CustomText>
+              <CustomText type="subtitle">{t("tournament.entryFee")}</CustomText>
               <View style={styles.filterWrapperSingle} className="mt-4">
                 <View className="w-1/2 pr-2">
                   <CustomTextInput
-                    label="From"
+                    label={t("common.from")}
                     keyboardType="number-pad"
                     value={filter.entryFee?.min?.toString() ?? ""}
                     onChangeText={(value) => handleChangeRange("entryFee", "min", value)}
@@ -169,7 +170,7 @@ const FilterContent = (props: Props) => {
                 </View>
                 <View className="w-1/2 pl-2">
                   <CustomTextInput
-                    label="To"
+                    label={t("common.to")}
                     keyboardType="number-pad"
                     value={filter.entryFee?.max?.toString() ?? ""}
                     onChangeText={(value) => handleChangeRange("entryFee", "max", value)}
@@ -181,10 +182,10 @@ const FilterContent = (props: Props) => {
 
             <Divider />
             <View>
-              <CustomText type="subtitle">Date</CustomText>
+              <CustomText type="subtitle">{t("tournament.date")}</CustomText>
               <View style={styles.filterWrapperSingle} className="mt-4">
                 <DatePickerInput
-                  label="Date"
+                  label={t("tournament.date")}
                   value={filter.date}
                   onChange={(value) => handleChangeSingle("date", value.toDateString())}
                   selectedDate={filter.date ? new Date(filter.date) : new Date()}
@@ -192,7 +193,7 @@ const FilterContent = (props: Props) => {
                   renderTrigger={({ onPress, value }) => (
                     <FilterItem
                       onPress={onPress}
-                      label={value || "Choose date.."}
+                      label={value || t("common.chooseDate")}
                       isSelected={!!value}
                       onClear={() => handleChangeSingle("date", "")}
                       useClearButton
@@ -212,14 +213,14 @@ const FilterContent = (props: Props) => {
         <View style={[styles.buttonWrapper]}>
           <View style={{ width: "70%" }}>
             <ButtonDefault
-              title="Show results"
+              title={t("common.showResults")}
               onPress={() => handleShowResults()}
               disabled={_.isEqual(filter, filterValues)}
             />
           </View>
           <View style={{ width: "27%" }}>
             <ButtonDefault
-              title="Reset"
+              title={t("common.reset")}
               type="white"
               onPress={() => {
                 setFilter(emptyFilter);

@@ -1,0 +1,251 @@
+{
+  "tournament": {
+    "title": "Название",
+    "description": "Описание",
+    "date": "Дата",
+    "dateStart": "Дата начала",
+    "dateEnd": "Дата окончания",
+    "city": "Город",
+    "location": "Адрес",
+    "entryFee": "Вступ. взнос",
+    "prizePool": "Призовой фонд",
+    "organizer": "Организатор",
+    "maxParticipants": "Макс. кол-во участников",
+    "rules": "Правила",
+    "status:": "Статус:",
+    "sportType": {
+      "title": "Вид спорта",
+      "label": "Выберите вид спорта",
+      "TENNIS": "Теннис",
+      "BADMINTON": "Бадминтон",
+      "TABLE_TENNIS": "Настольный теннис",
+      "SQUASH": "Сквош",
+      "other": "Другое"
+    },
+    "ageRestriction": {
+      "title": "Ограничение по возрасту",
+      "minAge": "Мин. возраст",
+      "maxAge": "Макс. возраст"
+    },
+    "skillLevel": {
+      "title": "Уровень мастерства",
+      "label": "Выберите уровень мастерства",
+      "AMATEUR": "Любитель",
+      "INTERMEDIATE": "Средний",
+      "PROFESSIONAL": "Профессионал"
+    },
+    "format": {
+      "title": "Формат",
+      "label": "Выберите формат",
+      "SINGLES": "Одиночный",
+      "DOUBLES": "Парный",
+      "SQUAD": "Командный"
+    },
+    "status": {
+      "title": "Статус",
+      "UPCOMING": "Предстоящий",
+      "ONGOING": "Идет",
+      "FINISHED": "Завершен",
+      "DEACTIVATED": "Деактивирован"
+    }
+  },
+  "user": {
+    "name": "Имя",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "email": "Эл. почта",
+    "phoneNumber": "Номер телефона",
+    "birthday": "День рождения",
+    "imageUrl": "URL изображения",
+    "organizerName": "Название организации",
+    "organizerEmail": "Эл. почта",
+    "organizerPhone": "Рабочий телефон",
+    "organizerDetails": "Детали организации",
+    "isVerified": "Подтвержден",
+    "photo": "Фото профиля"
+  },
+  "errors": {
+    "server_error": "Что-то пошло не так. Пожалуйста, попробуйте позже.",
+    "form_identifier_not_found": "Не удалось найти вашу учетную запись.",
+    "form_identifier_exists": "Этот адрес эл. почты уже занят. Пожалуйста, попробуйте другой.",
+    "form_password_incorrect": "Пароль неверный. Попробуйте еще раз или используйте другой способ.",
+    "form_password_pwned": "Пароль был обнаружен в утечке данных в интернете. Для безопасности учетной записи, пожалуйста, используйте другой пароль.",
+    "form_param_format_invalid": "Неверный формат",
+    "email_invalid": "Неверный адрес эл. почты",
+    "password_not_matching": "Пароли не совпадают",
+    "password_too_short": "Пароль должен содержать не менее 8 символов",
+    "password_too_long": "Пароль не должен превышать 20 символов",
+    "email_too_long": "Адрес эл. почты не должен превышать 30 символов",
+    "form_code_incorrect": "Неверный код",
+    "verification_failed": "Слишком много неудачных попыток. Попробуйте снова тем же или другим способом.",
+    "too_many_requests": "Слишком много запросов. Пожалуйста, попробуйте позже.",
+    "strategy_for_user_invalid": "Неверная стратегия для пользователя",
+    "tournament_not_found": "Турнир не найден",
+    "tournament_already_registered": "Вы уже зарегистрированы на этот турнир",
+    "tournament_not_registered": "Вы не зарегистрированы на этот турнир",
+    "max_participants_reached": "Достигнуто максимальное количество участников",
+    "no_token_provided": "Вы не авторизованы",
+    "invalid_token": "Вы не авторизованы"
+  },
+  "common": {
+    "confirm": "Подтвердить",
+    "cancel": "Отмена",
+    "yes": "Да",
+    "no": "Нет",
+    "delete": "Удалить",
+    "deactivate": "Деактивировать",
+    "activate": "Активировать",
+    "edit": "Редактировать",
+    "back": "Назад",
+    "done": "Готово",
+    "openGallery": "Открыть галерею",
+    "openCamera": "Открыть камеру",
+    "leave": "Покинуть",
+    "notSpecified": "Не указано",
+    "applyChanges": "Применить изменения",
+    "search": "Поиск",
+    "chooseDate": "Выберите дату",
+    "reset": "Сброс",
+    "showResults": "Показать результаты",
+    "from": "От",
+    "to": "До",
+    "signOut": "Выйти",
+    "addPhoto": "Добавить фото",
+    "saveChanges": "Сохранить изменения",
+    "create": "Создать",
+    "register": "Зарегистрироваться",
+    "ok": "Ок"
+  },
+  "title": {
+    "home": "Главная",
+    "tournaments": "Турниры",
+    "finished": "Архив",
+    "settings": "Настройки",
+    "createTournament": "Создать турнир",
+    "editTournament": "Редактировать турнир",
+    "personalInfo": "Личная информация",
+    "changeName": "Изменить имя",
+    "rules": "Правила",
+    "participants": "Участники",
+    "choose-location": "Выбрать место",
+    "registration": "Регистрация",
+    "organizerInfo": "Информация об организаторе",
+    "organizerDetails": "Детали организатора"
+  },
+  "signin": {
+    "continueGoogle": "Войти через Google",
+    "continueApple": "Войти через Apple",
+    "continueEmail": "Войти с помощью эл. почты",
+    "signup": "Нет аккаунта? Зарегистрируйтесь",
+    "email": "Эл. почта",
+    "password": "Пароль",
+    "modal": {
+      "title": "С возвращением!",
+      "forgotPassword": "Забыли пароль?",
+      "signin": "Войти"
+    }
+  },
+  "signup": {
+    "email": "Эл. почта",
+    "password": "Пароль",
+    "confirmPassword": "Подтвердите пароль",
+    "code": "Код",
+    "continue": "Продолжить",
+    "titleEmail": "Начнем с вашей эл. почты",
+    "alreadyHaveAccount": "Уже есть аккаунт?",
+    "titlePassword": "Создайте надежный пароль",
+    "titleVerifyCode": "Мы отправили 6-значный код на вашу эл. почту. Пожалуйста, введите его ниже",
+    "complete": "Завершить регистрацию",
+    "notReceiveCode": "Код не получен?",
+    "tryAgainIn": "Попробуйте снова через",
+    "requestNewCode": "Запросить новый код"
+  },
+  "settings": {
+    "personalInfo": {
+      "title": "Редактировать профиль",
+      "photo": "Фото",
+      "saveChanges": "Сохранить изменения"
+    },
+    "theme": {
+      "title": "Выберите тему",
+      "system": "Системная",
+      "dark": "Темная",
+      "light": "Светлая"
+    },
+    "language": {
+      "title": "Изменить язык",
+      "en": "Английский",
+      "uk": "Украинский",
+      "ru": "Русский",
+      "system": "По умолчанию"
+    },
+    "notifications": {
+      "title": "Уведомления"
+    },
+    "organizerInfo": {
+      "title": "Информация об организаторе",
+      "creatorMode": "Режим организаторе по умолчанию",
+      "editOrganizerInfo": "Редактировать информацию"
+    }
+  },
+  "home": {
+    "tournament": {
+      "register": "Регистрация",
+      "saveForLater": "Сохранить",
+      "description": "Описание",
+      "participants": "Участники",
+      "rules": "Правила",
+      "organizer": "Организатор",
+      "noAgeRestrictions": "Без возрастных ограничений",
+      "organizerDetails": "Детали организатора",
+      "organizedBy": "Организатор:",
+      "unknown": "Неизвестно",
+      "contactUs": "Связаться с нами"
+    },
+    "filter": {
+      "title": "Фильтр"
+    },
+    "sort": {
+      "title": "Сорт. по",
+      "newest": "Новейшие",
+      "upcoming": "Предстоящие",
+      "prizePool": "Призовой фонд",
+      "distance": "Расстояние"
+    }
+  },
+  "tournaments": {
+    "filter": {
+      "title": "Фильтр",
+      "organizer": "Только созданные",
+      "participant": "Только участвующие",
+      "all": "Все"
+    },
+    "users": "Пользователи",
+    "create": "Создать",
+    "edit": "Редактировать",
+    "tournamentDetails": "Детали турнира",
+    "restrictions": "Ограничения",
+    "locationDate": "Место и дата",
+    "additionalParameters": "Дополнительные параметры",
+    "organizerDetails": "Детали организатора",
+    "organizer": "Организатор"
+  },
+  "register": {
+    "title": "Введите вашу личную информацию для связи",
+    "successMessage": "Вы успешно зарегистрировались на турнир",
+    "goBack": "Вернуться к турниру",
+    "addReminder": "Добавить напоминание в календарь"
+  },
+  "alert": {
+    "deleteTournament": "Вы уверены, что хотите удалить этот турнир?",
+    "deactivateTournament": "Вы уверены, что хотите деактивировать этот турнир?",
+    "activateFinishedTournament": "Ваш турнир завершен, и он останется недоступным. Чтобы активировать его, перейдите на страницу редактирования и измените дату турнира.",
+    "leaveTournament": "Вы уверены, что хотите покинуть этот турнир?",
+    "cameraPerssions": "Приложению не разрешен доступ к камере. Перейдите в настройки и измените разрешения камеры",
+    "galleryPermission": "Приложению не разрешен доступ к галерее. Перейдите в настройки и измените разрешения галереи",
+    "locationPermission": "Приложению не разрешен доступ к вашему местоположению. Перейдите в настройки и измените разрешения местоположения",
+    "deleteImage": "Вы уверены, что хотите удалить это изображение?",
+    "goToEditPage": "Перейти к редактированию",
+    "goToSettings": "Перейти к настройкам"
+  }
+}

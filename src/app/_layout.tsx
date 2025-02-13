@@ -29,7 +29,7 @@ const Layout = () => {
 
   return (
     <>
-      <Stack {...stackProps}>
+      <Stack {...stackProps} screenOptions={{ ...stackProps.screenOptions, gestureEnabled: false }}>
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="register" options={{ presentation: "modal" }} />

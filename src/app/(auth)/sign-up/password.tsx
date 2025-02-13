@@ -69,7 +69,7 @@ const SignUpPasswordScreen = () => {
           });
         },
         onError: (error: any) => {
-          clerkHandleErrors(error, setError, t);
+          clerkHandleErrors(error, setError);
         },
       }
     );

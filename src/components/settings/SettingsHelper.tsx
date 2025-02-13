@@ -24,7 +24,7 @@ export const getSettingsList = () => {
           ? !!user.lastName
             ? `${user?.firstName} ${user?.lastName}`
             : user?.firstName
-          : "Not specified",
+          : t("common.notSpecified"),
 
       onPress: () => router.navigate("/settings/personal-info"),
     },

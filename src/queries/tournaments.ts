@@ -17,7 +17,7 @@ export const getTournaments = (queryParams: Partial<TournamentQuery>) => {
   });
 };
 
-export const getMyTournaments = (isFinished?: boolean) => {
+export const getMyTournaments = (isFinished: boolean = false) => {
   const { fetchData } = useApi();
   const queryClient = useQueryClient();
   const cache = queryClient.getQueryData<TournamentBase[]>(["my-tournaments", isFinished]);
@@ -25,10 +25,9 @@ export const getMyTournaments = (isFinished?: boolean) => {
   return useQuery({
     queryKey: ["my-tournaments", isFinished],
     queryFn: async () => {
-      const queryParam = isFinished ? { finished: isFinished } : undefined;
       const response = await fetchData<any, TournamentBase[]>("/tournaments/my", {
         queryParams: {
-          ...queryParam,
+          finished: isFinished,
         },
       });
       return response.data;
@@ -53,7 +52,9 @@ export const registerTournament = () => {
       queryClient.setQueryData<Tournament[]>(["my-tournaments", false], (prev) => {
         if (prev) {
           const index = prev.findIndex((t) => t.id === data.id);
+          console.log([data, ...prev]);
           if (index === -1) {
+            console.log([data, ...prev]);
             return [data, ...prev];
           } else {
             return [...prev.slice(0, index), data, ...prev.slice(index + 1)];
@@ -109,6 +110,11 @@ export const postTournament = () => {
         body: data,
       });
       return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData<Tournament[]>(["my-tournaments", false], (prev) =>
+        prev ? [data, ...prev] : [data]
+      );
     },
   });
 };
@@ -166,7 +172,11 @@ export const deleteTournament = () => {
     },
     onSuccess: (data, id) => {
       queryClient.setQueriesData<Tournament[]>(
-        { queryKey: ["my-tournaments"] },
+        { queryKey: ["my-tournaments", true] },
+        (prev) => prev && prev.filter((t) => t.id !== id)
+      );
+      queryClient.setQueriesData<Tournament[]>(
+        { queryKey: ["my-tournaments", false] },
         (prev) => prev && prev.filter((t) => t.id !== id)
       );
     },

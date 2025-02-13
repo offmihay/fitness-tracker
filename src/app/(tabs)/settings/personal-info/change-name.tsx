@@ -52,7 +52,7 @@ const ChangeNameScreen = () => {
         router.back();
       },
       onError: (error: any) => {
-        clerkHandleErrors(error, setError, t);
+        clerkHandleErrors(error, setError);
       },
     });
   };
@@ -72,7 +72,7 @@ const ChangeNameScreen = () => {
           <View style={styles.wrapper}>
             <RHFormInput
               name="firstName"
-              label={t("settings.personalInfo.firstName")}
+              label={t("user.firstName")}
               control={control}
               rules={{
                 required: { message: "required" },
@@ -84,7 +84,7 @@ const ChangeNameScreen = () => {
             />
             <RHFormInput
               name="lastName"
-              label={t("settings.personalInfo.lastName")}
+              label={t("user.lastName")}
               control={control}
               rules={{
                 required: true,
@@ -100,7 +100,7 @@ const ChangeNameScreen = () => {
       <StickyFooterView offset={{ closed: 0, opened: 100 }}>
         <View style={styles.buttonWrapper}>
           <ButtonDefault
-            title="Apply Changes"
+            title={t("common.applyChanges")}
             disabled={!isDirty || Object.keys(formErrors).length > 0}
             onPress={updateValues}
             loading={formDataMutation.isPending}

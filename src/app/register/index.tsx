@@ -55,7 +55,7 @@ const RegistrationFormScreen = (props: Props) => {
         navigateToNext();
       },
       onError: (error: any) => {
-        clerkHandleErrors(error, setError, t);
+        clerkHandleErrors(error, setError);
       },
     });
   };
@@ -89,11 +89,11 @@ const RegistrationFormScreen = (props: Props) => {
       <FormProvider {...methods}>
         <View style={styles.wrapper}>
           <CustomText type="subtitle" className="mb-6">
-            Type your personal information to contact with you
+            {t("register.title")}
           </CustomText>
           <RHFormInput
             name="firstName"
-            label={t("settings.personalInfo.firstName")}
+            label={t("user.firstName")}
             control={control}
             rules={{
               required: { message: "required" },
@@ -105,7 +105,7 @@ const RegistrationFormScreen = (props: Props) => {
           />
           <RHFormInput
             name="lastName"
-            label={t("settings.personalInfo.lastName")}
+            label={t("user.lastName")}
             control={control}
             rules={{
               required: { message: "required" },
@@ -117,7 +117,7 @@ const RegistrationFormScreen = (props: Props) => {
           />
           <RHFormInput
             name="phoneNumber"
-            label={t("settings.personalInfo.phoneNumber")}
+            label={t("user.phoneNumber")}
             control={control}
             rules={{
               required: { message: "required" },
@@ -130,7 +130,7 @@ const RegistrationFormScreen = (props: Props) => {
           <CustomAnimatedView>
             <ButtonDefault
               className="mt-6"
-              title="Confirm"
+              title={t("common.confirm")}
               disabled={Object.keys(formErrors).length > 0}
               onPress={handlePress}
               loading={formDataMutation.isPending}

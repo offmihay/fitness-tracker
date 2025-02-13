@@ -55,7 +55,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
   return (
     <View className="flex flex-col gap-1">
       <CustomText type="subtitle" className="ml-1 mb-3">
-        Tournament Details
+        {t("tournaments.tournamentDetails")}
       </CustomText>
       <RHFormDropdownInput
         control={control}
@@ -135,7 +135,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
       <CustomAnimatedView>
         <Divider className="mt-3" />
         <CustomText type="subtitle" className="ml-1 mt-4 mb-2">
-          Restrictions
+          {t("tournaments.restrictions")}
         </CustomText>
       </CustomAnimatedView>
       <DualInputSection>
@@ -193,12 +193,8 @@ export const TournamentEditForm = ({ type, id }: Props) => {
           selectAnLabel: t("tournament.skillLevel.label"),
         }}
       />
-      <TouchableOpacity
-        onPress={() => setIsOpenedAdditional((prev) => !prev)}
-        className="mb-2"
-        style={{ width: 180 }}
-      >
-        <CustomText color={theme.colors.link}>Additional parameters</CustomText>
+      <TouchableOpacity onPress={() => setIsOpenedAdditional((prev) => !prev)} className="mb-2">
+        <CustomText color={theme.colors.link}>{t("tournaments.additionalParameters")}</CustomText>
       </TouchableOpacity>
       {isOpenedAdditional && (
         <>
@@ -251,7 +247,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
       <CustomAnimatedView>
         <Divider className="mt-2" />
         <CustomText type="subtitle" className="ml-1 mt-4 mb-2">
-          Location & Date
+          {t("tournaments.locationDate")}
         </CustomText>
       </CustomAnimatedView>
       <RHFormInput name="city" label={t("tournament.city")} control={control} />
@@ -294,7 +290,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
           <CustomAnimatedView>
             <Divider className="mt-2" />
             <CustomText type="subtitle" className="ml-1 mt-3 mb-4 ">
-              Organizer Details
+              {t("tournaments.organizerDetails")}
             </CustomText>
           </CustomAnimatedView>
           <CustomAnimatedView
@@ -310,8 +306,8 @@ export const TournamentEditForm = ({ type, id }: Props) => {
             }}
           >
             <PersonalInfoList
-              label={"Organizer"}
-              value={(user?.unsafeMetadata.organizerName as string) || "Not specified"}
+              label={t("tournaments.organizer")}
+              value={(user?.unsafeMetadata.organizerName as string) || t("common.notSpecified")}
               onPress={() => router.navigate("tournaments/create/organizer")}
               icon={<FontAwesome5 name="house-user" size={24} color={theme.colors.text} />}
             />

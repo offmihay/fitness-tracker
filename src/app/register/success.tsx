@@ -5,6 +5,7 @@ import { Octicons } from "@expo/vector-icons";
 import CustomText from "@/src/shared/text/CustomText";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { router, useLocalSearchParams } from "expo-router";
+import { t } from "i18next";
 
 type Props = {};
 
@@ -25,18 +26,18 @@ const RegistrationSuccessScreen = (props: Props) => {
         <Octicons name="check-circle-fill" size={100} color={theme.colors.success} />
       </View>
       <View className="mt-8">
-        <CustomText center>You succesfully registred for this tournament!</CustomText>
+        <CustomText center>{t("register.successMessage")}</CustomText>
       </View>
       <View className="mt-8 flex gap-4">
         <TouchableOpacity>
           <CustomText type="default" color={theme.colors.link} center>
-            Add Reminder to Calendar
+            {t("register.addReminder")}
           </CustomText>
         </TouchableOpacity>
         <ButtonDefault
           onPress={returnBack}
           type="primary"
-          title="Go Back to Tournament"
+          title={t("register.goBack")}
           textColor={theme.dark ? "black" : "white"}
         />
       </View>

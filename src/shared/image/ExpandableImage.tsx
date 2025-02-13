@@ -22,6 +22,8 @@ import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-g
 import { Feather, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import * as Haptics from "expo-haptics";
+import { deleteImageConfirmationAlert } from "../alerts/alerts";
+import { t } from "i18next";
 
 type Props = {
   width?: number;
@@ -213,7 +215,7 @@ const ExpandableImage = (props: Props) => {
         </Animated.View>
         {!disableDelete && (
           <Animated.View style={[styles.deleteBtn, animatedContentStyle]}>
-            <TouchableOpacity onPress={() => deleteConfirmationAlert(handleDelete)}>
+            <TouchableOpacity onPress={() => deleteImageConfirmationAlert(handleDelete, t)}>
               <FontAwesome name="trash-o" size={24} color="white" />
             </TouchableOpacity>
           </Animated.View>
@@ -268,17 +270,3 @@ const styles = StyleSheet.create({
 });
 
 export default ExpandableImage;
-
-const deleteConfirmationAlert = (onPress: () => void) => {
-  Alert.alert("Are you sure you want to delete this image?", "", [
-    {
-      text: "Delete",
-      onPress: onPress,
-      style: "destructive",
-    },
-    {
-      text: "Cancel",
-      style: "cancel",
-    },
-  ]);
-};

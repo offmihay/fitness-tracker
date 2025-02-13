@@ -47,12 +47,18 @@ if (!publishableKey) {
 const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { t } = useTranslation();
   const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 0,
+      },
+    },
     queryCache: new QueryCache({
-      onError: (error: any) => {
+      onError: (error) => {
         Toast.show({
           type: "errorToast",
-          props: { text: error.message },
+          props: { text: t(`errors.loading_data_error`) },
         });
+        throw error;
       },
     }),
     mutationCache: new MutationCache({
@@ -60,19 +66,13 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         if (mutation.meta?.disableGlobalErrorHandler) {
           return;
         }
+        const localeError = t(`errors.${error.cause}`);
+        const message = localeError !== error.cause ? localeError : error.cause;
         Toast.show({
           type: "errorToast",
-          props: { text: error.message },
+          props: { text: message || error.message },
         });
-      },
-      onSuccess: (data, variables, context, mutation) => {
-        if (mutation.meta?.disableGlobalErrorHandler) {
-          return;
-        }
-        Toast.show({
-          type: "successToast",
-          props: { text: "Success" },
-        });
+        throw error;
       },
     }),
   });

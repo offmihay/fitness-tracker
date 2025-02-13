@@ -71,9 +71,13 @@ const useApi = () => {
       if (!response.ok) {
         if (response.headers.get("Content-Type")?.startsWith("application/json")) {
           const errorResponse = await response.json();
-          throw new Error(errorResponse.message || "An error occurred");
+          throw new Error(errorResponse.message || "An error occurred", {
+            cause: errorResponse.code || errorResponse.message || "An error occurred",
+          });
         }
-        throw new Error(`API request failed with status ${response.status}`);
+        throw new Error(`API request failed with status ${response.status}`, {
+          cause: `API request failed with status ${response.status}`,
+        });
       }
 
       const data = await response.json();

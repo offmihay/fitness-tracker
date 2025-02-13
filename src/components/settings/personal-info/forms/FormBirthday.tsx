@@ -45,7 +45,7 @@ const FormBirthday = (props: Props) => {
         });
       },
       onError: (error: any) => {
-        clerkHandleErrors(error, setError, t);
+        clerkHandleErrors(error, setError);
       },
     });
   };
@@ -62,7 +62,7 @@ const FormBirthday = (props: Props) => {
     <FormProvider {...methods}>
       <RHFormDatePicker
         name="birthday"
-        label={t("settings.personalInfo.birthday")}
+        label={t("user.birthday")}
         onSubmitEditing={updateValues}
         datePickerProps={{
           minimumDate: new Date(new Date().getFullYear() - 100, 0, 1),

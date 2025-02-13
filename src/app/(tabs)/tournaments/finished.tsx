@@ -35,19 +35,6 @@ const FinishedTournaments = ({}: Props) => {
   const leaveTournamentMutation = leaveTournament();
   const updateStatusMutation = updateStatus();
 
-  const { isMutationsPending } = useMemo(() => {
-    return {
-      isMutationsPending:
-        deleteTournamentMutation.isPending ||
-        leaveTournamentMutation.isPending ||
-        updateStatusMutation.isPending,
-    };
-  }, [
-    deleteTournamentMutation.isPending,
-    leaveTournamentMutation.isPending,
-    updateStatusMutation.isPending,
-  ]);
-
   const [filter, setFilter] = useState<Filter>("all");
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -152,7 +139,6 @@ const FinishedTournaments = ({}: Props) => {
   return (
     <>
       <LayoutFlashList
-        loaderEnabled={isMutationsPending}
         headerConfig={{
           nodeHeader: () => (
             <View className="flex h-full justify-end items-end">

@@ -1,8 +1,16 @@
 import * as ImagePicker from "expo-image-picker";
 import { ImagePickerOptions } from "expo-image-picker";
 import { Alert, Linking } from "react-native";
+import { cameraPermissionAlert } from "../shared/alerts/alerts";
+import { TFunction } from "i18next";
 
-export const pickCameraImage = async (options?: ImagePickerOptions) => {
+export const pickCameraImage = async ({
+  options,
+  t,
+}: {
+  options?: ImagePickerOptions;
+  t: TFunction<"translation">;
+}) => {
   const handleLaunchCamera = async () => {
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: "images",
@@ -22,28 +30,11 @@ export const pickCameraImage = async (options?: ImagePickerOptions) => {
     if (status === ImagePicker.PermissionStatus.GRANTED) {
       return await handleLaunchCamera();
     } else if (status === ImagePicker.PermissionStatus.DENIED) {
-      createAlert();
+      cameraPermissionAlert(Linking.openSettings, t);
     }
 
     return null;
   };
-
-  const createAlert = () =>
-    Alert.alert(
-      "App doesn't have permission to your camera. Go to settings and change Camera permissions.",
-      "",
-      [
-        {
-          text: "Settings",
-          onPress: Linking.openSettings,
-          style: "default",
-        },
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-      ]
-    );
 
   return await handleCameraPermission();
 };

@@ -11,6 +11,7 @@ import CustomText from "@/src/shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { CreateTournamentPageQuery } from "@/src/app/(tabs)/tournaments/create";
 import { ChooseLocationPageQuery } from "@/src/app/(tabs)/tournaments/create/choose-location";
+import { t } from "i18next";
 
 type Props = {
   query: ChooseLocationPageQuery;
@@ -66,7 +67,7 @@ const GoogleAutoComplete = (props: Props) => {
         InputComp: CustomTextInput,
         style: { width: "100%" },
         clearButtonMode: "never",
-        label: "Search",
+        label: t("common.search"),
         useClearButton: true,
         textContentType: "oneTimeCode",
         returnKeyType: "done",

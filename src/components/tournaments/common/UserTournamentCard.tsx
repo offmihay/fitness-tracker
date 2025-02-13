@@ -15,6 +15,8 @@ import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import StatusLabel from "../../home/common/StatusLabel";
 import { formatDateTime } from "@/src/utils/formatDateTime";
+import Toast from "react-native-toast-message";
+import { leaveTournamentConfirmationAlert } from "@/src/shared/alerts/alerts";
 
 type Props = {
   data: TournamentBase;
@@ -22,7 +24,7 @@ type Props = {
   onLeavePress?: () => void;
 };
 
-export const UserTournamentCard_HEIGHT = 180;
+export const UserTournamentCard_HEIGHT = 175;
 
 const UserTournamentCard = (props: Props) => {
   const { data, onCardPress, onLeavePress } = props;
@@ -34,7 +36,7 @@ const UserTournamentCard = (props: Props) => {
   const onSelectOption = (option: UserContextOptions) => {
     if (option === "leave") {
       if (onLeavePress) {
-        leaveTournamentConfirmationAlert(onLeavePress);
+        leaveTournamentConfirmationAlert(onLeavePress, t);
       }
     }
   };
@@ -52,7 +54,12 @@ const UserTournamentCard = (props: Props) => {
     });
 
     if (url) {
-      Linking.openURL(url).catch((err) => Alert.alert("Error", "Could not open maps"));
+      Linking.openURL(url).catch((err) =>
+        Toast.show({
+          type: "toastError",
+          props: { text: t("error.couldNotOpenMaps") },
+        })
+      );
     }
   };
 
@@ -133,8 +140,7 @@ const UserTournamentCard = (props: Props) => {
           <View className="w-1/2">
             <View className="flex flex-row gap-2">
               <ButtonSmall
-                title="Users"
-                style={{ backgroundColor: theme.colors.surfaceLight }}
+                style={{ backgroundColor: theme.colors.surfaceLight, flex: 1 }}
                 renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
                 onPress={openParticipants}
               />
@@ -195,7 +201,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     paddingBottom: 5,
-    paddingTop: 10,
+    paddingTop: 15,
   },
 
   footerBtn: {
@@ -210,17 +216,3 @@ const styles = StyleSheet.create({
 });
 
 export default UserTournamentCard;
-
-export const leaveTournamentConfirmationAlert = (onPress: () => void) => {
-  Alert.alert("Are you sure you want to leave this tournament?", "", [
-    {
-      text: "Leave",
-      onPress: onPress,
-      style: "destructive",
-    },
-    {
-      text: "Cancel",
-      style: "cancel",
-    },
-  ]);
-};

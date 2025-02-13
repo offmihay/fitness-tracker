@@ -58,7 +58,7 @@ const SignInModal = ({}: Props) => {
             if (paramName === "password") return "password";
             return "root.clerkError";
           };
-          clerkHandleErrors(error, setError, t, paramMapper);
+          clerkHandleErrors(error, setError, paramMapper);
         },
       }
     );

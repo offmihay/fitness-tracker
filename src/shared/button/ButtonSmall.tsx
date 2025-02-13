@@ -11,7 +11,8 @@ type Props = {
   renderIcon?: (color: string, size: number) => React.ReactElement;
   textColor?: string;
   disabled?: boolean;
-} & React.ComponentProps<typeof TouchableOpacity>;
+  textProps?: React.ComponentProps<typeof CustomText>;
+} & React.ComponentProps<typeof CustomText>;
 
 const ButtonSmall = (props: Props) => {
   const {
@@ -22,6 +23,7 @@ const ButtonSmall = (props: Props) => {
     style,
     textColor,
     disabled,
+    textProps,
     ...rest
   } = props;
   const theme = useCustomTheme();
@@ -32,22 +34,24 @@ const ButtonSmall = (props: Props) => {
     disabled && theme.dark ? "grey" : disabled && !theme.dark ? "#929292" : textColor;
 
   return (
-    <View>
-      <TouchableOpacity
-        style={[styles.btnWrapper, { backgroundColor: theme.colors.surface }, style]}
-        onPress={onPress}
-        activeOpacity={0.5}
-        disabled={disabled}
-        {...rest}
-      >
-        <View className="flex-1 flex flex-row gap-3 items-center justify-center">
-          {titleEnabled && <CustomText color={colorOpacity}>{title}</CustomText>}
-          {renderIcon && (
-            <CustomIcon render={(color) => renderIcon(colorOpacity || color, iconSize)} />
-          )}
-        </View>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity
+      style={[styles.btnWrapper, { backgroundColor: theme.colors.surface }, style]}
+      onPress={onPress}
+      activeOpacity={0.5}
+      disabled={disabled}
+      {...rest}
+    >
+      <View className="flex-1 flex flex-row gap-3 items-center justify-center">
+        {title && titleEnabled && (
+          <CustomText color={colorOpacity} {...textProps}>
+            {title}
+          </CustomText>
+        )}
+        {renderIcon && (
+          <CustomIcon render={(color) => renderIcon(colorOpacity || color, iconSize)} />
+        )}
+      </View>
+    </TouchableOpacity>
   );
 };
 

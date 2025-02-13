@@ -81,13 +81,16 @@ const UserAvatarList = () => {
   };
 
   const handleGalleryImagePick = async () => {
-    const result = await pickGalleryImage({ base64: true, allowsEditing: true });
+    const result = await pickGalleryImage({ options: { base64: true, allowsEditing: true }, t });
     Keyboard.dismiss();
     result && saveProfileImage(`data:image/jpeg;base64,${result[0].base64}`);
   };
 
   const handleCameraImagePick = async () => {
-    const result = await pickCameraImage({ base64: true, allowsEditing: true });
+    const result = await pickCameraImage({
+      options: { base64: true, allowsEditing: true },
+      t,
+    });
     Keyboard.dismiss();
     result && saveProfileImage(`data:image/jpeg;base64,${result.base64}`);
   };
@@ -133,7 +136,7 @@ const UserAvatarList = () => {
             </TouchableOpacity>
           </DeleteContextMenu>
 
-          <CustomText type="default">Profile photo</CustomText>
+          <CustomText type="default">{t("user.photo")}</CustomText>
         </View>
         <TouchableOpacity onPress={handleOpenCameraModal}>
           <View style={styles.btnWrapper}>

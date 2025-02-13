@@ -66,7 +66,7 @@ const OrganizerForm = () => {
         router.back();
       },
       onError: (error: any) => {
-        clerkHandleErrors(error, setError, t);
+        clerkHandleErrors(error, setError);
       },
     });
   };
@@ -149,7 +149,7 @@ const OrganizerForm = () => {
       <StickyFooterView offset={{ closed: 0, opened: 100 }}>
         <View style={styles.buttonWrapper}>
           <ButtonDefault
-            title="Apply Changes"
+            title={t("common.applyChanges")}
             disabled={!isDirty || Object.keys(formErrors).length > 0}
             onPress={updateValues}
             loading={formDataMutation.isPending}

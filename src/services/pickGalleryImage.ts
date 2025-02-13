@@ -1,8 +1,16 @@
 import * as ImagePicker from "expo-image-picker";
 import { ImagePickerOptions } from "expo-image-picker";
+import { TFunction } from "i18next";
 import { Alert, Linking } from "react-native";
+import { galleryPermissionAlert } from "../shared/alerts/alerts";
 
-export const pickGalleryImage = async (options?: ImagePickerOptions) => {
+export const pickGalleryImage = async ({
+  options,
+  t,
+}: {
+  options?: ImagePickerOptions;
+  t: TFunction<"translation">;
+}) => {
   const handleLaunchGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "images",
@@ -23,28 +31,11 @@ export const pickGalleryImage = async (options?: ImagePickerOptions) => {
     if (status === ImagePicker.PermissionStatus.GRANTED) {
       return await handleLaunchGallery();
     } else if (status === ImagePicker.PermissionStatus.DENIED) {
-      createAlert();
+      galleryPermissionAlert(Linking.openSettings, t);
     }
 
     return null;
   };
-
-  const createAlert = () =>
-    Alert.alert(
-      "App doesn't have permission to your gallery. Go to settings and change Gallery permissions.",
-      "",
-      [
-        {
-          text: "Settings",
-          onPress: Linking.openSettings,
-          style: "default",
-        },
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-      ]
-    );
 
   return await handleGalleryPermission();
 };

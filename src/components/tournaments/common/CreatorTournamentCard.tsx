@@ -17,6 +17,11 @@ import { useTranslation } from "react-i18next";
 import { formatDateRange } from "@/src/utils/formatDateRange";
 import CreatorFinishedContextMenu from "./CreatorFinishedContextMenu";
 import StatusLabel from "../../home/common/StatusLabel";
+import {
+  activateFinishedAlert,
+  deactivateConfirmationAlert,
+  deleteConfirmationAlert,
+} from "@/src/shared/alerts/alerts";
 
 type Props = {
   data: TournamentBase;
@@ -35,9 +40,9 @@ const CreatorTournamentCard = (props: Props) => {
 
   const onSelectOption = (option: CreatorContextOptions) => {
     if (option === "delete") {
-      onDeletePress && deleteConfirmationAlert(onDeletePress);
+      onDeletePress && deleteConfirmationAlert(onDeletePress, t);
     } else if (option === "deactivate") {
-      changeStatusPress && deactivateConfirmationAlert(() => changeStatusPress(false));
+      changeStatusPress && deactivateConfirmationAlert(() => changeStatusPress(false), t);
     } else if (option === "activate") {
       if (data.status === TournamentStatus.FINISHED) {
         activateFinishedAlert(() => {
@@ -47,7 +52,7 @@ const CreatorTournamentCard = (props: Props) => {
               id: data.id,
             },
           });
-        });
+        }, t);
       } else {
         changeStatusPress && changeStatusPress(true);
       }
@@ -108,18 +113,18 @@ const CreatorTournamentCard = (props: Props) => {
           <View className="w-1/2 pr-3">
             <ButtonSmall
               onPress={onEditPress}
-              title="Edit"
+              title={t("common.edit")}
               style={{ backgroundColor: theme.colors.primary }}
               renderIcon={(color) => <Feather name="edit-3" size={20} color="white" />}
               textColor="white"
+              textProps={{ type: "predefault" }}
             />
           </View>
 
           <View className="w-1/2">
             <View className="flex flex-row gap-2">
               <ButtonSmall
-                title="Users"
-                style={{ backgroundColor: theme.colors.surfaceLight }}
+                style={{ backgroundColor: theme.colors.surfaceLight, flex: 1 }}
                 renderIcon={(color) => <Ionicons name="people-sharp" size={20} color={color} />}
                 onPress={openParticipants}
               />
@@ -207,48 +212,3 @@ const styles = StyleSheet.create({
 });
 
 export default CreatorTournamentCard;
-
-const deleteConfirmationAlert = (onPress: () => void) => {
-  Alert.alert("Are you sure you want to delete this tournament?", "", [
-    {
-      text: "Delete",
-      onPress: onPress,
-      style: "destructive",
-    },
-    {
-      text: "Cancel",
-      style: "cancel",
-    },
-  ]);
-};
-
-const deactivateConfirmationAlert = (onPress: () => void) => {
-  Alert.alert("Are you sure you want to deactivate this tournament?", "", [
-    {
-      text: "Deactivate",
-      onPress: onPress,
-      style: "destructive",
-    },
-    {
-      text: "Cancel",
-      style: "cancel",
-    },
-  ]);
-};
-
-const activateFinishedAlert = (onPress: () => void) => {
-  Alert.alert(
-    "Your tournament is finished and it will remain unaccessible. To enable it, go to Edit Page and change date of the tournament.",
-    "",
-    [
-      {
-        text: "Go to edit page",
-        onPress: onPress,
-      },
-      {
-        text: "Ok",
-        style: "default",
-      },
-    ]
-  );
-};

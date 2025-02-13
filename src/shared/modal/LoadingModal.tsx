@@ -17,10 +17,10 @@ const LoadingModal = (props: Props) => {
       animationIn="fadeIn"
       animationOut="fadeOut"
       style={{ margin: 0 }}
-      animationInTiming={100}
-      animationOutTiming={100}
+      animationInTiming={1}
+      animationOutTiming={1}
     >
-      <BlurView style={styles.wrapper} intensity={10}>
+      <BlurView style={styles.wrapper} intensity={20}>
         <ActivityIndicator size="large" />
       </BlurView>
     </Modal>

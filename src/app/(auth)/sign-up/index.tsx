@@ -59,7 +59,7 @@ export default function SignUpEmailScreen() {
           if (paramName === "email_address") return "email";
           return "root.clerkError";
         };
-        clerkHandleErrors(error, setError, t, paramMapper);
+        clerkHandleErrors(error, setError, paramMapper);
       },
     });
   };

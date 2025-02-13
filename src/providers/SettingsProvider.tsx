@@ -39,8 +39,7 @@ export const SettingsProvider = ({ children }: Props) => {
 
   const calcLangCode = () => {
     const localesLangCode = getLocales()[0].languageCode!;
-    // return ["en", "uk", "ru"].includes(localesLangCode) ? localesLangCode : "en";
-    return "en";
+    return ["en", "uk", "ru"].includes(localesLangCode) ? localesLangCode : "en";
   };
 
   useEffect(() => {

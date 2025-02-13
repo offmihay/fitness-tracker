@@ -24,6 +24,7 @@ import { usePathname } from "expo-router";
 import toastConfig from "@/src/shared/toast/toastConfig";
 import Toast from "react-native-toast-message";
 import LoadingModal from "@/src/shared/modal/LoadingModal";
+import { useIsMutating } from "@tanstack/react-query";
 
 type renderContent = {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -46,7 +47,7 @@ export type LayoutProps = {
   canGoBack?: boolean;
   disableTabBarInset?: boolean;
   contentStyle?: ViewStyle;
-  loaderEnabled?: boolean;
+  loaderDisabled?: boolean;
 };
 
 const CustomLayout = (props: LayoutProps) => {
@@ -61,10 +62,11 @@ const CustomLayout = (props: LayoutProps) => {
     canGoBack,
     disableTabBarInset,
     contentStyle,
-    loaderEnabled,
+    loaderDisabled,
   } = props;
 
   const theme = useCustomTheme();
+  const isMutating = useIsMutating();
 
   const pathName = usePathname();
   const isModal = modalRoutes.includes(pathName);
@@ -133,7 +135,7 @@ const CustomLayout = (props: LayoutProps) => {
             maxHeight: !disableHeader ? (isDefaultCompressed ? minHeight : maxHeight) : 0,
           })}
         </View>
-        <LoadingModal isVisible={loaderEnabled || false} />
+        <LoadingModal isVisible={isMutating > 0 && !loaderDisabled} />
       </View>
       {isModal && <Toast config={toastConfig(theme)} topOffset={toastTopOffset} />}
     </>

@@ -49,7 +49,7 @@ const CreateTournament = () => {
           <TournamentEditForm type="create" />
           <CustomAnimatedView className="my-5">
             <ButtonDefault
-              title={t("tournaments.create.createButton")}
+              title={t("common.create")}
               className="mt-4"
               onPress={handlePress}
               loading={createTournamentMutation.isPending}

@@ -20,39 +20,23 @@ import {
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
 import { emptyBaseTournament, TournamentBase } from "@/src/types/tournament";
 import _ from "lodash";
-import { useSettings } from "@/src/hooks/useSettings";
 import CreatorTournamentCard from "@/src/components/tournaments/common/CreatorTournamentCard";
 import TournamentSkeleton from "@/src/components/tournaments/common/skeleton/TournamentSkeleton";
 import CustomText from "@/src/shared/text/CustomText";
-import CustomSwitch from "@/src/shared/switch/Switch";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import FilterDropdownMenu from "@/src/components/tournaments/common/FilterDropdownMenu";
-import LoadingModal from "@/src/shared/modal/LoadingModal";
 
 type Props = {};
 
 type Filter = "participant" | "organizer" | "all";
 
 const Tournaments = ({}: Props) => {
-  const { data: dataFetch, refetch, isFetching } = getMyTournaments();
+  const { data: dataFetch, refetch, isFetching } = getMyTournaments(false);
   const theme = useCustomTheme();
   const deleteTournamentMutation = deleteTournament();
   const leaveTournamentMutation = leaveTournament();
   const updateStatusMutation = updateStatus();
-
-  const { isMutationsPending } = useMemo(() => {
-    return {
-      isMutationsPending:
-        deleteTournamentMutation.isPending ||
-        leaveTournamentMutation.isPending ||
-        updateStatusMutation.isPending,
-    };
-  }, [
-    deleteTournamentMutation.isPending,
-    leaveTournamentMutation.isPending,
-    updateStatusMutation.isPending,
-  ]);
 
   const [filter, setFilter] = useState<Filter>("all");
 
@@ -180,7 +164,6 @@ const Tournaments = ({}: Props) => {
   return (
     <>
       <LayoutFlashList
-        loaderEnabled={isMutationsPending}
         headerConfig={{
           nodeHeader: () => (
             <View className="flex h-full justify-end items-end">

@@ -35,21 +35,21 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           <UserAvatarList />
           <Divider />
           <PersonalInfoList
-            label={t("settings.personalInfo.email")}
-            value={user?.primaryEmailAddress?.emailAddress || "Not specified"}
+            label={t("user.email")}
+            value={user?.primaryEmailAddress?.emailAddress || t("common.notSpecified")}
             onPress={() => void 0}
             icon={<Entypo name="mail" size={24} color={theme.colors.primary} />}
             disabled
           />
           <Divider />
           <PersonalInfoList
-            label={t("settings.personalInfo.name")}
+            label={t("user.name")}
             value={
               `${user?.firstName} ${user?.lastName}`.trim().length !== 0 && !!user?.firstName
                 ? !!user.lastName
                   ? `${user?.firstName} ${user?.lastName}`
                   : user?.firstName
-                : "Not specified"
+                : t("common.notSpecified")
             }
             onPress={() =>
               router.push({ pathname: "./change-name" }, { relativeToDirectory: true })
@@ -60,8 +60,8 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           <FormBirthday
             renderTrigger={(onPress, value) => (
               <PersonalInfoList
-                label={t("settings.personalInfo.birthday")}
-                value={value || "Not specified"}
+                label={t("user.birthday")}
+                value={value || t("common.notSpecified")}
                 onPress={onPress}
                 icon={<FontAwesome name="birthday-cake" size={20} color={theme.colors.primary} />}
               />
@@ -71,7 +71,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
         <View style={{ paddingHorizontal: 10, paddingBottom: 20 }}>
           <ButtonDefault
             onPress={handleSignOut}
-            title={t("settings.personalInfo.signOut")}
+            title={t("common.signOut")}
             nodeLeft={(color) => <Octicons name="sign-out" size={24} color={color} />}
             type="white"
             className="mt-6"

@@ -1,0 +1,253 @@
+{
+  "tournament": {
+    "title": "Title",
+    "description": "Description",
+    "date": "Date",
+    "dateStart": "Start date",
+    "dateEnd": "End date",
+    "city": "City",
+    "location": "Address",
+    "entryFee": "Entry Fee",
+    "prizePool": "Prize Pool",
+    "organizer": "Organizer",
+    "maxParticipants": "Max Participants",
+    "rules": "Rules",
+    "status:": "Status:",
+    "sportType": {
+      "title": "Sport Type",
+      "label": "Choose sport type",
+      "TENNIS": "Tennis",
+      "BADMINTON": "Badminton",
+      "TABLE_TENNIS": "Table Tennis",
+      "SQUASH": "Squash",
+      "other": "Other"
+    },
+    "ageRestriction": {
+      "title": "Age Restriction",
+      "minAge": "Min Age",
+      "maxAge": "Max Age"
+    },
+    "skillLevel": {
+      "title": "Skill Level",
+      "label": "Choose skill level",
+      "AMATEUR": "Amateur",
+      "INTERMEDIATE": "Intermediate",
+      "PROFESSIONAL": "Professional"
+    },
+    "format": {
+      "title": "Format",
+      "label": "Choose format",
+      "SINGLES": "Singles",
+      "DOUBLES": "Doubles",
+      "SQUAD": "Squad"
+    },
+    "status": {
+      "title": "Status",
+      "UPCOMING": "Upcoming",
+      "ONGOING": "Ongoing",
+      "FINISHED": "Finished",
+      "DEACTIVATED": "Deactivated"
+    }
+  },
+  "user": {
+    "name": "Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "birthday": "Birthday",
+    "imageUrl": "Image URL",
+    "organizerName": "Organization Name",
+    "organizerEmail": "Email",
+    "organizerPhone": "Work Phone",
+    "organizerDetails": "Organization Details",
+    "isVerified": "Is Verified",
+    "photo": "Photo Profile"
+  },
+  "errors": {
+    "server_error": "Something went wrong. Please try again later.",
+    "form_identifier_not_found": "Couldn't find your account.",
+    "form_identifier_exists": "That email address is taken. Please try another.",
+    "form_password_incorrect": "Password is incorrect. Try again, or use another method.",
+    "form_password_pwned": "Password has been found in an online data breach. For account safety, please use a different password.",
+    "form_param_format_invalid": "Invalid format",
+    "email_invalid": "Invalid email address",
+    "password_not_matching": "Passwords not matching",
+    "password_too_short": "Password must be 8 characters or more",
+    "password_too_long": "Password must not exceed 20 characters",
+    "email_too_long": "Email address must not exceed 30 characters",
+    "form_code_incorrect": "Incorrect code",
+    "verification_failed": "Too many failed attempts. You have to try again with the same or another method.",
+    "too_many_requests": "Too many requests. Please try again later.",
+    "strategy_for_user_invalid": "Invalid strategy for user",
+    "tournament_not_found": "Tournament not found",
+    "tournament_already_registered": "You have already registered for this tournament",
+    "tournament_not_registered": "You haven't registered for this tournament",
+    "max_participants_reached": "Maximum number of participants reached",
+    "no_token_provided": "You are not authorized",
+    "invalid_token": "You are not authorized",
+    "loading_data_error": "Failed to load data"
+  },
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "delete": "Delete",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "edit": "Edit",
+    "back": "Back",
+    "done": "Done",
+    "openGallery": "Open Gallery",
+    "openCamera": "Open Camera",
+    "leave": "Leave",
+    "notSpecified": "Not Specified",
+    "applyChanges": "Apply Changes",
+    "search": "Search",
+    "chooseDate": "Choose Date",
+    "reset": "Reset",
+    "showResults": "Show Results",
+    "from": "From",
+    "to": "To",
+    "signOut": "Sign Out",
+    "addPhoto": "Add Photo",
+    "saveChanges": "Save Changes",
+    "create": "Create",
+    "register": "Register",
+    "ok": "Ok"
+  },
+  "title": {
+    "home": "Home",
+    "tournaments": "Tournaments",
+    "finished": "Archive",
+    "settings": "Settings",
+    "createTournament": "Create Tournament",
+    "editTournament": "Edit Tournament",
+    "personalInfo": "Personal Info",
+    "changeName": "Change Name",
+    "rules": "Rules",
+    "participants": "Participants",
+    "choose-location": "Choose Location",
+    "registration": "Registration",
+    "organizerInfo": "Organizer Info",
+    "organizerDetails": "Organizer Details"
+  },
+  "signin": {
+    "continueGoogle": "Continue with Google",
+    "continueApple": "Continue with Apple",
+    "continueEmail": "Sign in using Email",
+    "signup": "Do not have an account? Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "modal": {
+      "title": "Welcome back!",
+      "forgotPassword": "Forgot Password?",
+      "signin": "Sign In"
+    }
+  },
+  "signup": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "code": "Code",
+    "continue": "Continue",
+    "titleEmail": "Let's start with your email",
+    "alreadyHaveAccount": "Already have an account?",
+    "titlePassword": "Create a strong password",
+    "titleVerifyCode": "We've sent a 6-digit code to your email. Please enter it below",
+    "complete": "Complete Registration",
+    "notReceiveCode": "Didn't receive the code?",
+    "tryAgainIn": "Try again in",
+    "requestNewCode": "Request new code"
+  },
+  "settings": {
+    "personalInfo": {
+      "title": "Edit Profile",
+      "photo": "Photo",
+      "saveChanges": "Save Changes"
+    },
+    "theme": {
+      "title": "Choose Theme",
+      "system": "System",
+      "dark": "Dark",
+      "light": "Light"
+    },
+    "language": {
+      "title": "Change Language",
+      "en": "English",
+      "uk": "Ukrainian",
+      "ru": "Russian",
+      "system": "Default"
+    },
+    "notifications": {
+      "title": "Notifications"
+    },
+    "organizerInfo": {
+      "title": "Organizer Info",
+      "creatorMode": "Creator Mode",
+      "editOrganizerInfo": "Edit Organizer Info"
+    }
+  },
+  "home": {
+    "tournament": {
+      "register": "Register",
+      "saveForLater": "Save for Later",
+      "description": "Description",
+      "participants": "Participants",
+      "rules": "Rules",
+      "organizer": "Organizer",
+      "noAgeRestrictions": "No age restrictions",
+      "organizerDetails": "Organizer Details",
+      "organizedBy": "Organized by",
+      "unknown": "Unknown",
+      "contactUs": "Contact Us"
+    },
+    "filter": {
+      "title": "Filter"
+    },
+    "sort": {
+      "title": "Sort by",
+      "newest": "Newest",
+      "upcoming": "Upcoming",
+      "prizePool": "Prize pool",
+      "distance": "Distance"
+    }
+  },
+  "tournaments": {
+    "filter": {
+      "title": "Filter",
+      "organizer": "Only created",
+      "participant": "Only participating",
+      "all": "All"
+    },
+    "users": "Users",
+    "create": "Create",
+    "edit": "Edit",
+    "tournamentDetails": "Tournament Details",
+    "restrictions": "Restrictions",
+    "locationDate": "Location & Date",
+    "additionalParameters": "Additional Parameters",
+    "organizerDetails": "Organizer Details",
+    "organizer": "Organizer"
+  },
+  "register": {
+    "title": "Type your personal information to contact with you",
+    "successMessage": "You succcesfully registered for tournament",
+    "goBack": "Go Back to tournament",
+    "addReminder": "Add Reminder in calendar"
+  },
+
+  "alert": {
+    "deleteTournament": "Are you sure you want to delete this tournament?",
+    "deactivateTournament": "Are you sure you want to deactivate this tournament?",
+    "activateFinishedTournament": "Your tournament is finished and it will remain unaccessible. To enable it, go to Edit Page and change date of the tournament.",
+    "leaveTournament": "Are you sure you want to leave this tournament?",
+    "cameraPerssions": "App doesn't have permission to your camera. Go to settings and change Camera permissions",
+    "galleryPermission": "App doesn't have permission to your gallery. Go to settings and change Gallery permissions",
+    "locationPermission": "App doesn't have permission to your location. Go to settings and change Location permissions",
+    "deleteImage": "Are you sure you want to delete this image?",
+    "goToEditPage": "Go to Edit Page",
+    "goToSettings": "Go to Settings"
+  }
+}

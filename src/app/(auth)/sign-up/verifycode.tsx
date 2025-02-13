@@ -61,7 +61,7 @@ const SignUpVerifyCodeScreen = () => {
       },
       onError: (error: any) => {
         setSecondsLeft(null);
-        clerkHandleErrors(error, setError, t);
+        clerkHandleErrors(error, setError);
       },
     });
   };
@@ -76,7 +76,7 @@ const SignUpVerifyCodeScreen = () => {
           if (paramName === "code") return "code";
           return "root.clerkError";
         };
-        clerkHandleErrors(error, setError, t, paramMapper);
+        clerkHandleErrors(error, setError, paramMapper);
       },
     });
   };

@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import _ from "lodash";
 import { FilterHome } from "../types";
+import { t } from "i18next";
 
 type Props = { isMutated: boolean; disabled?: boolean } & React.ComponentProps<
   typeof FilterContent
@@ -24,7 +25,7 @@ const FilterModal = (props: Props) => {
       renderTrigger={(handleOpen) => (
         <ButtonSmall
           disabled={disabled}
-          title="Filter"
+          title={t("home.filter.title")}
           renderIcon={(color, size) => (
             <FontAwesome6 name="sliders" size={size - 2} color={color} />
           )}

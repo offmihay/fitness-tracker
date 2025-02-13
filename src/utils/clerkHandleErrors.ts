@@ -5,7 +5,6 @@ type SetErrorParams<T> = Path<T> | `root.${string}` | "root";
 const clerkHandleErrors = <T extends FieldValues>(
   error: any,
   setError: UseFormSetError<T>,
-  t: (key: string) => string,
   paramMapper?: (paramName: string) => SetErrorParams<T>
 ) => {
   if (error.clerkError) {
@@ -15,14 +14,14 @@ const clerkHandleErrors = <T extends FieldValues>(
 
       setError(errParam, {
         type: err.code,
-        message: t(`errors.${err.code}`),
+        message: `errors.${err.code}`,
       });
     });
   } else {
     const errParam: SetErrorParams<T> = "root.serverError";
     setError(errParam, {
       type: "server_error",
-      message: t(`errors.server_error`),
+      message: "errors.server_error",
     });
   }
 };

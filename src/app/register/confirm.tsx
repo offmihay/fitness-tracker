@@ -7,6 +7,7 @@ import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import ConfirmTournamentDetails from "@/src/components/register/ConfirmTournamentDetails";
 import SportLabel from "@/src/components/home/common/SportLabel";
 import StickyFooterView from "@/src/shared/view/StickyFooterView";
+import { t } from "i18next";
 
 type Props = {};
 
@@ -71,7 +72,7 @@ const RegistrationConfirmScreen = (props: Props) => {
       <StickyFooterView offset={{ closed: 0, opened: 100 }}>
         <View style={styles.buttonWrapper}>
           <ButtonDefault
-            title="Register"
+            title={t("common.register")}
             onPress={handlePress}
             className="mt-6"
             loading={registerMutation.isPending}

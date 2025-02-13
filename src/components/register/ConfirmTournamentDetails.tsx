@@ -118,7 +118,7 @@ const ConfirmTournamentDetails = (props: Props) => {
           />
           <TournamentInfoRow
             renderIcon={(color) => <AntDesign name="phone" size={20} color={color} />}
-            label={t("settings.personalInfo.phoneNumber")}
+            label={t("user.phoneNumber")}
             value={data.organizer.organizerPhone || t("home.tournament.unknown")}
           />
         </TournamentInfoBlock>

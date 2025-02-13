@@ -164,7 +164,7 @@ const TournamentDetails = ({
       >
         <View style={styles.infoBlock}>
           <CustomText type="subtitle" className="mb-4">
-            {t("home.tournament.location")}
+            {t("tournament.location")}
           </CustomText>
           <CustomText className="mb-2">{data?.location}</CustomText>
         </View>

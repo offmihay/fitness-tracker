@@ -33,7 +33,7 @@ export const TournamentInfoRow = ({ renderIcon, label, value }: InfoRowProps) =>
   return (
     <View style={styles.infoRowContainer}>
       <View style={styles.iconWrapper}>{renderIcon(color)}</View>
-      <CustomText>
+      <CustomText style={{ flex: 1 }}>
         <CustomText weight="bold">{label}: </CustomText>
         {value}
       </CustomText>
