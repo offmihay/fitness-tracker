@@ -52,9 +52,7 @@ export const registerTournament = () => {
       queryClient.setQueryData<Tournament[]>(["my-tournaments", false], (prev) => {
         if (prev) {
           const index = prev.findIndex((t) => t.id === data.id);
-          console.log([data, ...prev]);
           if (index === -1) {
-            console.log([data, ...prev]);
             return [data, ...prev];
           } else {
             return [...prev.slice(0, index), data, ...prev.slice(index + 1)];

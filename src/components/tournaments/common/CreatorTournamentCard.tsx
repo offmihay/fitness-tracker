@@ -110,18 +110,18 @@ const CreatorTournamentCard = (props: Props) => {
           </View>
         </TouchableOpacity>
         <View style={styles.footer}>
-          <View className="w-1/2 pr-3">
+          <View className="w-7/12 pr-3">
             <ButtonSmall
               onPress={onEditPress}
               title={t("common.edit")}
               style={{ backgroundColor: theme.colors.primary }}
               renderIcon={(color) => <Feather name="edit-3" size={20} color="white" />}
               textColor="white"
-              textProps={{ type: "predefault" }}
+              textProps={{ type: "default" }}
             />
           </View>
 
-          <View className="w-1/2">
+          <View className="w-5/12">
             <View className="flex flex-row gap-2">
               <ButtonSmall
                 style={{ backgroundColor: theme.colors.surfaceLight, flex: 1 }}

@@ -13,7 +13,7 @@ import { useUser } from "@clerk/clerk-expo";
 export type CreateTournamentPageQuery = {
   place_id?: string;
   name?: string;
-  address: string;
+  address?: string;
   latitude?: string;
   longitude?: string;
   url?: string;

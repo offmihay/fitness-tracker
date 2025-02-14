@@ -8,5 +8,14 @@ declare global {
     organizerEmail?: string;
     organizerPhone?: string;
     phoneNumber?: string;
+    role?: "organizer" | "participant";
+    sport?: TournamentSport[];
+    residencePlace?: {
+      geoCoordinates: {
+        latitude?: number;
+        longitude?: number;
+      };
+      city: string;
+    };
   }
 }

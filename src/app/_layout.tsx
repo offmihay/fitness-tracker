@@ -33,6 +33,7 @@ const Layout = () => {
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="register" options={{ presentation: "modal" }} />
+        <Stack.Screen name="wizard" />
       </Stack>
       {!isModal && <Toast config={toastConfig(theme)} topOffset={toastTopOffset} />}
     </>

@@ -35,7 +35,6 @@ export const useSignUpPasswordMutation = () => {
 
         if (signUpResponse) {
           return await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-        } else {
         }
       }
     },

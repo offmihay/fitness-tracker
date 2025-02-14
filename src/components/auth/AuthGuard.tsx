@@ -1,12 +1,27 @@
 import { Slot, useRouter } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
 import CustomText from "@/src/shared/text/CustomText";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const { navigate } = useRouter();
   const { isLoaded, isSignedIn } = useAuth();
+
+  useEffect(() => {
+    const fetchIsSeenWizard = async () => {
+      const isWizardSeen = await AsyncStorage.getItem("wizardSeen");
+      console.log(isWizardSeen);
+      if (!isWizardSeen || isWizardSeen === "false") {
+        navigate("/wizard");
+      } else {
+        navigate("/home");
+      }
+    };
+
+    fetchIsSeenWizard();
+  }, []);
 
   useEffect(() => {
     if (isLoaded) {

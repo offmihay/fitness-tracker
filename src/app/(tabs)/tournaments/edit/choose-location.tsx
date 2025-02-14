@@ -70,7 +70,7 @@ const ChooseLocation = () => {
       }}
     >
       <View style={styles.wrapper}>
-        <GoogleAutoComplete query={pageQuery} onSubmit={onSubmit} />
+        <GoogleAutoComplete onSubmit={onSubmit} location={pageQuery} />
       </View>
     </LayoutStatic>
   );

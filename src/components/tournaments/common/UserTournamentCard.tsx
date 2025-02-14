@@ -118,7 +118,7 @@ const UserTournamentCard = (props: Props) => {
         </TouchableOpacity>
 
         <View style={styles.footer}>
-          <View className="w-1/2 pr-3">
+          <View className="w-7/12 pr-3">
             <View className="flex flex-row flex-1 gap-2">
               <TouchableOpacity
                 style={[styles.footerBtn, { backgroundColor: theme.colors.primary, flex: 1 }]}
@@ -137,7 +137,7 @@ const UserTournamentCard = (props: Props) => {
             </View>
           </View>
 
-          <View className="w-1/2">
+          <View className="w-5/12">
             <View className="flex flex-row gap-2">
               <ButtonSmall
                 style={{ backgroundColor: theme.colors.surfaceLight, flex: 1 }}

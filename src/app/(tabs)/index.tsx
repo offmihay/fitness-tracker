@@ -1,11 +1,8 @@
-import { useAuth } from "@clerk/clerk-expo";
-import { Redirect, router } from "expo-router";
-import React, { useEffect } from "react";
+import { Redirect } from "expo-router";
+import React from "react";
 
 const MainScreen = () => {
-  const { isLoaded, isSignedIn } = useAuth();
-
-  return <>{isLoaded && isSignedIn ? <Redirect href="/home" /> : <Redirect href="/welcome" />}</>;
+  return <Redirect href="/" />;
 };
 
 export default MainScreen;

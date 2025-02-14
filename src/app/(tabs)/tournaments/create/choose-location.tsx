@@ -6,15 +6,14 @@ import FastImage from "@d11/react-native-fast-image";
 import { router, useLocalSearchParams } from "expo-router";
 import GoogleAutoComplete from "@/src/components/tournaments/choose-location/GoogleAutocomplete";
 import { CreateTournamentPageQuery } from ".";
-import CustomText from "@/src/shared/text/CustomText";
 
 export type ChooseLocationPageQuery = {
-  address: string;
-  language: string;
-  location: string;
+  address?: string;
+  language?: string;
+  location?: string;
   latitude?: string;
   longitude?: string;
-  components: string;
+  components?: string;
 };
 
 const GoogleLogo = () => {
@@ -69,7 +68,7 @@ const ChooseLocation = () => {
       }}
     >
       <View style={styles.wrapper}>
-        <GoogleAutoComplete query={pageQuery} onSubmit={onSubmit} />
+        <GoogleAutoComplete onSubmit={onSubmit} location={pageQuery} />
       </View>
     </LayoutStatic>
   );

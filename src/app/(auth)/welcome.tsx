@@ -15,7 +15,6 @@ import BackgroundImage from "@/src/shared/image/BackgroundImage";
 import FastImage from "@d11/react-native-fast-image";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import CustomText from "@/src/shared/text/CustomText";
-import { useEffect } from "react";
 
 const SignIn = () => {
   const { t } = useTranslation();

@@ -19,6 +19,9 @@ const clerkTransformData = (
     "organizerPhone",
     "organizerName",
     "phoneNumber",
+    "role",
+    "featuredSport",
+    "residencePlace",
   ];
 
   const safeData = Object.fromEntries(
