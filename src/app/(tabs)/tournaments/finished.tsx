@@ -139,6 +139,7 @@ const FinishedTournaments = ({}: Props) => {
   return (
     <>
       <LayoutFlashList
+        loaderPending={true}
         headerConfig={{
           nodeHeader: () => (
             <View className="flex h-full justify-end items-end">

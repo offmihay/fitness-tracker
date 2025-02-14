@@ -12,7 +12,6 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchIsSeenWizard = async () => {
       const isWizardSeen = await AsyncStorage.getItem("wizardSeen");
-      console.log(isWizardSeen);
       if (!isWizardSeen || isWizardSeen === "false") {
         navigate("/wizard");
       } else {

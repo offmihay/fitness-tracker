@@ -45,10 +45,6 @@ const ChangeNameScreen = () => {
     const formData = clerkTransformData(data, user?.unsafeMetadata || null);
     formDataMutation.mutate(formData, {
       onSuccess: () => {
-        Toast.show({
-          type: "successToast",
-          props: { text: "Successfully updated profile information" },
-        });
         router.back();
       },
       onError: (error: any) => {

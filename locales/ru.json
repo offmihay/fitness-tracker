@@ -81,8 +81,8 @@
     "too_many_requests": "Слишком много запросов. Пожалуйста, попробуйте позже.",
     "strategy_for_user_invalid": "Неверная стратегия для пользователя",
     "tournament_not_found": "Турнир не найден",
-    "tournament_already_registered": "Вы уже зарегистрированы на этот турнир",
-    "tournament_not_registered": "Вы не зарегистрированы на этот турнир",
+    "tournament_already_registered": "Вы уже зарегистрированы",
+    "tournament_not_registered": "Вы не зарегистрированы",
     "max_participants_reached": "Достигнуто максимальное количество участников",
     "no_token_provided": "Вы не авторизованы",
     "invalid_token": "Вы не авторизованы"
@@ -114,7 +114,8 @@
     "saveChanges": "Сохранить изменения",
     "create": "Создать",
     "register": "Зарегистрироваться",
-    "ok": "Ок"
+    "ok": "Ок",
+    "error": "Ошибка"
   },
   "title": {
     "home": "Главная",

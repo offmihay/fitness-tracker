@@ -21,10 +21,9 @@ import CustomHeader from "./CustomHeader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT, modalRoutes } from "../options";
 import { usePathname } from "expo-router";
-import toastConfig from "@/src/shared/toast/toastConfig";
 import Toast from "react-native-toast-message";
 import LoadingModal from "@/src/shared/modal/LoadingModal";
-import { useIsMutating } from "@tanstack/react-query";
+import { useIsMutating, useIsFetching } from "@tanstack/react-query";
 
 type renderContent = {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -47,7 +46,10 @@ export type LayoutProps = {
   canGoBack?: boolean;
   disableTabBarInset?: boolean;
   contentStyle?: ViewStyle;
-  loaderDisabled?: boolean;
+  loaderPending?: boolean;
+  loaderFetching?: boolean;
+  isCustomPending?: boolean;
+  isCustomFetching?: boolean;
 };
 
 const CustomLayout = (props: LayoutProps) => {
@@ -62,11 +64,15 @@ const CustomLayout = (props: LayoutProps) => {
     canGoBack,
     disableTabBarInset,
     contentStyle,
-    loaderDisabled,
+    loaderPending = false,
+    loaderFetching = false,
+    isCustomPending,
+    isCustomFetching,
   } = props;
 
   const theme = useCustomTheme();
   const isMutating = useIsMutating();
+  const isFetching = useIsFetching();
 
   const pathName = usePathname();
   const isModal = modalRoutes.includes(pathName);
@@ -81,6 +87,7 @@ const CustomLayout = (props: LayoutProps) => {
   const scrollHandler = useAnimatedScrollHandler((event: any) => {
     scrollY.value = event.contentOffset.y;
   });
+  console.log(isMutating > 0);
 
   const animatedHeaderStyle = useAnimatedStyle(() => {
     const height = interpolate(scrollY.value, [0, Scroll_Distance], [maxHeight, minHeight], {
@@ -135,9 +142,23 @@ const CustomLayout = (props: LayoutProps) => {
             maxHeight: !disableHeader ? (isDefaultCompressed ? minHeight : maxHeight) : 0,
           })}
         </View>
-        <LoadingModal isVisible={isMutating > 0 && !loaderDisabled} />
       </View>
-      {isModal && <Toast config={toastConfig(theme)} topOffset={toastTopOffset} />}
+      {loaderPending && (
+        <LoadingModal
+          isVisible={
+            typeof isCustomPending === "boolean" ? isCustomPending : isMutating > 0 && loaderPending
+          }
+        />
+      )}
+      {loaderFetching && (
+        <LoadingModal
+          isVisible={
+            typeof isCustomFetching === "boolean"
+              ? isCustomFetching
+              : isFetching > 0 && loaderFetching
+          }
+        />
+      )}
     </>
   );
 };

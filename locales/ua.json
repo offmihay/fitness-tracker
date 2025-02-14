@@ -81,8 +81,8 @@
     "too_many_requests": "Занадто багато запитів. Будь ласка, спробуйте пізніше.",
     "strategy_for_user_invalid": "Невірна стратегія для користувача",
     "tournament_not_found": "Турнір не знайдено",
-    "tournament_already_registered": "Ви вже зареєстровані на цей турнір",
-    "tournament_not_registered": "Ви не зареєстровані на цей турнір",
+    "tournament_already_registered": "Ви вже зареєстровані",
+    "tournament_not_registered": "Ви не зареєстровані",
     "max_participants_reached": "Досягнуто максимальну кількість учасників",
     "no_token_provided": "Ви не авторизовані",
     "invalid_token": "Ви не авторизовані"
@@ -114,7 +114,8 @@
     "saveChanges": "Зберегти зміни",
     "create": "Створити",
     "register": "Зареєструватися",
-    "ok": "Ок"
+    "ok": "Ок",
+    "error": "Помилка"
   },
   "title": {
     "home": "Головна",

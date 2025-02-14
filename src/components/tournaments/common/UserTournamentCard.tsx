@@ -17,6 +17,7 @@ import StatusLabel from "../../home/common/StatusLabel";
 import { formatDateTime } from "@/src/utils/formatDateTime";
 import Toast from "react-native-toast-message";
 import { leaveTournamentConfirmationAlert } from "@/src/shared/alerts/alerts";
+import * as Burnt from "burnt";
 
 type Props = {
   data: TournamentBase;
@@ -55,9 +56,10 @@ const UserTournamentCard = (props: Props) => {
 
     if (url) {
       Linking.openURL(url).catch((err) =>
-        Toast.show({
-          type: "toastError",
-          props: { text: t("error.couldNotOpenMaps") },
+        Burnt.toast({
+          title: t("common.error"),
+          preset: "error",
+          message: t("error.couldNotOpenMaps"),
         })
       );
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useUser } from "@clerk/clerk-expo";
 import { useTranslation } from "react-i18next";
@@ -11,17 +11,21 @@ import {
 } from "@/src/components/settings/personal-info/forms/schema";
 import RHFormDatePicker from "@/src/shared/form/RHFormDatePicker";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
-import Toast from "react-native-toast-message";
 
 type Props = {
   renderTrigger: (onPress: () => void, value: string) => React.ReactNode;
+  onLoadChange?: (isLoading: boolean) => void;
 };
 
 const FormBirthday = (props: Props) => {
-  const { renderTrigger: triggerNode } = props;
+  const { renderTrigger: triggerNode, onLoadChange } = props;
   const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();
+
+  useEffect(() => {
+    onLoadChange?.(formDataMutation.isPending);
+  }, [formDataMutation.isPending]);
 
   const methods = useForm<ChangeBirthdayFormData>({
     mode: "onChange",
@@ -38,12 +42,6 @@ const FormBirthday = (props: Props) => {
   const onSubmit = (data: ChangeBirthdayFormData) => {
     const formData = clerkTransformData(data, user?.unsafeMetadata || null);
     formDataMutation.mutate(formData, {
-      onSuccess: () => {
-        Toast.show({
-          type: "successToast",
-          props: { text: "Successfully updated profile information" },
-        });
-      },
       onError: (error: any) => {
         clerkHandleErrors(error, setError);
       },
@@ -51,11 +49,7 @@ const FormBirthday = (props: Props) => {
   };
 
   const updateValues = async () => {
-    try {
-      await handleSubmit(onSubmit)();
-    } catch (error) {
-      console.error("Form submission error:", error);
-    }
+    await handleSubmit(onSubmit)();
   };
 
   return (

@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useTranslation } from "react-i18next";
 import UserAvatarList from "@/src/components/settings/personal-info/UserAvatarList";
@@ -22,6 +22,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   const { user } = useUser();
   const theme = useCustomTheme();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
@@ -29,7 +30,12 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   };
 
   return (
-    <LayoutScrollView name="personalInfo" alwaysBounceVertical={false}>
+    <LayoutScrollView
+      name="personalInfo"
+      alwaysBounceVertical={false}
+      loaderPending
+      isCustomPending={isLoading}
+    >
       <View style={styles.wrapper}>
         <View style={[{ backgroundColor: theme.colors.surface, borderRadius: 10 }]}>
           <UserAvatarList />
@@ -58,6 +64,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
           />
           <Divider />
           <FormBirthday
+            onLoadChange={setIsLoading}
             renderTrigger={(onPress, value) => (
               <PersonalInfoList
                 label={t("user.birthday")}

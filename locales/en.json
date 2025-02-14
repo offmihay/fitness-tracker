@@ -81,8 +81,8 @@
     "too_many_requests": "Too many requests. Please try again later.",
     "strategy_for_user_invalid": "Invalid strategy for user",
     "tournament_not_found": "Tournament not found",
-    "tournament_already_registered": "You have already registered for this tournament",
-    "tournament_not_registered": "You haven't registered for this tournament",
+    "tournament_already_registered": "You've already registered",
+    "tournament_not_registered": "You haven't registered",
     "max_participants_reached": "Maximum number of participants reached",
     "no_token_provided": "You are not authorized",
     "invalid_token": "You are not authorized",
@@ -115,7 +115,8 @@
     "saveChanges": "Save Changes",
     "create": "Create",
     "register": "Register",
-    "ok": "Ok"
+    "ok": "Ok",
+    "error": "Error"
   },
   "title": {
     "home": "Home",

@@ -11,19 +11,30 @@ const LoadingModal = (props: Props) => {
   const { isVisible } = props;
 
   return (
-    <Modal
-      isVisible={isVisible}
-      backdropOpacity={0}
-      animationIn="fadeIn"
-      animationOut="fadeOut"
-      style={{ margin: 0 }}
-      animationInTiming={1}
-      animationOutTiming={1}
+    <View
+      pointerEvents="none"
+      style={{
+        flex: 1,
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+      }}
     >
-      <BlurView style={styles.wrapper} intensity={20}>
-        <ActivityIndicator size="large" />
-      </BlurView>
-    </Modal>
+      <Modal
+        isVisible={isVisible}
+        backdropOpacity={0}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        style={{ margin: 0 }}
+        animationInTiming={1}
+        animationOutTiming={1}
+        pointerEvents="none"
+      >
+        <BlurView style={styles.wrapper} intensity={20}>
+          <ActivityIndicator size="large" />
+        </BlurView>
+      </Modal>
+    </View>
   );
 };
 

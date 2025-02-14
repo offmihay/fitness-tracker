@@ -9,7 +9,6 @@ import { modalRoutes, stackProps } from "../components/navigation/options";
 import { useCustomTheme } from "../hooks/useCustomTheme";
 import { Platform } from "react-native";
 import Toast from "react-native-toast-message";
-import toastConfig from "../shared/toast/toastConfig";
 import React from "react";
 
 if (process.env.NODE_ENV === "development") {
@@ -35,7 +34,6 @@ const Layout = () => {
         <Stack.Screen name="register" options={{ presentation: "modal" }} />
         <Stack.Screen name="wizard" />
       </Stack>
-      {!isModal && <Toast config={toastConfig(theme)} topOffset={toastTopOffset} />}
     </>
   );
 };

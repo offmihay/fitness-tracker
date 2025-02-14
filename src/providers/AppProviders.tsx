@@ -11,8 +11,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useEffect, useState } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import Toast from "react-native-toast-message";
 import { useTranslation } from "react-i18next";
+import * as Burnt from "burnt";
 
 const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { settings } = useSettings();
@@ -54,9 +54,13 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     },
     queryCache: new QueryCache({
       onError: (error) => {
-        Toast.show({
-          type: "errorToast",
-          props: { text: t(`errors.loading_data_error`) },
+        const localeError = t(`errors.${error.cause}`);
+        const message = localeError !== error.cause ? localeError : "errors.loading_data_error";
+
+        Burnt.toast({
+          title: t("common.error"),
+          preset: "error",
+          message: message,
         });
         throw error;
       },
@@ -68,9 +72,10 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         }
         const localeError = t(`errors.${error.cause}`);
         const message = localeError !== error.cause ? localeError : error.cause;
-        Toast.show({
-          type: "errorToast",
-          props: { text: message || error.message },
+        Burnt.toast({
+          title: t("common.error"),
+          preset: "error",
+          message: message || error.message,
         });
         throw error;
       },

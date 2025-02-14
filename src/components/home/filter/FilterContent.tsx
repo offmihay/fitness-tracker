@@ -70,12 +70,7 @@ const FilterContent = (props: Props) => {
     try {
       await AsyncStorage.setItem("filter-home", JSON.stringify(res));
       filter && onConfirm?.(res);
-    } catch (e) {
-      Toast.show({
-        type: "errorToast",
-        props: { text: "Failed to save filter settings" },
-      });
-    }
+    } catch (e) {}
     Keyboard.dismiss();
     dismiss("filter-modal");
   };
