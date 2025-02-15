@@ -4,12 +4,10 @@ import "../styles/global.css";
 import AppProviders from "../providers/AppProviders";
 import AuthGuard from "../components/auth/AuthGuard";
 import "react-native-get-random-values";
-import { Stack, usePathname } from "expo-router";
-import { modalRoutes, stackProps } from "../components/navigation/options";
-import { useCustomTheme } from "../hooks/useCustomTheme";
-import { Platform } from "react-native";
-import Toast from "react-native-toast-message";
-import React from "react";
+import { Stack } from "expo-router";
+import { stackProps } from "../components/navigation/options";
+import React, { useCallback } from "react";
+import * as SplashScreen from "expo-splash-screen";
 
 if (process.env.NODE_ENV === "development") {
   const originalWarn = console.warn;
@@ -20,30 +18,36 @@ if (process.env.NODE_ENV === "development") {
   };
 }
 
-const Layout = () => {
-  const theme = useCustomTheme();
-  const pathName = usePathname();
-  const isModal = modalRoutes.includes(pathName);
-  const toastTopOffset = Platform.OS === "android" ? 20 : 65;
+SplashScreen.preventAutoHideAsync();
 
+SplashScreen.setOptions({
+  duration: 400,
+  fade: true,
+});
+
+const Layout = () => {
   return (
-    <>
-      <Stack {...stackProps} screenOptions={{ ...stackProps.screenOptions, gestureEnabled: false }}>
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="register" options={{ presentation: "modal" }} />
-        <Stack.Screen name="wizard" />
-      </Stack>
-    </>
+    <Stack {...stackProps} screenOptions={{ ...stackProps.screenOptions, gestureEnabled: false }}>
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="register" options={{ presentation: "modal" }} />
+      <Stack.Screen name="wizard" />
+    </Stack>
   );
 };
 
-const RootLayout = () => (
-  <AppProviders>
-    <AuthGuard>
-      <Layout />
-    </AuthGuard>
-  </AppProviders>
-);
+const RootLayout = () => {
+  const onLayoutRootView = useCallback(() => {
+    SplashScreen.hide();
+  }, []);
+
+  return (
+    <AppProviders>
+      <AuthGuard onReady={onLayoutRootView}>
+        <Layout />
+      </AuthGuard>
+    </AppProviders>
+  );
+};
 
 export default RootLayout;
