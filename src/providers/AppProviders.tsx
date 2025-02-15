@@ -55,7 +55,7 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     queryCache: new QueryCache({
       onError: (error) => {
         const localeError = t(`errors.${error.cause}`);
-        const message = localeError !== error.cause ? localeError : "errors.loading_data_error";
+        const message = localeError != error.cause ? localeError : "errors.loading_data_error";
 
         Burnt.toast({
           title: t("common.error"),

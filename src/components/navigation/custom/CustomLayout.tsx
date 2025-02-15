@@ -87,7 +87,6 @@ const CustomLayout = (props: LayoutProps) => {
   const scrollHandler = useAnimatedScrollHandler((event: any) => {
     scrollY.value = event.contentOffset.y;
   });
-  console.log(isMutating > 0);
 
   const animatedHeaderStyle = useAnimatedStyle(() => {
     const height = interpolate(scrollY.value, [0, Scroll_Distance], [maxHeight, minHeight], {

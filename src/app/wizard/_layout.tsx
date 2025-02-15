@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { stackProps } from "@/src/components/navigation/options";
 import { WizardProvider } from "@/src/components/wizard/WizardContext";
 
-export default function RegisterLayout() {
+export default function WizardLayout() {
   return (
     <WizardProvider>
       <Stack {...stackProps}>
