@@ -1,40 +1,50 @@
 import { Slot, useRouter } from "expo-router";
-import { useAuth, useUser } from "@clerk/clerk-expo";
-import { useEffect } from "react";
-import { View, ActivityIndicator } from "react-native";
-import CustomText from "@/src/shared/text/CustomText";
+import { useAuth } from "@clerk/clerk-expo";
+import { PropsWithChildren, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "@tanstack/react-query";
 
-const AuthGuard = ({ children }: { children: React.ReactNode }) => {
+type Props = {
+  onReady?: () => void;
+};
+
+const AuthGuard = ({ onReady, children }: PropsWithChildren<Props>) => {
   const { navigate } = useRouter();
   const { isLoaded, isSignedIn } = useAuth();
 
-  useEffect(() => {
-    const fetchIsSeenWizard = async () => {
+  const [isReady, setIsReady] = useState(false);
+
+  const { data } = useQuery({
+    queryKey: ["wizard-seen"],
+    queryFn: async () => {
       const isWizardSeen = await AsyncStorage.getItem("wizardSeen");
-      if (!isWizardSeen || isWizardSeen === "false") {
-        navigate("/wizard");
-      } else {
-        navigate("/home");
-      }
-    };
-
-    fetchIsSeenWizard();
-  }, []);
+      return {
+        isWizardSeen: isWizardSeen === "true",
+      };
+    },
+  });
 
   useEffect(() => {
-    if (isLoaded) {
-      !!isSignedIn ? navigate("/home") : navigate("/welcome");
-    }
-  }, [isLoaded, isSignedIn]);
+    if (!data || !isLoaded) return;
 
-  if (!isLoaded) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <CustomText>NOT LOADED</CustomText>
-      </View>
-    );
+    if (!data.isWizardSeen) {
+      navigate("/wizard");
+    } else {
+      if (!!isSignedIn) {
+        navigate("/home");
+      } else {
+        navigate("/welcome");
+      }
+    }
+
+    setIsReady(true);
+    onReady?.();
+  }, [data, isLoaded, isSignedIn]);
+
+  if (!isReady) {
+    return <Slot />;
   }
+
   return children;
 };
 
