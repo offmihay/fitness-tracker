@@ -62,7 +62,9 @@
     "organizerPhone": "Рабочий телефон",
     "organizerDetails": "Детали организации",
     "isVerified": "Подтвержден",
-    "photo": "Фото профиля"
+    "photo": "Фото профиля",
+    "sport": "Любимый спорт",
+    "residencePlace": "Место проживания"
   },
   "errors": {
     "server_error": "Что-то пошло не так. Пожалуйста, попробуйте позже.",
@@ -85,8 +87,23 @@
     "tournament_not_registered": "Вы не зарегистрированы",
     "max_participants_reached": "Достигнуто максимальное количество участников",
     "no_token_provided": "Вы не авторизованы",
-    "invalid_token": "Вы не авторизованы"
+    "invalid_token": "Вы не авторизованы",
+    "loading_data_error": "Не удалось загрузить данные",
+    "mutation_data_error": "Не удалось изменить данные"
   },
+
+  "success": {
+    "tournament_deactivated": "Турнир деактивирован",
+    "tournament_activated": "Турнир активирован",
+    "tournament_deleted": "Турнир удален",
+    "tournament_left": "Вы покинули турнир",
+    "tournment_created": "Турнир создан",
+    "tournament_updated": "Турнир изменен",
+    "participant_removed": "Учасник удален",
+    "user_information_updated": "Информация изменена",
+    "avatar_updated": "Изменено фото профиля"
+  },
+
   "common": {
     "confirm": "Подтвердить",
     "cancel": "Отмена",
@@ -115,12 +132,13 @@
     "create": "Создать",
     "register": "Зарегистрироваться",
     "ok": "Ок",
-    "error": "Ошибка"
+    "error": "Ошибка",
+    "success": "Успех"
   },
   "title": {
     "home": "Главная",
     "tournaments": "Турниры",
-    "finished": "Архив",
+    "archive": "Архив",
     "settings": "Настройки",
     "createTournament": "Создать турнир",
     "editTournament": "Редактировать турнир",

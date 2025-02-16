@@ -5,7 +5,14 @@ import { useTranslation } from "react-i18next";
 import UserAvatarList from "@/src/components/settings/personal-info/UserAvatarList";
 import { useRouter } from "expo-router";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { Entypo, Feather, FontAwesome, Octicons } from "@expo/vector-icons";
+import {
+  Entypo,
+  Feather,
+  FontAwesome,
+  Ionicons,
+  MaterialCommunityIcons,
+  Octicons,
+} from "@expo/vector-icons";
 import { Divider } from "react-native-paper";
 import PersonalInfoList from "@/src/components/settings/personal-info/PersonalInfoList";
 import FormBirthday from "@/src/components/settings/personal-info/forms/FormBirthday";
@@ -32,7 +39,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   return (
     <LayoutScrollView
       name="personalInfo"
-      alwaysBounceVertical={false}
+      // alwaysBounceVertical={false}
       loaderPending
       isCustomPending={isLoading}
     >
@@ -62,6 +69,40 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             }
             icon={<Feather name="user" size={24} color={theme.colors.primary} />}
           />
+          <Divider />
+          <PersonalInfoList
+            label={t("user.residencePlace")}
+            value={user?.unsafeMetadata.residencePlace?.city ?? t("common.notSpecified")}
+            onPress={() =>
+              router.push({ pathname: "./change-residence" }, { relativeToDirectory: true })
+            }
+            icon={
+              <MaterialCommunityIcons
+                name="home-city-outline"
+                size={24}
+                color={theme.colors.primary}
+              />
+            }
+          />
+          <Divider />
+          <PersonalInfoList
+            label={t("user.sport")}
+            value={
+              user?.unsafeMetadata.featuredSport && user?.unsafeMetadata.featuredSport.length > 0
+                ? user?.unsafeMetadata.featuredSport
+                    .map(
+                      (sport, index, arr) =>
+                        (index === 0 ? "" : " ") + t(`tournament.sportType.${sport}`)
+                    )
+                    .toString()
+                : t("common.notSpecified")
+            }
+            onPress={() =>
+              router.push({ pathname: "./change-sport" }, { relativeToDirectory: true })
+            }
+            icon={<Ionicons name="tennisball-sharp" size={24} color={theme.colors.primary} />}
+          />
+
           <Divider />
           <FormBirthday
             onLoadChange={setIsLoading}

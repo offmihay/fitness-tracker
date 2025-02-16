@@ -1,6 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-expo";
-import { UpdateUserClerkFormData } from "../utils/clerkTransformData";
+import clerkTransformData, { UpdateUserClerkFormData } from "../utils/clerkTransformData";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import { WizardPreferences } from "../components/wizard/WizardContext";
+import { useEffect, useState } from "react";
 
 export const useSetProfileImageMutation = () => {
   const { user } = useUser();

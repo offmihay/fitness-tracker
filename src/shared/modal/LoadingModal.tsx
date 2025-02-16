@@ -10,9 +10,11 @@ type Props = {
 const LoadingModal = (props: Props) => {
   const { isVisible } = props;
 
+  if (!isVisible) {
+    return null;
+  }
   return (
     <View
-      pointerEvents="none"
       style={{
         flex: 1,
         position: "absolute",
@@ -20,20 +22,9 @@ const LoadingModal = (props: Props) => {
         height: "100%",
       }}
     >
-      <Modal
-        isVisible={isVisible}
-        backdropOpacity={0}
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        style={{ margin: 0 }}
-        animationInTiming={1}
-        animationOutTiming={1}
-        pointerEvents="none"
-      >
-        <BlurView style={styles.wrapper} intensity={20}>
-          <ActivityIndicator size="large" />
-        </BlurView>
-      </Modal>
+      <BlurView style={styles.wrapper} intensity={20}>
+        <ActivityIndicator size="large" />
+      </BlurView>
     </View>
   );
 };

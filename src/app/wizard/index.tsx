@@ -8,18 +8,18 @@ import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const WizardWelcomeScreen = () => {
-  const { setWizardData } = useContext(WizardContext);
+  const { updateWizardData } = useContext(WizardContext);
 
   const theme = useCustomTheme();
 
   const handleChoose = (type: WizardPreferences["role"]) => {
-    setWizardData((prev) => ({ ...prev, role: type }));
+    updateWizardData((prev) => ({ ...prev, role: type }));
     router.navigate({ pathname: "./sport-featured" }, { relativeToDirectory: true });
   };
 
   const handleSkip = async () => {
     await AsyncStorage.setItem("wizardSeen", "true");
-    router.replace("/home");
+    router.replace("/welcome");
   };
 
   return (

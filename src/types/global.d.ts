@@ -9,7 +9,7 @@ declare global {
     organizerPhone?: string;
     phoneNumber?: string;
     role?: "organizer" | "participant";
-    sport?: TournamentSport[];
+    featuredSport?: TournamentSport[];
     residencePlace?: {
       geoCoordinates: {
         latitude?: number;

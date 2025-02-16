@@ -1,7 +1,6 @@
 import { RefreshControl, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useCallback, useMemo, useState } from "react";
-import { router, useRouter } from "expo-router";
-import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import { router } from "expo-router";
 import UserTournamentCard, {
   UserTournamentCard_HEIGHT,
 } from "@/src/components/tournaments/common/UserTournamentCard";
@@ -18,35 +17,34 @@ import { useSettings } from "@/src/hooks/useSettings";
 import CreatorTournamentCard from "@/src/components/tournaments/common/CreatorTournamentCard";
 import TournamentSkeleton from "@/src/components/tournaments/common/skeleton/TournamentSkeleton";
 import CustomText from "@/src/shared/text/CustomText";
-import CustomSwitch from "@/src/shared/switch/Switch";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import FilterDropdownMenu from "@/src/components/tournaments/common/FilterDropdownMenu";
+import { useToast } from "@/src/hooks/useToast";
 
 type Props = {};
 
 type Filter = "participant" | "organizer" | "all";
 
 const FinishedTournaments = ({}: Props) => {
-  const { settings, updateSettings } = useSettings();
+  const { settings } = useSettings();
   const { data: dataFetch, refetch, isFetching } = getMyTournaments(true);
   const theme = useCustomTheme();
   const deleteTournamentMutation = deleteTournament();
   const leaveTournamentMutation = leaveTournament();
   const updateStatusMutation = updateStatus();
+  const { showSuccessToast } = useToast();
 
   const [filter, setFilter] = useState<Filter>("all");
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
-
-    const delayPromise = new Promise((resolve) => setTimeout(resolve, 0));
-
-    Promise.all([refetch(), delayPromise]).then(() => {
+    refetch();
+    if (!isFetching) {
       setIsRefreshing(false);
-    });
-  }, [refetch]);
+    }
+  }, [refetch, isFetching]);
 
   const { data } = useMemo(() => {
     if (filter === "all") {
@@ -75,11 +73,13 @@ const FinishedTournaments = ({}: Props) => {
   };
 
   const handleDelete = (id: string) => {
-    deleteTournamentMutation.mutate(id);
+    deleteTournamentMutation.mutate(id, {
+      onSuccess: () => showSuccessToast("tournament_deleted"),
+    });
   };
 
   const handleLeave = (id: string) => {
-    leaveTournamentMutation.mutate(id);
+    leaveTournamentMutation.mutate(id, { onSuccess: () => showSuccessToast("tournament_left") });
   };
 
   const handleChangeStatus = (id: string, isActive: boolean) => {
@@ -87,6 +87,7 @@ const FinishedTournaments = ({}: Props) => {
       { tournamentId: id, isActive },
       {
         onSuccess: () => {
+          showSuccessToast("tournament_activated");
           router.back();
         },
       }
@@ -137,46 +138,44 @@ const FinishedTournaments = ({}: Props) => {
   );
 
   return (
-    <>
-      <LayoutFlashList
-        loaderPending={true}
-        headerConfig={{
-          nodeHeader: () => (
-            <View className="flex h-full justify-end items-end">
-              <View className="flex flex-row pr-4 pb-2 gap-4">
-                <FilterDropdownMenu value={filter} onConfirm={setFilter}>
-                  <TouchableOpacity
-                    style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
-                  >
-                    <Feather name="filter" size={22} color={theme.colors.text} />
-                  </TouchableOpacity>
-                </FilterDropdownMenu>
-              </View>
+    <LayoutFlashList
+      loaderPending={true}
+      headerConfig={{
+        nodeHeader: () => (
+          <View className="absolute bottom-2 right-4">
+            <View className="flex flex-row gap-4">
+              <FilterDropdownMenu value={filter} onConfirm={setFilter}>
+                <TouchableOpacity
+                  style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
+                >
+                  <Feather name="filter" size={22} color={theme.colors.text} />
+                </TouchableOpacity>
+              </FilterDropdownMenu>
             </View>
-          ),
-        }}
-        name="finished"
-        canGoBack={true}
-        flashListProps={{
-          scrollEnabled: !isFetching,
-          data: !isFetching ? data : skeletonData,
-          renderItem: !isFetching ? renderCard : renderSkeleton,
-          keyExtractor: !isFetching ? keyExtractor : (item) => item.id.toString(),
-          refreshControl: (
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={onRefresh}
-              progressViewOffset={180}
-            />
-          ),
-          ListEmptyComponent: <CustomText>Tournaments not found.</CustomText>,
-          ListHeaderComponent: <View className="mb-4" />,
-          ListFooterComponent: <View className="mb-4" />,
-          contentContainerStyle: styles.wrapper,
-          estimatedItemSize: UserTournamentCard_HEIGHT + 20,
-        }}
-      />
-    </>
+          </View>
+        ),
+      }}
+      name="archive"
+      canGoBack={true}
+      flashListProps={{
+        scrollEnabled: !isFetching,
+        data: !isFetching ? data : skeletonData,
+        renderItem: !isFetching ? renderCard : renderSkeleton,
+        keyExtractor: !isFetching ? keyExtractor : (item) => item.id.toString(),
+        refreshControl: (
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            progressViewOffset={180}
+          />
+        ),
+        ListEmptyComponent: <CustomText>Tournaments not found.</CustomText>,
+        ListHeaderComponent: <View className="mb-4" />,
+        ListFooterComponent: <View className="mb-4" />,
+        contentContainerStyle: styles.wrapper,
+        estimatedItemSize: UserTournamentCard_HEIGHT + 20,
+      }}
+    />
   );
 };
 

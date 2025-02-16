@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import React, { useCallback, useMemo, useState } from "react";
-import { router, useRouter } from "expo-router";
+import { router, usePathname, useRouter } from "expo-router";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import UserTournamentCard, {
   UserTournamentCard_HEIGHT,
@@ -26,6 +26,7 @@ import CustomText from "@/src/shared/text/CustomText";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import FilterDropdownMenu from "@/src/components/tournaments/common/FilterDropdownMenu";
+import { useToast } from "@/src/hooks/useToast";
 
 type Props = {};
 
@@ -34,6 +35,7 @@ type Filter = "participant" | "organizer" | "all";
 const Tournaments = ({}: Props) => {
   const { data: dataFetch, refetch, isFetching } = getMyTournaments(false);
   const theme = useCustomTheme();
+  const { showSuccessToast } = useToast();
   const deleteTournamentMutation = deleteTournament();
   const leaveTournamentMutation = leaveTournament();
   const updateStatusMutation = updateStatus();
@@ -43,13 +45,11 @@ const Tournaments = ({}: Props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
-
-    const delayPromise = new Promise((resolve) => setTimeout(resolve, 0));
-
-    Promise.all([refetch(), delayPromise]).then(() => {
+    refetch();
+    if (!isFetching) {
       setIsRefreshing(false);
-    });
-  }, [refetch]);
+    }
+  }, [refetch, isFetching]);
 
   const { data } = useMemo(() => {
     if (filter === "all") {
@@ -95,25 +95,30 @@ const Tournaments = ({}: Props) => {
   const handleOpenFinished = () => {
     router.push(
       {
-        pathname: "./finished",
+        pathname: "./archive",
       },
       { relativeToDirectory: true }
     );
   };
 
   const handleDelete = (id: string) => {
-    deleteTournamentMutation.mutate(id);
+    deleteTournamentMutation.mutate(id, {
+      onSuccess: () => showSuccessToast("tournament_deleted"),
+    });
   };
 
   const handleLeave = (id: string) => {
-    leaveTournamentMutation.mutate(id);
+    leaveTournamentMutation.mutate(id, { onSuccess: () => showSuccessToast("tournament_left") });
   };
 
   const handleChangeStatus = (id: string, isActive: boolean) => {
     updateStatusMutation.mutate(
       { tournamentId: id, isActive },
       {
-        onSuccess: () => handleOpenFinished(),
+        onSuccess: () => {
+          showSuccessToast("tournament_deactivated");
+          handleOpenFinished();
+        },
       }
     );
   };
@@ -167,8 +172,8 @@ const Tournaments = ({}: Props) => {
         loaderPending={true}
         headerConfig={{
           nodeHeader: () => (
-            <View className="flex h-full justify-end items-end">
-              <View className="flex flex-row pr-4 pb-2 gap-4">
+            <View className="absolute bottom-2 right-4">
+              <View className="flex flex-row gap-4">
                 <FilterDropdownMenu value={filter} onConfirm={setFilter}>
                   <TouchableOpacity
                     style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}

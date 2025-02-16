@@ -11,12 +11,12 @@ import { t } from "i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const WizardSportScreen = () => {
-  const { setWizardData } = useContext(WizardContext);
+  const { updateWizardData } = useContext(WizardContext);
   const theme = useCustomTheme();
 
   const handleSkip = async () => {
     await AsyncStorage.setItem("wizardSeen", "true");
-    router.replace("/home");
+    router.replace("/welcome");
   };
 
   const [sport, setSport] = useState<WizardPreferences["featuredSport"]>([]);
@@ -29,7 +29,7 @@ const WizardSportScreen = () => {
   ];
 
   const handlePress = () => {
-    setWizardData((prev) => ({ ...prev, featuredSport: sport }));
+    updateWizardData((prev) => ({ ...prev, featuredSport: sport }));
     router.navigate({ pathname: "./residence" });
   };
 

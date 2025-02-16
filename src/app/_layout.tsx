@@ -3,7 +3,7 @@ import "../i18n/config";
 import "../styles/global.css";
 import AppProviders from "../providers/AppProviders";
 import "react-native-get-random-values";
-import { Slot } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import React, { PropsWithChildren, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { useAuthContext } from "../providers/AuthContextProvider";
@@ -11,7 +11,7 @@ import { useAuthContext } from "../providers/AuthContextProvider";
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
-  duration: 400,
+  duration: 800,
   fade: true,
 });
 
@@ -30,7 +30,14 @@ const RootLayout = () => {
   return (
     <AppProviders>
       <Layout>
-        <Slot />
+        <Stack
+          screenOptions={{
+            animation: "fade",
+            animationDuration: 150,
+            headerShown: false,
+          }}
+        />
+        {/* <Slot /> */}
       </Layout>
     </AppProviders>
   );

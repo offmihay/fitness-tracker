@@ -30,6 +30,7 @@ const StatusLabel = (props: Props) => {
           icon={<FontAwesome name="circle" size={8} color={theme.colors.info} />}
           color={theme.colors.surface}
           style={{ paddingHorizontal: 2 }}
+          textColor={theme.colors.text}
         />
       );
     case TournamentStatus.ONGOING:

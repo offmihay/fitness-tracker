@@ -1,7 +1,8 @@
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
-import { createContext, PropsWithChildren, useContext } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect } from "react";
+import clerkTransformData from "../utils/clerkTransformData";
 
 if (process.env.NODE_ENV === "development") {
   const originalWarn = console.warn;
@@ -32,13 +33,38 @@ export function useAuthContext() {
 
 export function AuthContextProvider({ children }: PropsWithChildren) {
   const { isLoaded, isSignedIn } = useAuth();
+  const { user } = useUser();
+  const setIsSeen = async () => {
+    await AsyncStorage.setItem("wizardSeen", "true");
+  };
+
+  useEffect(() => {
+    const updateUserInfo = async () => {
+      const dataJSON = await AsyncStorage.getItem("wizardData");
+      const data = dataJSON ? JSON.parse(dataJSON) : null;
+      console.log(data);
+      if (data) {
+        const formData = clerkTransformData(data, user?.unsafeMetadata || null);
+        user!.update(formData);
+        await AsyncStorage.removeItem("wizardData");
+      }
+    };
+    isSignedIn && updateUserInfo();
+  }, [isSignedIn]);
 
   const { data: wizardData, isLoading: isWizardLoading } = useQuery({
     queryKey: ["is-wizard-seen"],
     queryFn: async () => {
       const item = await AsyncStorage.getItem("wizardSeen");
+      const isWizardSeen = item === "true";
+      if (isSignedIn) {
+        setIsSeen();
+        return {
+          isWizardSeen: true,
+        };
+      }
       return {
-        isWizardSeen: item === "true",
+        isWizardSeen,
       };
     },
   });

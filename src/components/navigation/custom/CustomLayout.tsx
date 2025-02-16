@@ -19,11 +19,10 @@ import Animated, {
 import type { SharedValue } from "react-native-reanimated";
 import CustomHeader from "./CustomHeader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT, modalRoutes } from "../options";
-import { usePathname } from "expo-router";
-import Toast from "react-native-toast-message";
+import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
 import LoadingModal from "@/src/shared/modal/LoadingModal";
 import { useIsMutating, useIsFetching } from "@tanstack/react-query";
+import { usePathname } from "expo-router";
 
 type renderContent = {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -74,9 +73,8 @@ const CustomLayout = (props: LayoutProps) => {
   const isMutating = useIsMutating();
   const isFetching = useIsFetching();
 
-  const pathName = usePathname();
-  const isModal = modalRoutes.includes(pathName);
-  const toastTopOffset = Platform.OS === "android" ? 20 : 15;
+  // const pathname = usePathname();
+  // console.log(pathname);
 
   const maxHeight = headerConfig?.maxHeight || HEADER_MAX_HEIGHT;
   const minHeight = headerConfig?.minHeight || HEADER_MIN_HEIGHT;
@@ -144,18 +142,12 @@ const CustomLayout = (props: LayoutProps) => {
       </View>
       {loaderPending && (
         <LoadingModal
-          isVisible={
-            typeof isCustomPending === "boolean" ? isCustomPending : isMutating > 0 && loaderPending
-          }
+          isVisible={typeof isCustomPending === "boolean" ? isCustomPending : isMutating > 0}
         />
       )}
       {loaderFetching && (
         <LoadingModal
-          isVisible={
-            typeof isCustomFetching === "boolean"
-              ? isCustomFetching
-              : isFetching > 0 && loaderFetching
-          }
+          isVisible={typeof isCustomFetching === "boolean" ? isCustomFetching : isFetching > 0}
         />
       )}
     </>

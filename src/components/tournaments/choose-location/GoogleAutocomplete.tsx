@@ -15,8 +15,8 @@ import { t } from "i18next";
 import { Divider } from "react-native-paper";
 
 export type PlaceObject = {
-  place_id: string;
-  name: string;
+  place_id?: string;
+  name?: string;
   address: string;
   latitude?: string;
   longitude?: string;
@@ -65,6 +65,13 @@ const GoogleAutoComplete = (props: Props) => {
     });
   };
 
+  const handleInputDone = () => {
+    if (searchQuery.location?.address) {
+      ref.current?.setAddressText(searchQuery.location.address);
+      onSubmit(searchQuery.location);
+    }
+  };
+
   return (
     <GooglePlacesAutocomplete
       fetchDetails
@@ -78,7 +85,7 @@ const GoogleAutoComplete = (props: Props) => {
         useClearButton: true,
         textContentType: "oneTimeCode",
         returnKeyType: "done",
-        onSubmitEditing: () => searchQuery.location && onSubmit(searchQuery.location),
+        onSubmitEditing: handleInputDone,
       }}
       enablePoweredByContainer={false}
       renderRow={(data, index) => {

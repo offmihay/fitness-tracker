@@ -8,7 +8,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@clerk/clerk-expo";
 import { useUpdateUserMutation } from "@/src/queries/user";
-import { ChangeUserFormData } from "@/src/components/settings/personal-info/forms/schema";
+import { ChangeNameForm } from "@/src/components/settings/personal-info/forms/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserRegistrationFormData, schemaUserRegistration } from "@/src/components/register/schema";
 import RHFormInput from "@/src/shared/form/RHFormInput";
@@ -82,6 +82,7 @@ const RegistrationFormScreen = (props: Props) => {
 
   return (
     <LayoutStatic
+      loaderPending={false}
       name="registration"
       isDefaultCompressed
       headerConfig={{ maxHeight: 70, minHeight: 70 }}

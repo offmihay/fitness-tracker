@@ -62,7 +62,9 @@
     "organizerPhone": "Робочий телефон",
     "organizerDetails": "Деталі організації",
     "isVerified": "Підтверджено",
-    "photo": "Фото профілю"
+    "photo": "Фото профілю",
+    "sport": "Улюблений спорт",
+    "residencePlace": "Місто проживання"
   },
   "errors": {
     "server_error": "Щось пішло не так. Будь ласка, спробуйте пізніше.",
@@ -85,7 +87,21 @@
     "tournament_not_registered": "Ви не зареєстровані",
     "max_participants_reached": "Досягнуто максимальну кількість учасників",
     "no_token_provided": "Ви не авторизовані",
-    "invalid_token": "Ви не авторизовані"
+    "invalid_token": "Ви не авторизовані",
+    "loading_data_error": "Не вдалося завантажити дані",
+    "mutation_data_error": "Не вдалося змінити дані"
+  },
+  "success": {
+    "tournament_deactivated": "Турнір деактивовано",
+    "tournament_activated": "Tурнір активовано",
+    "tournament_deleted": "Турнір видалено",
+    "tournament_left": "Ви покинули турнір",
+    "tournment_created": "Турнір створено",
+    "tournament_updated": "Турнір оновлено",
+    "participant_removed": "Учасника видалено",
+    "user_information_updated": "Ваш профіль оновлено",
+    "avatar_updated": "Ваш аватар оновлено",
+    "success": "Успіх"
   },
   "common": {
     "confirm": "Підтвердити",
@@ -120,7 +136,7 @@
   "title": {
     "home": "Головна",
     "tournaments": "Турніри",
-    "finished": "Архів",
+    "archive": "Архів",
     "settings": "Налаштування",
     "createTournament": "Створити турнір",
     "editTournament": "Редагувати турнір",

@@ -8,9 +8,11 @@ import { useEffect } from "react";
 import { UpdateTournamentPageQuery } from "@/src/app/(app)/(tabs)/tournaments/edit";
 import { Tournament } from "@/src/types/tournament";
 import { router } from "expo-router";
+import { useToast } from "@/src/hooks/useToast";
 
 export const useUpdateTournamentForm = (pageQuery: UpdateTournamentPageQuery) => {
   const updateTournamentMutation = updateTournament();
+  const { showSuccessToast } = useToast();
 
   const methods = useForm<TournamentFormData>({
     mode: "onSubmit",
@@ -52,7 +54,7 @@ export const useUpdateTournamentForm = (pageQuery: UpdateTournamentPageQuery) =>
       { data: formData, id },
       {
         onSuccess: () => {
-          router.back();
+          showSuccessToast("tournament_updated"), router.back();
         },
       }
     );

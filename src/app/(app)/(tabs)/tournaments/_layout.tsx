@@ -7,7 +7,7 @@ export default function Layout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="create" />
       <Stack.Screen name="edit" />
-      <Stack.Screen name="finished" />
+      {/* <Stack.Screen name="finished" /> */}
       <Stack.Screen name="[id]" />
     </Stack>
   );

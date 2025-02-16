@@ -75,13 +75,11 @@ const HomePage = ({}: HomePageProps) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
-
-    const delayPromise = new Promise((resolve) => setTimeout(resolve, 0));
-
-    Promise.all([refetch(), delayPromise]).then(() => {
+    refetch();
+    if (!isFetching) {
       setIsRefreshing(false);
-    });
-  }, [refetch]);
+    }
+  }, [refetch, isFetching]);
 
   const renderItem = useCallback(
     ({ item }: { item: TournamentBase }) => (

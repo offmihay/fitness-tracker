@@ -24,6 +24,7 @@ import CustomText from "@/src/shared/text/CustomText";
 import { useTranslation } from "react-i18next";
 import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
+import { useToast } from "@/src/hooks/useToast";
 
 const UserAvatarList = () => {
   const theme = useCustomTheme();
@@ -32,6 +33,7 @@ const UserAvatarList = () => {
   const [loadingImg, setLoadingImg] = useState(false);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const { t } = useTranslation();
+  const { showSuccessToast } = useToast();
 
   const handleOpenCameraModal = () => {
     Keyboard.dismiss();
@@ -72,6 +74,7 @@ const UserAvatarList = () => {
       },
       onSuccess: (data) => {
         setImage(data.publicUrl);
+        showSuccessToast("avatar_updated");
       },
       onSettled: () => {
         setProfileImgMutation.reset();

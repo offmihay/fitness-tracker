@@ -6,11 +6,12 @@ import clerkTransformData from "@/src/utils/clerkTransformData";
 import { useUpdateUserMutation } from "@/src/queries/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ChangeBirthdayFormData,
+  ChangeBirthdayForm,
   schemaChangeBirthday,
 } from "@/src/components/settings/personal-info/forms/schema";
 import RHFormDatePicker from "@/src/shared/form/RHFormDatePicker";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
+import { useToast } from "@/src/hooks/useToast";
 
 type Props = {
   renderTrigger: (onPress: () => void, value: string) => React.ReactNode;
@@ -22,12 +23,13 @@ const FormBirthday = (props: Props) => {
   const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();
+  const { showSuccessToast } = useToast();
 
   useEffect(() => {
     onLoadChange?.(formDataMutation.isPending);
   }, [formDataMutation.isPending]);
 
-  const methods = useForm<ChangeBirthdayFormData>({
+  const methods = useForm<ChangeBirthdayForm>({
     mode: "onChange",
     resolver: zodResolver(schemaChangeBirthday),
     defaultValues: {
@@ -39,11 +41,14 @@ const FormBirthday = (props: Props) => {
 
   const { control, handleSubmit, setError } = methods;
 
-  const onSubmit = (data: ChangeBirthdayFormData) => {
+  const onSubmit = (data: ChangeBirthdayForm) => {
     const formData = clerkTransformData(data, user?.unsafeMetadata || null);
     formDataMutation.mutate(formData, {
       onError: (error: any) => {
         clerkHandleErrors(error, setError);
+      },
+      onSuccess: () => {
+        showSuccessToast("user_information_updated");
       },
     });
   };

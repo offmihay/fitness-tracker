@@ -8,13 +8,13 @@ export default function Index() {
   const { isLoading, isWizardSeen, isSignedIn } = useAuthContext();
 
   if (isLoading) {
-    return <LoadingModal isVisible />;
+    return null;
   }
 
-  return !isWizardSeen ? (
-    <Redirect href="/wizard" />
-  ) : isSignedIn ? (
+  return isSignedIn ? (
     <Redirect href="/home" />
+  ) : !isWizardSeen ? (
+    <Redirect href="/wizard" />
   ) : (
     <Redirect href="/welcome" />
   );

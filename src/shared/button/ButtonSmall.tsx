@@ -11,6 +11,7 @@ type Props = {
   renderIcon?: (color: string, size: number) => React.ReactElement;
   textColor?: string;
   disabled?: boolean;
+  disabledUI?: boolean;
   textProps?: React.ComponentProps<typeof CustomText>;
 } & React.ComponentProps<typeof CustomText>;
 
@@ -23,6 +24,7 @@ const ButtonSmall = (props: Props) => {
     style,
     textColor,
     disabled,
+    disabledUI,
     textProps,
     ...rest
   } = props;
@@ -31,7 +33,7 @@ const ButtonSmall = (props: Props) => {
   const iconSize = 18;
 
   const colorOpacity =
-    disabled && theme.dark ? "grey" : disabled && !theme.dark ? "#929292" : textColor;
+    disabledUI && theme.dark ? "grey" : disabled && !theme.dark ? "#929292" : textColor;
 
   return (
     <TouchableOpacity

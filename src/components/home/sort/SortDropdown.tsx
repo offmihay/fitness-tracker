@@ -44,14 +44,15 @@ const SortDropdown = (props: Props) => {
     <CheckboxDropdownMenu items={dropdownItems}>
       <ButtonSmall
         disabled={disabled}
-        title={(value && !disabled && t(value)) || t("title")}
+        disabledUI={disabled && !value}
+        title={(value && t(value)) || t("title")}
         renderIcon={(color, size) => (
           <Ionicons name="chevron-down-outline" size={size} color={color} style={{ bottom: -1 }} />
         )}
         style={{
-          backgroundColor: !disabled && value ? theme.colors.primary : theme.colors.surface,
+          backgroundColor: value ? theme.colors.primary : theme.colors.surface,
         }}
-        textColor={!disabled ? "white" : theme.colors.text}
+        textColor={theme.colors.text}
       />
     </CheckboxDropdownMenu>
   );

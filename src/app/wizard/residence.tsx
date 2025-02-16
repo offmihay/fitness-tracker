@@ -11,20 +11,20 @@ import { useUpdateUserMutation } from "@/src/queries/user";
 import clerkTransformData from "@/src/utils/clerkTransformData";
 import { useUser } from "@clerk/clerk-expo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const WizardResidenceScreen = () => {
   const theme = useCustomTheme();
   const { user } = useUser();
-  const { setWizardData } = useContext(WizardContext);
-  const updateUserMutation = useUpdateUserMutation();
+  const { updateWizardData } = useContext(WizardContext);
 
-  const handleGoToHome = async () => {
+  const handleGoToAuth = async () => {
     await AsyncStorage.setItem("wizardSeen", "true");
-    router.replace("/home");
+    router.replace("/welcome");
   };
 
-  const handleSelect = (location: PlaceObject) => {
-    setWizardData((prev) => {
+  const handleSelect = async (location: PlaceObject) => {
+    updateWizardData((prev) => {
       const newWizardData = {
         ...prev,
         residencePlace: {
@@ -35,19 +35,14 @@ const WizardResidenceScreen = () => {
           },
         },
       };
-
       uploadData(newWizardData);
       return newWizardData;
     });
+    await handleGoToAuth();
   };
 
-  const uploadData = (data: WizardPreferences) => {
-    const formData = clerkTransformData(data, user?.unsafeMetadata || null);
-    updateUserMutation.mutate(formData, {
-      onSuccess: async () => {
-        await handleGoToHome();
-      },
-    });
+  const uploadData = async (data: WizardPreferences) => {
+    await AsyncStorage.setItem("wizardData", JSON.stringify(data));
   };
 
   return (
@@ -64,7 +59,7 @@ const WizardResidenceScreen = () => {
             <GoogleAutoComplete onSubmit={handleSelect} query={{ type: "(cities)" }} maxRows={4} />
           </View>
           <TouchableOpacity style={styles.skipLabel}>
-            <CustomText color={theme.colors.link} type="default" onPress={handleGoToHome}>
+            <CustomText color={theme.colors.link} type="default" onPress={handleGoToAuth}>
               Skip for now
             </CustomText>
           </TouchableOpacity>

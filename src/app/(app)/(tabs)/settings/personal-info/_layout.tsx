@@ -6,6 +6,8 @@ export default function Layout() {
     <Stack {...stackProps}>
       <Stack.Screen name="index" />
       <Stack.Screen name="change-name" />
+      <Stack.Screen name="change-sport" />
+      <Stack.Screen name="change-residence" />
     </Stack>
   );
 }

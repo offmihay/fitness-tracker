@@ -9,11 +9,11 @@ import { useEffect } from "react";
 import { CreateTournamentPageQuery } from "@/src/app/(app)/(tabs)/tournaments/create";
 import { router } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
+import { useToast } from "@/src/hooks/useToast";
 
 export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) => {
-  const { t } = useTranslation();
   const createTournamentMutation = postTournament();
-  const { user } = useUser();
+  const { showSuccessToast } = useToast();
 
   const methods = useForm<TournamentFormData>({
     defaultValues: {},
@@ -31,7 +31,7 @@ export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) =>
     const { isOrganizerAdded, ...formData } = data;
     createTournamentMutation.mutate(formData, {
       onSuccess: () => {
-        router.back();
+        showSuccessToast("tournament_created"), router.back();
       },
     });
   };

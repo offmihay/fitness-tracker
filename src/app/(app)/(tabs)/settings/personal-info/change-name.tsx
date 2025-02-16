@@ -8,7 +8,7 @@ import clerkTransformData from "@/src/utils/clerkTransformData";
 import { useUpdateUserMutation } from "@/src/queries/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ChangeUserFormData,
+  ChangeNameForm,
   schemaChangeName,
 } from "@/src/components/settings/personal-info/forms/schema";
 import { useRouter } from "expo-router";
@@ -18,14 +18,16 @@ import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import Toast from "react-native-toast-message";
+import { useToast } from "@/src/hooks/useToast";
 
 const ChangeNameScreen = () => {
   const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();
   const router = useRouter();
+  const { showSuccessToast } = useToast();
 
-  const methods = useForm<ChangeUserFormData>({
+  const methods = useForm<ChangeNameForm>({
     mode: "onChange",
     resolver: zodResolver(schemaChangeName),
     defaultValues: {
@@ -41,10 +43,11 @@ const ChangeNameScreen = () => {
     setError,
   } = methods;
 
-  const onSubmit = (data: ChangeUserFormData) => {
+  const onSubmit = (data: ChangeNameForm) => {
     const formData = clerkTransformData(data, user?.unsafeMetadata || null);
     formDataMutation.mutate(formData, {
       onSuccess: () => {
+        showSuccessToast("user_information_updated");
         router.back();
       },
       onError: (error: any) => {
@@ -54,11 +57,7 @@ const ChangeNameScreen = () => {
   };
 
   const updateValues = async () => {
-    try {
-      await handleSubmit(onSubmit)();
-    } catch (error) {
-      console.error("Form submission error:", error);
-    }
+    await handleSubmit(onSubmit)();
   };
 
   return (

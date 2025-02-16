@@ -302,7 +302,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
                 errors.isOrganizerAdded?.message &&
                 (!user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail)
                   ? theme.colors.error
-                  : undefined,
+                  : theme.colors.surface,
             }}
           >
             <PersonalInfoList

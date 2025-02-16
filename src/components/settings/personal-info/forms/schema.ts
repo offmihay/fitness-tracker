@@ -7,9 +7,9 @@ export const schemaChangeName = z.object({
     .min(1, { message: "First name is required" }),
   lastName: z.string().optional(),
 });
-export type ChangeUserFormData = z.infer<typeof schemaChangeName>;
+export type ChangeNameForm = z.infer<typeof schemaChangeName>;
 
 export const schemaChangeBirthday = z.object({
   birthday: z.date({ required_error: "Birthday is required" }),
 });
-export type ChangeBirthdayFormData = z.infer<typeof schemaChangeBirthday>;
+export type ChangeBirthdayForm = z.infer<typeof schemaChangeBirthday>;

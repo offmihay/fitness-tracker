@@ -62,7 +62,9 @@
     "organizerPhone": "Work Phone",
     "organizerDetails": "Organization Details",
     "isVerified": "Is Verified",
-    "photo": "Photo Profile"
+    "photo": "Photo Profile",
+    "sport": "Favorite sport",
+    "residencePlace": "Residence Place"
   },
   "errors": {
     "server_error": "Something went wrong. Please try again later.",
@@ -88,6 +90,17 @@
     "invalid_token": "You are not authorized",
     "loading_data_error": "Failed to load data",
     "mutation_data_error": "Failed to update data"
+  },
+  "success": {
+    "tournament_deactivated": "Tournament deactivated",
+    "tournament_activated": "Tournament activated",
+    "tournament_deleted": "Tournament deleted",
+    "tournament_left": "You've left the tournament",
+    "tournment_created": "Tournament created",
+    "tournament_updated": "Tournament updated",
+    "participant_removed": "Participant removed",
+    "user_information_updated": "User information updated",
+    "avatar_updated": "Avatar updated"
   },
   "common": {
     "confirm": "Confirm",
@@ -117,12 +130,13 @@
     "create": "Create",
     "register": "Register",
     "ok": "Ok",
-    "error": "Error"
+    "error": "Error",
+    "success": "Success"
   },
   "title": {
     "home": "Home",
     "tournaments": "Tournaments",
-    "finished": "Archive",
+    "archive": "Archive",
     "settings": "Settings",
     "createTournament": "Create Tournament",
     "editTournament": "Edit Tournament",

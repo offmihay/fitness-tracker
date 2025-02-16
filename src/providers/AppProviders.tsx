@@ -14,6 +14,7 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { useTranslation } from "react-i18next";
 import * as Burnt from "burnt";
 import { AuthContextProvider } from "./AuthContextProvider";
+import { router } from "expo-router";
 
 const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { settings } = useSettings();
@@ -57,22 +58,24 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        retry: 0,
+        retry: 3,
       },
     },
     queryCache: new QueryCache({
       onError: (error) => {
-        Burnt.toast({
-          title: t("common.error"),
-          preset: "error",
-          message: getErrorMessage(error, "loading_data_error"),
-        });
-
+        if (error.cause !== "invalid_token") {
+          Burnt.toast({
+            title: t("common.error"),
+            preset: "error",
+            message: getErrorMessage(error, "loading_data_error"),
+          });
+        }
         throw error;
       },
     }),
     mutationCache: new MutationCache({
       onError: (error, _variables, _context, mutation) => {
+        console.log(error.cause, error.message, error.name, error.stack);
         if (mutation.meta?.disableGlobalErrorHandler) {
           return;
         }
