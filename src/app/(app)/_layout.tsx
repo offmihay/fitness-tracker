@@ -1,16 +1,21 @@
 import { stackProps } from "@/src/components/navigation/options";
 import { useAuthContext } from "@/src/providers/AuthContextProvider";
+import LoadingModal from "@/src/shared/modal/LoadingModal";
 import { Redirect, Stack } from "expo-router";
 
 export default function AppLayout() {
-  const { isSignedIn } = useAuthContext();
+  const { isSignedIn, isLoading } = useAuthContext();
+
+  if (isLoading) {
+    return <LoadingModal isVisible />;
+  }
 
   if (!isSignedIn) {
     return <Redirect href="/welcome" />;
   }
 
   return (
-    <Stack {...stackProps} screenOptions={{ ...stackProps.screenOptions, gestureEnabled: false }}>
+    <Stack {...stackProps}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="register" options={{ presentation: "modal" }} />
     </Stack>
