@@ -13,15 +13,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: "com.offmihay.fitnesstracker",
     supportsTablet: true,
     infoPlist: {
-      CFBundleURLTypes: [
-        {
-          CFBundleURLSchemes: [process.env.GOOGLE_OAUTH_CLIENT_ID],
-        },
-      ],
       CADisableMinimumFrameDurationOnPhone: true,
     },
     config: {
-      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+      googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
     },
   },
   android: {
