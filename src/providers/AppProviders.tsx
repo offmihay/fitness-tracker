@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { useTranslation } from "react-i18next";
 import * as Burnt from "burnt";
+import { AuthContextProvider } from "./AuthContextProvider";
 
 const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { settings } = useSettings();
@@ -46,6 +47,13 @@ if (!publishableKey) {
 
 const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { t } = useTranslation();
+
+  const getErrorMessage = (error: Error, fallbackKey: string) => {
+    const localeErrorCauseMessage = error.cause ? t(`errors.${error.cause}`) : undefined;
+    const message = localeErrorCauseMessage || error.message || t(`errors.${fallbackKey}`);
+    return message;
+  };
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -54,29 +62,27 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     },
     queryCache: new QueryCache({
       onError: (error) => {
-        const localeError = t(`errors.${error.cause}`);
-        const message = localeError != error.cause ? localeError : "errors.loading_data_error";
-
         Burnt.toast({
           title: t("common.error"),
           preset: "error",
-          message: message,
+          message: getErrorMessage(error, "loading_data_error"),
         });
+
         throw error;
       },
     }),
     mutationCache: new MutationCache({
-      onError: (error, variables, context, mutation) => {
+      onError: (error, _variables, _context, mutation) => {
         if (mutation.meta?.disableGlobalErrorHandler) {
           return;
         }
-        const localeError = t(`errors.${error.cause}`);
-        const message = localeError !== error.cause ? localeError : error.cause;
+
         Burnt.toast({
           title: t("common.error"),
           preset: "error",
-          message: message || error.message,
+          message: getErrorMessage(error, "mutation_data_error"),
         });
+
         throw error;
       },
     }),
@@ -90,7 +96,9 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
               <ClerkLoaded>
                 <SettingsProvider>
-                  <ThemeProviders>{children}</ThemeProviders>
+                  <ThemeProviders>
+                    <AuthContextProvider>{children}</AuthContextProvider>
+                  </ThemeProviders>
                 </SettingsProvider>
               </ClerkLoaded>
             </ClerkProvider>
