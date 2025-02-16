@@ -86,7 +86,8 @@
     "max_participants_reached": "Maximum number of participants reached",
     "no_token_provided": "You are not authorized",
     "invalid_token": "You are not authorized",
-    "loading_data_error": "Failed to load data"
+    "loading_data_error": "Failed to load data",
+    "mutation_data_error": "Failed to update data"
   },
   "common": {
     "confirm": "Confirm",
