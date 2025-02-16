@@ -6,7 +6,7 @@ import schemaCreateTournament, {
 } from "@/src/components/tournaments/create/form/schema";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
-import { CreateTournamentPageQuery } from "@/src/app/(tabs)/tournaments/create";
+import { CreateTournamentPageQuery } from "@/src/app/(app)/(tabs)/tournaments/create";
 import { router } from "expo-router";
 import { useUser } from "@clerk/clerk-expo";
 

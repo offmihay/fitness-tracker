@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import CheckboxDropdownMenu, { DropdownItem } from "../../../shared/dropdown/CheckboxDropdownMenu";
-import { getDropdownItems, getSettingsList } from "../../../components/settings/SettingsHelper";
+import CheckboxDropdownMenu, { DropdownItem } from "../../../../shared/dropdown/CheckboxDropdownMenu";
+import { getDropdownItems, getSettingsList } from "../../../../components/settings/SettingsHelper";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import CustomListItem from "@/src/shared/list/CustomListItem";
 import CustomListSection from "@/src/shared/list/CustomListSection";

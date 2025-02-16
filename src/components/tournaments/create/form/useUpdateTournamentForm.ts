@@ -5,7 +5,7 @@ import schemaCreateTournament, {
   TournamentFormData,
 } from "@/src/components/tournaments/create/form/schema";
 import { useEffect } from "react";
-import { UpdateTournamentPageQuery } from "@/src/app/(tabs)/tournaments/edit";
+import { UpdateTournamentPageQuery } from "@/src/app/(app)/(tabs)/tournaments/edit";
 import { Tournament } from "@/src/types/tournament";
 import { router } from "expo-router";
 

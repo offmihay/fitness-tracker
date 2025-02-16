@@ -1,7 +1,7 @@
 import { useAuth } from "@clerk/clerk-expo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
-import { createContext, PropsWithChildren, useContext, useEffect } from "react";
+import { createContext, PropsWithChildren, useContext } from "react";
 
 if (process.env.NODE_ENV === "development") {
   const originalWarn = console.warn;
@@ -18,14 +18,8 @@ const AuthContext = createContext<{
   isWizardSeen: boolean;
 } | null>(null);
 
-export function useAuthContext(options?: { onReady?: () => void }) {
+export function useAuthContext() {
   const value = useContext(AuthContext);
-  
-  useEffect(() => {
-    if (!value?.isLoading) return;
-    options?.onReady?.();    
-  }, [value?.isLoading]);
-  
 
   if (process.env.NODE_ENV !== "production") {
     if (!value) {
@@ -41,10 +35,12 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
   const { data: wizardData, isLoading: isWizardLoading } = useQuery({
     queryKey: ["is-wizard-seen"],
-    queryFn: () =>
-      AsyncStorage.getItem("wizardSeen").then((item) => ({
+    queryFn: async () => {
+      const item = await AsyncStorage.getItem("wizardSeen");
+      return {
         isWizardSeen: item === "true",
-      })),
+      };
+    },
   });
 
   const isLoading = !isLoaded || isWizardLoading || typeof isSignedIn !== "boolean";
