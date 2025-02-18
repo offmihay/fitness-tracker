@@ -11,6 +11,8 @@ import { useSettings } from "@/src/hooks/useSettings";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 import SportLabel from "./SportLabel";
 import CustomLabel from "./CustomLabel";
+import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
+import { FadeIn, FadeOut } from "react-native-reanimated";
 
 type Props = {
   handleOpenDetails: () => void;
@@ -23,7 +25,6 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
   const theme = useCustomTheme();
   const { t } = useTranslation();
   const { settings } = useSettings();
-  const [isLoadedImg, setIsLoadedImg] = useState(false);
 
   const { title, location, dateStart, dateEnd, participantsCount, maxParticipants, images } = data;
 
@@ -45,16 +46,13 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
           }}
           className="mb-4"
         >
-          <Skeleton height={190} visible={isLoadedImg} />
           <FastImage
             style={{ width: "100%", height: "100%" }}
             source={{
               uri: images && images[0].secureUrl,
-              priority: FastImage.priority.normal,
+              priority: FastImage.priority.low,
             }}
             resizeMode={FastImage.resizeMode.cover}
-            onLoadStart={() => setIsLoadedImg(false)}
-            onLoadEnd={() => setIsLoadedImg(true)}
           />
         </View>
         <CustomText type="subtitle">{title}</CustomText>
@@ -138,6 +136,7 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 20,
     borderRadius: 10,
+    height: CARD_HEIGHT,
   },
 
   border: {
@@ -146,4 +145,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(TournamentCard);
+export default TournamentCard;

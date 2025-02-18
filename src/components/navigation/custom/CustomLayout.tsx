@@ -73,9 +73,6 @@ const CustomLayout = (props: LayoutProps) => {
   const isMutating = useIsMutating();
   const isFetching = useIsFetching();
 
-  // const pathname = usePathname();
-  // console.log(pathname);
-
   const maxHeight = headerConfig?.maxHeight || HEADER_MAX_HEIGHT;
   const minHeight = headerConfig?.minHeight || HEADER_MIN_HEIGHT;
   const Scroll_Distance = maxHeight - minHeight;

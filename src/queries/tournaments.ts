@@ -1,19 +1,35 @@
-import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { Tournament, TournamentBase, TournamentStatus } from "../types/tournament";
 import { TournamentFormData } from "../components/tournaments/create/form/schema";
 import useApi from "../api/useApi";
 import { useTranslation } from "react-i18next";
 import { TournamentQuery } from "../components/home/types";
 
-export const getTournaments = (queryParams: Partial<TournamentQuery>) => {
+export const getAllTournaments = (queryParams: Partial<TournamentQuery>) => {
   const { fetchData } = useApi();
-  return useQuery({
+  const limit = 10;
+
+  return useInfiniteQuery<TournamentBase[], Error>({
     queryKey: ["tournaments", queryParams],
-    queryFn: async () => {
-      const response = await fetchData<any, TournamentBase[]>("/tournaments", { queryParams });
+    initialPageParam: 1,
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await fetchData<any, TournamentBase[]>("/tournaments", {
+        queryParams: { ...queryParams, page: pageParam as number, limit },
+      });
       return response.data;
     },
-    initialData: [],
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length < limit) {
+        return undefined;
+      }
+      return allPages.length + 1;
+    },
   });
 };
 

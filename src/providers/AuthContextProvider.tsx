@@ -42,7 +42,6 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
     const updateUserInfo = async () => {
       const dataJSON = await AsyncStorage.getItem("wizardData");
       const data = dataJSON ? JSON.parse(dataJSON) : null;
-      console.log(data);
       if (data) {
         const formData = clerkTransformData(data, user?.unsafeMetadata || null);
         user!.update(formData);

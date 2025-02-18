@@ -1,8 +1,8 @@
-import { RefreshControl, StyleSheet, View } from "react-native";
+import { ActivityIndicator, RefreshControl, StyleSheet, View } from "react-native";
 import React, { useCallback, useState, memo, useEffect, useMemo } from "react";
 import TournamentCard, { CARD_HEIGHT } from "@/src/components/home/common/TournamentCard";
 import { useRouter } from "expo-router";
-import { getTournaments, registerTournament } from "@/src/queries/tournaments";
+import { getAllTournaments, registerTournament } from "@/src/queries/tournaments";
 import { useSettings } from "@/src/hooks/useSettings";
 import HomeHeader from "@/src/components/home/HomeHeader";
 import SortDropdown from "@/src/components/home/sort/SortDropdown";
@@ -12,10 +12,11 @@ import { FlashList } from "@shopify/flash-list";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import TournamentCardSkeleton from "@/src/components/home/common/skeleton/TournamentCardSkeleton";
 import { FilterHome, SortValueHome, TournamentQuery } from "@/src/components/home/types";
-import _ from "lodash";
+import _, { hasIn } from "lodash";
 import { emptyFilter } from "@/src/components/home/storedSettings";
 import CustomText from "@/src/shared/text/CustomText";
 import { useDebounce } from "@/src/hooks/useDebounce";
+import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 
 type HomePageProps = {};
 
@@ -43,6 +44,7 @@ const HomePage = ({}: HomePageProps) => {
     return sortQuery;
   };
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
   const query = useMemo<Partial<TournamentQuery>>(() => {
     return {
       ...filter,
@@ -51,13 +53,16 @@ const HomePage = ({}: HomePageProps) => {
     };
   }, [filter, sortBy, debouncedSearchQuery]);
 
-  const { data: loadedData, refetch, isFetching } = getTournaments(query);
-
-  const { data } = useMemo(() => {
-    return {
-      data: loadedData,
-    };
-  }, [loadedData]);
+  const {
+    data: allFetchedData,
+    error,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    refetch,
+  } = getAllTournaments(query);
 
   const handleOpenDetails = useCallback(
     (id: string) => {
@@ -72,14 +77,29 @@ const HomePage = ({}: HomePageProps) => {
     [router]
   );
 
+  const queryClient = useQueryClient();
+  const resetInfiniteQueryPagination = async (): Promise<void> => {
+    queryClient.setQueryData<InfiniteData<TournamentBase[]>>(["tournaments", query], (oldData) => {
+      if (!oldData) return undefined;
+
+      return {
+        pages: [],
+        pageParams: oldData.pageParams.slice(0, 1),
+      };
+    });
+    await queryClient.invalidateQueries({ queryKey: ["tournaments", query] });
+  };
+
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
+    if (isRefreshing) return;
     setIsRefreshing(true);
-    refetch();
-    if (!isFetching) {
+    try {
+      await resetInfiniteQueryPagination();
+    } finally {
       setIsRefreshing(false);
     }
-  }, [refetch, isFetching]);
+  }, [resetInfiniteQueryPagination, isRefreshing]);
 
   const renderItem = useCallback(
     ({ item }: { item: TournamentBase }) => (
@@ -90,32 +110,24 @@ const HomePage = ({}: HomePageProps) => {
     [handleOpenDetails]
   );
 
-  const keyExtractor = useCallback((item: TournamentBase) => item.id.toString(), []);
+  const displayData = useMemo(() => {
+    const loadedData = allFetchedData?.pages.flat() ?? [];
 
-  const skeletonData: TournamentBase[] = [
-    { ...emptyBaseTournament, id: "empty1" },
-    { ...emptyBaseTournament, id: "empty2" },
-  ];
-  const renderSkeleton = useCallback(
-    () => (
-      <View style={{ paddingVertical: 10 }}>
-        <View>
-          <TournamentCardSkeleton />
-        </View>
-      </View>
-    ),
-    [handleOpenDetails, settings.language]
-  );
+    return loadedData;
+  }, [allFetchedData, isLoading, isFetchingNextPage]);
 
   return (
     <LayoutStatic name="home" disableHeader={true} canGoBack={false}>
       <View style={{ flex: 1 }}>
         <HomeHeader value={searchQuery} onChangeText={setSearchQuery} />
         <FlashList
-          scrollEnabled={!isFetching}
           ListHeaderComponent={
             <View style={styles.headerContainer}>
-              <SortDropdown value={sortBy} onConfirm={setSortBy} disabled={data.length === 0} />
+              <SortDropdown
+                value={sortBy}
+                onConfirm={setSortBy}
+                disabled={!displayData || displayData.length === 0}
+              />
               <FilterModal
                 filterValues={filter}
                 onConfirm={setFilter}
@@ -123,13 +135,36 @@ const HomePage = ({}: HomePageProps) => {
               />
             </View>
           }
-          ListEmptyComponent={<CustomText>No tournaments found.</CustomText>}
-          data={!isFetching ? data : skeletonData}
+          ListEmptyComponent={
+            !isLoading && !hasNextPage && !isRefreshing ? (
+              <CustomText>No tournaments found.</CustomText>
+            ) : null
+          }
+          data={displayData}
           contentContainerStyle={styles.wrapper}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-          renderItem={!isFetching ? renderItem : renderSkeleton}
-          keyExtractor={!isFetching ? keyExtractor : (item) => item.id.toString()}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
           estimatedItemSize={CARD_HEIGHT + 20}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          ListFooterComponent={
+            isFetching ? (
+              <>
+                <View style={{ paddingVertical: 10 }}>
+                  <TournamentCardSkeleton />
+                </View>
+                <View style={{ paddingVertical: 10 }}>
+                  <TournamentCardSkeleton />
+                </View>
+                <ActivityIndicator size="small" color="white" />
+              </>
+            ) : null
+          }
+          onEndReachedThreshold={0.5}
         />
       </View>
     </LayoutStatic>

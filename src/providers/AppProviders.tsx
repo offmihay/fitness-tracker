@@ -75,7 +75,6 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     }),
     mutationCache: new MutationCache({
       onError: (error, _variables, _context, mutation) => {
-        console.log(error.cause, error.message, error.name, error.stack);
         if (mutation.meta?.disableGlobalErrorHandler) {
           return;
         }

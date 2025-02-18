@@ -54,7 +54,6 @@ export default function SignUpEmailScreen() {
         );
       },
       onError: (error: any) => {
-        console.log(error);
         const paramMapper = (paramName: string) => {
           if (paramName === "email_address") return "email";
           return "root.clerkError";
