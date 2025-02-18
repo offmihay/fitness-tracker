@@ -5,6 +5,7 @@ import DatePickerInput from "../input/DatePickerInput";
 import get from "lodash/get";
 import CustomAnimatedView from "../view/CustomAnimatedView";
 import ErrorAnimatedView from "../view/ErrorAnimatedView";
+import { t } from "i18next";
 
 type Props<TFieldValues extends FieldValues> = {
   name: FieldPath<TFieldValues>;
@@ -43,7 +44,9 @@ const RHFormDatePicker = <TFieldValues extends FieldValues>(props: Props<TFieldV
                 {...datePickerProps}
               />
             </CustomAnimatedView>
-            <ErrorAnimatedView message={error?.message?.toString()} />
+            <ErrorAnimatedView
+              message={error?.message && t(`errors.${error?.message?.toString()}`)}
+            />
           </>
         );
       }}

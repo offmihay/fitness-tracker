@@ -19,7 +19,7 @@ type Props = {
   data: TournamentBase;
 };
 
-export const CARD_HEIGHT = 400;
+export const CARD_HEIGHT = 420;
 
 const TournamentCard = ({ data, handleOpenDetails }: Props) => {
   const theme = useCustomTheme();
@@ -44,7 +44,7 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
             overflow: "hidden",
             position: "relative",
           }}
-          className="mb-4"
+          className="mb-3"
         >
           <FastImage
             style={{ width: "100%", height: "100%" }}
@@ -56,7 +56,7 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
           />
         </View>
         <CustomText type="subtitle">{title}</CustomText>
-        <View className="flex flex-row gap-4 mt-4">
+        <View className="flex flex-row gap-4 mt-3">
           <SportLabel type={data?.sportType} />
           {entryFee && (
             <CustomLabel
@@ -65,9 +65,9 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
             />
           )}
         </View>
-        <View className="flex flex-row mt-2">
+        <View className="flex-1 flex-row mt-3 items-center">
           <View style={{ width: "65%" }}>
-            <View className="flex flex-col pr-1 gap-1">
+            <View className="flex flex-col pr-1 gap-2">
               <View className="flex flex-row gap-2 items-center" style={{ height: 40 }}>
                 <View style={{ width: 25 }}>
                   <FontAwesome6 name="location-dot" size={20} color={theme.colors.text} />
@@ -97,7 +97,7 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
             </View>
           </View>
           <View style={{ width: "35%" }}>
-            <View className="flex flex-col pl-1 gap-1">
+            <View className="flex flex-col pl-1 gap-2">
               <View className="flex flex-row gap-2 items-center" style={{ height: 40 }}>
                 <View style={{ width: 25 }}>
                   <Ionicons name="person" size={20} color={theme.colors.text} />

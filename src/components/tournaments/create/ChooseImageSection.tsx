@@ -112,8 +112,8 @@ const ChooseImageSection = (props: Props) => {
               message={
                 images
                   .filter((img) => img.publicId && !img.isError)
-                  .map((img) => ({ publicId: img.publicId! })).length === 0
-                  ? errorMessage
+                  .map((img) => ({ publicId: img.publicId! })).length === 0 && errorMessage
+                  ? t(`errors.${errorMessage}`)
                   : ""
               }
             />

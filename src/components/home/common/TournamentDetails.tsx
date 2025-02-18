@@ -7,6 +7,7 @@ import {
   AntDesign,
   FontAwesome,
   FontAwesome5,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { Tournament } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
@@ -50,7 +51,7 @@ const TournamentDetails = ({
           useArrows
         />
       </View>
-      {!isRegistred && (
+      {!isRegistred ? (
         <View className="flex flex-row justify-between">
           <ButtonDefault
             title={t("home.tournament.register")}
@@ -61,6 +62,15 @@ const TournamentDetails = ({
             type="grey"
             title={t("home.tournament.saveForLater")}
             styleWrapper={{ width: "48%" }}
+          />
+        </View>
+      ) : (
+        <View>
+          <ButtonDefault
+            title={t("register.addReminder")}
+            onPress={void 0}
+            type="primary"
+            nodeLeft={(color) => <MaterialCommunityIcons name="reminder" size={24} color={color} />}
           />
         </View>
       )}

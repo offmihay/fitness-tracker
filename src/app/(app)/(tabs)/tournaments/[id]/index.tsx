@@ -5,12 +5,14 @@ import { getTournamentByID } from "@/src/queries/tournaments";
 import TournamentDetails from "@/src/components/home/common/TournamentDetails";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import TournamentDetailsSkeleton from "@/src/components/home/common/skeleton/TournamentDetailsSkeleton";
+import { useUser } from "@clerk/clerk-expo";
 
 type Props = {};
 
 const TournamentDetailsScreen = ({}: Props) => {
   const { id } = useLocalSearchParams();
   const { data, isLoading, error } = getTournamentByID(id as string);
+  const { user } = useUser();
 
   const handleOpenRules = () => {
     router.push(
@@ -42,6 +44,13 @@ const TournamentDetailsScreen = ({}: Props) => {
     );
   };
 
+  const handleRegister = () => {
+    router.push({
+      pathname: "/register",
+      params: { id },
+    });
+  };
+
   const isLoaded = !isLoading && data;
 
   return (
@@ -49,11 +58,12 @@ const TournamentDetailsScreen = ({}: Props) => {
       <View style={styles.wrapper}>
         {isLoaded ? (
           <TournamentDetails
-            isRegistred={true}
+            isRegistred={data.participants.some((p) => p.id === user?.id)}
             data={data}
             handleOpenRules={handleOpenRules}
             handleOpenParticipants={handleOpenParticipants}
             handleOpenOrganizer={handleOpenOrganizer}
+            handleRegister={handleRegister}
           />
         ) : (
           <TournamentDetailsSkeleton />

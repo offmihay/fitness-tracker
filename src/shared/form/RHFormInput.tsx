@@ -6,6 +6,7 @@ import CustomTextInput from "../input/CustomTextInput";
 import CustomAnimatedView from "../view/CustomAnimatedView";
 import ErrorAnimatedView from "../view/ErrorAnimatedView";
 import { View } from "react-native";
+import { t } from "i18next";
 
 type Props<TFieldValues extends FieldValues> = {
   name: FieldPath<TFieldValues>;
@@ -44,7 +45,9 @@ const RHFormInput = <TFieldValues extends FieldValues>(props: Props<TFieldValues
                 isError={!!error}
                 {...inputProps}
               />
-              <ErrorAnimatedView message={error?.message?.toString()} />
+              <ErrorAnimatedView
+                message={error?.message && t(`errors.${error?.message?.toString()}`)}
+              />
             </CustomAnimatedView>
           </>
         );

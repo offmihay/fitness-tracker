@@ -8,6 +8,7 @@ import { DropdownModalProps } from "../modal/DropdownInputModal [ios]";
 import CustomPicker from "../picker/CustomPicker [android]";
 import CustomAnimatedView from "../view/CustomAnimatedView";
 import ErrorAnimatedView from "../view/ErrorAnimatedView";
+import { t } from "i18next";
 
 type Props<TFieldValues extends FieldValues, T extends string> = {
   control: Control<TFieldValues>;
@@ -49,7 +50,9 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
                   }}
                 />
               </CustomAnimatedView>
-              <ErrorAnimatedView message={!value ? error?.message?.toString() : ""} />
+              <ErrorAnimatedView
+                message={error?.message && !value ? t(`errors.${error?.message?.toString()}`) : ""}
+              />
             </>
           ) : Platform.OS === "android" ? (
             <>
@@ -66,7 +69,9 @@ const RHFormDropdownInput = <TFieldValues extends FieldValues, T extends string>
                   selectAnLabel={dropdownProps.selectAnLabel}
                 />
               </CustomAnimatedView>
-              <ErrorAnimatedView message={!value ? error?.message?.toString() : ""} />
+              <ErrorAnimatedView
+                message={error?.message && !value ? t(`errors.${error?.message?.toString()}`) : ""}
+              />
             </>
           ) : (
             <></>

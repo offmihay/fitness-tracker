@@ -21,6 +21,7 @@ import { Feather } from "@expo/vector-icons";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import FilterDropdownMenu from "@/src/components/tournaments/common/FilterDropdownMenu";
 import { useToast } from "@/src/hooks/useToast";
+import { t } from "i18next";
 
 type Props = {};
 
@@ -169,7 +170,7 @@ const FinishedTournaments = ({}: Props) => {
             progressViewOffset={180}
           />
         ),
-        ListEmptyComponent: <CustomText>Tournaments not found.</CustomText>,
+        ListEmptyComponent: <CustomText>{t("errors.no_tournaments_found")}</CustomText>,
         ListHeaderComponent: <View className="mb-4" />,
         ListFooterComponent: <View className="mb-4" />,
         contentContainerStyle: styles.wrapper,

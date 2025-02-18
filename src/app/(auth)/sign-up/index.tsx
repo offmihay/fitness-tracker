@@ -89,10 +89,10 @@ export default function SignUpEmailScreen() {
                     isError: !!formErrors.email,
                   }}
                   rules={{
-                    maxLength: { value: 30, message: t("errors.email_too_long") },
+                    maxLength: { value: 30, message: "email_too_long" },
                     pattern: {
                       value: /^\s*[\w-\.]+@([\w-]+\.)+[\w-]{1,4}\s*$/g,
-                      message: t("errors.email_invalid"),
+                      message: "email_invalid",
                     },
                   }}
                 />
@@ -120,7 +120,7 @@ export default function SignUpEmailScreen() {
                   >
                     {Object.values(formErrors.root).map((error, index) => (
                       <CustomText color={theme.colors.error} type="predefault" key={index}>
-                        {(error as { message: string }).message}
+                        {t(`errors.${(error as { message: string }).message}`)}
                       </CustomText>
                     ))}
                   </Animated.View>

@@ -50,7 +50,8 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const { t } = useTranslation();
 
   const getErrorMessage = (error: Error, fallbackKey: string) => {
-    const localeErrorCauseMessage = error.cause ? t(`errors.${error.cause}`) : undefined;
+    const errorCause = error.cause == "502" ? "internal_server_error" : error.cause;
+    const localeErrorCauseMessage = errorCause ? t(`errors.${error.cause}`) : undefined;
     const message = localeErrorCauseMessage || error.message || t(`errors.${fallbackKey}`);
     return message;
   };

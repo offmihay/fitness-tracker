@@ -18,6 +18,11 @@ import {
 } from "@/src/components/tournaments/create/organizer/schema";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import {
+  ChangeOrganizerFormData,
+  schemaChangeOrganizer,
+} from "@/src/components/settings/personal-info/forms/schema";
+import { optional } from "zod";
 
 const OrganizerForm = () => {
   const { t } = useTranslation();
@@ -25,9 +30,9 @@ const OrganizerForm = () => {
   const formDataMutation = useUpdateUserMutation();
   const router = useRouter();
 
-  const methods = useForm<OrganizerFormData>({
-    mode: "onChange",
-    resolver: zodResolver(schemaOrganizer),
+  const methods = useForm<ChangeOrganizerFormData>({
+    mode: "onSubmit",
+    resolver: zodResolver(schemaChangeOrganizer),
     defaultValues: {
       organizerName:
         typeof user?.unsafeMetadata.organizerName === "string"
@@ -55,7 +60,7 @@ const OrganizerForm = () => {
     setError,
   } = methods;
 
-  const onSubmit = (data: OrganizerFormData) => {
+  const onSubmit = (data: ChangeOrganizerFormData) => {
     const formData = clerkTransformData(data, user?.unsafeMetadata || null);
     formDataMutation.mutate(formData, {
       onSuccess: () => {
@@ -89,9 +94,6 @@ const OrganizerForm = () => {
                   name="organizerName"
                   label={t("user.organizerName")}
                   control={control}
-                  rules={{
-                    required: { message: "required" },
-                  }}
                   inputProps={{
                     useClearButton: true,
                     returnKeyType: "done",
@@ -101,9 +103,6 @@ const OrganizerForm = () => {
                   name="organizerEmail"
                   label={t("user.organizerEmail")}
                   control={control}
-                  rules={{
-                    required: true,
-                  }}
                   inputProps={{
                     useClearButton: true,
                     returnKeyType: "done",
@@ -113,9 +112,6 @@ const OrganizerForm = () => {
                   name="organizerPhone"
                   label={t("user.organizerPhone")}
                   control={control}
-                  rules={{
-                    required: true,
-                  }}
                   inputProps={{
                     useClearButton: true,
                     returnKeyType: "done",
@@ -125,9 +121,6 @@ const OrganizerForm = () => {
                   name="organizerDetails"
                   label={t("user.organizerDetails")}
                   control={control}
-                  rules={{
-                    required: true,
-                  }}
                   inputProps={{
                     style: { height: 70 },
                     styleWrapper: { height: 80 },

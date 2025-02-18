@@ -29,7 +29,7 @@ const SignIn = () => {
       if (oAuthFlow.setActive && oAuthFlow.authSessionResult?.type === "success") {
         await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId });
       } else {
-        throw new Error("Failed to sign in with Google");
+        throw new Error("Failed to sign in with Google", { cause: "failed_sign_in_google" });
       }
     },
     onSuccess: () => {
@@ -43,7 +43,7 @@ const SignIn = () => {
       if (oAuthFlow.setActive && oAuthFlow.authSessionResult?.type === "success") {
         await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId });
       } else {
-        throw new Error("Failed to sign in with Apple");
+        throw new Error("Failed to sign in with Apple", { cause: "failed_sign_in_apple" });
       }
     },
     onSuccess: () => {

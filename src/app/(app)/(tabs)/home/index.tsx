@@ -17,6 +17,7 @@ import { emptyFilter } from "@/src/components/home/storedSettings";
 import CustomText from "@/src/shared/text/CustomText";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { InfiniteData, useQueryClient } from "@tanstack/react-query";
+import { t } from "i18next";
 
 type HomePageProps = {};
 
@@ -137,7 +138,7 @@ const HomePage = ({}: HomePageProps) => {
           }
           ListEmptyComponent={
             !isLoading && !hasNextPage && !isRefreshing ? (
-              <CustomText>No tournaments found.</CustomText>
+              <CustomText>{t("errors.no_tournaments_found")}</CustomText>
             ) : null
           }
           data={displayData}

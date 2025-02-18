@@ -22,6 +22,9 @@ export const useSignInMutation = () => {
         }
       }
     },
+    meta: {
+      disableGlobalErrorHandler: true,
+    },
   });
 
   return { signInMutation };

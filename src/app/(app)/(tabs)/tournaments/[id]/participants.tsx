@@ -7,6 +7,7 @@ import ParticipantCard from "@/src/components/home/common/ParticipantCard";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
 import { emptyBaseTournament, Tournament } from "@/src/types/tournament";
 import ParticipantCardSkeleton from "@/src/components/home/common/skeleton/ParticipantCardSkeleton";
+import { t } from "i18next";
 
 type Props = {};
 
@@ -77,7 +78,7 @@ const ParticipantsPage = (props: Props) => {
             progressViewOffset={180}
           />
         ),
-        ListEmptyComponent: <CustomText>No participants yet.</CustomText>,
+        ListEmptyComponent: <CustomText>{t("errors.no_participants_yet")}</CustomText>,
         ListFooterComponent: <View style={{ height: 20 }} />,
         contentContainerStyle: styles.wrapper,
         estimatedItemSize: 70,

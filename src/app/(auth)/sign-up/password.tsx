@@ -120,7 +120,7 @@ const SignUpPasswordScreen = () => {
                       exiting={FadeOut.duration(300)}
                     >
                       <CustomText color={theme.colors.error} type="predefault">
-                        {formErrors.password?.message}
+                        {t(`errors.${formErrors.password?.message}`)}
                       </CustomText>
                     </Animated.View>
                   )}
@@ -152,7 +152,7 @@ const SignUpPasswordScreen = () => {
                   >
                     {Object.values(formErrors.root).map((error, index) => (
                       <CustomText color={theme.colors.error} type="predefault" key={index}>
-                        {(error as { message: string }).message}
+                        {t(`errors.${(error as { message: string }).message}`)}
                       </CustomText>
                     ))}
                   </Animated.View>

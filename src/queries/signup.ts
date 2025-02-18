@@ -12,6 +12,9 @@ export const useSignUpMutation = () => {
         });
       }
     },
+    meta: {
+      disableGlobalErrorHandler: true,
+    },
   });
 
   return signUpMutation;
@@ -38,6 +41,9 @@ export const useSignUpPasswordMutation = () => {
         }
       }
     },
+    meta: {
+      disableGlobalErrorHandler: true,
+    },
   });
 
   return signUpPasswordMutation;
@@ -51,6 +57,9 @@ export const useResendVerificationCodeMutation = () => {
       if (isLoaded) {
         await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       }
+    },
+    meta: {
+      disableGlobalErrorHandler: true,
     },
   });
 };
@@ -66,6 +75,9 @@ export const useVerifyEmailCodeMutation = () => {
           await setActive({ session: signUp.createdSessionId });
         }
       }
+    },
+    meta: {
+      disableGlobalErrorHandler: true,
     },
   });
 };

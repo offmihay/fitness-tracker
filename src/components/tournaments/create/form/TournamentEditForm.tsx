@@ -315,7 +315,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
           <ErrorAnimatedView
             message={
               !user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail
-                ? errors.isOrganizerAdded?.message
+                ? t(`errors.${errors.isOrganizerAdded?.message}`)
                 : undefined
             }
             className="mt-2"

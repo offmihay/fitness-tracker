@@ -14,14 +14,14 @@ const clerkHandleErrors = <T extends FieldValues>(
 
       setError(errParam, {
         type: err.code,
-        message: `errors.${err.code}`,
+        message: `${err.code}`,
       });
     });
   } else {
     const errParam: SetErrorParams<T> = "root.serverError";
     setError(errParam, {
       type: "server_error",
-      message: "errors.server_error",
+      message: "server_error",
     });
   }
 };
