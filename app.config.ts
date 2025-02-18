@@ -14,6 +14,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: true,
     infoPlist: {
       CADisableMinimumFrameDurationOnPhone: true,
+      ITSAppUsesNonExemptEncryption: false,
     },
     config: {
       googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
@@ -22,7 +23,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     package: "com.tiers.selfsport",
     adaptiveIcon: {
-      foregroundImage: "./assets/adaptive-icon.png",
+      foregroundImage: "./assets/icon_android.png",
       backgroundColor: "#D4D4D2",
     },
     config: {

@@ -11,7 +11,7 @@ import { useAuthContext } from "../providers/AuthContextProvider";
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
-  duration: 800,
+  duration: 400,
   fade: true,
 });
 
