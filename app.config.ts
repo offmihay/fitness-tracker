@@ -6,11 +6,11 @@ dotenv.config();
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "fitness-tracker",
-  scheme: "fitness-tracker",
-  slug: "fitness-tracker",
+  name: "Selfsport",
+  scheme: "selfsport",
+  slug: "selfsport",
   ios: {
-    bundleIdentifier: "com.offmihay.fitnesstracker",
+    bundleIdentifier: "com.tiers.selfsport",
     supportsTablet: true,
     infoPlist: {
       CADisableMinimumFrameDurationOnPhone: true,
@@ -20,10 +20,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
   },
   android: {
-    package: "com.offmihay.fitnesstracker",
+    package: "com.tiers.selfsport",
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
-      backgroundColor: "#ffffff",
+      backgroundColor: "#D4D4D2",
     },
     config: {
       googleMaps: {
