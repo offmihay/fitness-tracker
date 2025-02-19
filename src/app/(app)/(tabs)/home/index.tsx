@@ -1,7 +1,7 @@
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from "react-native";
 import React, { useCallback, useState, memo, useEffect, useMemo } from "react";
 import TournamentCard, { CARD_HEIGHT } from "@/src/components/home/common/TournamentCard";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { getAllTournaments, registerTournament } from "@/src/queries/tournaments";
 import { useSettings } from "@/src/hooks/useSettings";
 import HomeHeader from "@/src/components/home/HomeHeader";
@@ -18,12 +18,26 @@ import CustomText from "@/src/shared/text/CustomText";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { t } from "i18next";
+import { useRefreshByUser } from "@/src/hooks/useRefetchByUser";
 
 type HomePageProps = {};
 
 const HomePage = ({}: HomePageProps) => {
-  const { settings } = useSettings();
   const router = useRouter();
+  const navigation = useNavigation();
+
+  const handleOpenDetails = useCallback(
+    (id: string) => {
+      router.push(
+        {
+          pathname: "./[id]",
+          params: { id },
+        },
+        { relativeToDirectory: true }
+      );
+    },
+    [router]
+  );
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<FilterHome>(emptyFilter);
@@ -56,51 +70,36 @@ const HomePage = ({}: HomePageProps) => {
 
   const {
     data: allFetchedData,
-    error,
     isLoading,
     isFetching,
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-    refetch,
   } = getAllTournaments(query);
 
-  const handleOpenDetails = useCallback(
-    (id: string) => {
-      router.push(
-        {
-          pathname: "./[id]",
-          params: { id },
-        },
-        { relativeToDirectory: true }
-      );
-    },
-    [router]
-  );
-
   const queryClient = useQueryClient();
+
   const resetInfiniteQueryPagination = async (): Promise<void> => {
     queryClient.setQueryData<InfiniteData<TournamentBase[]>>(["tournaments", query], (oldData) => {
       if (!oldData) return undefined;
-
       return {
         pages: [],
         pageParams: oldData.pageParams.slice(0, 1),
       };
     });
+
     await queryClient.invalidateQueries({ queryKey: ["tournaments", query] });
   };
 
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const onRefresh = useCallback(async () => {
-    if (isRefreshing) return;
-    setIsRefreshing(true);
-    try {
-      await resetInfiniteQueryPagination();
-    } finally {
-      setIsRefreshing(false);
-    }
-  }, [resetInfiniteQueryPagination, isRefreshing]);
+  const { isRefreshing, refresh, cancelRefresh } = useRefreshByUser(resetInfiniteQueryPagination);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", (e) => {
+      cancelRefresh();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const renderItem = useCallback(
     ({ item }: { item: TournamentBase }) => (
@@ -137,13 +136,13 @@ const HomePage = ({}: HomePageProps) => {
             </View>
           }
           ListEmptyComponent={
-            !isLoading && !hasNextPage && !isRefreshing ? (
+            !isFetching && !hasNextPage ? (
               <CustomText>{t("errors.no_tournaments_found")}</CustomText>
             ) : null
           }
           data={displayData}
           contentContainerStyle={styles.wrapper}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           estimatedItemSize={CARD_HEIGHT + 20}

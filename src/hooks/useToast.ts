@@ -10,6 +10,7 @@ export const useToast = () => {
       title: t("common.success"),
       preset: "done",
       message: successMessage,
+      haptic: "success",
     });
   };
 

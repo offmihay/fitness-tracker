@@ -50,17 +50,17 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const { t } = useTranslation();
 
   const getErrorMessage = (error: Error, fallbackKey: string) => {
-    const errorCause = error.cause == "502" ? "internal_server_error" : error.cause;
-    const localeErrorCauseMessage = errorCause ? t(`errors.${error.cause}`) : undefined;
-    const message = localeErrorCauseMessage || error.message || t(`errors.${fallbackKey}`);
+    const errorCause = error.cause as string | number;
+    const errorCauseMessage = t(`errors.${errorCause}`);
+    const localeErrorCauseMessage =
+      errorCause.toString() !== errorCauseMessage ? errorCauseMessage : undefined;
+    const message = localeErrorCauseMessage || t(`errors.${fallbackKey}`);
     return message;
   };
 
   const queryClient = new QueryClient({
     defaultOptions: {
-      queries: {
-        retry: 3,
-      },
+      queries: { retry: 1, retryDelay: 2000 },
     },
     queryCache: new QueryCache({
       onError: (error) => {
@@ -69,6 +69,7 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             title: t("common.error"),
             preset: "error",
             message: getErrorMessage(error, "loading_data_error"),
+            haptic: "warning",
           });
         }
         throw error;
@@ -84,6 +85,7 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
           title: t("common.error"),
           preset: "error",
           message: getErrorMessage(error, "mutation_data_error"),
+          haptic: "error",
         });
 
         throw error;

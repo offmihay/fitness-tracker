@@ -5,8 +5,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useCallback, useMemo, useState } from "react";
-import { router, usePathname, useRouter } from "expo-router";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { router, useNavigation, usePathname, useRouter } from "expo-router";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import UserTournamentCard, {
   UserTournamentCard_HEIGHT,
@@ -28,6 +28,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import FilterDropdownMenu from "@/src/components/tournaments/common/FilterDropdownMenu";
 import { useToast } from "@/src/hooks/useToast";
 import { t } from "i18next";
+import { useRefreshByUser } from "@/src/hooks/useRefetchByUser";
 
 type Props = {};
 
@@ -36,6 +37,7 @@ type Filter = "participant" | "organizer" | "all";
 const Tournaments = ({}: Props) => {
   const { data: dataFetch, refetch, isFetching } = getMyTournaments(false);
   const theme = useCustomTheme();
+  const navigation = useNavigation();
   const { showSuccessToast } = useToast();
   const deleteTournamentMutation = deleteTournament();
   const leaveTournamentMutation = leaveTournament();
@@ -43,14 +45,15 @@ const Tournaments = ({}: Props) => {
 
   const [filter, setFilter] = useState<Filter>("all");
 
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const onRefresh = useCallback(() => {
-    setIsRefreshing(true);
-    refetch();
-    if (!isFetching) {
-      setIsRefreshing(false);
-    }
-  }, [refetch, isFetching]);
+  const { isRefreshing, refresh, cancelRefresh } = useRefreshByUser(refetch);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", (e) => {
+      cancelRefresh();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const { data } = useMemo(() => {
     if (filter === "all") {
@@ -209,7 +212,7 @@ const Tournaments = ({}: Props) => {
           refreshControl: (
             <RefreshControl
               refreshing={isRefreshing}
-              onRefresh={onRefresh}
+              onRefresh={refresh}
               progressViewOffset={180}
             />
           ),
