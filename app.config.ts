@@ -10,6 +10,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: "selfsport",
   slug: "selfsport",
   ios: {
+    ...config.ios,
     bundleIdentifier: "com.tiers.selfsport",
     supportsTablet: true,
     infoPlist: {
@@ -21,11 +22,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
   },
   android: {
+    ...config.android,
     package: "com.tiers.selfsport",
-    adaptiveIcon: {
-      foregroundImage: "./assets/icon_android.png",
-      backgroundColor: "#D4D4D2",
-    },
     config: {
       googleMaps: {
         apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
