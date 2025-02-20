@@ -1,4 +1,3 @@
-import { useAuth, useOAuth } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import {
   View,
@@ -10,49 +9,32 @@ import {
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
-import { useMutation } from "@tanstack/react-query";
 import BackgroundImage from "@/src/shared/image/BackgroundImage";
 import FastImage from "@d11/react-native-fast-image";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import CustomText from "@/src/shared/text/CustomText";
+import { useWarmUpBrowser } from "@/src/hooks/useWarmUpBrowser";
+import { useAppleOAuthMutation, useGoogleOAuthMutation } from "@/src/queries/oauth";
 
 const SignIn = () => {
+  useWarmUpBrowser();
   const { t } = useTranslation();
   const router = useRouter();
+  const googleOAuthMutation = useGoogleOAuthMutation();
+  const appleOAuthMutation = useAppleOAuthMutation();
 
-  const googleOAuth = useOAuth({ strategy: "oauth_google" });
-  const appleOAuth = useOAuth({ strategy: "oauth_apple" });
-
-  const googleSignInMutation = useMutation({
-    mutationFn: async () => {
-      const oAuthFlow = await googleOAuth.startOAuthFlow();
-      if (oAuthFlow.setActive && oAuthFlow.authSessionResult?.type === "success") {
-        await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId });
-      } else {
-        throw new Error("Failed to sign in with Google", { cause: "failed_sign_in_google" });
-      }
-    },
-    onSuccess: () => {
-      router.replace("/home");
-    },
-  });
-
-  const appleSignInMutation = useMutation({
-    mutationFn: async () => {
-      const oAuthFlow = await appleOAuth.startOAuthFlow();
-      if (oAuthFlow.setActive && oAuthFlow.authSessionResult?.type === "success") {
-        await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId });
-      } else {
-        throw new Error("Failed to sign in with Apple", { cause: "failed_sign_in_apple" });
-      }
-    },
-    onSuccess: () => {
-      router.replace("/home");
-    },
-  });
-
-  const googleSignIn = () => googleSignInMutation.mutate();
-  const appleSignIn = () => appleSignInMutation.mutate();
+  const handleGoogleSignIn = () =>
+    googleOAuthMutation.mutate(undefined, {
+      onSuccess: () => {
+        router.replace("/home");
+      },
+    });
+  const handleAppleSignIn = () =>
+    appleOAuthMutation.mutate(undefined, {
+      onSuccess: () => {
+        router.replace("/home");
+      },
+    });
 
   return (
     <BackgroundImage source={require("@/assets/imgs/signin-background2.jpg")}>
@@ -62,7 +44,7 @@ const SignIn = () => {
           <View className="flex flex-col gap-3">
             <ButtonDefault
               activeOpacity={0.85}
-              onPress={googleSignIn}
+              onPress={handleGoogleSignIn}
               type="white"
               nodeLeft={() => (
                 <FastImage
@@ -72,18 +54,20 @@ const SignIn = () => {
               )}
               title={t("signin.continueGoogle")}
             />
-            <ButtonDefault
-              activeOpacity={0.85}
-              onPress={appleSignIn}
-              type="white"
-              nodeLeft={() => (
-                <FastImage
-                  source={require("@/assets/imgs/apple_icon.png")}
-                  style={{ width: 20, height: 20 }}
-                />
-              )}
-              title={t("signin.continueApple")}
-            />
+            {Platform.OS === "ios" && (
+              <ButtonDefault
+                activeOpacity={0.85}
+                onPress={handleAppleSignIn}
+                type="white"
+                nodeLeft={() => (
+                  <FastImage
+                    source={require("@/assets/imgs/apple_icon.png")}
+                    style={{ width: 20, height: 20 }}
+                  />
+                )}
+                title={t("signin.continueApple")}
+              />
+            )}
             <ButtonDefault
               type="darkgrey"
               activeOpacity={0.85}

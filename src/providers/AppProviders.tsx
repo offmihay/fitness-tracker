@@ -51,10 +51,13 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
   const getErrorMessage = (error: Error, fallbackKey: string) => {
     const errorCause = error.cause as string | number;
+    if (!errorCause) {
+      return error.message || t(`errors.${fallbackKey}`);
+    }
     const errorCauseMessage = t(`errors.${errorCause}`);
     const localeErrorCauseMessage =
       errorCause.toString() !== errorCauseMessage ? errorCauseMessage : undefined;
-    const message = localeErrorCauseMessage || t(`errors.${fallbackKey}`);
+    const message = localeErrorCauseMessage || error.message || t(`errors.${fallbackKey}`);
     return message;
   };
 
@@ -80,7 +83,7 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         if (mutation.meta?.disableGlobalErrorHandler) {
           return;
         }
-
+        console.log("Error cause:", error.cause, "message:", error.message);
         Burnt.toast({
           title: t("common.error"),
           preset: "error",

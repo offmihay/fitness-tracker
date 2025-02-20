@@ -91,8 +91,7 @@
     "loading_data_error": "Не вдалося завантажити дані",
     "mutation_data_error": "Не вдалося змінити дані",
     "internal_server_error": "Не вдалось обробити запит",
-    "failed_sign_in_google": "Не вдалось увійти",
-    "failed_sign_in_apple": "Не вдалось увійти",
+    "failed_sign_in": "Не вдалось увійти",
 
     "dateStart_required": "Потрібно вказати дату початку.",
     "dateEnd_required": "Потрібно вказати дату завершення.",

@@ -91,8 +91,7 @@
     "loading_data_error": "Failed to load data",
     "mutation_data_error": "Failed to update data",
     "internal_server_error": "Internal server error",
-    "failed_sign_in_google": "Failed to sign in",
-    "failed_sign_in_apple": "Failed to sign in",
+    "failed_sign_in": "Failed to sign in",
 
     "dateStart_required": "Start date is required.",
     "dateEnd_required": "End date is required.",
