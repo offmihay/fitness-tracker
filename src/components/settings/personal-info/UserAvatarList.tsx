@@ -22,7 +22,7 @@ import ChooseCameraModal from "../../../shared/modal/ChooseCameraModal";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
 import { useTranslation } from "react-i18next";
-import DeleteContextMenu from "@/src/shared/context/DeleteContextMenu";
+import DeleteContextMenu from "@/src/shared/context-menu/DeleteContextMenu";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import { useToast } from "@/src/hooks/useToast";
 

@@ -7,7 +7,7 @@ import {
   ContextMenuItemTitle,
   ContextMenuRoot,
   ContextMenuTrigger,
-} from "./ContextMenuComponents";
+} from "./common";
 import { useTranslation } from "react-i18next";
 
 type Props = {

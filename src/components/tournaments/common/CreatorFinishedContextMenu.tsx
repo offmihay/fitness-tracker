@@ -6,7 +6,7 @@ import {
   ContextMenuItemIcon,
   ContextMenuItemTitle,
   ContextMenuTrigger,
-} from "@/src/shared/context/ContextMenuComponents";
+} from "@/src/shared/context-menu/common";
 import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";

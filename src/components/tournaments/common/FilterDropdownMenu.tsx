@@ -1,4 +1,4 @@
-import CheckboxDropdownMenu from "@/src/shared/dropdown/CheckboxDropdownMenu";
+import CheckboxContextMenu from "@/src/shared/context-menu/CheckboxContextMenu";
 import React from "react";
 
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ const FilterDropdownMenu = ({ children, onConfirm, value, disabled }: Props) => 
     disabled,
   }));
 
-  return <CheckboxDropdownMenu items={dropdownItems}>{children}</CheckboxDropdownMenu>;
+  return <CheckboxContextMenu items={dropdownItems}>{children}</CheckboxContextMenu>;
 };
 
 export default FilterDropdownMenu;

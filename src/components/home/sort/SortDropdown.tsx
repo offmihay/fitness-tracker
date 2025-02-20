@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import ButtonSmall from "@/src/shared/button/ButtonSmall";
 import { Ionicons } from "@expo/vector-icons";
-import CheckboxDropdownMenu from "@/src/shared/dropdown/CheckboxDropdownMenu";
+import CheckboxContextMenu from "@/src/shared/context-menu/CheckboxContextMenu";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
@@ -41,7 +41,7 @@ const SortDropdown = (props: Props) => {
   }));
 
   return (
-    <CheckboxDropdownMenu items={dropdownItems}>
+    <CheckboxContextMenu items={dropdownItems}>
       <ButtonSmall
         disabled={disabled}
         disabledUI={disabled && !value}
@@ -54,7 +54,7 @@ const SortDropdown = (props: Props) => {
         }}
         textColor={theme.colors.text}
       />
-    </CheckboxDropdownMenu>
+    </CheckboxContextMenu>
   );
 };
 
