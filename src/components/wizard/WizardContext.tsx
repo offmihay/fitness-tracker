@@ -7,9 +7,9 @@ export type WizardPreferences = {
   role?: "organizer" | "participant";
   featuredSport?: TournamentSport[];
   residencePlace?: {
-    geoCoordinates: {
-      latitude?: number;
-      longitude?: number;
+    geoCoordinates?: {
+      latitude: number;
+      longitude: number;
     };
     city: string;
   };

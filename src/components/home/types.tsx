@@ -28,4 +28,16 @@ export enum SortValueHome {
 export type TournamentQuery = Query &
   FilterHome & {
     sortBy: "dateStart" | "prizePool" | "dateCreated";
+    latitude: number;
+    longitude: number;
+    radius: number;
   };
+
+export type Location = {
+  geoCoordinates?: {
+    latitude: number;
+    longitude: number;
+  };
+  address?: string;
+  radius?: number;
+};

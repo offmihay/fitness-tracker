@@ -11,6 +11,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 import { AntDesign } from "@expo/vector-icons";
 import { ThemeProvider } from "react-native-paper";
+import CustomText from "../text/CustomText";
 
 export type Props = {
   name: string;

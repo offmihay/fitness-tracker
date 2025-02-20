@@ -6,30 +6,16 @@ import FastImage from "@d11/react-native-fast-image";
 import { router, useLocalSearchParams } from "expo-router";
 import GoogleAutoComplete from "@/src/components/tournaments/choose-location/GoogleAutocomplete";
 import { CreateTournamentPageQuery } from ".";
+import GoogleLogo from "@/src/shared/logo/GoogleLogo";
 
 export type ChooseLocationPageQuery = {
-  address?: string;
-  language?: string;
-  location?: string;
+  id: string;
+  address: string;
+  language: string;
+  location: string;
   latitude?: string;
   longitude?: string;
-  components?: string;
-};
-
-const GoogleLogo = () => {
-  const theme = useCustomTheme();
-  const source = theme.dark
-    ? require("@/assets/imgs/google_logo_dark.png")
-    : require("@/assets/imgs/google_logo_light.png");
-  return (
-    <View style={{ width: 80 }}>
-      <FastImage
-        style={{ width: "100%", height: "100%" }}
-        source={source}
-        resizeMode={FastImage.resizeMode.contain}
-      ></FastImage>
-    </View>
-  );
+  components: string;
 };
 
 const ChooseLocation = () => {

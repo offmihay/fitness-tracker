@@ -17,7 +17,7 @@ const FilterItem = ({ label, isSelected, onPress, onClear, useClearButton }: Pro
 
   const animatedWrapperStyle = useAnimatedStyle(() => ({
     backgroundColor: withTiming(isSelected ? theme.colors.primary : theme.colors.surface, {
-      duration: 300,
+      duration: 150,
     }),
   }));
 

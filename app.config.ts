@@ -6,7 +6,7 @@ dotenv.config();
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "Selfsport",
+  name: "SelfSport",
   scheme: "selfsport",
   slug: "selfsport",
   ios: {

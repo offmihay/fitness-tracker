@@ -11,7 +11,7 @@ import { emptyBaseTournament, TournamentBase } from "@/src/types/tournament";
 import { FlashList } from "@shopify/flash-list";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import TournamentCardSkeleton from "@/src/components/home/common/skeleton/TournamentCardSkeleton";
-import { FilterHome, SortValueHome, TournamentQuery } from "@/src/components/home/types";
+import { FilterHome, Location, SortValueHome, TournamentQuery } from "@/src/components/home/types";
 import _, { hasIn } from "lodash";
 import { emptyFilter } from "@/src/components/home/storedSettings";
 import CustomText from "@/src/shared/text/CustomText";
@@ -19,12 +19,15 @@ import { useDebounce } from "@/src/hooks/useDebounce";
 import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { t } from "i18next";
 import { useRefreshByUser } from "@/src/hooks/useRefetchByUser";
+import LocationModal from "@/src/components/home/location/LocationModal";
+import { useUser } from "@clerk/clerk-expo";
 
 type HomePageProps = {};
 
 const HomePage = ({}: HomePageProps) => {
   const router = useRouter();
   const navigation = useNavigation();
+  const { user } = useUser();
 
   const handleOpenDetails = useCallback(
     (id: string) => {
@@ -43,6 +46,23 @@ const HomePage = ({}: HomePageProps) => {
   const [filter, setFilter] = useState<FilterHome>(emptyFilter);
   const [sortBy, setSortBy] = useState<SortValueHome | null>(null);
 
+  const residencePlace = user?.unsafeMetadata.residencePlace;
+  const geoCoordinates = useMemo(() => {
+    if (residencePlace) {
+      return {
+        geoCoordinates: {
+          latitude: residencePlace.geoCoordinates.latitude,
+          longitude: residencePlace.geoCoordinates.longitude,
+        },
+        address: residencePlace.city,
+        radius: 50,
+      } as Location;
+    } else {
+      return null;
+    }
+  }, [residencePlace]);
+  const [location, setLocation] = useState<Location | null>(geoCoordinates);
+
   const transformSortQuery = (sortBy: SortValueHome | null) => {
     let sortQuery: Pick<TournamentQuery, "sortBy" | "sortOrder"> | {};
     switch (sortBy) {
@@ -60,13 +80,26 @@ const HomePage = ({}: HomePageProps) => {
   };
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
+  const transformLocationQuery = (location: Location | null) => {
+    console.log(location);
+    if (location && location.geoCoordinates?.latitude && location.geoCoordinates?.longitude) {
+      return {
+        latitude: location.geoCoordinates.latitude,
+        longitude: location.geoCoordinates.longitude,
+        radius: location.radius,
+      };
+    }
+    return {};
+  };
+
   const query = useMemo<Partial<TournamentQuery>>(() => {
     return {
       ...filter,
       ...transformSortQuery(sortBy),
+      ...transformLocationQuery(location),
       search: debouncedSearchQuery,
     };
-  }, [filter, sortBy, debouncedSearchQuery]);
+  }, [filter, sortBy, location, debouncedSearchQuery]);
 
   const {
     data: allFetchedData,
@@ -128,6 +161,7 @@ const HomePage = ({}: HomePageProps) => {
                 onConfirm={setSortBy}
                 disabled={!displayData || displayData.length === 0}
               />
+              <LocationModal location={location} onConfirm={setLocation} />
               <FilterModal
                 filterValues={filter}
                 onConfirm={setFilter}

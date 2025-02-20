@@ -12,8 +12,8 @@ declare global {
     featuredSport?: TournamentSport[];
     residencePlace?: {
       geoCoordinates: {
-        latitude?: number;
-        longitude?: number;
+        latitude: number;
+        longitude: number;
       };
       city: string;
     };

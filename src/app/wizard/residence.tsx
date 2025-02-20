@@ -25,16 +25,19 @@ const WizardResidenceScreen = () => {
 
   const handleSelect = async (location: PlaceObject) => {
     updateWizardData((prev) => {
+      const latitude = !isNaN(Number(location.latitude)) ? Number(location.latitude) : undefined;
+      const longitude = !isNaN(Number(location.longitude)) ? Number(location.longitude) : undefined;
+
       const newWizardData = {
         ...prev,
         residencePlace: {
           city: location.address,
-          geoCoordinates: {
-            latitude: !isNaN(Number(location.latitude)) ? Number(location.latitude) : undefined,
-            longitude: !isNaN(Number(location.longitude)) ? Number(location.longitude) : undefined,
-          },
+          ...(latitude !== undefined && longitude !== undefined
+            ? { geoCoordinates: { latitude, longitude } }
+            : {}),
         },
       };
+
       uploadData(newWizardData);
       return newWizardData;
     });
@@ -89,8 +92,6 @@ const styles = StyleSheet.create({
   autoCompleteSection: {
     width: "100%",
     height: 350,
-    // borderWidth: 1,
-    // borderColor: "red",
   },
 
   buttonWrapper: {

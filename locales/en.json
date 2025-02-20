@@ -263,6 +263,9 @@
     "filter": {
       "title": "Filter"
     },
+    "location": {
+      "title": "Location"
+    },
     "sort": {
       "title": "Sort by",
       "newest": "Newest",
