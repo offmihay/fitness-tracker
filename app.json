@@ -5,12 +5,14 @@
     "slug": "",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icons/light.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "light": "./assets/icons/light.png",
-      "dark": "./assets/icons/dark.png",
-      "tinted": "./assets/icons/tinted.png"
+      "icon": {
+        "light": "./assets/icons/light.png",
+        "dark": "./assets/icons/dark.png",
+        "tinted": "./assets/icons/tinted.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
