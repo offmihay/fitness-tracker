@@ -7,16 +7,14 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "ios": {},
+    "ios": {
+      "light": "./assets/icons/light.png",
+      "dark": "./assets/icons/dark.png",
+      "tinted": "./assets/icons/tinted.png"
+    },
     "android": {
-      "splash": {
-        "image": "./assets/icon.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#D4D4D2"
-      },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#D4D4D2"
+        "foregroundImage": "./assets/icons/adaptive-icon.png"
       }
     },
     "web": {},
@@ -47,13 +45,13 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/icon.png",
-          "backgroundColor": "#D4D4D2",
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/icons/splash-icon-light.png",
           "dark": {
-            "image": "./assets/icon.png",
-            "backgroundColor": "#D4D4D2"
+            "image": "./assets/icons/splash-icon-dark.png",
+            "backgroundColor": "#121212"
           },
-          "resizeMode": "contain"
+          "imageWidth": 200
         }
       ]
     ],
