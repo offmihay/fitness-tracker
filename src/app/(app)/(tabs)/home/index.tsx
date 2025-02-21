@@ -21,13 +21,16 @@ import { t } from "i18next";
 import { useRefreshByUser } from "@/src/hooks/useRefetchByUser";
 import LocationModal from "@/src/components/home/location/LocationModal";
 import { useUser } from "@clerk/clerk-expo";
+import { useManualLoading } from "@/src/hooks/useLoading";
+import { useUserCoordinates } from "@/src/queries/location";
 
 type HomePageProps = {};
 
 const HomePage = ({}: HomePageProps) => {
+  const { setIsLoading } = useManualLoading();
+  const { data: userCoords, isFetched: isFetchedUserCoords } = useUserCoordinates();
   const router = useRouter();
   const navigation = useNavigation();
-  const { user } = useUser();
 
   const handleOpenDetails = useCallback(
     (id: string) => {
@@ -46,22 +49,22 @@ const HomePage = ({}: HomePageProps) => {
   const [filter, setFilter] = useState<FilterHome>(emptyFilter);
   const [sortBy, setSortBy] = useState<SortValueHome | null>(null);
 
-  const residencePlace = user?.unsafeMetadata.residencePlace;
-  const geoCoordinates = useMemo(() => {
-    if (residencePlace) {
-      return {
-        geoCoordinates: {
-          latitude: residencePlace.geoCoordinates.latitude,
-          longitude: residencePlace.geoCoordinates.longitude,
-        },
-        address: residencePlace.city,
-        radius: 50,
-      } as Location;
-    } else {
-      return null;
+  const [location, setLocation] = useState<Location | null | undefined>(undefined);
+  useEffect(() => {
+    if (isFetchedUserCoords) {
+      setLocation(
+        userCoords
+          ? {
+              geoCoordinates: {
+                latitude: userCoords.latitude,
+                longitude: userCoords.longitude,
+              },
+              radius: 50,
+            }
+          : null
+      );
     }
-  }, [residencePlace]);
-  const [location, setLocation] = useState<Location | null>(geoCoordinates);
+  }, [userCoords, isFetchedUserCoords]);
 
   const transformSortQuery = (sortBy: SortValueHome | null) => {
     let sortQuery: Pick<TournamentQuery, "sortBy" | "sortOrder"> | {};
@@ -72,6 +75,9 @@ const HomePage = ({}: HomePageProps) => {
       case SortValueHome.PrizePool:
         sortQuery = { sortBy: "prizePool", sortOrder: "desc" };
         break;
+      case SortValueHome.Newest:
+        sortQuery = { sortBy: "newest", sortOrder: "desc" };
+        break;
       default:
         sortQuery = {};
         break;
@@ -80,13 +86,12 @@ const HomePage = ({}: HomePageProps) => {
   };
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  const transformLocationQuery = (location: Location | null) => {
-    console.log(location);
+  const transformLocationQuery = (location: Location | null | undefined) => {
     if (location && location.geoCoordinates?.latitude && location.geoCoordinates?.longitude) {
       return {
-        latitude: location.geoCoordinates.latitude,
-        longitude: location.geoCoordinates.longitude,
-        radius: location.radius,
+        lat: location.geoCoordinates.latitude,
+        lng: location.geoCoordinates.longitude,
+        rad: location.radius,
       };
     }
     return {};
@@ -108,7 +113,7 @@ const HomePage = ({}: HomePageProps) => {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-  } = getAllTournaments(query);
+  } = getAllTournaments(query, location !== undefined);
 
   const queryClient = useQueryClient();
 
@@ -155,23 +160,28 @@ const HomePage = ({}: HomePageProps) => {
         <HomeHeader value={searchQuery} onChangeText={setSearchQuery} />
         <FlashList
           ListHeaderComponent={
-            <View style={styles.headerContainer}>
-              <SortDropdown
-                value={sortBy}
-                onConfirm={setSortBy}
-                disabled={!displayData || displayData.length === 0}
-              />
-              <LocationModal location={location} onConfirm={setLocation} />
-              <FilterModal
-                filterValues={filter}
-                onConfirm={setFilter}
-                isMutated={!!filter && !_.isEqual(JSON.parse(JSON.stringify(filter)), emptyFilter)}
-              />
-            </View>
+            <>
+              <LocationModal location={location} onConfirm={setLocation} onLoading={setIsLoading} />
+              <View style={styles.headerContainer}>
+                <SortDropdown
+                  value={sortBy}
+                  onConfirm={setSortBy}
+                  disabled={!displayData || displayData.length === 0}
+                />
+
+                <FilterModal
+                  filterValues={filter}
+                  onConfirm={setFilter}
+                  isMutated={
+                    !!filter && !_.isEqual(JSON.parse(JSON.stringify(filter)), emptyFilter)
+                  }
+                />
+              </View>
+            </>
           }
           ListEmptyComponent={
-            !isFetching && !hasNextPage ? (
-              <CustomText>{t("errors.no_tournaments_found")}</CustomText>
+            !isFetching && !hasNextPage && location !== undefined ? (
+              <CustomText className="mt-4">{t("errors.no_tournaments_found")}</CustomText>
             ) : null
           }
           data={displayData}
@@ -186,7 +196,7 @@ const HomePage = ({}: HomePageProps) => {
             }
           }}
           ListFooterComponent={
-            isFetching ? (
+            isFetching || location === undefined ? (
               <>
                 <View style={{ paddingVertical: 10 }}>
                   <TournamentCardSkeleton />
@@ -210,11 +220,12 @@ export default HomePage;
 const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 16,
+    marginTop: 12,
+    marginBottom: 4,
   },
 });

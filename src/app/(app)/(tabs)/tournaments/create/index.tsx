@@ -9,6 +9,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useCreateTournamentForm } from "@/src/components/tournaments/create/form/useCreateTournamentForm";
 import { TournamentEditForm } from "@/src/components/tournaments/create/form/TournamentEditForm";
 import { useUser } from "@clerk/clerk-expo";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 export type CreateTournamentPageQuery = {
   place_id?: string;
@@ -20,6 +21,7 @@ export type CreateTournamentPageQuery = {
 };
 
 const CreateTournament = () => {
+  useManualLoading(true);
   const { t } = useTranslation();
   const { user } = useUser();
 

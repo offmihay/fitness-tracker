@@ -171,59 +171,52 @@ const Tournaments = ({}: Props) => {
   );
 
   return (
-    <>
-      <LayoutFlashList
-        loaderPending={true}
-        headerConfig={{
-          nodeHeader: () => (
-            <View className="absolute bottom-2 right-4">
-              <View className="flex flex-row gap-4">
-                <FilterDropdownMenu value={filter} onConfirm={setFilter}>
-                  <TouchableOpacity
-                    style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
-                  >
-                    <Feather name="filter" size={22} color={theme.colors.text} />
-                  </TouchableOpacity>
-                </FilterDropdownMenu>
+    <LayoutFlashList
+      headerConfig={{
+        nodeHeader: () => (
+          <View className="absolute bottom-2 right-4">
+            <View className="flex flex-row gap-4">
+              <FilterDropdownMenu value={filter} onConfirm={setFilter}>
+                <TouchableOpacity
+                  style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
+                >
+                  <Feather name="filter" size={22} color={theme.colors.text} />
+                </TouchableOpacity>
+              </FilterDropdownMenu>
 
-                <TouchableOpacity
-                  style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
-                  onPress={handleOpenFinished}
-                >
-                  <MaterialIcons name="event-available" size={26} color={theme.colors.text} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
-                  onPress={handleCreate}
-                >
-                  <Feather name="file-plus" size={24} color={theme.colors.text} />
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
+                onPress={handleOpenFinished}
+              >
+                <MaterialIcons name="event-available" size={26} color={theme.colors.text} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.headerBtn, { backgroundColor: theme.colors.surfaceLight }]}
+                onPress={handleCreate}
+              >
+                <Feather name="file-plus" size={24} color={theme.colors.text} />
+              </TouchableOpacity>
             </View>
-          ),
-        }}
-        name="tournaments"
-        canGoBack={false}
-        flashListProps={{
-          scrollEnabled: !isFetching,
-          data: !isFetching ? data : skeletonData,
-          renderItem: !isFetching ? renderCard : renderSkeleton,
-          keyExtractor: !isFetching ? keyExtractor : (item) => item.id.toString(),
-          refreshControl: (
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={refresh}
-              progressViewOffset={180}
-            />
-          ),
-          ListEmptyComponent: <CustomText>{t("errors.no_tournaments_found")}</CustomText>,
-          ListHeaderComponent: <View className="mb-4" />,
-          ListFooterComponent: <View className="mb-4" />,
-          contentContainerStyle: styles.wrapper,
-          estimatedItemSize: UserTournamentCard_HEIGHT + 20,
-        }}
-      />
-    </>
+          </View>
+        ),
+      }}
+      name="tournaments"
+      canGoBack={false}
+      flashListProps={{
+        scrollEnabled: !isFetching,
+        data: !isFetching ? data : skeletonData,
+        renderItem: !isFetching ? renderCard : renderSkeleton,
+        keyExtractor: !isFetching ? keyExtractor : (item) => item.id.toString(),
+        refreshControl: (
+          <RefreshControl refreshing={isRefreshing} onRefresh={refresh} progressViewOffset={180} />
+        ),
+        ListEmptyComponent: <CustomText>{t("errors.no_tournaments_found")}</CustomText>,
+        ListHeaderComponent: <View className="mb-4" />,
+        ListFooterComponent: <View className="mb-4" />,
+        contentContainerStyle: styles.wrapper,
+        estimatedItemSize: UserTournamentCard_HEIGHT + 20,
+      }}
+    />
   );
 };
 

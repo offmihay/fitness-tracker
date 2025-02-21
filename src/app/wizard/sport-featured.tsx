@@ -14,7 +14,7 @@ const WizardSportScreen = () => {
   const { updateWizardData } = useContext(WizardContext);
   const theme = useCustomTheme();
 
-  const handleSkip = async () => {
+  const handleGoToAuth = async () => {
     await AsyncStorage.setItem("wizardSeen", "true");
     router.replace("/welcome");
   };
@@ -28,9 +28,17 @@ const WizardSportScreen = () => {
     TournamentSport.SQUASH,
   ];
 
-  const handlePress = () => {
-    updateWizardData((prev) => ({ ...prev, featuredSport: sport }));
-    router.navigate({ pathname: "./residence" });
+  const uploadData = async (data: WizardPreferences) => {
+    await AsyncStorage.setItem("wizardData", JSON.stringify(data));
+  };
+
+  const handlePress = async () => {
+    updateWizardData((prev) => {
+      const newWizardData = { ...prev, featuredSport: sport };
+      uploadData(newWizardData);
+      return newWizardData;
+    });
+    await handleGoToAuth();
   };
 
   const handleChooseSport = (item: TournamentSport) => {
@@ -71,7 +79,7 @@ const WizardSportScreen = () => {
           <ButtonDefault title="Continue" onPress={handlePress} type="white" />
         </View>
         <TouchableOpacity style={styles.skipLabel}>
-          <CustomText color={theme.colors.link} type="default" onPress={handleSkip}>
+          <CustomText color={theme.colors.link} type="default" onPress={handleGoToAuth}>
             Skip for now
           </CustomText>
         </TouchableOpacity>

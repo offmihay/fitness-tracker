@@ -13,17 +13,19 @@ import GoogleLogo from "@/src/shared/logo/GoogleLogo";
 import Slider from "@react-native-community/slider";
 import CustomText from "@/src/shared/text/CustomText";
 import FilterItem from "../filter/FilterItem";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 type Props = {
-  location: Location | null;
-  onConfirm?: (location: Location | null) => void;
+  location: Location | null | undefined;
+  onConfirm?: (location: Location | null | undefined) => void;
+  onLoading?: (isLoading: boolean) => void;
 };
 
 const FilterContent = (props: Props) => {
   const { onConfirm, location: locationInit } = props;
   const { dismiss } = useBottomSheetModal();
 
-  const [location, setLocation] = useState<Location | null>(locationInit);
+  const [location, setLocation] = useState<Location | null | undefined>(locationInit);
 
   const iosBottomBias = Platform.OS === "ios" ? 30 : 0;
 
@@ -80,7 +82,7 @@ const FilterContent = (props: Props) => {
           </View>
           <GoogleAutoComplete
             onSubmit={handleSelect}
-            query={{ type: "(cities)", location: "50.38474, 30.46477" }}
+            query={{ type: "(cities)" }}
             maxRows={3}
             location={{
               address: location?.address || "",

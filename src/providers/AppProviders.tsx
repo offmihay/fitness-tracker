@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import * as Burnt from "burnt";
 import { AuthContextProvider } from "./AuthContextProvider";
 import { router } from "expo-router";
+import { LoadingProvider } from "./LoadingProvider";
 
 const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { settings } = useSettings();
@@ -66,8 +67,8 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       queries: { retry: 1, retryDelay: 2000 },
     },
     queryCache: new QueryCache({
-      onError: (error) => {
-        if (error.cause !== "invalid_token") {
+      onError: (error, query) => {
+        if (error.cause !== "invalid_token" && !query.meta?.disableGlobalErrorHandler) {
           Burnt.toast({
             title: t("common.error"),
             preset: "error",
@@ -80,16 +81,14 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     }),
     mutationCache: new MutationCache({
       onError: (error, _variables, _context, mutation) => {
-        if (mutation.meta?.disableGlobalErrorHandler) {
-          return;
+        if (!mutation.meta?.disableGlobalErrorHandler) {
+          Burnt.toast({
+            title: t("common.error"),
+            preset: "error",
+            message: getErrorMessage(error, "mutation_data_error"),
+            haptic: "error",
+          });
         }
-        console.log("Error cause:", error.cause, "message:", error.message);
-        Burnt.toast({
-          title: t("common.error"),
-          preset: "error",
-          message: getErrorMessage(error, "mutation_data_error"),
-          haptic: "error",
-        });
 
         throw error;
       },
@@ -98,21 +97,23 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
   return (
     <QueryClientProvider client={queryClient}>
-      <KeyboardProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-              <ClerkLoaded>
-                <SettingsProvider>
-                  <ThemeProviders>
-                    <AuthContextProvider>{children}</AuthContextProvider>
-                  </ThemeProviders>
-                </SettingsProvider>
-              </ClerkLoaded>
-            </ClerkProvider>
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
-      </KeyboardProvider>
+      <LoadingProvider>
+        <SettingsProvider>
+          <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+            <ClerkLoaded>
+              <AuthContextProvider>
+                <ThemeProviders>
+                  <KeyboardProvider>
+                    <GestureHandlerRootView style={{ flex: 1 }}>
+                      <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+                    </GestureHandlerRootView>
+                  </KeyboardProvider>
+                </ThemeProviders>
+              </AuthContextProvider>
+            </ClerkLoaded>
+          </ClerkProvider>
+        </SettingsProvider>
+      </LoadingProvider>
     </QueryClientProvider>
   );
 };

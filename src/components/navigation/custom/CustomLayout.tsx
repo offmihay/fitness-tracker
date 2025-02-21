@@ -20,9 +20,6 @@ import type { SharedValue } from "react-native-reanimated";
 import CustomHeader from "./CustomHeader";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT } from "../options";
-import LoadingModal from "@/src/shared/modal/LoadingModal";
-import { useIsMutating, useIsFetching } from "@tanstack/react-query";
-import { usePathname } from "expo-router";
 
 type renderContent = {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -45,10 +42,6 @@ export type LayoutProps = {
   canGoBack?: boolean;
   disableTabBarInset?: boolean;
   contentStyle?: ViewStyle;
-  loaderPending?: boolean;
-  loaderFetching?: boolean;
-  isCustomPending?: boolean;
-  isCustomFetching?: boolean;
 };
 
 const CustomLayout = (props: LayoutProps) => {
@@ -63,15 +56,9 @@ const CustomLayout = (props: LayoutProps) => {
     canGoBack,
     disableTabBarInset,
     contentStyle,
-    loaderPending = false,
-    loaderFetching = false,
-    isCustomPending,
-    isCustomFetching,
   } = props;
 
   const theme = useCustomTheme();
-  const isMutating = useIsMutating();
-  const isFetching = useIsFetching();
 
   const maxHeight = headerConfig?.maxHeight || HEADER_MAX_HEIGHT;
   const minHeight = headerConfig?.minHeight || HEADER_MIN_HEIGHT;
@@ -137,16 +124,6 @@ const CustomLayout = (props: LayoutProps) => {
           })}
         </View>
       </View>
-      {loaderPending && (
-        <LoadingModal
-          isVisible={typeof isCustomPending === "boolean" ? isCustomPending : isMutating > 0}
-        />
-      )}
-      {loaderFetching && (
-        <LoadingModal
-          isVisible={typeof isCustomFetching === "boolean" ? isCustomFetching : isFetching > 0}
-        />
-      )}
     </>
   );
 };

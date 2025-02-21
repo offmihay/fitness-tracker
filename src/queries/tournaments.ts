@@ -11,7 +11,7 @@ import useApi from "../api/useApi";
 import { useTranslation } from "react-i18next";
 import { TournamentQuery } from "../components/home/types";
 
-export const getAllTournaments = (queryParams: Partial<TournamentQuery>) => {
+export const getAllTournaments = (queryParams: Partial<TournamentQuery>, enabled: boolean) => {
   const { fetchData } = useApi();
   const limit = 10;
 
@@ -30,6 +30,7 @@ export const getAllTournaments = (queryParams: Partial<TournamentQuery>) => {
       }
       return allPages.length + 1;
     },
+    enabled,
   });
 };
 

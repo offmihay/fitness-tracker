@@ -11,8 +11,10 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { useToast } from "@/src/hooks/useToast";
 import { TournamentSport } from "@/src/types/tournament";
 import FilterItem from "@/src/components/home/filter/FilterItem";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
-const ChangeNameScreen = () => {
+const ChangeSportScreen = () => {
+  useManualLoading(true);
   const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();
@@ -105,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChangeNameScreen;
+export default ChangeSportScreen;

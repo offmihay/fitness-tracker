@@ -82,7 +82,6 @@ const RegistrationFormScreen = (props: Props) => {
 
   return (
     <LayoutStatic
-      loaderPending={false}
       name="registration"
       isDefaultCompressed
       headerConfig={{ maxHeight: 70, minHeight: 70 }}

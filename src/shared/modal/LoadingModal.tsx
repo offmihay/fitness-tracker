@@ -22,7 +22,7 @@ const LoadingModal = (props: Props) => {
         height: "100%",
       }}
     >
-      <BlurView style={styles.wrapper} intensity={20}>
+      <BlurView style={styles.wrapper} intensity={5}>
         <ActivityIndicator size="large" />
       </BlurView>
     </View>
@@ -31,6 +31,7 @@ const LoadingModal = (props: Props) => {
 
 const styles = StyleSheet.create({
   wrapper: {
+    zIndex: 1100,
     flex: 1,
     display: "flex",
     justifyContent: "center",

@@ -3,6 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, PropsWithChildren, useContext, useEffect } from "react";
 import clerkTransformData from "../utils/clerkTransformData";
+import { WizardPreferences } from "../components/wizard/WizardContext";
+import { useSettings } from "../hooks/useSettings";
 
 if (process.env.NODE_ENV === "development") {
   const originalWarn = console.warn;
@@ -33,6 +35,7 @@ export function useAuthContext() {
 
 export function AuthContextProvider({ children }: PropsWithChildren) {
   const { isLoaded, isSignedIn } = useAuth();
+  const { updateSettings } = useSettings();
   const { user } = useUser();
   const setIsSeen = async () => {
     await AsyncStorage.setItem("wizardSeen", "true");
@@ -41,8 +44,9 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     const updateUserInfo = async () => {
       const dataJSON = await AsyncStorage.getItem("wizardData");
-      const data = dataJSON ? JSON.parse(dataJSON) : null;
+      const data = dataJSON ? (JSON.parse(dataJSON) as WizardPreferences) : null;
       if (data) {
+        updateSettings({ creatorMode: data.role === "organizer" });
         const formData = clerkTransformData(data, user?.unsafeMetadata || null);
         user!.update(formData);
         await AsyncStorage.removeItem("wizardData");

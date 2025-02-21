@@ -9,22 +9,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import RHFormInput from "@/src/shared/form/RHFormInput";
-import Toast from "react-native-toast-message";
 import StickyFooterView from "@/src/shared/view/StickyFooterView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
-import {
-  OrganizerFormData,
-  schemaOrganizer,
-} from "@/src/components/tournaments/create/organizer/schema";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import {
   ChangeOrganizerFormData,
   schemaChangeOrganizer,
 } from "@/src/components/settings/personal-info/forms/schema";
-import { optional } from "zod";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 const OrganizerForm = () => {
+  useManualLoading(true);
   const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();

@@ -11,8 +11,10 @@ import {
 import CustomTextInput from "@/src/shared/input/CustomTextInput";
 import CustomText from "@/src/shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { t } from "i18next";
+import { t, use } from "i18next";
 import { Divider } from "react-native-paper";
+import { GeoCoordinates, useUserCoordinates } from "@/src/queries/location";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 export type PlaceObject = {
   place_id?: string;
@@ -25,7 +27,7 @@ export type PlaceObject = {
 
 type SearchPreferences = {
   location?: PlaceObject;
-  query?: Omit<Query<AutocompleteRequestType>, "key">;
+  query?: Omit<Query<AutocompleteRequestType>, "key" | "location" | "radius">;
 };
 
 type Props = {
@@ -34,19 +36,24 @@ type Props = {
 } & SearchPreferences;
 
 const GoogleAutoComplete = (props: Props) => {
+  const { setIsLoading } = useManualLoading();
   const { query, location, onSubmit, maxRows = 5 } = props;
-
+  const userCoordinatesQuery = useUserCoordinates();
+  const [userLocation, setUserLocation] = useState<GeoCoordinates | null>(null);
   const [searchQuery, setSearchQuery] = useState<SearchPreferences>({ location, query });
   const ref = useRef<GooglePlacesAutocompleteRef>(null);
   const theme = useCustomTheme();
 
   useEffect(() => {
     searchQuery.location?.address && ref.current?.setAddressText(searchQuery.location.address);
-
-    setTimeout(() => {
-      ref.current?.focus();
-    }, 700);
-  }, []);
+    setIsLoading(true);
+    if (userCoordinatesQuery.isFetched) {
+      setIsLoading(false);
+      if (userCoordinatesQuery.data) {
+        setUserLocation(userCoordinatesQuery.data);
+      }
+    }
+  }, [userCoordinatesQuery]);
 
   const handleChooseLocation = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
     const locationResult = {
@@ -115,6 +122,8 @@ const GoogleAutoComplete = (props: Props) => {
       }}
       query={{
         key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
+        ...(userLocation && { location: `${userLocation.latitude},${userLocation.longitude}` }),
+        radius: 100,
         ...query,
       }}
       styles={{

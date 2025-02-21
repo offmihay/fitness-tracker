@@ -11,7 +11,6 @@ import { useUpdateUserMutation } from "@/src/queries/user";
 import clerkTransformData from "@/src/utils/clerkTransformData";
 import { useUser } from "@clerk/clerk-expo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
 const WizardResidenceScreen = () => {
   const theme = useCustomTheme();

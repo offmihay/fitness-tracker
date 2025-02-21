@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { Keyboard, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   BottomSheetBackdrop,
@@ -12,6 +12,8 @@ import { useTranslation } from "react-i18next";
 import { AntDesign } from "@expo/vector-icons";
 import { ThemeProvider } from "react-native-paper";
 import CustomText from "../text/CustomText";
+import { LoadingContext } from "@/src/providers/LoadingProvider";
+import LoadingModal from "./LoadingModal";
 
 export type Props = {
   name: string;
@@ -25,6 +27,11 @@ export type Ref = BottomSheetModal;
 
 const CustomModal = (props: Props) => {
   const { name, children, isOpen, onDismiss, bottomSheetProps } = props;
+
+  const loadingContext = useContext(LoadingContext);
+  if (!loadingContext) return null;
+
+  const { isLoading: isLoaderSpinning } = loadingContext;
 
   const { t } = useTranslation();
   const theme = useCustomTheme();
@@ -83,6 +90,7 @@ const CustomModal = (props: Props) => {
           </TouchableOpacity>
           <View style={{ width: "100%", height: "100%" }}>{children}</View>
         </BottomSheetView>
+        <LoadingModal isVisible={isLoaderSpinning} />
       </ThemeProvider>
     </BottomSheetModal>
   );

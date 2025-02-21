@@ -19,17 +19,18 @@ import FormBirthday from "@/src/components/settings/personal-info/forms/FormBirt
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { useQueryClient } from "@tanstack/react-query";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 type PersonalInfoProps = {};
 
 const PersonalInfo = ({}: PersonalInfoProps) => {
+  const { setIsLoading } = useManualLoading(true);
   const queryClient = useQueryClient();
   const { signOut } = useAuth();
   const { t } = useTranslation();
   const { user } = useUser();
   const theme = useCustomTheme();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
@@ -37,12 +38,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
   };
 
   return (
-    <LayoutScrollView
-      name="personalInfo"
-      // alwaysBounceVertical={false}
-      loaderPending
-      isCustomPending={isLoading}
-    >
+    <LayoutScrollView name="personalInfo">
       <View style={styles.wrapper}>
         <View style={[{ backgroundColor: theme.colors.surface, borderRadius: 10 }]}>
           <UserAvatarList />

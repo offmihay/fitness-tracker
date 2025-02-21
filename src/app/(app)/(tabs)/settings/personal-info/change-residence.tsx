@@ -10,8 +10,10 @@ import { useToast } from "@/src/hooks/useToast";
 import GoogleAutoComplete, {
   PlaceObject,
 } from "@/src/components/tournaments/choose-location/GoogleAutocomplete";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 const ChangeNameScreen = () => {
+  useManualLoading(true);
   const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();

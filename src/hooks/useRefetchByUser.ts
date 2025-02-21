@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useRefreshByUser(refetch: () => Promise<unknown>, timeoutMs = 5000) {
+export function useRefreshByUser(refetch: () => Promise<unknown>, timeoutMs = 3000) {
   const [isRefreshing, setIsRefetchingByUser] = useState(false);
 
   async function refresh() {

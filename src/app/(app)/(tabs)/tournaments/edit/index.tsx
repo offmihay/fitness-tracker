@@ -10,6 +10,7 @@ import { TournamentEditForm } from "@/src/components/tournaments/create/form/Tou
 import { useUpdateTournamentForm } from "@/src/components/tournaments/create/form/useUpdateTournamentForm";
 import { getTournamentByID } from "@/src/queries/tournaments";
 import { FormSkeleton } from "@/src/components/tournaments/create/FormSkeleton";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 export type UpdateTournamentPageQuery = {
   id: string;
@@ -22,6 +23,7 @@ export type UpdateTournamentPageQuery = {
 };
 
 const UpdateTournament = () => {
+  useManualLoading(true);
   const { t } = useTranslation();
   const pageQuery = useLocalSearchParams<UpdateTournamentPageQuery>();
   const [formReady, setFormReady] = useState(false);

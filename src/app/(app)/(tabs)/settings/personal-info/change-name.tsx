@@ -19,8 +19,10 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import Toast from "react-native-toast-message";
 import { useToast } from "@/src/hooks/useToast";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 const ChangeNameScreen = () => {
+  useManualLoading(true);
   const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();

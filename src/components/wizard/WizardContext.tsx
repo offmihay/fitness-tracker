@@ -1,18 +1,9 @@
 import React, { createContext, useState } from "react";
 import { TournamentSport } from "@/src/types/tournament";
-import { useMutation } from "@tanstack/react-query";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type WizardPreferences = {
   role?: "organizer" | "participant";
   featuredSport?: TournamentSport[];
-  residencePlace?: {
-    geoCoordinates?: {
-      latitude: number;
-      longitude: number;
-    };
-    city: string;
-  };
 };
 
 type WizardContextType = {
