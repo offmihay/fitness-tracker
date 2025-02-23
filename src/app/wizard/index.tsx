@@ -6,6 +6,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { WizardContext, WizardPreferences } from "@/src/components/wizard/WizardContext";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { t } from "i18next";
 
 const WizardWelcomeScreen = () => {
   const { updateWizardData } = useContext(WizardContext);
@@ -27,10 +28,10 @@ const WizardWelcomeScreen = () => {
       <View style={styles.wrapper}>
         <View style={styles.textSection}>
           <CustomText center type="subtitle">
-            Welcome to Squashee!
+            {t("wizard.welcome")}
           </CustomText>
           <CustomText center type="subtitle">
-            Let’s get you started. Which best describes why you downloaded our app?
+            {t("wizard.getStarted")}
           </CustomText>
         </View>
         <View style={styles.chooseSection}>
@@ -43,7 +44,7 @@ const WizardWelcomeScreen = () => {
         </View>
         <TouchableOpacity style={styles.skipLabel} onPress={handleSkip}>
           <CustomText color={theme.colors.link} type="default">
-            Skip for now
+            {t("wizard.skip")}
           </CustomText>
         </TouchableOpacity>
       </View>

@@ -29,7 +29,6 @@ const SortDropdown = (props: Props) => {
     SortValueHome.Newest,
     SortValueHome.Upcoming,
     SortValueHome.PrizePool,
-    SortValueHome.Distance,
   ];
 
   const dropdownItems = sortOptions.map((option) => ({

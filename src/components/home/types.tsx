@@ -22,7 +22,6 @@ export enum SortValueHome {
   Newest = "newest",
   Upcoming = "upcoming",
   PrizePool = "prizePool",
-  Distance = "distance",
 }
 
 export type TournamentQuery = Query &
@@ -30,7 +29,7 @@ export type TournamentQuery = Query &
     sortBy: "dateStart" | "prizePool" | "dateCreated";
     lat: number;
     lng: number;
-    rad: number;
+    radius: number;
   };
 
 export type Location = {

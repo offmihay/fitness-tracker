@@ -22,13 +22,13 @@ import { useRefreshByUser } from "@/src/hooks/useRefetchByUser";
 import LocationModal from "@/src/components/home/location/LocationModal";
 import { useUser } from "@clerk/clerk-expo";
 import { useManualLoading } from "@/src/hooks/useLoading";
-import { useUserCoordinates } from "@/src/queries/location";
+import { GeoCoordinates, useUserCoordinates } from "@/src/queries/location";
 
 type HomePageProps = {};
 
 const HomePage = ({}: HomePageProps) => {
   const { setIsLoading } = useManualLoading();
-  const { data: userCoords, isFetched: isFetchedUserCoords } = useUserCoordinates();
+  const { data: userCoords, isFetched: isFetchedUserCoords } = useUserCoordinates(true);
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -50,19 +50,24 @@ const HomePage = ({}: HomePageProps) => {
   const [sortBy, setSortBy] = useState<SortValueHome | null>(null);
 
   const [location, setLocation] = useState<Location | null | undefined>(undefined);
+
+  const setLocationDefault = (coords: GeoCoordinates | undefined) => {
+    setLocation((prev) => {
+      if (coords) {
+        return {
+          geoCoordinates: {
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+          },
+        };
+      }
+      return null;
+    });
+  };
+
   useEffect(() => {
     if (isFetchedUserCoords) {
-      setLocation(
-        userCoords
-          ? {
-              geoCoordinates: {
-                latitude: userCoords.latitude,
-                longitude: userCoords.longitude,
-              },
-              radius: 50,
-            }
-          : null
-      );
+      setLocationDefault(userCoords);
     }
   }, [userCoords, isFetchedUserCoords]);
 
@@ -76,7 +81,7 @@ const HomePage = ({}: HomePageProps) => {
         sortQuery = { sortBy: "prizePool", sortOrder: "desc" };
         break;
       case SortValueHome.Newest:
-        sortQuery = { sortBy: "newest", sortOrder: "desc" };
+        sortQuery = { sortBy: "createdAt", sortOrder: "desc" };
         break;
       default:
         sortQuery = {};
@@ -91,7 +96,7 @@ const HomePage = ({}: HomePageProps) => {
       return {
         lat: location.geoCoordinates.latitude,
         lng: location.geoCoordinates.longitude,
-        rad: location.radius,
+        radius: location.radius,
       };
     }
     return {};
@@ -161,7 +166,12 @@ const HomePage = ({}: HomePageProps) => {
         <FlashList
           ListHeaderComponent={
             <>
-              <LocationModal location={location} onConfirm={setLocation} onLoading={setIsLoading} />
+              <LocationModal
+                location={location}
+                onConfirm={setLocation}
+                onLoading={setIsLoading}
+                onReset={() => setLocationDefault(userCoords)}
+              />
               <View style={styles.headerContainer}>
                 <SortDropdown
                   value={sortBy}

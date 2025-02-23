@@ -4,7 +4,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Octicons } from "@expo/vector-icons";
 import CustomText from "@/src/shared/text/CustomText";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, useSegments } from "expo-router";
 import { t } from "i18next";
 
 type Props = {};
@@ -13,6 +13,8 @@ const RegistrationSuccessScreen = (props: Props) => {
   const {} = props;
   const theme = useCustomTheme();
   const { id } = useLocalSearchParams();
+  const segments = useSegments();
+  console.log(segments);
 
   const returnBack = () => {
     router.dismissTo({

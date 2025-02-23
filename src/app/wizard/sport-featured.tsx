@@ -59,10 +59,10 @@ const WizardSportScreen = () => {
       <View style={styles.wrapper}>
         <View style={styles.textSection}>
           <CustomText center type="subtitle">
-            Which sports get you excited?
+            {t("wizard.sportsExcite")}
           </CustomText>
           <CustomText center type="subtitle">
-            Pick your favorites, and we'll spotlight tournaments just for you!
+            {t("wizard.pickFavorites")}
           </CustomText>
         </View>
         <View style={styles.chooseSection}>
@@ -80,7 +80,7 @@ const WizardSportScreen = () => {
         </View>
         <TouchableOpacity style={styles.skipLabel}>
           <CustomText color={theme.colors.link} type="default" onPress={handleGoToAuth}>
-            Skip for now
+            {t("wizard.skip")}
           </CustomText>
         </TouchableOpacity>
       </View>

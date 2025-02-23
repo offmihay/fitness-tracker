@@ -183,6 +183,8 @@
     "editTournament": "Edit Tournament",
     "personalInfo": "Personal Info",
     "changeName": "Change Name",
+    "changeResidence": "Change Residence",
+    "changeFeaturedSport": "Change Featured Sport",
     "rules": "Rules",
     "participants": "Participants",
     "choose-location": "Choose Location",
@@ -309,5 +311,13 @@
     "deleteImage": "Are you sure you want to delete this image?",
     "goToEditPage": "Go to Edit Page",
     "goToSettings": "Go to Settings"
+  },
+
+  "wizard": {
+    "welcome": "Welcome to Squashee!",
+    "getStarted": "Let’s get you started. Which best describes why you downloaded our app?",
+    "skip": "Skip for now",
+    "sportsExcite": "Which sports get you excited?",
+    "pickFavorites": "Pick your favorites, and we'll spotlight tournaments just for you!"
   }
 }

@@ -23,8 +23,8 @@ const ChangeNameScreen = () => {
   const handleSelect = (data: PlaceObject) => {
     const residencePlace = {
       geoCoordinates: {
-        latitude: isNaN(Number(data.latitude)) ? undefined : Number(data.latitude),
-        longitude: isNaN(Number(data.longitude)) ? undefined : Number(data.longitude),
+        latitude: isNaN(Number(data.latitude)) ? 0 : Number(data.latitude),
+        longitude: isNaN(Number(data.longitude)) ? 0 : Number(data.longitude),
       },
       city: data.address,
     };
@@ -47,7 +47,7 @@ const ChangeNameScreen = () => {
 
   return (
     <>
-      <LayoutStatic name="changeName" isDefaultCompressed>
+      <LayoutStatic name="changeResidence" isDefaultCompressed>
         <View style={styles.wrapper}>
           <View style={styles.autoCompleteSection}>
             <GoogleAutoComplete
