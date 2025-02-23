@@ -13,8 +13,6 @@ const RegistrationSuccessScreen = (props: Props) => {
   const {} = props;
   const theme = useCustomTheme();
   const { id } = useLocalSearchParams();
-  const segments = useSegments();
-  console.log(segments);
 
   const returnBack = () => {
     router.dismissTo({
