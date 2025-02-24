@@ -181,6 +181,7 @@ const FilterContent = (props: Props) => {
               <View style={styles.filterWrapperSingle} className="mt-4">
                 <DatePickerInput
                   label={t("tournament.date")}
+                  mode="date"
                   value={filter.date}
                   onChange={(value) => handleChangeSingle("date", value.toDateString())}
                   selectedDate={filter.date ? new Date(filter.date) : new Date()}

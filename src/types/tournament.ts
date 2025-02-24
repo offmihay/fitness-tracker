@@ -52,7 +52,7 @@ export interface TournamentBase {
   description: string;
   entryFee: number;
   id: string;
-  images: Image[];
+  images: Image[] | [];
   location: string;
   maxParticipants: number;
   participantsCount: number;
@@ -77,7 +77,7 @@ export interface Tournament {
   entryFee: number;
   geoCoordinates: GeoCoordinates;
   id: string;
-  images: Image[];
+  images: Image[] | [];
   location: string;
   maxParticipants: number;
   participants: User[];

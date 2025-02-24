@@ -49,7 +49,7 @@ const TournamentCard = ({ data, handleOpenDetails }: Props) => {
           <FastImage
             style={{ width: "100%", height: "100%" }}
             source={{
-              uri: images && images[0].secureUrl,
+              uri: images.length > 0 ? images[0].secureUrl : undefined,
               priority: FastImage.priority.low,
             }}
             resizeMode={FastImage.resizeMode.cover}

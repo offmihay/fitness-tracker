@@ -7,7 +7,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ButtonAction from "../button/ButtonAction";
 import CustomText from "../text/CustomText";
 
-interface DatePickerModalProps {
+type DatePickerModalProps = {
   isVisible: boolean;
   onConfirm: (date: Date) => void;
   onCancel: () => void;
@@ -16,7 +16,8 @@ interface DatePickerModalProps {
   selectedDate: Date;
   minimumDate?: Date;
   maximumDate?: Date;
-}
+  mode?: React.ComponentProps<typeof DateTimePickerModal>["mode"];
+};
 
 const DatePickerModal: React.FC<DatePickerModalProps> = ({
   isVisible,
@@ -27,6 +28,8 @@ const DatePickerModal: React.FC<DatePickerModalProps> = ({
   selectedDate,
   minimumDate,
   maximumDate,
+
+  mode = "datetime",
 }) => {
   const { i18n, t } = useTranslation();
   const theme = useCustomTheme();
@@ -41,7 +44,7 @@ const DatePickerModal: React.FC<DatePickerModalProps> = ({
         </View>
       )}
       isVisible={isVisible}
-      mode="datetime"
+      mode={mode}
       onConfirm={onConfirm}
       onCancel={onCancel}
       onHide={onHide}

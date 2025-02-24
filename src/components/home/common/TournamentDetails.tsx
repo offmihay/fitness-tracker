@@ -45,12 +45,14 @@ const TournamentDetails = ({
   return (
     <View className="flex flex-col gap-6">
       <SportLabel type={data?.sportType} />
-      <View style={styles.imgWrapper}>
-        <Carousel
-          images={data.images.map(({ secureUrl }) => ({ imageUri: secureUrl }))}
-          useArrows
-        />
-      </View>
+      {data.images.length > 0 && (
+        <View style={styles.imgWrapper}>
+          <Carousel
+            images={data.images.map(({ secureUrl }) => ({ imageUri: secureUrl }))}
+            useArrows
+          />
+        </View>
+      )}
       {!isRegistred ? (
         <View className="flex flex-row justify-between">
           <ButtonDefault

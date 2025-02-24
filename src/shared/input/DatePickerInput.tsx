@@ -15,6 +15,7 @@ type DatePickerInputProps = {
   inputProps?: Partial<React.ComponentProps<typeof CustomTextInput>>;
   renderTrigger?: (props: { onPress: () => void; value: string; label?: string }) => ReactNode;
   isDisabled?: boolean;
+  mode?: React.ComponentProps<typeof DatePickerModal>["mode"];
 };
 
 export interface InputRef {
@@ -34,6 +35,7 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
       inputProps,
       renderTrigger,
       isDisabled = false,
+      mode,
     },
     ref
   ) => {
@@ -106,6 +108,7 @@ const DatePickerInput = forwardRef<InputRef, DatePickerInputProps>(
           selectedDate={selectedDate || new Date()}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
+          mode={mode}
         />
       </View>
     );

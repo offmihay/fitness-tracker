@@ -20,14 +20,11 @@ import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { t } from "i18next";
 import { useRefreshByUser } from "@/src/hooks/useRefetchByUser";
 import LocationModal from "@/src/components/home/location/LocationModal";
-import { useUser } from "@clerk/clerk-expo";
-import { useManualLoading } from "@/src/hooks/useLoading";
 import { GeoCoordinates, useUserCoordinates } from "@/src/queries/location";
 
 type HomePageProps = {};
 
 const HomePage = ({}: HomePageProps) => {
-  const { setIsLoading } = useManualLoading();
   const { data: userCoords, isFetched: isFetchedUserCoords } = useUserCoordinates(true);
   const router = useRouter();
   const navigation = useNavigation();
@@ -51,14 +48,15 @@ const HomePage = ({}: HomePageProps) => {
 
   const [location, setLocation] = useState<Location | null | undefined>(undefined);
 
-  const setLocationDefault = (coords: GeoCoordinates | undefined) => {
-    setLocation((prev) => {
+  const setLocationDefault = (coords: GeoCoordinates | undefined | null) => {
+    setLocation(() => {
       if (coords) {
         return {
           geoCoordinates: {
             latitude: coords.latitude,
             longitude: coords.longitude,
           },
+          radius: 50,
         };
       }
       return null;
@@ -169,7 +167,6 @@ const HomePage = ({}: HomePageProps) => {
               <LocationModal
                 location={location}
                 onConfirm={setLocation}
-                onLoading={setIsLoading}
                 onReset={() => setLocationDefault(userCoords)}
               />
               <View style={styles.headerContainer}>

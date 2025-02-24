@@ -36,6 +36,8 @@ export const LoadingProvider = ({ children }: Props) => {
     setManualOverrideState(value);
     if (!value) {
       setIsLoadingState(isMutating > 0);
+    } else {
+      setIsLoadingState(false);
     }
   };
 

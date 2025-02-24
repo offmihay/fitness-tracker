@@ -96,7 +96,7 @@ const UserTournamentCard = (props: Props) => {
             <View style={[styles.imageWrapper, { backgroundColor: theme.colors.surfaceLight }]}>
               <ExpandableImage
                 key={`image-${data.images[0]}`}
-                source={{ uri: data.images[0].secureUrl }}
+                source={{ uri: data.images.length > 0 ? data.images[0].secureUrl : undefined }}
                 style={{
                   width: "100%",
                   height: "100%",

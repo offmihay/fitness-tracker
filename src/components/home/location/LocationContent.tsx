@@ -15,15 +15,15 @@ import FilterItem from "../filter/FilterItem";
 type Props = {
   location: Location | null | undefined;
   onConfirm?: (location: Location | null | undefined) => void;
-  onLoading?: (isLoading: boolean) => void;
   onReset?: () => void;
 };
 
 const FilterContent = (props: Props) => {
   const { onConfirm, location: locationInit, onReset } = props;
   const { dismiss } = useBottomSheetModal();
-
-  const [location, setLocation] = useState<Location | null | undefined>(locationInit);
+  const [location, setLocation] = useState<Location | null | undefined>(
+    locationInit || { radius: 50 }
+  );
 
   const iosBottomBias = Platform.OS === "ios" ? 30 : 0;
 
