@@ -63,10 +63,7 @@ export const useUserCoordinates = (disableFetchLocation?: boolean) => {
 
   useEffect(() => {
     (async () => {
-      const newLocation = await fetchLocation();
-      if (newLocation) {
-        queryClient.setQueryData(["userCoordinates"], newLocation);
-      }
+      await fetchLocation();
     })();
   }, []);
 

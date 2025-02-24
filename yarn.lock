@@ -3995,6 +3995,11 @@ expo-blur@~14.0.3:
   resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-14.0.3.tgz#656d6b2442bfbbfb2a6608c6bc1151b29bce6698"
   integrity sha512-BL3xnqBJbYm3Hg9t/HjNjdeY7N/q8eK5tsLYxswWG1yElISWZmMvrXYekl7XaVCPfyFyz8vQeaxd7q74ZY3Wrw==
 
+expo-calendar@~14.0.6:
+  version "14.0.6"
+  resolved "https://registry.yarnpkg.com/expo-calendar/-/expo-calendar-14.0.6.tgz#b72194e231f0ccdd0425f39ee08b93b1efcefbe7"
+  integrity sha512-aOby7ueR8lB9sWTHXkECZiPDZNVRsGQYhJTe05puNZicMWCV4c53Z/LRiCTTq3LBXV4zpBOB5rXiCyA1f082yA==
+
 expo-constants@~17.0.5, expo-constants@~17.0.6:
   version "17.0.6"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-17.0.6.tgz#0211e34d497bbfc0cdf6002d00a05173d1e6455c"
@@ -4201,13 +4206,6 @@ expo-secure-store@~14.0.1:
   version "14.0.1"
   resolved "https://registry.yarnpkg.com/expo-secure-store/-/expo-secure-store-14.0.1.tgz#8953d5966430f5ff262f4d99e7551205870078d7"
   integrity sha512-QUS+j4+UG4jRQalgnpmTvvrFnMVLqPiUZRzYPnG3+JrZ5kwVW2w6YS3WWerPoR7C6g3y/a2htRxRSylsDs+TaQ==
-
-expo-sensors@^14.0.2:
-  version "14.0.2"
-  resolved "https://registry.yarnpkg.com/expo-sensors/-/expo-sensors-14.0.2.tgz#bf2cfadcb17f396e0447aaa5405d1d90d6e46e95"
-  integrity sha512-nCb1Q3ctb0oVTZ9p6eFmQ2fINa6KoxXXIhagPpdN0qR82p00YosP27IuyxjVB3fnCJFeC4TffNxNjBxwAUk+nA==
-  dependencies:
-    invariant "^2.2.4"
 
 expo-splash-screen@~0.29.22:
   version "0.29.22"

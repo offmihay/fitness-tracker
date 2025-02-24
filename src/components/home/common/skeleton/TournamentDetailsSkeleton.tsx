@@ -16,19 +16,11 @@ const TournamentDetailsSkeleton = ({}: Props) => {
         <Skeleton height={250} />
       </View>
       <View className="flex flex-row justify-between">
-        <View style={{ width: "48%", position: "relative" }}>
+        <View style={{ position: "relative" }}>
           <Skeleton height={50} wrapperStyle={{ borderRadius: 10 }} />
           <View className="absolute flex w-full h-full justify-center items-center">
             <CustomText color={theme.colors.textTertiary} style={{ fontWeight: 700 }}>
               {t("home.tournament.register")}
-            </CustomText>
-          </View>
-        </View>
-        <View style={{ width: "48%", position: "relative" }}>
-          <Skeleton height={50} wrapperStyle={{ borderRadius: 10 }} />
-          <View className="absolute flex w-full h-full justify-center items-center">
-            <CustomText color={theme.colors.textTertiary} style={{ fontWeight: 700 }}>
-              {t("home.tournament.saveForLater")}
             </CustomText>
           </View>
         </View>

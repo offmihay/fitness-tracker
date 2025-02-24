@@ -53,12 +53,12 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const getErrorMessage = (error: Error, fallbackKey: string) => {
     const errorCause = error.cause as string | number;
     if (!errorCause) {
-      return error.message || t(`errors.${fallbackKey}`);
+      return t(`errors.${fallbackKey}`);
     }
     const errorCauseMessage = t(`errors.${errorCause}`);
     const localeErrorCauseMessage =
       errorCause.toString() !== errorCauseMessage ? errorCauseMessage : undefined;
-    const message = localeErrorCauseMessage || error.message || t(`errors.${fallbackKey}`);
+    const message = localeErrorCauseMessage || t(`errors.${fallbackKey}`);
     return message;
   };
 
@@ -99,7 +99,7 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     <QueryClientProvider client={queryClient}>
       <LoadingProvider>
         <SettingsProvider>
-          <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+          <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache} telemetry={false}>
             <ClerkLoaded>
               <AuthContextProvider>
                 <ThemeProviders>

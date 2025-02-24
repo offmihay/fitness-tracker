@@ -131,6 +131,7 @@
     "organizerEmail_invalid": "Invalid email address.",
 
     "no_tournaments_found": "Tournaments not found.",
+    "no_tournaments_found_neaby": "No tournaments found nearby. Try to change address using location filter.",
     "no_participants_yet": "No participants yet."
   },
   "success": {
@@ -142,7 +143,8 @@
     "tournament_updated": "Tournament updated",
     "participant_removed": "Participant removed",
     "user_information_updated": "User information updated",
-    "avatar_updated": "Avatar updated"
+    "avatar_updated": "Avatar updated",
+    "password_changed": "Password changed"
   },
   "common": {
     "confirm": "Confirm",
@@ -302,6 +304,10 @@
     "successMessage": "You succcesfully registered for tournament",
     "goBack": "Go Back to tournament",
     "addReminder": "Add Reminder in calendar"
+  },
+  "recoverPassword": {
+    "title": "Please enter your email to recover your password",
+    "typeStrongPassword": "Create a strong password that contains at least 8 characters"
   },
 
   "alert": {

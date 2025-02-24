@@ -89,7 +89,7 @@
     "max_participants_reached": "Досягнуто максимальну кількість учасників",
     "no_token_provided": "Ви не авторизовані",
     "invalid_token": "Ви не авторизовані",
-    "loading_data_error": "Не вдалося завантажити дані",
+    "loading_data_error": "Не вдалося завантажити",
     "mutation_data_error": "Не вдалося змінити дані",
     "internal_server_error": "Не вдалось обробити запит",
     "failed_sign_in": "Не вдалось увійти",
@@ -129,7 +129,7 @@
     "organizerName_required": "Потрібно вказати назву організації.",
     "organizerEmail_required": "Потрібно вказати електронну адресу.",
     "organizerEmail_invalid": "Неправильна електронна адреса.",
-
+    "no_tournaments_found_neaby": "Ні одного турніра не знайдено поблизу. Спробуйте змінити фільтр місця положення.",
     "no_tournaments_found": "Ні одного турніра не знайдено.",
     "no_participants_yet": "Поки ще немає учасників."
   },
@@ -143,7 +143,8 @@
     "participant_removed": "Учасника видалено",
     "user_information_updated": "Ваш профіль оновлено",
     "avatar_updated": "Ваш аватар оновлено",
-    "success": "Успіх"
+    "success": "Успіх",
+    "password_changed": "Пароль змінено"
   },
   "common": {
     "confirm": "Підтвердити",
@@ -275,7 +276,7 @@
       "distance": "Відстань"
     },
     "location": {
-      "title": "Location"
+      "title": "Місце знаходження"
     }
   },
   "tournaments": {
@@ -312,6 +313,10 @@
     "deleteImage": "Ви впевнені, що хочете видалити це зображення?",
     "goToEditPage": "Перейти до редагування",
     "goToSettings": "Перейти до налаштувань"
+  },
+  "recoverPassword": {
+    "title": "Будь ласка, введіть вашу електронну пошту, щоб ми могли відновити ваш пароль",
+    "typeStrongPassword": "Будь ласка, введіть пароль від 8 до 20 символів, що містить латинські символи"
   },
   "wizard": {
     "welcome": "Ласкаво просимо до Squashee!",

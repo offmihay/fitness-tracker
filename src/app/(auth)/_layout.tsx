@@ -12,6 +12,12 @@ export default function AuthLayout() {
           presentation: "modal",
         }}
       />
+      <Stack.Screen
+        name="recover"
+        options={{
+          presentation: "modal",
+        }}
+      />
     </Stack>
   );
 }

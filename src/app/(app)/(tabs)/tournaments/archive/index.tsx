@@ -140,7 +140,6 @@ const FinishedTournaments = ({}: Props) => {
 
   return (
     <LayoutFlashList
-      loaderPending={true}
       headerConfig={{
         nodeHeader: () => (
           <View className="absolute bottom-2 right-4">

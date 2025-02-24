@@ -187,7 +187,7 @@ const HomePage = ({}: HomePageProps) => {
           }
           ListEmptyComponent={
             !isFetching && !hasNextPage && location !== undefined ? (
-              <CustomText className="mt-4">{t("errors.no_tournaments_found")}</CustomText>
+              <CustomText className="mt-4">{t("errors.no_tournaments_found_neaby")}</CustomText>
             ) : null
           }
           data={displayData}

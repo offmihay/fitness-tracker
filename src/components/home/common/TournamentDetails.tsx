@@ -58,16 +58,15 @@ const TournamentDetails = ({
           <View className="flex flex-row justify-between">
             <ButtonDefault
               title={t("home.tournament.register")}
-              styleWrapper={{ width: "48%" }}
               onPress={handleRegister}
               disabled={!data.isApproved}
             />
-            <ButtonDefault
+            {/* <ButtonDefault
               type="grey"
               title={t("home.tournament.saveForLater")}
               styleWrapper={{ width: "48%" }}
               disabled={!data.isApproved}
-            />
+            /> */}
           </View>
         ) : (
           <View>

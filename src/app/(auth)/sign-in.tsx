@@ -67,7 +67,7 @@ const SignInModal = ({}: Props) => {
   return (
     <FormProvider {...methods}>
       <DismissKeyboardView>
-        <ButtonBack />
+        <ButtonBack style={{ top: 20 }} />
         <View style={[styles.wrapper, { backgroundColor: theme.colors.background }]}>
           <View style={[styles.contentWrapper]}>
             <Animated.View layout={LinearTransition} className="mb-12">
@@ -110,7 +110,7 @@ const SignInModal = ({}: Props) => {
             />
 
             <Animated.View layout={LinearTransition} className="ml-2 w-[200] mt-2">
-              <TouchableOpacity onPress={void 0}>
+              <TouchableOpacity onPress={() => router.navigate({ pathname: "./recover" })}>
                 <CustomText color="#0082FF" type="predefault">
                   {t("signin.modal.forgotPassword")}
                   {/* <Loader style={{ margin: 0, width: 25, height: 15 }} /> */}
