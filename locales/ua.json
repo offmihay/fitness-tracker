@@ -46,7 +46,8 @@
       "UPCOMING": "Майбутній",
       "ONGOING": "В процесі",
       "FINISHED": "Завершено",
-      "DEACTIVATED": "Деактивовано"
+      "DEACTIVATED": "Деактивовано",
+      "ONAPPROVAL": "На перевірці"
     }
   },
   "user": {
@@ -172,7 +173,8 @@
     "create": "Створити",
     "register": "Зареєструватися",
     "ok": "Ок",
-    "error": "Помилка"
+    "error": "Помилка",
+    "km": "км"
   },
   "title": {
     "home": "Головна",
@@ -258,7 +260,9 @@
       "organizerDetails": "Деталі організатора",
       "organizedBy": "Організатор:",
       "unknown": "Невідомо",
-      "contactUs": "Зв'язатися з нами"
+      "contactUs": "Зв'язатися з нами",
+      "registrationFinished": "Регістрація завершена",
+      "noRuleProvided": "Правила не були вказані. Для більш детальної інформації - зверніться до огранізотора."
     },
     "filter": {
       "title": "Фільтр"
@@ -269,6 +273,9 @@
       "upcoming": "Майбутні",
       "prizePool": "Призовий фонд",
       "distance": "Відстань"
+    },
+    "location": {
+      "title": "Location"
     }
   },
   "tournaments": {

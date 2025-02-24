@@ -40,7 +40,7 @@ export const useUserCoordinates = (disableFetchLocation?: boolean) => {
 
   const getCachedLocation = async (): Promise<GeoCoordinates | null> => {
     const storageLocationJSON = await AsyncStorage.getItem("userCoordinates");
-    return null;
+    return storageLocationJSON ? JSON.parse(storageLocationJSON) : null;
   };
 
   const query = useQuery<GeoCoordinates | null>({
@@ -50,7 +50,7 @@ export const useUserCoordinates = (disableFetchLocation?: boolean) => {
       if (cached) {
         return cached;
       }
-      return await fetchLocation();
+      return null;
     },
     staleTime: 1000 * 60 * 15,
     refetchOnMount: true,

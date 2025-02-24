@@ -2,10 +2,11 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import CustomText from "@/src/shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { TournamentSport, TournamentStatus } from "@/src/types/tournament";
+import { TournamentBase, TournamentSport, TournamentStatus } from "@/src/types/tournament";
 import {
   FontAwesome,
   FontAwesome5,
+  FontAwesome6,
   Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
@@ -14,13 +15,14 @@ import { useTranslation } from "react-i18next";
 import CustomLabel from "./CustomLabel";
 
 type Props = {
-  type?: TournamentStatus | "DEACTIVATED";
+  data: TournamentBase;
 };
 
-const StatusLabel = (props: Props) => {
+const StatusLabel = ({ data }: Props) => {
   const theme = useCustomTheme();
   const { t } = useTranslation();
-  const { type } = props;
+  const { status, isActive, isApproved } = data;
+  const type = !isActive ? "DEACTIVATED" : !isApproved ? "ONAPPROVAL" : status;
 
   switch (type) {
     case TournamentStatus.UPCOMING:
@@ -55,6 +57,14 @@ const StatusLabel = (props: Props) => {
           value={t(`tournament.status.${type}`)}
           icon={<MaterialIcons name="sports-tennis" size={16} color="white" />}
           color="#ff4b4b"
+        />
+      );
+    case "ONAPPROVAL":
+      return (
+        <CustomLabel
+          value={`${t(`tournament.status.${type}`)}..`}
+          icon={<FontAwesome6 name="clock" size={16} color="white" />}
+          color={theme.colors.surfaceLight}
         />
       );
   }

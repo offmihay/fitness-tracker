@@ -65,6 +65,7 @@ export interface TournamentBase {
   updatedAt: string;
   role: "participant" | "organizer" | null;
   joinedCreatedAt: string;
+  isApproved: boolean;
 }
 
 export interface Tournament {
@@ -94,6 +95,7 @@ export interface Tournament {
   participantsCount: number;
   role: "participant" | "organizer" | null;
   joinedCreatedAt: string;
+  isApproved: boolean;
 }
 
 export type Image = {
@@ -141,6 +143,7 @@ export const emptyTournament: Tournament = {
   participantsCount: 0,
   role: null,
   joinedCreatedAt: "",
+  isApproved: false,
 };
 
 export const emptyBaseTournament: TournamentBase = {
@@ -166,4 +169,5 @@ export const emptyBaseTournament: TournamentBase = {
   isActive: true,
   role: null,
   joinedCreatedAt: "",
+  isApproved: false,
 };

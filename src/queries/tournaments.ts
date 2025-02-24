@@ -34,10 +34,8 @@ export const getAllTournaments = (queryParams: Partial<TournamentQuery>, enabled
   });
 };
 
-export const getMyTournaments = (isFinished: boolean = false) => {
+export const getMyTournaments = (isFinished: boolean) => {
   const { fetchData } = useApi();
-  const queryClient = useQueryClient();
-  const cache = queryClient.getQueryData<TournamentBase[]>(["my-tournaments", isFinished]);
 
   return useQuery({
     queryKey: ["my-tournaments", isFinished],
@@ -49,8 +47,9 @@ export const getMyTournaments = (isFinished: boolean = false) => {
       });
       return response.data;
     },
-    refetchOnWindowFocus: true,
-    enabled: !cache,
+    refetchOnMount: (query) => {
+      return query.state.isInvalidated;
+    },
   });
 };
 
@@ -66,17 +65,7 @@ export const registerTournament = () => {
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["tournament", data.id], data);
-      queryClient.setQueryData<Tournament[]>(["my-tournaments", false], (prev) => {
-        if (prev) {
-          const index = prev.findIndex((t) => t.id === data.id);
-          if (index === -1) {
-            return [data, ...prev];
-          } else {
-            return [...prev.slice(0, index), data, ...prev.slice(index + 1)];
-          }
-        }
-        return [data];
-      });
+      queryClient.invalidateQueries({ queryKey: ["my-tournaments", false] });
     },
   });
 };
@@ -246,23 +235,8 @@ export const updateStatus = () => {
     },
     onSuccess: (data, { isActive }) => {
       queryClient.setQueryData(["tournament", data.id], data);
-      queryClient.setQueryData<Tournament[]>(["my-tournaments", !isActive], (prev) => {
-        if (prev) {
-          const index = prev.findIndex((t) => t.id === data.id);
-          if (index === -1) {
-            return [data, ...prev];
-          } else {
-            return [...prev.slice(0, index), data, ...prev.slice(index + 1)];
-          }
-        }
-        return [data];
-      });
-      queryClient.setQueryData<Tournament[]>(["my-tournaments", isActive], (prev) => {
-        if (prev) {
-          return prev.filter((t) => t.id !== data.id);
-        }
-        return [];
-      });
+      queryClient.invalidateQueries({ queryKey: ["my-tournaments", true] });
+      queryClient.invalidateQueries({ queryKey: ["my-tournaments", false] });
     },
   });
 };

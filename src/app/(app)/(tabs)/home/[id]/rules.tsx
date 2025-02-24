@@ -4,6 +4,7 @@ import { useLocalSearchParams } from "expo-router";
 import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollView";
 import CustomText from "@/src/shared/text/CustomText";
 import { getTournamentByID } from "@/src/queries/tournaments";
+import { t } from "i18next";
 
 type Props = {};
 
@@ -14,7 +15,7 @@ const RulesPage = ({}: Props) => {
   return (
     <LayoutScrollView name="rules">
       <View style={styles.wrapper}>
-        <CustomText>{data?.rules ?? "No rules was provided"}</CustomText>
+        <CustomText>{data?.rules ?? t("home.tournament.noRuleProvided")}</CustomText>
       </View>
     </LayoutScrollView>
   );

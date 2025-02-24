@@ -82,7 +82,7 @@ const UserTournamentCard = (props: Props) => {
       <View style={styles.content}>
         <View style={styles.contentHeader}>
           <View className="flex flex-row gap-2 items-center">
-            <StatusLabel type={data.isActive ? data.status : "DEACTIVATED"} />
+            <StatusLabel data={data} />
           </View>
           <View className="flex flex-row items-center">
             <CustomText type="small">

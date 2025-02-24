@@ -9,7 +9,7 @@ import {
   FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { Tournament } from "@/src/types/tournament";
+import { Tournament, TournamentStatus } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useTranslation } from "react-i18next";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
@@ -53,28 +53,36 @@ const TournamentDetails = ({
           />
         </View>
       )}
-      {!isRegistred ? (
-        <View className="flex flex-row justify-between">
-          <ButtonDefault
-            title={t("home.tournament.register")}
-            styleWrapper={{ width: "48%" }}
-            onPress={handleRegister}
-          />
-          <ButtonDefault
-            type="grey"
-            title={t("home.tournament.saveForLater")}
-            styleWrapper={{ width: "48%" }}
-          />
-        </View>
+      {data.status === TournamentStatus.UPCOMING ? (
+        !isRegistred ? (
+          <View className="flex flex-row justify-between">
+            <ButtonDefault
+              title={t("home.tournament.register")}
+              styleWrapper={{ width: "48%" }}
+              onPress={handleRegister}
+              disabled={!data.isApproved}
+            />
+            <ButtonDefault
+              type="grey"
+              title={t("home.tournament.saveForLater")}
+              styleWrapper={{ width: "48%" }}
+              disabled={!data.isApproved}
+            />
+          </View>
+        ) : (
+          <View>
+            <ButtonDefault
+              title={t("register.addReminder")}
+              onPress={void 0}
+              type="primary"
+              nodeLeft={(color) => (
+                <MaterialCommunityIcons name="reminder" size={24} color={color} />
+              )}
+            />
+          </View>
+        )
       ) : (
-        <View>
-          <ButtonDefault
-            title={t("register.addReminder")}
-            onPress={void 0}
-            type="primary"
-            nodeLeft={(color) => <MaterialCommunityIcons name="reminder" size={24} color={color} />}
-          />
-        </View>
+        <CustomText>{t("home.tournament.registrationFinished")}</CustomText>
       )}
       <View style={[styles.infoBlock, { backgroundColor: theme.colors.surface }]}>
         <CustomText type="subtitle" className="mb-4">

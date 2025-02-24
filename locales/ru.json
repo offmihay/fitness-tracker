@@ -46,7 +46,8 @@
       "UPCOMING": "Предстоящий",
       "ONGOING": "Идет",
       "FINISHED": "Завершен",
-      "DEACTIVATED": "Деактивирован"
+      "DEACTIVATED": "Деактивирован",
+      "ONAPPROVAL": "На проверке"
     }
   },
   "user": {
@@ -174,7 +175,8 @@
     "register": "Зарегистрироваться",
     "ok": "Ок",
     "error": "Ошибка",
-    "success": "Успех"
+    "success": "Успех",
+    "km": "км"
   },
   "title": {
     "home": "Главная",
@@ -260,7 +262,9 @@
       "organizerDetails": "Детали организатора",
       "organizedBy": "Организатор:",
       "unknown": "Неизвестно",
-      "contactUs": "Связаться с нами"
+      "contactUs": "Связаться с нами",
+      "registrationFinished": "Регистрация окончена",
+      "noRuleProvided": "Правила не были указаны. Для более подробной информации обратитеся к организатору"
     },
     "filter": {
       "title": "Фильтр"
@@ -271,6 +275,9 @@
       "upcoming": "Предстоящие",
       "prizePool": "Призовой фонд",
       "distance": "Расстояние"
+    },
+    "location": {
+      "title": "Location"
     }
   },
   "tournaments": {
