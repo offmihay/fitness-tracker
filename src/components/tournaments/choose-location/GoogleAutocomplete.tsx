@@ -1,4 +1,4 @@
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import { Dimensions, Platform, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
   AutocompleteRequestType,
@@ -121,7 +121,10 @@ const GoogleAutoComplete = (props: Props) => {
         handleChooseLocation(data, details);
       }}
       query={{
-        key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
+        key:
+          Platform.OS === "ios"
+            ? process.env.EXPO_PUBLIC_GOOGLE_MAPS_IOS_API_KEY
+            : process.env.EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_API_KEY,
         ...(userLocation && { location: `${userLocation.latitude},${userLocation.longitude}` }),
         radius: 100,
         ...query,
