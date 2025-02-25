@@ -11,7 +11,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: "selfsport",
   ios: {
     ...config.ios,
-    bundleIdentifier: "com.tiers.selfsport",
+    bundleIdentifier: "com.selfsport.app",
     supportsTablet: true,
     infoPlist: {
       CADisableMinimumFrameDurationOnPhone: true,
@@ -23,7 +23,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     ...config.android,
-    package: "com.tiers.selfsport",
+    package: "com.selfsport.app",
     config: {
       googleMaps: {
         apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
