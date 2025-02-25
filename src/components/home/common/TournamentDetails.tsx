@@ -20,6 +20,8 @@ import { TournamentInfoBlock, TournamentInfoRow } from "./TournamentInfoBlock";
 import { formatDateTime } from "@/src/utils/formatDateTime";
 import { useSettings } from "@/src/hooks/useSettings";
 import SportLabel from "./SportLabel";
+import useCreateNativeEvent from "@/src/hooks/useCreateNativeEvent";
+import * as Calendar from "expo-calendar";
 
 type Props = {
   isRegistred: boolean;
@@ -41,6 +43,19 @@ const TournamentDetails = ({
   const theme = useCustomTheme();
   const { t } = useTranslation("");
   const { settings } = useSettings();
+  const { createEvent } = useCreateNativeEvent();
+
+  const handleAddReminder = () => {
+    createEvent({
+      startDate: data?.dateStart,
+      endDate: data?.dateEnd,
+      title: data?.title,
+      location: data?.location,
+      organizerEmail: data?.organizer.organizerEmail,
+      notes: data?.description,
+      status: Calendar.EventStatus.CONFIRMED,
+    });
+  };
 
   return (
     <View className="flex flex-col gap-6">
@@ -72,7 +87,7 @@ const TournamentDetails = ({
           <View>
             <ButtonDefault
               title={t("register.addReminder")}
-              onPress={void 0}
+              onPress={handleAddReminder}
               type="primary"
               nodeLeft={(color) => (
                 <MaterialCommunityIcons name="reminder" size={24} color={color} />

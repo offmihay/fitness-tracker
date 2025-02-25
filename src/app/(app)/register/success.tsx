@@ -6,17 +6,31 @@ import CustomText from "@/src/shared/text/CustomText";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { router, useLocalSearchParams, useSegments } from "expo-router";
 import { t } from "i18next";
+import useCreateNativeEvent from "@/src/hooks/useCreateNativeEvent";
+import { getTournamentByID } from "@/src/queries/tournaments";
+import * as Calendar from "expo-calendar";
 
-type Props = {};
-
-const RegistrationSuccessScreen = (props: Props) => {
-  const {} = props;
+const RegistrationSuccessScreen = () => {
+  const { createEvent } = useCreateNativeEvent();
   const theme = useCustomTheme();
   const { id } = useLocalSearchParams();
+  const { data: tournamentData } = getTournamentByID(id as string);
 
   const returnBack = () => {
     router.dismissTo({
       pathname: `/home/${id}`,
+    });
+  };
+
+  const handleCreateEvent = () => {
+    createEvent({
+      startDate: tournamentData?.dateStart,
+      endDate: tournamentData?.dateEnd,
+      title: tournamentData?.title,
+      location: tournamentData?.location,
+      organizerEmail: tournamentData?.organizer.organizerEmail,
+      notes: tournamentData?.description,
+      status: Calendar.EventStatus.CONFIRMED,
     });
   };
 
@@ -29,7 +43,7 @@ const RegistrationSuccessScreen = (props: Props) => {
         <CustomText center>{t("register.successMessage")}</CustomText>
       </View>
       <View className="mt-8 flex gap-4">
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleCreateEvent}>
           <CustomText type="default" color={theme.colors.link} center>
             {t("register.addReminder")}
           </CustomText>

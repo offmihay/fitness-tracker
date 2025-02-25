@@ -118,3 +118,20 @@ export const deleteImageConfirmationAlert = (
     },
   ]);
 };
+
+export const calendarPermissionAlert = (
+  onPress: () => void,
+  t: TFunction<"translation", undefined>
+) => {
+  Alert.alert(t("alert.calendarPermission"), "", [
+    {
+      text: t("alert.goToSettings"),
+      onPress,
+      style: "default",
+    },
+    {
+      text: t("common.cancel"),
+      style: "cancel",
+    },
+  ]);
+};

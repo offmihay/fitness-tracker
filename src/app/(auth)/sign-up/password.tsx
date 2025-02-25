@@ -108,6 +108,7 @@ const SignUpPasswordScreen = () => {
                         isError={!!formErrors.password}
                         textContentType="oneTimeCode"
                         onClear={onClear}
+                        autoCapitalize="none"
                       />
                     )}
                     name="password"
@@ -137,6 +138,7 @@ const SignUpPasswordScreen = () => {
                         isPassword
                         isError={!!formErrors.passwordConfirm}
                         textContentType="oneTimeCode"
+                        autoCapitalize="none"
                       />
                     )}
                     name="passwordConfirm"

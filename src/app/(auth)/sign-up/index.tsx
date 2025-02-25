@@ -87,6 +87,8 @@ export default function SignUpEmailScreen() {
                   inputProps={{
                     useClearButton: true,
                     isError: !!formErrors.email,
+                    autoCapitalize: "none",
+                    keyboardType: "email-address",
                   }}
                   rules={{
                     maxLength: { value: 30, message: "email_too_long" },

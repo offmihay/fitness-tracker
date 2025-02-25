@@ -38,7 +38,6 @@ const RegistrationConfirmScreen = (props: Props) => {
   return (
     <>
       <LayoutStatic
-        loaderPending={false}
         name="registration"
         isDefaultCompressed
         headerConfig={{

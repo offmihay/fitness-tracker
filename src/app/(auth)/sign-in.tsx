@@ -84,6 +84,8 @@ const SignInModal = ({}: Props) => {
                 useClearButton: true,
                 isError: !!formErrors.email,
                 textContentType: "oneTimeCode",
+                autoCapitalize: "none",
+                keyboardType: "email-address",
               }}
               rules={{
                 maxLength: { value: 30, message: "email_too_long" },
@@ -102,6 +104,7 @@ const SignInModal = ({}: Props) => {
                 isPassword: true,
                 isError: !!formErrors.password,
                 textContentType: "password",
+                autoCapitalize: "none",
               }}
               rules={{
                 minLength: { value: 8, message: t("errors.password_too_short") },

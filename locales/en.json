@@ -144,7 +144,8 @@
     "participant_removed": "Participant removed",
     "user_information_updated": "User information updated",
     "avatar_updated": "Avatar updated",
-    "password_changed": "Password changed"
+    "password_changed": "Password changed",
+    "event_created": "Event created"
   },
   "common": {
     "confirm": "Confirm",
@@ -317,6 +318,7 @@
     "leaveTournament": "Are you sure you want to leave this tournament?",
     "cameraPerssions": "App doesn't have permission to your camera. Go to settings and change Camera permissions",
     "galleryPermission": "App doesn't have permission to your gallery. Go to settings and change Gallery permissions",
+    "calendarPermission": "App doesn't have permission to your calendar. Go to settings and change Calendar permissions",
     "locationPermission": "App doesn't have permission to your location. Go to settings and change Location permissions",
     "deleteImage": "Are you sure you want to delete this image?",
     "goToEditPage": "Go to Edit Page",

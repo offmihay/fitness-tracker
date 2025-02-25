@@ -12,18 +12,13 @@ const TournamentDetailsSkeleton = ({}: Props) => {
   const { t } = useTranslation("");
   return (
     <View className="flex flex-col gap-6">
+      <Skeleton height={30} width={120} />
       <View style={{ width: "100%", borderRadius: 10, height: 250, overflow: "hidden" }}>
         <Skeleton height={250} />
       </View>
-      <View className="flex flex-row justify-between">
-        <View style={{ position: "relative" }}>
-          <Skeleton height={50} wrapperStyle={{ borderRadius: 10 }} />
-          <View className="absolute flex w-full h-full justify-center items-center">
-            <CustomText color={theme.colors.textTertiary} style={{ fontWeight: 700 }}>
-              {t("home.tournament.register")}
-            </CustomText>
-          </View>
-        </View>
+
+      <View style={{ position: "relative" }}>
+        <Skeleton height={50} wrapperStyle={{ borderRadius: 10 }} />
       </View>
       <View className="flex gap-4">
         <Skeleton height={25} width={200} />

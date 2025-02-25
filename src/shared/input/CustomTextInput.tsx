@@ -172,7 +172,7 @@ const CustomTextInput = forwardRef<TextInput, Props>(
           <TextInput
             ref={ref}
             secureTextEntry={isPassword && !isPasswordVisible}
-            // scrollEnabled={false}
+            autoCorrect={false}
             editable={!disabled}
             selectTextOnFocus={!disabled}
             onPressIn={() => disabled && Keyboard.dismiss()}
