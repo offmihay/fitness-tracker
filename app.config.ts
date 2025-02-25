@@ -12,6 +12,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     ...config.ios,
     bundleIdentifier: "com.selfsport.app",
+    associatedDomains: ["applinks:selfsport.app"],
     supportsTablet: true,
     infoPlist: {
       CADisableMinimumFrameDurationOnPhone: true,
