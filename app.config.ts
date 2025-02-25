@@ -11,6 +11,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: "selfsport",
   ios: {
     ...config.ios,
+    entitlements: {
+      "com.apple.developer.applesignin": ["Default"],
+    },
     bundleIdentifier: "com.selfsport.app",
     associatedDomains: ["applinks:selfsport.app"],
     supportsTablet: true,
