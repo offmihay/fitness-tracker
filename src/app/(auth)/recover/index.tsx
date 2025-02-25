@@ -14,12 +14,14 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
 import { usePrepareForRecover } from "@/src/queries/recover";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 type EmailData = {
   email: string;
 };
 
 export default function RecoverPasswordFirstScreen() {
+  useManualLoading(true);
   const theme = useCustomTheme();
   const router = useRouter();
 

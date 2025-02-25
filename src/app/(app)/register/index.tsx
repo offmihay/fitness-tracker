@@ -16,11 +16,10 @@ import clerkTransformData from "@/src/utils/clerkTransformData";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
 import CustomText from "@/src/shared/text/CustomText";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
-type Props = {};
-
-const RegistrationFormScreen = (props: Props) => {
-  const {} = props;
+const RegistrationFormScreen = () => {
+  useManualLoading(true);
   const { id } = useLocalSearchParams();
 
   const { t } = useTranslation();

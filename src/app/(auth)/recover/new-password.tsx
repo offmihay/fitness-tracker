@@ -15,12 +15,14 @@ import CustomTextInput from "@/src/shared/input/CustomTextInput";
 import CustomText from "@/src/shared/text/CustomText";
 import { useChangePasswordForRecover } from "@/src/queries/recover";
 import { useToast } from "@/src/hooks/useToast";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 type PasswordData = {
   password: string;
 };
 
 const SignUpPasswordScreen = () => {
+  useManualLoading(true);
   const theme = useCustomTheme();
   const { showSuccessToast } = useToast();
   const router = useRouter();

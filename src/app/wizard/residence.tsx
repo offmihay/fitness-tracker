@@ -7,14 +7,11 @@ import { router } from "expo-router";
 import GoogleAutoComplete, {
   PlaceObject,
 } from "@/src/components/tournaments/choose-location/GoogleAutocomplete";
-import { useUpdateUserMutation } from "@/src/queries/user";
-import clerkTransformData from "@/src/utils/clerkTransformData";
 import { useUser } from "@clerk/clerk-expo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const WizardResidenceScreen = () => {
   const theme = useCustomTheme();
-  const { user } = useUser();
   const { updateWizardData } = useContext(WizardContext);
 
   const handleGoToAuth = async () => {

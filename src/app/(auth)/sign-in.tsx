@@ -12,6 +12,7 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
 import ButtonBack from "@/src/shared/button/ButtonBack";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 type Props = {};
 
@@ -21,6 +22,7 @@ type SignInData = {
 };
 
 const SignInModal = ({}: Props) => {
+  useManualLoading(true);
   const { t } = useTranslation();
   const router = useRouter();
   const theme = useCustomTheme();

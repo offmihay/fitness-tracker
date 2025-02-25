@@ -10,10 +10,12 @@ const useCreateNativeEvent = () => {
   const { showSuccessToast } = useToast();
 
   const createEvent = async (eventData?: Omit<Partial<Calendar.Event>, "id">) => {
-    const { status } = await requestPermissions();
-    if (Platform.OS === "ios" && status !== Calendar.PermissionStatus.GRANTED) {
-      calendarPermissionAlert(Linking.openSettings, t);
-      return null;
+    if (Platform.OS === "ios") {
+      const { status } = await requestPermissions();
+      if (status !== Calendar.PermissionStatus.GRANTED) {
+        calendarPermissionAlert(Linking.openSettings, t);
+        return null;
+      }
     }
     const event = await Calendar.createEventInCalendarAsync(eventData);
     if (

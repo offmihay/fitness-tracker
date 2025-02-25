@@ -10,7 +10,7 @@ export const useGoogleOAuthMutation = () => {
       try {
         const { createdSessionId, setActive, signIn, signUp } = await startSSOFlow({
           strategy: "oauth_google",
-          redirectUrl: Linking.createURL("oauth"),
+          redirectUrl: Linking.createURL("home"),
         });
         if (createdSessionId && setActive) {
           await setActive({ session: createdSessionId });
@@ -47,7 +47,7 @@ export const useAppleOAuthMutation = () => {
       try {
         const { createdSessionId, setActive, signIn, signUp } = await startSSOFlow({
           strategy: "oauth_apple",
-          redirectUrl: Linking.createURL("oauth"),
+          redirectUrl: Linking.createURL("home"),
         });
         if (createdSessionId && setActive) {
           await setActive({ session: createdSessionId });

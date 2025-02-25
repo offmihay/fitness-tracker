@@ -19,12 +19,14 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
 import { useResendCodeForRecover, useVerifyCodeForRecover } from "@/src/queries/recover";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 type VerificationCodeData = {
   code: string;
 };
 
 const SignUpVerifyCodeScreen = () => {
+  useManualLoading(true);
   const theme = useCustomTheme();
   const router = useRouter();
 

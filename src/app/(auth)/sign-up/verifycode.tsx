@@ -18,12 +18,14 @@ import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormInput from "@/src/shared/form/RHFormInput";
 import CustomText from "@/src/shared/text/CustomText";
+import { useManualLoading } from "@/src/hooks/useLoading";
 
 type VerificationCodeData = {
   code: string;
 };
 
 const SignUpVerifyCodeScreen = () => {
+  useManualLoading(true);
   const theme = useCustomTheme();
   const router = useRouter();
 
