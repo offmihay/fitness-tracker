@@ -48,7 +48,7 @@ const UpdateTournament = () => {
       scrollEnabled={!!formReady}
     >
       <View style={styles.wrapper}>
-        {!!formReady ? (
+        {formReady ? (
           <FormProvider {...methods}>
             <TournamentEditForm type="edit" id={pageQuery.id} />
             <CustomAnimatedView className="my-5">

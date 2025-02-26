@@ -1,6 +1,6 @@
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
-import Animated, { FadeIn, FadeOut, useAnimatedStyle, withTiming } from "react-native-reanimated";
+import Animated, { FadeIn, useAnimatedStyle, withTiming } from "react-native-reanimated";
 import { AntDesign } from "@expo/vector-icons";
 import CustomText from "@/src/shared/text/CustomText";
 

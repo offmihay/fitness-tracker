@@ -1,13 +1,11 @@
 import React, { useRef, useState } from "react";
 import {
   View,
-  Pressable,
   TouchableOpacity,
   StyleSheet,
   Keyboard,
   ActionSheetIOS,
   Platform,
-  Alert,
 } from "react-native";
 import { Entypo, Feather } from "@expo/vector-icons";
 import Loader from "../../../shared/loader/Loader";
@@ -51,8 +49,7 @@ const UserAvatarList = () => {
         cancelButtonIndex: 0,
       },
       (buttonIndex) => {
-        if (buttonIndex === 0) {
-        } else if (buttonIndex === 1) {
+        if (buttonIndex === 1) {
           handleGalleryImagePick();
         } else if (buttonIndex === 2) {
           handleCameraImagePick();

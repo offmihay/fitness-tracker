@@ -4,7 +4,6 @@ import { Location } from "../types";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import StickyFooterView from "../../../shared/view/StickyFooterView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
-import _ from "lodash";
 import { t } from "i18next";
 import GoogleAutoComplete, {
   PlaceObject,

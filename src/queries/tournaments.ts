@@ -8,7 +8,6 @@ import {
 import { Tournament, TournamentBase, TournamentStatus } from "../types/tournament";
 import { TournamentFormData } from "../components/tournaments/create/form/schema";
 import useApi from "../api/useApi";
-import { useTranslation } from "react-i18next";
 import { TournamentQuery } from "../components/home/types";
 
 export const getAllTournaments = (queryParams: Partial<TournamentQuery>, enabled: boolean) => {
@@ -105,7 +104,6 @@ export const getTournamentByID = (id: string): UseQueryResult<Tournament> => {
 
 export const postTournament = () => {
   const queryClient = useQueryClient();
-  const { t } = useTranslation();
   const { fetchData } = useApi();
   return useMutation({
     mutationFn: async (data: TournamentFormData) => {
@@ -125,7 +123,6 @@ export const postTournament = () => {
 
 export const updateTournament = () => {
   const { fetchData } = useApi();
-  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -136,7 +133,7 @@ export const updateTournament = () => {
       });
       return response.data;
     },
-    onSuccess: (data, { id }) => {
+    onSuccess: (data) => {
       const isFinished = !data.isActive || data.status === TournamentStatus.FINISHED;
       queryClient.setQueryData(["tournament", data.id], data);
       queryClient.setQueryData<Tournament[]>(["my-tournaments", isFinished], (prev) => {
@@ -233,7 +230,7 @@ export const updateStatus = () => {
       );
       return response.data;
     },
-    onSuccess: (data, { isActive }) => {
+    onSuccess: (data) => {
       queryClient.setQueryData(["tournament", data.id], data);
       queryClient.invalidateQueries({ queryKey: ["my-tournaments", true] });
       queryClient.invalidateQueries({ queryKey: ["my-tournaments", false] });

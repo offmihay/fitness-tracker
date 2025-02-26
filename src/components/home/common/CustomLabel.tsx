@@ -1,7 +1,6 @@
 import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { useTranslation } from "react-i18next";
 import CustomText from "@/src/shared/text/CustomText";
 
 type Props = {

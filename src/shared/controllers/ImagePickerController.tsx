@@ -1,4 +1,4 @@
-import { ActionSheetIOS, Keyboard, Platform, TouchableOpacity, View } from "react-native";
+import { ActionSheetIOS, Keyboard, Platform } from "react-native";
 import React, { useRef, useEffect } from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import ChooseCameraModal from "../modal/ChooseCameraModal";

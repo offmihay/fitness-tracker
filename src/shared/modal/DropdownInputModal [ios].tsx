@@ -43,7 +43,7 @@ const DropdownModal = forwardRef(
 
     const handleValueChange = (itemValue: T, itemIndex: number) => {
       onValueChange?.(itemValue, itemIndex);
-      if (!!itemValue) {
+      if (itemValue) {
         handleDismiss();
         onSumbitEditing?.();
       }

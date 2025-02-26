@@ -21,9 +21,7 @@ import { useRefreshByUser } from "@/src/hooks/useRefetchByUser";
 import LocationModal from "@/src/components/home/location/LocationModal";
 import { GeoCoordinates, useUserCoordinates } from "@/src/queries/location";
 
-type HomePageProps = {};
-
-const HomePage = ({}: HomePageProps) => {
+const HomePage = () => {
   const { data: userCoords, isFetched: isFetchedUserCoords } = useUserCoordinates(true);
   const router = useRouter();
   const navigation = useNavigation();

@@ -1,20 +1,14 @@
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DismissKeyboardView from "../../shared/view/DismissKeyboardView";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Divider } from "react-native-paper";
-import { t, use } from "i18next";
+import { t } from "i18next";
 import CustomText from "@/src/shared/text/CustomText";
 import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
 import {
-  BounceInRight,
-  Easing,
-  FadeInRight,
-  FadeOutRight,
   LinearTransition,
-  SlideInRight,
-  SlideOutRight,
 } from "react-native-reanimated";
 
 type Props = {

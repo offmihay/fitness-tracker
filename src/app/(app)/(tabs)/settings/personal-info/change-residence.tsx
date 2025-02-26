@@ -1,7 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
 import { useUser } from "@clerk/clerk-expo";
-import { useTranslation } from "react-i18next";
 import clerkTransformData from "@/src/utils/clerkTransformData";
 import { useUpdateUserMutation } from "@/src/queries/user";
 import { useRouter } from "expo-router";
@@ -14,7 +13,6 @@ import { useManualLoading } from "@/src/hooks/useLoading";
 
 const ChangeNameScreen = () => {
   useManualLoading(true);
-  const { t } = useTranslation();
   const { user } = useUser();
   const formDataMutation = useUpdateUserMutation();
   const router = useRouter();

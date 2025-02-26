@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import React from "react";
 import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
 import ButtonInput from "@/src/shared/button/ButtonInput";
@@ -122,12 +122,5 @@ const ChooseImageSection = (props: Props) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-  },
-});
 
 export default ChooseImageSection;

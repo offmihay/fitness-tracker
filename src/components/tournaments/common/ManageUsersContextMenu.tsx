@@ -1,4 +1,3 @@
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import {
   ContextMenuRoot,
   ContextMenuContent,
@@ -7,7 +6,7 @@ import {
   ContextMenuItemTitle,
   ContextMenuTrigger,
 } from "@/src/shared/context-menu/common";
-import React, { useState } from "react";
+import React from "react";
 
 import { useTranslation } from "react-i18next";
 

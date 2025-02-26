@@ -8,9 +8,7 @@ import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList
 import { Tournament } from "@/src/types/tournament";
 import { t } from "i18next";
 
-type Props = {};
-
-const ParticipantsPage = (props: Props) => {
+const ParticipantsPage = () => {
   const { id } = useLocalSearchParams();
   const { data, refetch, isLoading } = getTournamentByID(id as string);
   const [isRefreshing, setIsRefreshing] = useState(false);

@@ -29,7 +29,7 @@ const CreateTournament = () => {
   const { methods, handleFormSubmit, createTournamentMutation } =
     useCreateTournamentForm(pageQuery);
 
-  const { handleSubmit, setError, setValue } = methods;
+  const { handleSubmit, setValue } = methods;
 
   const handlePress = () => {
     if (!user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail) {

@@ -8,10 +8,8 @@ import {
 } from "@gorhom/bottom-sheet";
 
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { useTranslation } from "react-i18next";
 import { AntDesign } from "@expo/vector-icons";
 import { ThemeProvider } from "react-native-paper";
-import CustomText from "../text/CustomText";
 import { LoadingContext } from "@/src/providers/LoadingProvider";
 import LoadingModal from "./LoadingModal";
 
@@ -33,7 +31,6 @@ const CustomModal = (props: Props) => {
 
   const { isLoading: isLoaderSpinning } = loadingContext;
 
-  const { t } = useTranslation();
   const theme = useCustomTheme();
 
   const snapPointsModal = useMemo(() => ["30%"], []);

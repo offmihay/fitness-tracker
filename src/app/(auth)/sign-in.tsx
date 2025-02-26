@@ -14,14 +14,12 @@ import CustomText from "@/src/shared/text/CustomText";
 import ButtonBack from "@/src/shared/button/ButtonBack";
 import { useManualLoading } from "@/src/hooks/useLoading";
 
-type Props = {};
-
 type SignInData = {
   email: string;
   password: string;
 };
 
-const SignInModal = ({}: Props) => {
+const SignInModal = () => {
   useManualLoading(true);
   const { t } = useTranslation();
   const router = useRouter();
@@ -36,7 +34,7 @@ const SignInModal = ({}: Props) => {
     control,
     watch,
     handleSubmit,
-    formState: { errors: formErrors, isDirty },
+    formState: { errors: formErrors },
     clearErrors,
     setError,
   } = methods;

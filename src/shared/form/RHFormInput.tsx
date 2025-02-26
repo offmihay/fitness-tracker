@@ -1,11 +1,9 @@
 import { Control, Controller, FieldPath, FieldValues, useFormContext } from "react-hook-form";
 import get from "lodash/get";
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import React from "react";
 import CustomTextInput from "../input/CustomTextInput";
 import CustomAnimatedView from "../view/CustomAnimatedView";
 import ErrorAnimatedView from "../view/ErrorAnimatedView";
-import { View } from "react-native";
 import { t } from "i18next";
 
 type Props<TFieldValues extends FieldValues> = {
@@ -29,7 +27,7 @@ const RHFormInput = <TFieldValues extends FieldValues>(props: Props<TFieldValues
       name={name}
       rules={rules}
       render={({ field: { onChange, value, ref, onBlur } }) => {
-        let inputValue = typeof value === "number" ? value.toString() : value;
+        const inputValue = typeof value === "number" ? value.toString() : value;
         return (
           <>
             <CustomAnimatedView>

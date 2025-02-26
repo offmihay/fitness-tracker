@@ -1,13 +1,6 @@
-import {
-  ActivityIndicator,
-  RefreshControl,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { RefreshControl, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { router, useNavigation, usePathname, useRouter } from "expo-router";
-import ButtonDefault from "@/src/shared/button/ButtonDefault";
+import { router, useNavigation } from "expo-router";
 import UserTournamentCard, {
   UserTournamentCard_HEIGHT,
 } from "@/src/components/tournaments/common/UserTournamentCard";
@@ -19,7 +12,6 @@ import {
 } from "@/src/queries/tournaments";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
 import { emptyBaseTournament, TournamentBase } from "@/src/types/tournament";
-import _ from "lodash";
 import CreatorTournamentCard from "@/src/components/tournaments/common/CreatorTournamentCard";
 import TournamentSkeleton from "@/src/components/tournaments/common/skeleton/TournamentSkeleton";
 import CustomText from "@/src/shared/text/CustomText";
@@ -30,11 +22,9 @@ import { useToast } from "@/src/hooks/useToast";
 import { t } from "i18next";
 import { useRefreshByUser } from "@/src/hooks/useRefetchByUser";
 
-type Props = {};
-
 type Filter = "participant" | "organizer" | "all";
 
-const Tournaments = ({}: Props) => {
+const Tournaments = () => {
   const { data: dataFetch, refetch, isFetching } = getMyTournaments(false);
   const theme = useCustomTheme();
   const navigation = useNavigation();
@@ -48,7 +38,7 @@ const Tournaments = ({}: Props) => {
   const { isRefreshing, refresh, cancelRefresh } = useRefreshByUser(refetch);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("blur", (e) => {
+    const unsubscribe = navigation.addListener("blur", () => {
       cancelRefresh();
     });
 

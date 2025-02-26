@@ -12,7 +12,6 @@ import {
 } from "@/src/queries/tournaments";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
 import { emptyBaseTournament, TournamentBase } from "@/src/types/tournament";
-import _ from "lodash";
 import { useSettings } from "@/src/hooks/useSettings";
 import CreatorTournamentCard from "@/src/components/tournaments/common/CreatorTournamentCard";
 import TournamentSkeleton from "@/src/components/tournaments/common/skeleton/TournamentSkeleton";
@@ -23,11 +22,9 @@ import FilterDropdownMenu from "@/src/components/tournaments/common/FilterDropdo
 import { useToast } from "@/src/hooks/useToast";
 import { t } from "i18next";
 
-type Props = {};
-
 type Filter = "participant" | "organizer" | "all";
 
-const FinishedTournaments = ({}: Props) => {
+const FinishedTournaments = () => {
   const { settings } = useSettings();
   const { data: dataFetch, refetch, isFetching } = getMyTournaments(true);
   const theme = useCustomTheme();

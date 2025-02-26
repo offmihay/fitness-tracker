@@ -2,10 +2,8 @@ import React from "react";
 import CustomLayout from "../custom/CustomLayout";
 import { ContentStyle, FlashList, FlashListProps } from "@shopify/flash-list";
 import Animated from "react-native-reanimated";
-import { View } from "react-native";
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
-type AnimatedFlashListProps = React.ComponentProps<typeof AnimatedFlashList>;
 
 type Props<T> = Omit<React.ComponentProps<typeof CustomLayout>, "renderContent"> & {
   flashListProps: FlashListProps<T> & {

@@ -113,7 +113,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
       <ChooseImageSection
         defaultImages={watch("images")}
         onImageUploadSuccess={updateImages}
-        errorMessage={errors.images?.message!}
+        errorMessage={errors.images?.message || ""}
       />
 
       <DualInputSection>

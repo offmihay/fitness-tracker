@@ -21,7 +21,7 @@ export const getSettingsList = () => {
       iconName: "user",
       description:
         `${user?.firstName} ${user?.lastName}`.trim().length !== 0 && !!user?.firstName
-          ? !!user.lastName
+          ? user.lastName
             ? `${user?.firstName} ${user?.lastName}`
             : user?.firstName
           : t("common.notSpecified"),

@@ -9,7 +9,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import RHFormInput from "@/src/shared/form/RHFormInput";
-import Toast from "react-native-toast-message";
 import StickyFooterView from "@/src/shared/view/StickyFooterView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import {

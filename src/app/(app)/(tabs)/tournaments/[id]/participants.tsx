@@ -5,13 +5,11 @@ import { useLocalSearchParams } from "expo-router";
 import { getTournamentByID, removeUser } from "@/src/queries/tournaments";
 import ParticipantCard from "@/src/components/home/common/ParticipantCard";
 import LayoutFlashList from "@/src/components/navigation/layouts/LayoutFlashList";
-import { emptyBaseTournament, Tournament } from "@/src/types/tournament";
+import { Tournament } from "@/src/types/tournament";
 import ParticipantCardSkeleton from "@/src/components/home/common/skeleton/ParticipantCardSkeleton";
 import { t } from "i18next";
 
-type Props = {};
-
-const ParticipantsPage = (props: Props) => {
+const ParticipantsPage = () => {
   const { id, type } = useLocalSearchParams();
   const { data, refetch, isFetching } = getTournamentByID(id as string);
   const [isRefreshing, setIsRefreshing] = useState(false);

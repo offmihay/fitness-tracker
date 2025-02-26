@@ -7,11 +7,9 @@ import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollVi
 import TournamentDetailsSkeleton from "@/src/components/home/common/skeleton/TournamentDetailsSkeleton";
 import { useUser } from "@clerk/clerk-expo";
 
-type Props = {};
-
-const TournamentDetailsScreen = ({}: Props) => {
+const TournamentDetailsScreen = () => {
   const { id } = useLocalSearchParams();
-  const { data, isLoading, error } = getTournamentByID(id as string);
+  const { data, isLoading } = getTournamentByID(id as string);
   const { user } = useUser();
 
   const handleOpenRules = () => {

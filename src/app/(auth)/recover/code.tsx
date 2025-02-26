@@ -5,14 +5,10 @@ import { t } from "i18next";
 import Loader from "@/src/shared/loader/Loader";
 import ButtonBack from "@/src/shared/button/ButtonBack";
 import useCountdown from "@/src/hooks/useCountdown";
-import {
-  useResendVerificationCodeMutation,
-  useVerifyEmailCodeMutation,
-} from "../../../queries/signup";
+
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { FormProvider, useForm } from "react-hook-form";
 import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
-import CustomKeyboardAvoidingView from "@/src/shared/view/CustomKeyboardAvoidingView";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
@@ -43,8 +39,7 @@ const SignUpVerifyCodeScreen = () => {
     control,
     watch,
     handleSubmit,
-    formState: { errors: formErrors, isDirty },
-    reset,
+    formState: { errors: formErrors },
     setError,
     clearErrors,
   } = methods;

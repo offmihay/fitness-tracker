@@ -14,10 +14,8 @@ import {
 import { useRouter } from "expo-router";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
-import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import RHFormInput from "@/src/shared/form/RHFormInput";
-import Toast from "react-native-toast-message";
 import { useToast } from "@/src/hooks/useToast";
 import { useManualLoading } from "@/src/hooks/useLoading";
 

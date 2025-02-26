@@ -1,13 +1,5 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
-import {
-  Alert,
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from "react-native";
+import { Dimensions, Pressable, StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 import FastImage, { FastImageProps } from "@d11/react-native-fast-image";
 import Animated, {
   interpolate,
@@ -19,7 +11,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
-import { Feather, FontAwesome, FontAwesome6 } from "@expo/vector-icons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import * as Haptics from "expo-haptics";
 import { deleteImageConfirmationAlert } from "../alerts/alerts";
@@ -156,7 +148,7 @@ const ExpandableImage = (props: Props) => {
   const END_POSITION_Y = 120;
 
   const panGesture = Gesture.Pan()
-    .onStart((e) => {
+    .onStart(() => {
       position.value = [0, 0];
     })
     .onUpdate((e) => {

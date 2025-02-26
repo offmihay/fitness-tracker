@@ -1,5 +1,5 @@
-import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useRef, useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React from "react";
 import {
   Ionicons,
   FontAwesome6,

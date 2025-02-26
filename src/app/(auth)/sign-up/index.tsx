@@ -35,7 +35,7 @@ export default function SignUpEmailScreen() {
     control,
     watch,
     handleSubmit,
-    formState: { errors: formErrors, isDirty },
+    formState: { errors: formErrors },
     clearErrors,
     setError,
   } = methods;

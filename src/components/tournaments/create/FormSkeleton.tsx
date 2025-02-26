@@ -1,5 +1,4 @@
 import React from "react";
-import CustomText from "@/src/shared/text/CustomText";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 import { View } from "react-native";
 

@@ -4,9 +4,7 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { UserTournamentCard_HEIGHT } from "../UserTournamentCard";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 
-type Props = {};
-
-const TournamentSkeleton = (props: Props) => {
+const TournamentSkeleton = () => {
   const theme = useCustomTheme();
   return (
     <View style={[styles.wrapper, { backgroundColor: theme.colors.surface }]}>

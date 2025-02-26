@@ -1,12 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import React from "react";
 import ButtonSmall from "@/src/shared/button/ButtonSmall";
 import { Ionicons } from "@expo/vector-icons";
 import CheckboxContextMenu from "@/src/shared/context-menu/CheckboxContextMenu";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
-import { fetchStoredFilter } from "../storedSettings";
 import { SortValueHome } from "../types";
 
 type Props = {

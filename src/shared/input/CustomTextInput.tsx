@@ -49,7 +49,6 @@ const CustomTextInput = forwardRef<TextInput, Props>(
       value,
       onChangeText,
       styleWrapper,
-      viewNode,
       label,
       onFocus,
       onBlur,

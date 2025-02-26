@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useTranslation } from "react-i18next";
 import UserAvatarList from "@/src/components/settings/personal-info/UserAvatarList";
@@ -21,9 +21,7 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { useQueryClient } from "@tanstack/react-query";
 import { useManualLoading } from "@/src/hooks/useLoading";
 
-type PersonalInfoProps = {};
-
-const PersonalInfo = ({}: PersonalInfoProps) => {
+const PersonalInfo = () => {
   const { setIsLoading } = useManualLoading(true);
   const queryClient = useQueryClient();
   const { signOut } = useAuth();
@@ -55,7 +53,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
             label={t("user.name")}
             value={
               `${user?.firstName} ${user?.lastName}`.trim().length !== 0 && !!user?.firstName
-                ? !!user.lastName
+                ? user.lastName
                   ? `${user?.firstName} ${user?.lastName}`
                   : user?.firstName
                 : t("common.notSpecified")
@@ -87,7 +85,7 @@ const PersonalInfo = ({}: PersonalInfoProps) => {
               user?.unsafeMetadata.featuredSport && user?.unsafeMetadata.featuredSport.length > 0
                 ? user?.unsafeMetadata.featuredSport
                     .map(
-                      (sport, index, arr) =>
+                      (sport, index) =>
                         (index === 0 ? "" : " ") + t(`tournament.sportType.${sport}`)
                     )
                     .toString()

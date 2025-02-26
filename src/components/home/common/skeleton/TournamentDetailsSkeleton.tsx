@@ -1,15 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import React from "react";
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { useTranslation } from "react-i18next";
-import CustomText from "@/src/shared/text/CustomText";
 import Skeleton from "@/src/shared/skeleton/Skeleton";
 
-type Props = {};
-
-const TournamentDetailsSkeleton = ({}: Props) => {
-  const theme = useCustomTheme();
-  const { t } = useTranslation("");
+const TournamentDetailsSkeleton = () => {
   return (
     <View className="flex flex-col gap-6">
       <Skeleton height={30} width={120} />
@@ -33,14 +26,4 @@ const TournamentDetailsSkeleton = ({}: Props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  btn: {
-    width: 60,
-    height: 60,
-    borderRadius: 3,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
 export default TournamentDetailsSkeleton;

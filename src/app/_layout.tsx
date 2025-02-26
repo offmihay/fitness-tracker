@@ -3,7 +3,7 @@ import "../i18n/config";
 import "../styles/global.css";
 import AppProviders from "../providers/AppProviders";
 import "react-native-get-random-values";
-import { Slot, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import React, { PropsWithChildren, useContext, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { useAuthContext } from "../providers/AuthContextProvider";
@@ -11,7 +11,6 @@ import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import * as NavigationBar from "expo-navigation-bar";
 import { Platform, StatusBar } from "react-native";
 import LoadingModal from "../shared/modal/LoadingModal";
-import { useManualLoading } from "../hooks/useLoading";
 import { LoadingContext } from "../providers/LoadingProvider";
 
 SplashScreen.preventAutoHideAsync();

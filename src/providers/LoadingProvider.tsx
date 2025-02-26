@@ -1,4 +1,4 @@
-import { useIsFetching, useIsMutating } from "@tanstack/react-query";
+import { useIsMutating } from "@tanstack/react-query";
 import React, { createContext, useEffect, useState } from "react";
 
 type LoadingContextType = {

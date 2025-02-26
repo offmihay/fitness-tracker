@@ -1,11 +1,11 @@
-import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Tournament, TournamentBase, TournamentStatus } from "@/src/types/tournament";
+import { TournamentBase, TournamentStatus } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
-import { Entypo, Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Entypo, Feather, Ionicons } from "@expo/vector-icons";
 import { Divider } from "react-native-paper";
 import { useSettings } from "@/src/hooks/useSettings";
 import { formatDateTime } from "@/src/utils/formatDateTime";
@@ -115,7 +115,7 @@ const CreatorTournamentCard = (props: Props) => {
               onPress={onEditPress}
               title={t("common.edit")}
               style={{ backgroundColor: theme.colors.primary }}
-              renderIcon={(color) => <Feather name="edit-3" size={20} color="white" />}
+              renderIcon={() => <Feather name="edit-3" size={20} color="white" />}
               textColor="white"
               textProps={{ type: "default" }}
             />

@@ -1,7 +1,7 @@
 import * as ImagePicker from "expo-image-picker";
 import { ImagePickerOptions } from "expo-image-picker";
 import { TFunction } from "i18next";
-import { Alert, Linking } from "react-native";
+import { Linking } from "react-native";
 import { galleryPermissionAlert } from "../shared/alerts/alerts";
 
 export const pickGalleryImage = async ({

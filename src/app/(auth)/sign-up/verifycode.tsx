@@ -42,8 +42,7 @@ const SignUpVerifyCodeScreen = () => {
     control,
     watch,
     handleSubmit,
-    formState: { errors: formErrors, isDirty },
-    reset,
+    formState: { errors: formErrors },
     setError,
     clearErrors,
   } = methods;

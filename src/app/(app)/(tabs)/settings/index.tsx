@@ -8,9 +8,7 @@ import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollVi
 import CustomListItem from "@/src/shared/list/CustomListItem";
 import CustomListSection from "@/src/shared/list/CustomListSection";
 
-type Props = {};
-
-const settings = ({}: Props) => {
+const SettingsPage = () => {
   const dropdowns = getDropdownItems();
   const settingsList = getSettingsList();
 
@@ -49,7 +47,7 @@ const settings = ({}: Props) => {
   );
 };
 
-export default settings;
+export default SettingsPage;
 
 const styles = StyleSheet.create({
   wrapper: {

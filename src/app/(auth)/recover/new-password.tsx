@@ -1,13 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import React, { useEffect } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { t } from "i18next";
 import ButtonBack from "@/src/shared/button/ButtonBack";
-import { useSignUpPasswordMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
-import CustomKeyboardAvoidingView from "@/src/shared/view/CustomKeyboardAvoidingView";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";

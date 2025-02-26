@@ -1,6 +1,6 @@
 import * as ImagePicker from "expo-image-picker";
 import { ImagePickerOptions } from "expo-image-picker";
-import { Alert, Linking } from "react-native";
+import { Linking } from "react-native";
 import { cameraPermissionAlert } from "../shared/alerts/alerts";
 import { TFunction } from "i18next";
 

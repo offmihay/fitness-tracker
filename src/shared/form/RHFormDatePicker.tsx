@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import React from "react";
 import { Control, Controller, FieldPath, FieldValues, useFormContext } from "react-hook-form";
 import DatePickerInput from "../input/DatePickerInput";
@@ -53,12 +52,5 @@ const RHFormDatePicker = <TFieldValues extends FieldValues>(props: Props<TFieldV
     />
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-  },
-});
 
 export default RHFormDatePicker;

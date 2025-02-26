@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useApi from "../api/useApi";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export type GeoCoordinates = {
   latitude: number;
@@ -11,7 +11,6 @@ export type GeoCoordinates = {
 
 export const useUserCoordinates = (disableFetchLocation?: boolean) => {
   const { fetchData } = useApi();
-  const queryClient = useQueryClient();
 
   const fetchLocation = async (): Promise<GeoCoordinates | null> => {
     const { status } = await Location.getForegroundPermissionsAsync();

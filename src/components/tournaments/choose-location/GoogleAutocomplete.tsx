@@ -1,4 +1,4 @@
-import { Dimensions, Platform, TouchableOpacity, View } from "react-native";
+import { Dimensions, Platform, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
   AutocompleteRequestType,
@@ -11,7 +11,7 @@ import {
 import CustomTextInput from "@/src/shared/input/CustomTextInput";
 import CustomText from "@/src/shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { t, use } from "i18next";
+import { t } from "i18next";
 import { Divider } from "react-native-paper";
 import { GeoCoordinates, useUserCoordinates } from "@/src/queries/location";
 import { useManualLoading } from "@/src/hooks/useLoading";

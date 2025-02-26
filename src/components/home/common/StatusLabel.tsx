@@ -1,11 +1,8 @@
-import { StyleSheet, View } from "react-native";
 import React from "react";
-import CustomText from "@/src/shared/text/CustomText";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
-import { TournamentBase, TournamentSport, TournamentStatus } from "@/src/types/tournament";
+import { TournamentBase, TournamentStatus } from "@/src/types/tournament";
 import {
   FontAwesome,
-  FontAwesome5,
   FontAwesome6,
   Ionicons,
   MaterialCommunityIcons,

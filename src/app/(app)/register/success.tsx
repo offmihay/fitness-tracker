@@ -1,10 +1,10 @@
-import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Octicons } from "@expo/vector-icons";
 import CustomText from "@/src/shared/text/CustomText";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
-import { router, useLocalSearchParams, useSegments } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { t } from "i18next";
 import useCreateNativeEvent from "@/src/hooks/useCreateNativeEvent";
 import { getTournamentByID } from "@/src/queries/tournaments";

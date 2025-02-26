@@ -14,7 +14,6 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { useTranslation } from "react-i18next";
 import * as Burnt from "burnt";
 import { AuthContextProvider } from "./AuthContextProvider";
-import { router } from "expo-router";
 import { LoadingProvider } from "./LoadingProvider";
 
 const ThemeProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {

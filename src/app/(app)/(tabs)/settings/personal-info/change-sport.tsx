@@ -4,7 +4,6 @@ import { useUser } from "@clerk/clerk-expo";
 import { useTranslation } from "react-i18next";
 import clerkTransformData from "@/src/utils/clerkTransformData";
 import { useUpdateUserMutation } from "@/src/queries/user";
-import { ChangeNameForm } from "@/src/components/settings/personal-info/forms/schema";
 import { useRouter } from "expo-router";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
@@ -40,16 +39,6 @@ const ChangeSportScreen = () => {
       } else {
         return [item];
       }
-    });
-  };
-
-  const onSubmit = (data: ChangeNameForm) => {
-    const formData = clerkTransformData(data, user?.unsafeMetadata || null);
-    formDataMutation.mutate(formData, {
-      onSuccess: () => {
-        showSuccessToast("user_information_updated");
-        router.back();
-      },
     });
   };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View, StyleSheet, Platform } from "react-native";
+import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 import { Divider } from "react-native-paper";
@@ -11,11 +11,8 @@ type ModalButtonProps = {
   weight?: "normal" | "bold";
 };
 
-const ButtonAction: React.FC<ModalButtonProps> & { Group: React.FC<GroupProps> } = ({
-  onPress,
-  title,
-  weight = "normal",
-}) => {
+const ButtonAction: React.FC<ModalButtonProps> & { Group: React.FC<GroupProps> } = (props) => {
+  const { onPress, title, weight = "normal" } = props;
   const theme = useCustomTheme();
 
   return (

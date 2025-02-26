@@ -1,13 +1,11 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { t } from "i18next";
 import ButtonBack from "@/src/shared/button/ButtonBack";
-import { useSignUpMutation } from "../../../queries/signup";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { FormProvider, useForm } from "react-hook-form";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
-import CustomKeyboardAvoidingView from "@/src/shared/view/CustomKeyboardAvoidingView";
 import DismissKeyboardView from "@/src/shared/view/DismissKeyboardView";
 import clerkHandleErrors from "@/src/utils/clerkHandleErrors";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
@@ -36,7 +34,7 @@ export default function RecoverPasswordFirstScreen() {
     control,
     watch,
     handleSubmit,
-    formState: { errors: formErrors, isDirty },
+    formState: { errors: formErrors },
     clearErrors,
     setError,
   } = methods;

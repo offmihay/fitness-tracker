@@ -1,8 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
-import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
-import FastImage from "@d11/react-native-fast-image";
 import { router, useLocalSearchParams } from "expo-router";
 import GoogleAutoComplete from "@/src/components/tournaments/choose-location/GoogleAutocomplete";
 import { UpdateTournamentPageQuery } from ".";

@@ -1,5 +1,5 @@
 import { Keyboard, Platform, StyleSheet, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Divider } from "react-native-paper";
 import FilterItem from "./FilterItem";
 import { FilterGroup, FilterSingle, FilterRange, Range, FilterHome } from "../types";
@@ -12,7 +12,6 @@ import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import CustomTextInput from "@/src/shared/input/CustomTextInput";
 import DatePickerInput from "@/src/shared/input/DatePickerInput";
 import CustomText from "@/src/shared/text/CustomText";
-import Toast from "react-native-toast-message";
 import _ from "lodash";
 import { emptyFilter } from "../storedSettings";
 import { t } from "i18next";
@@ -70,7 +69,9 @@ const FilterContent = (props: Props) => {
     try {
       await AsyncStorage.setItem("filter-home", JSON.stringify(res));
       filter && onConfirm?.(res);
-    } catch (e) {}
+    } catch (e) {
+      throw new Error("Failed to save filter");
+    }
     Keyboard.dismiss();
     dismiss("filter-modal");
   };

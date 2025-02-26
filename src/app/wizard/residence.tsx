@@ -7,7 +7,6 @@ import { router } from "expo-router";
 import GoogleAutoComplete, {
   PlaceObject,
 } from "@/src/components/tournaments/choose-location/GoogleAutocomplete";
-import { useUser } from "@clerk/clerk-expo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const WizardResidenceScreen = () => {

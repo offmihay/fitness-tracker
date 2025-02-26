@@ -3,7 +3,6 @@ import { pickCameraImage } from "@/src/services/pickCameraImage";
 import { pickGalleryImage } from "@/src/services/pickGalleryImage";
 import { useUploadImage } from "@/src/queries/upload-image";
 import FastImage from "@d11/react-native-fast-image";
-import { ImagePickerAsset } from "expo-image-picker";
 import { Platform } from "react-native";
 import { t } from "i18next";
 

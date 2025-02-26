@@ -9,9 +9,7 @@ import SportLabel from "@/src/components/home/common/SportLabel";
 import StickyFooterView from "@/src/shared/view/StickyFooterView";
 import { t } from "i18next";
 
-type Props = {};
-
-const RegistrationConfirmScreen = (props: Props) => {
+const RegistrationConfirmScreen = () => {
   const { id } = useLocalSearchParams();
 
   const { data: tournamentData } = getTournamentByID(id as string);
@@ -32,8 +30,6 @@ const RegistrationConfirmScreen = (props: Props) => {
       params: { id },
     });
   };
-
-  const {} = props;
 
   return (
     <>

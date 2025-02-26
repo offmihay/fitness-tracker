@@ -5,9 +5,7 @@ import LayoutScrollView from "@/src/components/navigation/layouts/LayoutScrollVi
 import CustomText from "@/src/shared/text/CustomText";
 import { t } from "i18next";
 
-type Props = {};
-
-const rules = ({}: Props) => {
+const rules = () => {
   const { rules } = useLocalSearchParams();
 
   return (

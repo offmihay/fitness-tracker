@@ -6,9 +6,7 @@ import CustomText from "@/src/shared/text/CustomText";
 import { getTournamentByID } from "@/src/queries/tournaments";
 import { t } from "i18next";
 
-type Props = {};
-
-const RulesPage = ({}: Props) => {
+const RulesPage = () => {
   const { id } = useLocalSearchParams();
   const { data } = getTournamentByID(id as string);
 

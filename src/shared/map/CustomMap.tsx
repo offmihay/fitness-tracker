@@ -1,7 +1,6 @@
-import { Platform, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import React, { useRef } from "react";
-import { FontAwesome6 } from "@expo/vector-icons";
-import MapView, { Callout, MapPressEvent, Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 
 type Props = {

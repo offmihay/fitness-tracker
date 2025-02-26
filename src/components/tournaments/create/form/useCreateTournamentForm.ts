@@ -4,11 +4,9 @@ import { postTournament } from "@/src/queries/tournaments";
 import schemaCreateTournament, {
   TournamentFormData,
 } from "@/src/components/tournaments/create/form/schema";
-import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { CreateTournamentPageQuery } from "@/src/app/(app)/(tabs)/tournaments/create";
 import { router } from "expo-router";
-import { useUser } from "@clerk/clerk-expo";
 import { useToast } from "@/src/hooks/useToast";
 
 export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) => {
@@ -22,10 +20,7 @@ export const useCreateTournamentForm = (pageQuery: CreateTournamentPageQuery) =>
     resolver: zodResolver(schemaCreateTournament),
   });
 
-  const {
-    setValue,
-    formState: { errors },
-  } = methods;
+  const { setValue } = methods;
 
   const handleFormSubmit = (data: TournamentFormData) => {
     const { isOrganizerAdded, ...formData } = data;

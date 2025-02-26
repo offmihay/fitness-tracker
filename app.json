@@ -41,7 +41,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+          "locationAlwaysAndWhenInUsePermission": "$(PRODUCT_NAME) is using your locations to show nearby tournaments."
         }
       ],
       [

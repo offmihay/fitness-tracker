@@ -1,4 +1,4 @@
-import { StyleSheet, View, ViewProps, ViewStyle } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
 import ShimmerPlaceHolder, { ShimmerPlaceholderProps } from "react-native-shimmer-placeholder";
 import { LinearGradient } from "expo-linear-gradient";

@@ -2,10 +2,8 @@ import { Alert, Linking, Platform, StyleSheet, TouchableOpacity, View } from "re
 import React, { useEffect, useRef, useState } from "react";
 import MapView, { MapPressEvent, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
-import Toast from "react-native-toast-message";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { useBottomSheetModal } from "@gorhom/bottom-sheet";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 

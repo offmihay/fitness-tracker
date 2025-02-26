@@ -11,10 +11,7 @@ import CustomSwitch from "@/src/shared/switch/Switch";
 import { useSettings } from "@/src/hooks/useSettings";
 import { t } from "i18next";
 
-type Props = {};
-
-const index = (props: Props) => {
-  const {} = props;
+const OrganizerInfoPage = () => {
   const { user } = useUser();
   const theme = useCustomTheme();
   const { settings, updateSettings } = useSettings();
@@ -53,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default index;
+export default OrganizerInfoPage;

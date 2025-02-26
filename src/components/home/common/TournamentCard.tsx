@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { memo, useState } from "react";
+import React from "react";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
@@ -8,11 +8,8 @@ import CustomText from "@/src/shared/text/CustomText";
 import { TournamentBase } from "@/src/types/tournament";
 import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
-import Skeleton from "@/src/shared/skeleton/Skeleton";
 import SportLabel from "./SportLabel";
 import CustomLabel from "./CustomLabel";
-import CustomAnimatedView from "@/src/shared/view/CustomAnimatedView";
-import { FadeIn, FadeOut } from "react-native-reanimated";
 
 type Props = {
   handleOpenDetails: () => void;

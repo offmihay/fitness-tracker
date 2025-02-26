@@ -1,6 +1,5 @@
 import { Keyboard, StyleSheet, View } from "react-native";
 import React from "react";
-import { registerTournament } from "@/src/queries/tournaments";
 import LayoutStatic from "@/src/components/navigation/layouts/LayoutStatic";
 import ButtonDefault from "@/src/shared/button/ButtonDefault";
 import { router, useLocalSearchParams } from "expo-router";
@@ -8,7 +7,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@clerk/clerk-expo";
 import { useUpdateUserMutation } from "@/src/queries/user";
-import { ChangeNameForm } from "@/src/components/settings/personal-info/forms/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserRegistrationFormData, schemaUserRegistration } from "@/src/components/register/schema";
 import RHFormInput from "@/src/shared/form/RHFormInput";

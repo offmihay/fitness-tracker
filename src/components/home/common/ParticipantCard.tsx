@@ -6,7 +6,6 @@ import Skeleton from "@/src/shared/skeleton/Skeleton";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
-import CreatorContextMenu from "../../tournaments/common/CreatorContextMenu";
 import { Entypo } from "@expo/vector-icons";
 import ManageUsersContextMenu, {
   ManageUsersContextOptions,

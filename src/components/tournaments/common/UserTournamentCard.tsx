@@ -1,11 +1,11 @@
-import { Alert, Linking, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Linking, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { TournamentBase, TournamentStatus } from "@/src/types/tournament";
+import { TournamentBase } from "@/src/types/tournament";
 import { useCustomTheme } from "@/src/hooks/useCustomTheme";
 import ExpandableImage from "@/src/shared/image/ExpandableImage";
 import FastImage from "@d11/react-native-fast-image";
 import CustomText from "@/src/shared/text/CustomText";
-import { Entypo, Feather, FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { Entypo, Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Divider } from "react-native-paper";
 import { formatDateRange } from "@/src/utils/formatDateRange";
 import { useSettings } from "@/src/hooks/useSettings";
@@ -15,7 +15,6 @@ import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import StatusLabel from "../../home/common/StatusLabel";
 import { formatDateTime } from "@/src/utils/formatDateTime";
-import Toast from "react-native-toast-message";
 import { leaveTournamentConfirmationAlert } from "@/src/shared/alerts/alerts";
 import * as Burnt from "burnt";
 
@@ -55,7 +54,7 @@ const UserTournamentCard = (props: Props) => {
     });
 
     if (url) {
-      Linking.openURL(url).catch((err) =>
+      Linking.openURL(url).catch(() =>
         Burnt.toast({
           title: t("common.error"),
           preset: "error",
