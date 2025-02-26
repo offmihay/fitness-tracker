@@ -33,19 +33,14 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "$(PRODUCT_NAME) needs to access your photos to let you share them with other people."
+          "photosPermission": "$(PRODUCT_NAME) needs to access your photos to let you share them with other people.",
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
         }
       ],
       [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "$(PRODUCT_NAME) is using your locations to show nearby tournaments."
-        }
-      ],
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
         }
       ],
       [
