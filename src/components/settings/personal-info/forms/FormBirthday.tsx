@@ -67,6 +67,7 @@ const FormBirthday = (props: Props) => {
           minimumDate: new Date(new Date().getFullYear() - 100, 0, 1),
           maximumDate: new Date(),
           renderTrigger: ({ onPress, value }) => triggerNode(onPress, value),
+          mode: "date",
         }}
         control={control}
       />

@@ -29,6 +29,7 @@ export const TournamentEditForm = ({ type, id }: Props) => {
   const [isOpenedAdditional, setIsOpenedAdditional] = useState(false);
   const { user } = useUser();
   const theme = useCustomTheme();
+
   const {
     control,
     watch,
@@ -315,7 +316,9 @@ export const TournamentEditForm = ({ type, id }: Props) => {
           <ErrorAnimatedView
             message={
               !user?.unsafeMetadata.organizerName || !user?.unsafeMetadata.organizerEmail
-                ? t(`errors.${errors.isOrganizerAdded?.message}`)
+                ? errors.isOrganizerAdded?.message
+                  ? t(`errors.${errors.isOrganizerAdded?.message}`)
+                  : undefined
                 : undefined
             }
             className="mt-2"
