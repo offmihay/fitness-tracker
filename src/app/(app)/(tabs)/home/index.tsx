@@ -19,7 +19,7 @@ import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { t } from "i18next";
 import { useRefreshByUser } from "@/src/hooks/useRefetchByUser";
 import LocationModal from "@/src/components/home/location/LocationModal";
-import { GeoCoordinates, useUserCoordinates } from "@/src/queries/location";
+import { useUserCoordinates } from "@/src/queries/location";
 
 const HomePage = () => {
   const { data: userCoords, isFetched: isFetchedUserCoords } = useUserCoordinates(true);
@@ -43,28 +43,17 @@ const HomePage = () => {
   const [filter, setFilter] = useState<FilterHome>(emptyFilter);
   const [sortBy, setSortBy] = useState<SortValueHome | null>(null);
 
-  const [location, setLocation] = useState<Location | null | undefined>(undefined);
+  const [customLocation, setCustomLocation] = useState<Location | null | undefined>(undefined);
 
-  const setLocationDefault = (coords: GeoCoordinates | undefined | null) => {
-    setLocation(() => {
-      if (coords) {
-        return {
+  const location =
+    customLocation || (isFetchedUserCoords && userCoords)
+      ? {
           geoCoordinates: {
-            latitude: coords.latitude,
-            longitude: coords.longitude,
+            latitude: userCoords.latitude,
+            longitude: userCoords.longitude,
           },
-          radius: 50,
-        };
-      }
-      return null;
-    });
-  };
-
-  useEffect(() => {
-    if (isFetchedUserCoords) {
-      setLocationDefault(userCoords);
-    }
-  }, [userCoords, isFetchedUserCoords]);
+        }
+      : null;
 
   const transformSortQuery = (sortBy: SortValueHome | null) => {
     let sortQuery: Pick<TournamentQuery, "sortBy" | "sortOrder"> | {};
@@ -118,13 +107,16 @@ const HomePage = () => {
   const queryClient = useQueryClient();
 
   const resetInfiniteQueryPagination = async (): Promise<void> => {
-    queryClient.setQueryData<InfiniteData<TournamentBase[]>>(["tournaments", query], (oldData) => {
-      if (!oldData) return undefined;
-      return {
-        pages: [],
-        pageParams: oldData.pageParams.slice(0, 1),
-      };
-    });
+    queryClient.setQueryData<InfiniteData<TournamentBase[]>>(
+      ["tournaments", query],
+      (oldData: any) => {
+        if (!oldData) return undefined;
+        return {
+          pages: [],
+          pageParams: oldData.pageParams.slice(0, 1),
+        };
+      }
+    );
 
     await queryClient.invalidateQueries({ queryKey: ["tournaments", query] });
   };
@@ -152,7 +144,7 @@ const HomePage = () => {
     const loadedData = allFetchedData?.pages.flat() ?? [];
 
     return loadedData;
-  }, [allFetchedData, isLoading, isFetchingNextPage]);
+  }, [allFetchedData]);
 
   return (
     <LayoutStatic name="home" disableHeader={true} canGoBack={false}>
@@ -163,8 +155,8 @@ const HomePage = () => {
             <>
               <LocationModal
                 location={location}
-                onConfirm={setLocation}
-                onReset={() => setLocationDefault(userCoords)}
+                onConfirm={setCustomLocation}
+                onReset={() => setCustomLocation(null)}
               />
               <View style={styles.headerContainer}>
                 <SortDropdown
