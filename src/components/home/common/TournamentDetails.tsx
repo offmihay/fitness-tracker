@@ -54,6 +54,7 @@ const TournamentDetails = ({
       organizerEmail: data?.organizer.organizerEmail,
       notes: data?.description,
       status: Calendar.EventStatus.CONFIRMED,
+      url: `selfsport.app/tournaments/${data.id}`,
     });
   };
 

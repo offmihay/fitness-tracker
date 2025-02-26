@@ -23,25 +23,29 @@
     "plugins": [
       "expo-router",
       "expo-localization",
-      "expo-font",
       "expo-secure-store",
       [
-        "expo-image-picker",
+        "expo-calendar",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "calendarPermission": "$(PRODUCT_NAME) needs to access your calendar to automatically add event yo your calendar."
         }
       ],
       [
-        "expo-video",
+        "expo-image-picker",
         {
-          "supportsBackgroundPlayback": true,
-          "supportsPictureInPicture": true
+          "photosPermission": "$(PRODUCT_NAME) needs to access your photos to let you share them with other people."
         }
       ],
       [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "$(PRODUCT_NAME) is using your locations to show nearby tournaments."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
         }
       ],
       [

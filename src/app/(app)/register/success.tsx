@@ -31,6 +31,7 @@ const RegistrationSuccessScreen = () => {
       organizerEmail: tournamentData?.organizer.organizerEmail,
       notes: tournamentData?.description,
       status: Calendar.EventStatus.CONFIRMED,
+      url: `selfsport.app/tournaments/${tournamentData.id}`,
     });
   };
 
