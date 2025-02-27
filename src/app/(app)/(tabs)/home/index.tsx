@@ -46,14 +46,15 @@ const HomePage = () => {
   const [customLocation, setCustomLocation] = useState<Location | null | undefined>(undefined);
 
   const location =
-    customLocation || (isFetchedUserCoords && userCoords)
+    customLocation ||
+    (isFetchedUserCoords && userCoords
       ? {
           geoCoordinates: {
             latitude: userCoords.latitude,
             longitude: userCoords.longitude,
           },
         }
-      : null;
+      : null);
 
   const transformSortQuery = (sortBy: SortValueHome | null) => {
     let sortQuery: Pick<TournamentQuery, "sortBy" | "sortOrder"> | {};
